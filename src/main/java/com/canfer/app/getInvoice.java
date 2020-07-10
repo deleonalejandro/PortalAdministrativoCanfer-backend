@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 
-public class getIndex {
+public class getInvoice {
 
-	@GetMapping(value="/")
+	@GetMapping(value="/invoice")
     public String invoice(){
         return "invoice";
     }
