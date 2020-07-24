@@ -14,35 +14,35 @@ public class Permisos {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long Id_Permisos; 
+	private long id_Permisos; 
 	
 	@Column(nullable = false)
-	private String Permiso;
+	private String permiso;
+
+	//Constructor
 	
-	
-	// We create the constructor
-	
-	public Permisos(String Permiso) {
-		this.Permiso = Permiso;
+	public Permisos(String permiso) {
+		this.permiso = permiso;
 	}
 
-	// Getters and Setters
+	//Getters and Setters
 	
 	public long getId_Permisos() {
-		return Id_Permisos;
+		return id_Permisos;
 	}
 
 	public void setId_Permisos(long id_Permisos) {
-		Id_Permisos = id_Permisos;
+		this.id_Permisos = id_Permisos;
 	}
 
 	public String getPermiso() {
-		return Permiso;
+		return permiso;
 	}
 
-	public void setPermiso(String rol) {
-		Permiso = rol;
+	public void setPermiso(String permiso) {
+		this.permiso = permiso;
 	}
+	
 	
 	
 }

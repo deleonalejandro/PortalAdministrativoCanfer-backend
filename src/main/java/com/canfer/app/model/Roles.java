@@ -14,35 +14,36 @@ public class Roles {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long Id_Roles; 
+	private long id_Roles; 
 	
 	@Column(nullable = false)
-	private String Rol;
-	
-	
-	// We create the constructor
-	
-	public Roles(String Rol) {
-		this.Rol = Rol;
-	}
+	private String rol;
 
-	// Getters and Setters
+	//Constructor
 	
+	public Roles(String rol) {
+		this.rol = rol;
+	}
+	
+
+	//Getters and Setters
+
 	public long getId_Roles() {
-		return Id_Roles;
+		return id_Roles;
 	}
 
 	public void setId_Roles(long id_Roles) {
-		Id_Roles = id_Roles;
+		this.id_Roles = id_Roles;
 	}
 
 	public String getRol() {
-		return Rol;
+		return rol;
 	}
 
 	public void setRol(String rol) {
-		Rol = rol;
+		this.rol = rol;
 	}
+	
 	
 	
 }
