@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -30,21 +30,21 @@
                                     <hr class="my-0" />
                                     <div class="card-body p-5">
                                         <!-- Login form-->
-                                        <form>
+                                        <form action="#" th:action="@{/addUser}" class="form-group" th:object="${user}" method="post" >
                                             <!-- Form Row-->
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <!-- Form Group (first name)-->
                                                     <div class="form-group">
-                                                        <label class="text-gray-600 small" for="firstNameExample">Nombre</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
+                                                        <label class="text-gray-600 small" for="nombre">Nombre</label>
+                                                        <input class="form-control form-control-solid py-4" type="text" id="nombre" th:field="*{nombre}" name="nombre" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <!-- Form Group (last name)-->
                                                     <div class="form-group">
-                                                        <label class="text-gray-600 small" for="lastNameExample">Apellido</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" placeholder="" aria-label="Last Name" aria-describedby="lastNameExample" />
+                                                        <label class="text-gray-600 small" for="apellido">Apellido</label>
+                                                        <input class="form-control form-control-solid py-4" type="text" id="apellido" th:field="*{apellido}" name="apellido" placeholder="" aria-label="Last Name" aria-describedby="lastNameExample" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -53,44 +53,35 @@
                                                 <div class="col-md-6">
                                                     <!-- Form Group (username)-->
                                                     <div class="form-group">
-                                                        <label class="text-gray-600 small" for="username">Usuario</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" placeholder="" aria-label="username" aria-describedby="username" />
+                                                        <label class="text-gray-600 small" for="usuario">Usuario</label>
+                                                        <input class="form-control form-control-solid py-4" type="text" id="usuario" th:field="*{username}" name="username" placeholder="" aria-label="username" aria-describedby="usuario" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Form Group (email address)-->
                                             <div class="form-group">
-                                                <label class="text-gray-600 small" for="emailExample">Correo Electrónico</label>
-                                                <input class="form-control form-control-solid py-4" type="text" placeholder="" aria-label="Email Address" aria-describedby="emailExample" />
+                                                <label class="text-gray-600 small" for="correo">Correo Electrónico</label>
+                                                <input class="form-control form-control-solid py-4" type="text" id="correo" th:field="*{correo}" name="correo" placeholder="" aria-label="Correo Electronico" aria-describedby="correo" >
                                             </div>
                                             <!-- Form Row-->
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <!-- Form Group (choose password)-->
                                                     <div class="form-group">
-                                                        <label class="text-gray-600 small" for="passwordExample">Contraseña</label>
-                                                        <input class="form-control form-control-solid py-4" type="password" placeholder="" aria-label="Password" aria-describedby="passwordExample" />
+                                                        <label class="text-gray-600 small" for="contrasena">Contraseña</label>
+                                                        <input class="form-control form-control-solid py-4" type="password" id="contrasena" th:field="*{password}" name="password" placeholder="" aria-label="Constraseña" aria-describedby="contrasena" />
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <!-- Form Group (confirm password)-->
-                                                    <div class="form-group">
-                                                        <label class="text-gray-600 small" for="confirmPasswordExample">Confirma Contraseña</label>
-                                                        <input class="form-control form-control-solid py-4" type="password" placeholder="" aria-label="Confirm Password" aria-describedby="confirmPasswordExample" />
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                             <div class="form-row">
                                                 <div class="col-md-3">
                                                     <!-- Form Group (Roles)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="dropdownRoles">Roles</label>
-                                                        <select class="form-control" id="dropdownRoles">
-												            <option>1</option>
-												            <option>2</option>
-												            <option>3</option>
-												            <option>4</option>
-												            <option>5</option>
+                                                        <select class="form-control selectpicker" id="dropdownRoles" th:field="*{rol}">
+                                                        	<option value="" selected>--Roles--</option>
+                                                        	<option th:each="rol : ${rolesList}" th:value="${rol.idRoles}" th:text="${rol.rol}"></option>
 												        </select>
                                                     </div>
                                                 </div>
@@ -98,20 +89,16 @@
                                                     <!-- Form Group (Permisos)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="dropdownPermisos">Permisos</label>
-                                                        <select class="form-control" id="dropdownPermisos">
-												            <option>1</option>
-												            <option>2</option>
-												            <option>3</option>
-												            <option>4</option>
-												            <option>5</option>
+                                                        <select class="form-control selectpicker" id="dropdownPermisos" th:field="*{permisos}" multiple>
+												            <option value="" selected>--Permisos--</option>
+												            <option th:each="permiso : ${permisosList}" th:value="${permiso.idPermisos}" th:text="${permiso.permiso}"></option>
 												        </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Form Group (form submission)-->
-                                            <div class="form-group d-flex float-right">
-                                                
-                                                <a class="btn btn-primary" href="auth-login-social.html">Create Account</a>
+                                            <div class="form-group d-flex float-right">                 
+                                                <button type="submit" class="btn btn-primary">Crear Usuario</button>
                                             </div>
                                         </form>
                                     </div>

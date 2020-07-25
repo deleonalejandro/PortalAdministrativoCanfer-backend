@@ -1,6 +1,8 @@
 package com.canfer.app.model;
 
-import javax.persistence.CascadeType;
+
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
 
 
 	
@@ -18,35 +20,30 @@ import javax.persistence.OneToMany;
 public class Municipio {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id_Municipio; 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long idMunicipio; 
 	
-    @JoinColumn(name = "id_Estado")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEstado")
+    @ManyToOne(targetEntity = Estado.class, fetch = FetchType.LAZY)
     private Estado estado;
 	
 	@Column(nullable = false)
 	private String nombre;
 
-	@OneToMany(mappedBy = "municipio", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-    private Empresa empresa;
-
 	//Constructor
 	
-	public Municipio(Estado estado, String nombre, Empresa empresa) {
-		this.estado = estado;
+	public Municipio(String nombre) {
 		this.nombre = nombre;
-		this.empresa = empresa;
 	}
 	
 	//Getters and Setters
 
-	public long getId_Municipio() {
-		return id_Municipio;
+	public long getidMunicipio() {
+		return idMunicipio;
 	}
 
-	public void setId_Municipio(long id_Municipio) {
-		this.id_Municipio = id_Municipio;
+	public void setidMunicipio(long idMunicipio) {
+		this.idMunicipio = idMunicipio;
 	}
 
 	public Estado getEstado() {
@@ -65,14 +62,5 @@ public class Municipio {
 		this.nombre = nombre;
 	}
 
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
-	}
-	
-	
 	
 }

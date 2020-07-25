@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>Users</title>
+	<link href="css/styles.css" rel="stylesheet" />
+	<link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+	<script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
+	</head>
+	
+	<body>
+		<div class="container mt-3">
+			<br>
+			<div th:switch="${list}">
+				<div th:case=*>
+					<h2 class="h2">Usuarios</h2>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Usuario</th>
+								<th>Contraseña</th>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Correo</th>
+								<th>Activo</th>
+								<th>Rol</th>
+								<th>Permiso</th>
+							</tr>						
+						</thead>
+						<tbody>
+							<tr th:each="user : ${list}">
+								<td th:text="${user.username}">
+								<td th:text="${user.password}">
+								<td th:text="${user.nombre}">
+								<td th:text="${user.apellido}">
+								<td th:text="${user.correo}">
+								<td th:text="${user.activo}">
+								<td th:text="${user.rol.getRol()}">
+								<td th:text="${user.permisos}">
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/datatables-demo.js"></script>
+	
+	</body>
+</html>

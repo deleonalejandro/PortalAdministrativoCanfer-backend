@@ -13,10 +13,10 @@ import javax.persistence.ManyToOne;
 public class Empresa {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id_Empresa;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long idEmpresa;
 	
-	@JoinColumn(name = "id_Municipio")
+	@JoinColumn(name = "idMunicipio")
     @ManyToOne(fetch = FetchType.LAZY)
     private Municipio municipio;
 	
@@ -48,7 +48,7 @@ public class Empresa {
 	private String cp;
 	
 	@Column(nullable = false)
-	private Boolean bit_Activo;	
+	private Boolean bitActivo;	
 	
 	@Column(nullable = false)
 	private String contacto;
@@ -63,39 +63,23 @@ public class Empresa {
 	private String paginaWeb;
 	
 	@Column(nullable = false)
-	private long id_UsuarioCreador;
+	private Long idUsuarioCreador;
 
 	//Constructor
-	
-	public Empresa(Municipio municipio, String rfc, String nombre, String calle, String numExt, String numInt,
-			String colonia, String localidad, String referencia, String cp, Boolean bit_Activo, String contacto,
-			String correo, String telefono, String paginaWeb, long id_UsuarioCreador) {
-		this.municipio = municipio;
-		this.rfc = rfc;
-		this.nombre = nombre;
-		this.calle = calle;
-		this.numExt = numExt;
-		this.numInt = numInt;
-		this.colonia = colonia;
-		this.localidad = localidad;
-		this.referencia = referencia;
-		this.cp = cp;
-		this.bit_Activo = bit_Activo;
-		this.contacto = contacto;
-		this.correo = correo;
-		this.telefono = telefono;
-		this.paginaWeb = paginaWeb;
-		this.id_UsuarioCreador = id_UsuarioCreador;
+	public Empresa(Long idUsuarioCreador) {
+		this.idUsuarioCreador = idUsuarioCreador;
+		this.bitActivo = true;
 	}
+	
 
 	//Getters and Setters
 	
-	public long getId_Empresa() {
-		return id_Empresa;
+	public long getidEmpresa() {
+		return idEmpresa;
 	}
 
-	public void setId_Empresa(long id_Empresa) {
-		this.id_Empresa = id_Empresa;
+	public void setidEmpresa(long idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 
 	public Municipio getMunicipio() {
@@ -178,12 +162,12 @@ public class Empresa {
 		this.cp = cp;
 	}
 
-	public Boolean getBit_Activo() {
-		return bit_Activo;
+	public Boolean getbitActivo() {
+		return bitActivo;
 	}
 
-	public void setBit_Activo(Boolean bit_Activo) {
-		this.bit_Activo = bit_Activo;
+	public void setbitActivo(Boolean bitActivo) {
+		this.bitActivo = bitActivo;
 	}
 
 	public String getContacto() {
@@ -218,12 +202,12 @@ public class Empresa {
 		this.paginaWeb = paginaWeb;
 	}
 
-	public long getId_UsuarioCreador() {
-		return id_UsuarioCreador;
+	public long getidUsuarioCreador() {
+		return idUsuarioCreador;
 	}
 
-	public void setId_UsuarioCreador(long id_UsuarioCreador) {
-		this.id_UsuarioCreador = id_UsuarioCreador;
+	public void setidUsuarioCreador(long idUsuarioCreador) {
+		this.idUsuarioCreador = idUsuarioCreador;
 	}
 
 	
