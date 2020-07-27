@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Registrar Usuario</title>
+        <link href="css/styles.css" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
+    </head>
+    
+    
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-xl-8 col-lg-9">
+                                <!-- Social registration form-->
+                                <div class="card my-5">
+                                    <div class="card-body p-5 text-center">
+                                        <div class="h3 font-weight-light mb-3">Crear Usuario</div>
+                                        <!-- Social registration links-->
+                                    </div>
+                                    <hr class="my-0" />
+                                    <div class="card-body p-5">
+                                        <!-- Login form-->
+                                        <form action="#" th:action="@{/addUser}" class="form-group" th:object="${user}" method="post" >
+                                            <!-- Form Row-->
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (first name)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="nombre">Nombre</label>
+                                                        <input class="form-control form-control-solid py-4" type="text" id="nombre" th:field="*{nombre}" name="nombre" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (last name)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="apellido">Apellido</label>
+                                                        <input class="form-control form-control-solid py-4" type="text" id="apellido" th:field="*{apellido}" name="apellido" placeholder="" aria-label="Last Name" aria-describedby="lastNameExample" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <!-- Form Row-->
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (username)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="usuario">Usuario</label>
+                                                        <input class="form-control form-control-solid py-4" type="text" id="usuario" th:field="*{username}" name="username" placeholder="" aria-label="username" aria-describedby="usuario" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Form Group (email address)-->
+                                            <div class="form-group">
+                                                <label class="text-gray-600 small" for="correo">Correo Electrónico</label>
+                                                <input class="form-control form-control-solid py-4" type="text" id="correo" th:field="*{correo}" name="correo" placeholder="" aria-label="Correo Electronico" aria-describedby="correo" >
+                                            </div>
+                                            <!-- Form Row-->
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (choose password)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="contrasena">Contraseña</label>
+                                                        <input class="form-control form-control-solid py-4" type="password" id="contrasena" th:field="*{password}" name="password" placeholder="" aria-label="Constraseña" aria-describedby="contrasena" />
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-3">
+                                                    <!-- Form Group (Roles)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="dropdownRoles">Roles</label>
+                                                        <select class="form-control selectpicker" id="dropdownRoles" th:field="*{rol}">
+                                                        	<option value="" selected>--Roles--</option>
+                                                        	<option th:each="rol : ${rolesList}" th:value="${rol.idRoles}" th:text="${rol.rol}"></option>
+												        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <!-- Form Group (Permisos)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="dropdownPermisos">Permisos</label>
+                                                        <select class="form-control selectpicker" id="dropdownPermisos" th:field="*{permisos}" multiple>
+												            <option value="" selected>--Permisos--</option>
+												            <option th:each="permiso : ${permisosList}" th:value="${permiso.idPermisos}" th:text="${permiso.permiso}"></option>
+												        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Form Group (form submission)-->
+                                            <div class="form-group d-flex float-right">                 
+                                                <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <hr class="my-0" />
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="footer mt-auto footer-dark">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6 small">Copyright &copy; Your Website 2020</div>
+                            <div class="col-md-6 text-md-right small">
+                                <a href="#!">Privacy Policy</a>
+                                &middot;
+                                <a href="#!">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

@@ -9,17 +9,19 @@ import javax.persistence.Id;
 
 	
 @Entity(name = "Roles")
-	
 public class Roles {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id_Roles; 
+	public Long idRoles; 
 	
 	@Column(nullable = false)
 	private String rol;
 
-	//Constructor
+	//Constructores
+	public Roles() {
+		//Constructor vacio
+	}
 	
 	public Roles(String rol) {
 		this.rol = rol;
@@ -28,12 +30,12 @@ public class Roles {
 
 	//Getters and Setters
 
-	public long getId_Roles() {
-		return id_Roles;
+	public long getidRoles() {
+		return idRoles;
 	}
 
-	public void setId_Roles(long id_Roles) {
-		this.id_Roles = id_Roles;
+	public void setidRoles(Long idRoles) {
+		this.idRoles = idRoles;
 	}
 
 	public String getRol() {
