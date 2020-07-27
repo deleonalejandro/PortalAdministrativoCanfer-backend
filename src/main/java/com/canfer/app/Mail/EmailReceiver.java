@@ -1,32 +1,17 @@
 package com.canfer.app.Mail;
-
-
 import java.util.Properties;
- 
 import javax.mail.Address;
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
-
-
-	import java.io.File;
-	import java.io.IOException;
-	import java.util.Properties;
-	 
-	import javax.mail.Address;
-	import javax.mail.Folder;
-	import javax.mail.Message;
-	import javax.mail.MessagingException;
-	import javax.mail.Multipart;
-	import javax.mail.NoSuchProviderException;
-	import javax.mail.Part;
-	import javax.mail.Session;
-	import javax.mail.Store;
-	import javax.mail.internet.MimeBodyPart;
+import java.io.File;
+import java.io.IOException;
+import javax.mail.Multipart;
+import javax.mail.Part;
+import javax.mail.internet.MimeBodyPart;
 	 
 
 public class EmailReceiver {
@@ -38,22 +23,24 @@ public class EmailReceiver {
 	    }
 
 	    public void downloadEmailAttachments(String host, String userName, String password) {
-	        Properties properties = new Properties();
+	       
+	    	Properties properties = new Properties();
 	 
 	        // server setting
-	        properties.put("mail.pop3s.host", host);
-	        properties.put("mail.pop3s.port", "465");
-	        properties.put("mail.pop3s.starttls.enable", "true");
-	        properties.put("mail.pop3s.ssl.enable", "false");
-
+	        properties.put("mail.imap.host", host);
+	        properties.put("mail.imap.auth", "true");
+	        properties.put("mail.imap.socketFactory.port", "993");
+	        properties.put("mail.imap.socketFactory.class",
+	                "javax.net.ssl.SSLSocketFactory");
+	        properties.put("mail.imap.ssl.enable", "true");
 	        
 	        Session session = Session.getInstance(properties);
 	 
 	        try {
 	            // connects to the message store
-	            Store store = session.getStore("pop3s");
+	            Store store = session.getStore("imap");
 	            store.connect(userName, password);
-	 
+
 	            // opens the inbox folder
 	            Folder folderInbox = store.getFolder("INBOX");
 	            folderInbox.open(Folder.READ_ONLY);
@@ -115,7 +102,7 @@ public class EmailReceiver {
 	            folderInbox.close(false);
 	            store.close();
 	        } catch (NoSuchProviderException ex) {
-	            System.out.println("No provider for pop3.");
+	            System.out.println("No provider for imap.");
 	            ex.printStackTrace();
 	        } catch (MessagingException ex) {
 	            System.out.println("Could not connect to the message store");
@@ -126,10 +113,10 @@ public class EmailReceiver {
 	    }
 	 
 
-	    public static void main(String[] args) {
-	        String host = "pop3.live.com";
-	        String userName = "yas.ale@hotmail.com";
-	        String password = "@Miriamteamo4";
+	    public static void MailFunc(String[] args) {
+	        String host = "imap.emailsrvr.com";
+	        String userName = "fep@canfer.com.mx";
+	        String password = "6GEVseeQ";
 	 
 	        String saveDirectory = "/home/yasminfemerling/Desktop/Mails";
 	 
