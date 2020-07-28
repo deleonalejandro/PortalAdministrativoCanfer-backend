@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 public class getInvoice {
 
-	@GetMapping(value="/invoice")
+	@GetMapping(value="/contaduria-nacional")
     public String invoice(){
-        return "invoice";
+        return "contaduria-nacional";
     }
 	
 }
