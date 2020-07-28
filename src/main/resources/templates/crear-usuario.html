@@ -37,7 +37,7 @@
                                                     <!-- Form Group (first name)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="nombre">Nombre</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" id="nombre" th:field="*{nombre}" name="nombre" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
+                                                        <input class="form-control form-control-solid py-4" type="text" id="FirstName" th:field="*{nombre}" name="FirstName" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -81,7 +81,7 @@
                                                         <label class="text-gray-600 small" for="dropdownRoles">Roles</label>
                                                         <select class="form-control selectpicker" id="dropdownRoles" th:field="*{rol}">
                                                         	<option value="" selected>--Roles--</option>
-                                                        	<option th:each="rol : ${rolesList}" th:value="${rol.idRoles}" th:text="${rol.rol}"></option>
+                                                        	<option th:each="roles : ${rolesList}" th:value="${roles.rol}" th:text="${roles.rol}"></option>
 												        </select>
                                                     </div>
                                                 </div>

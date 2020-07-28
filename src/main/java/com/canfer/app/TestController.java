@@ -34,10 +34,15 @@ public class TestController {
 		municipioRepository.save(municipio);
 		
 		//
-		
-		
-
 		return "index";
 	}
+	
+	@GetMapping(value = "/facturas")
+	public String facturas() {
+		//
+		return "facturas";
+	}
+	
+	
 
 }

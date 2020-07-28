@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+
 @Entity(name = "Usuario")
 public class Usuario {
 	
@@ -121,8 +122,7 @@ public class Usuario {
 
 	public List<Permisos> getPermisos() {
 		if (this.permisos.isEmpty()) {
-			return new ArrayList<>();
-			
+			return new ArrayList<>();	
 		}
 		return permisos;
 	}
@@ -131,6 +131,16 @@ public class Usuario {
 		this.permisos = permisos;
 	}
 	
+	public String getPermisosToString() {
+		if (this.permisos.isEmpty()) {
+			return "Ningun permiso";
+		}
+		StringBuilder bld = new StringBuilder();
+		for (int i = 0; i < this.permisos.size(); i++) {
+			bld.append(this.permisos.get(i).getPermiso() + ", ");
+		}
+		return bld.toString();
+	} 
 	
 	
 }

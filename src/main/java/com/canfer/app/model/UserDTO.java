@@ -1,6 +1,6 @@
 package com.canfer.app.model;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class UserDTO {
@@ -11,8 +11,8 @@ public class UserDTO {
 	private String apellido;
 	private String correo;
 	private Boolean activo;
-	private Roles rol;
-	private List <Permisos> permisos = new ArrayList<>();
+	private String rol;
+	private List <Long> permisos;
 	
 	//We make a default constructor
 	public UserDTO() {
@@ -67,19 +67,19 @@ public class UserDTO {
 		this.activo = activo;
 	}
 
-	public Roles getRol() {
+	public String getRol() {
 		return rol;
 	}
 
-	public void setRol(Roles rol) {
+	public void setRol(String rol) {
 		this.rol = rol;
 	}
 
-	public List<Permisos> getPermisos() {
+	public List<Long> getPermisos() {
 		return permisos;
 	}
 
-	public void setPermisos(List<Permisos> permisos) {
+	public void setPermisos(List<Long> permisos) {
 		this.permisos = permisos;
 	}
 }

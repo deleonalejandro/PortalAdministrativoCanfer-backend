@@ -3,7 +3,10 @@ package com.canfer.app;
 
 
 
-import javax.persistence.EntityManager;
+
+
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.canfer.app.model.Permisos;
 import com.canfer.app.model.Roles;
 import com.canfer.app.model.UserDTO;
 import com.canfer.app.model.Usuario;
@@ -19,7 +23,6 @@ import com.canfer.app.repository.PermisosRepository;
 import com.canfer.app.repository.RolesRepository;
 import com.canfer.app.repository.UsuarioRepository;
 
-import net.bytebuddy.asm.Advice.Return;
 
 @Controller
 public class UserController {
@@ -40,22 +43,25 @@ public class UserController {
 	public String userForm(Model model)  {
         model.addAttribute("user", new UserDTO());
         model.addAttribute("rolesList", rolesRepository.findAll());
-        model.addAttribute("permisosList",permisosRepository.findAll());
+        model.addAttribute("permisosList", permisosRepository.findAll());
         return "crear-usuario";
     }
 	
 	@PostMapping(value = "/addUser")
 	public String addUser(@ModelAttribute("user") UserDTO user) {
 		//We use a Data Transfer Object to pass the information between the user input and the database
-		System.out.println("Este es el usuario " + user.getUsername());
-		System.out.println(user.getRol().getRol());
-		System.out.println(user.getPermisos().get(0).getPermiso());
-		
 		//We create a user object from the Entity class Usuario.java
 		Usuario usuario = new Usuario(user.getUsername(), user.getPassword(), user.getNombre(), user.getApellido(), user.getCorreo());
-		usuario.setRol(user.getRol());
-		//We map the data
-		userRepository.flush();
+		
+		//The role is find by name
+		Roles rol =  rolesRepository.findByRol(user.getRol());
+		usuario.setRol(rol);
+		
+		//The permissions are created on a list
+		List <Permisos> permisos;
+		permisos = permisosRepository.findAllById(user.getPermisos());
+		usuario.setPermisos(permisos);
+
 		//We save the new user in the database
 		userRepository.save(usuario);
 		
