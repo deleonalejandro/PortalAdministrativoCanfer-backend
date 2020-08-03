@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 
 	
 @Entity(name = "Municipio")
-	
 public class Municipio {
 
 	@Id
@@ -32,10 +31,15 @@ public class Municipio {
 
 	//Constructor
 	
+	
 	public Municipio(String nombre) {
 		this.nombre = nombre;
 	}
 	
+	public Municipio() {
+		super();
+	}
+
 	//Getters and Setters
 
 	public long getidMunicipio() {

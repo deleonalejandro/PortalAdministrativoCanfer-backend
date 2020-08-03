@@ -17,7 +17,7 @@ public class Empresa {
 	private long idEmpresa;
 	
 	@JoinColumn(name = "idMunicipio")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Municipio.class, fetch = FetchType.LAZY)
     private Municipio municipio;
 	
 	@Column(nullable = false)
@@ -26,25 +26,25 @@ public class Empresa {
 	@Column(nullable = false)
 	private String nombre;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String calle;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String numExt;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String numInt;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String colonia;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String localidad;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String referencia;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String cp;
 	
 	@Column(nullable = false)
@@ -56,21 +56,28 @@ public class Empresa {
 	@Column(nullable = false)
 	private String correo;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String telefono;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String paginaWeb;
 	
 	@Column(nullable = false)
 	private Long idUsuarioCreador;
 
 	//Constructor
+	
+
 	public Empresa(Long idUsuarioCreador) {
 		this.idUsuarioCreador = idUsuarioCreador;
 		this.bitActivo = true;
 	}
 	
+
+	public Empresa() {
+		super();
+	}
+
 
 	//Getters and Setters
 	
