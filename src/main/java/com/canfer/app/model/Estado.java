@@ -25,6 +25,10 @@ public class Estado {
 		this.nombre = nombre;
 	}
 
+	public Estado() {
+		super();
+	}
+
 	//Getters and Setters
 	
 	public long getidEstado() {
