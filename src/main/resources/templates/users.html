@@ -16,11 +16,11 @@
 	
 	<body>
 		<div class="container mt-3">
-			<br>
-			<div th:switch="${list}">
-				<div th:case=*>
-					<h2 class="h2">Usuarios</h2>
-					<table class="table">
+			<div class="card mb-4">
+			<div class="card-body">
+				<h2 class="h2">Usuarios</h2>
+				<div class="datatable">
+					<table id="userTable" class="table table-bordered table-hover" style="width:100%">
 						<thead>
 							<tr>
 								<th>Usuario</th>
@@ -30,29 +30,31 @@
 								<th>Correo</th>
 								<th>Activo</th>
 								<th>Rol</th>
-								<th>Permiso</th>
+								<th>Permisos</th>
 							</tr>						
 						</thead>
-						<tbody>
-							<tr th:each="user : ${list}">
-								<td th:text="${user.username}">
-								<td th:text="${user.password}">
-								<td th:text="${user.nombre}">
-								<td th:text="${user.apellido}">
-								<td th:text="${user.correo}">
-								<td th:text="${user.activo}">
-								<td th:text="${user.rol.getRol()}">
-								<td th:text="${user.getPermisosToString()}">
-							</tr>
-						</tbody>
+						<tfoot>
+							<tr>
+								<th>Usuario</th>
+								<th>Contraseña</th>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Correo</th>
+								<th>Activo</th>
+								<th>Rol</th>
+								<th>Permiso</th>
+							</tr>	
 					</table>
 				</div>
+			</div>	
 			</div>
-		</div>
-		
+		</div>	
+
+
+	<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <script src="assets/demo/datatables-demo.js"></script>
+    <script src="js/usertable.js"></script>
 	
 	</body>
 </html>

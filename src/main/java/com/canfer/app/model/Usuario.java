@@ -2,28 +2,25 @@ package com.canfer.app.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 
 @Entity(name = "Usuario")
 public class Usuario {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUsuario;
 	
-	@Column(nullable = false)
+	
+	@Column(unique = true, nullable = false)
 	private String username;
 
 	@Column(nullable = false)
@@ -38,23 +35,23 @@ public class Usuario {
 	@Column(nullable = false)
 	private String correo;
 	
+	@Column(nullable = false)
+	private String rol;
+	
+	@Column(nullable = false)
+	private String permisos = "";
+	
 	private Boolean activo;
 	
-	@JoinColumn(name = "idRoles")
-	@ManyToOne(targetEntity = Roles.class, fetch = FetchType.LAZY)
-	private Roles rol;
-	
-	//Relacion con permisos
-	@OneToMany(targetEntity = Permisos.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List <Permisos> permisos = new ArrayList<>();
-	
-	//We create the constructor
-	public Usuario(String username, String password, String nombre, String apellido, String correo) {
+	//Main constructor from the class Usuario.
+	public Usuario(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
 		this.username = username;
 		this.password = password;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.correo = correo;
+		this.rol = rol;
+		this.permisos = permisos;
 		this.activo = true;
 	}
 	
@@ -112,35 +109,29 @@ public class Usuario {
 		this.activo = activo;
 	}
 
-	public Roles getRol() {
+	public String getRol() {
 		return rol;
 	}
 
-	public void setRol(Roles rol) {
+	public void setRol(String rol) {
 		this.rol = rol;
 	}
 
-	public List<Permisos> getPermisos() {
-		if (this.permisos.isEmpty()) {
-			return new ArrayList<>();	
-		}
+	public String getPermisos() {
 		return permisos;
 	}
 
-	public void setPermisos(List<Permisos> permisos) {
+	public void setPermisos(String permisos) {
 		this.permisos = permisos;
 	}
 	
-	public String getPermisosToString() {
+	public List<String> getPermisosList(){
 		if (this.permisos.isEmpty()) {
-			return "Ningun permiso";
+			return new ArrayList<>();
 		}
-		StringBuilder bld = new StringBuilder();
-		for (int i = 0; i < this.permisos.size(); i++) {
-			bld.append(this.permisos.get(i).getPermiso() + ", ");
-		}
-		return bld.toString();
-	} 
-	
-	
+		
+		return Arrays.asList(this.permisos.split(",")); 
+	}
+
+
 }

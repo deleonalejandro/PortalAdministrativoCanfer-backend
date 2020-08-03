@@ -1,4 +1,4 @@
-package com.canfer.app;
+package com.canfer.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +42,7 @@ public class TestController {
 		//
 		return "facturas";
 	}
+	
 	
 	
 

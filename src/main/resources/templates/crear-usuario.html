@@ -37,16 +37,21 @@
                                                     <!-- Form Group (first name)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="nombre">Nombre</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" id="FirstName" th:field="*{nombre}" name="FirstName" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
+                                                        <input class="form-control form-control-solid py-4" required type="text" id="FirstName" th:field="*{nombre}" name="FirstName" placeholder="" aria-label="First Name" aria-describedby="firstNameExample" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <!-- Form Group (last name)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="apellido">Apellido</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" id="apellido" th:field="*{apellido}" name="apellido" placeholder="" aria-label="Last Name" aria-describedby="lastNameExample" />
+                                                        <input class="form-control form-control-solid py-4" required type="text" id="apellido" th:field="*{apellido}" name="apellido" placeholder="" aria-label="Last Name" aria-describedby="lastNameExample" />
                                                     </div>
                                                 </div>
+                                            </div>                         
+                                            <!-- Form Group (email address)-->
+                                            <div class="form-group">
+                                                <label class="text-gray-600 small" for="correo">Correo Electrónico</label>
+                                                <input class="form-control form-control-solid py-4" required type="text" id="correo" th:field="*{correo}" name="correo" placeholder="" aria-label="Correo Electronico" aria-describedby="correo" >
                                             </div>
                                              <!-- Form Row-->
                                             <div class="form-row">
@@ -54,14 +59,9 @@
                                                     <!-- Form Group (username)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="usuario">Usuario</label>
-                                                        <input class="form-control form-control-solid py-4" type="text" id="usuario" th:field="*{username}" name="username" placeholder="" aria-label="username" aria-describedby="usuario" />
+                                                        <input class="form-control form-control-solid py-4" required type="text" id="usuario" th:field="*{username}" name="username" placeholder="" aria-label="username" aria-describedby="usuario" />
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- Form Group (email address)-->
-                                            <div class="form-group">
-                                                <label class="text-gray-600 small" for="correo">Correo Electrónico</label>
-                                                <input class="form-control form-control-solid py-4" type="text" id="correo" th:field="*{correo}" name="correo" placeholder="" aria-label="Correo Electronico" aria-describedby="correo" >
                                             </div>
                                             <!-- Form Row-->
                                             <div class="form-row">
@@ -69,7 +69,14 @@
                                                     <!-- Form Group (choose password)-->
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="contrasena">Contraseña</label>
-                                                        <input class="form-control form-control-solid py-4" type="password" id="contrasena" th:field="*{password}" name="password" placeholder="" aria-label="Constraseña" aria-describedby="contrasena" />
+                                                        <input class="form-control form-control-solid py-4" required type="password" id="contrasena" th:field="*{password}" name="password" placeholder="" aria-label="Constraseña" aria-describedby="contrasena" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (choose password)-->
+                                                    <div class="form-group">
+                                                        <label class="text-gray-600 small" for="confirmar-contrasena">Confirmar Contraseña</label>
+                                                        <input class="form-control form-control-solid py-4" required type="password" id="confirmar-contrasena" th:field="*{confirmPassword}" name="confirm-password" placeholder="" aria-label="Confirmar Constraseña" aria-describedby="contrasena" />
                                                     </div>
                                                 </div>
                                                 
@@ -81,7 +88,12 @@
                                                         <label class="text-gray-600 small" for="dropdownRoles">Roles</label>
                                                         <select class="form-control selectpicker" id="dropdownRoles" th:field="*{rol}">
                                                         	<option value="" selected>--Roles--</option>
-                                                        	<option th:each="roles : ${rolesList}" th:value="${roles.rol}" th:text="${roles.rol}"></option>
+                                                        	<option value="ADMIN">Administrador</option>
+                                                        	<option value="USER_CONTADOR">Contador</option>
+                                                        	<option value="USER_CAJA">Caja Chica</option>
+                                                        	<option value="USER_EMPLEADO">Agente</option>
+                                                        	<option value="USER_COMEX">Comercio Exterior</option>
+                                         
 												        </select>
                                                     </div>
                                                 </div>
@@ -90,8 +102,12 @@
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="dropdownPermisos">Permisos</label>
                                                         <select class="form-control selectpicker" id="dropdownPermisos" th:field="*{permisos}" multiple>
-												            <option value="" selected>--Permisos--</option>
-												            <option th:each="permiso : ${permisosList}" th:value="${permiso.idPermisos}" th:text="${permiso.permiso}"></option>
+												            <option value="" selected>--Accesos--</option>
+												            <option value="ACCESO_CAJACHICA">Caja Chica</option>
+                                                        	<option value="ACCESO_CONTADURIA">Contaduría Nacional</option>
+                                                        	<option value="ACCESO_EXTRANJEROS">Documentos Extranjeros</option>
+                                                        	<option value="ACCESO_REPGASTOS">R. Gastos de Terceros</option>
+                                                        	<option value="ACCESO_ADMIN">Administrador</option>
 												        </select>
                                                     </div>
                                                 </div>

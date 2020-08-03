@@ -7,12 +7,13 @@ public class UserDTO {
 	
 	private String username;
 	private String password;
+	private String confirmPassword;
 	private String nombre;
 	private String apellido;
 	private String correo;
 	private Boolean activo;
 	private String rol;
-	private List <Long> permisos;
+	private List <String> permisos;
 	
 	//We make a default constructor
 	public UserDTO() {
@@ -33,6 +34,14 @@ public class UserDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 	public String getNombre() {
@@ -75,11 +84,11 @@ public class UserDTO {
 		this.rol = rol;
 	}
 
-	public List<Long> getPermisos() {
+	public List<String> getPermisos() {
 		return permisos;
 	}
 
-	public void setPermisos(List<Long> permisos) {
+	public void setPermisos(List<String> permisos) {
 		this.permisos = permisos;
 	}
 }
