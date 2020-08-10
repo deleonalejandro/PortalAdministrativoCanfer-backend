@@ -5,6 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.canfer.app.model.FacturaNotaComplemento;
 
 public interface FacturaNotaComplementoRepository extends JpaRepository<FacturaNotaComplemento, Long>{
+	
+	//Get by uuid
+	
+	FacturaNotaComplemento findByUuid(String uuid); 
 
 }
 

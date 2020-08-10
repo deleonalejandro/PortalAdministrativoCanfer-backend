@@ -28,11 +28,11 @@ public class FacturaNotaComplemento {
 	private Integer idNumSap;
 	
 	@JoinColumn(name = "idEmpresa")
-    @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.EAGER)
     private Empresa empresa;
 	
 	@JoinColumn(name = "idProveedor")
-    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.EAGER)
     private Proveedor proveedor;
 	 
 	@Column(nullable = false)
