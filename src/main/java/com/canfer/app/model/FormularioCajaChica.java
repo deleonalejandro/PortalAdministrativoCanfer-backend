@@ -23,7 +23,7 @@ public class FormularioCajaChica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idFormularioCajaChica; 
 	
-    @JoinColumn(name = "socioNegocio", referencedColumnName= "claveProv")
+    @JoinColumn(name = "SocioNegocio", referencedColumnName= "claveProv")
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor proveedor;
 	

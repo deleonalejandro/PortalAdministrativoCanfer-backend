@@ -27,13 +27,13 @@ public class DetFormularioComex {
 	@ManyToOne(targetEntity = ClasificacionComex.class, fetch = FetchType.LAZY)
 	private ClasificacionComex clasificacion;
 	
-	 @JoinColumn(name = "Proveedor", referencedColumnName= "claveProv")
-	    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
-	    private Proveedor proveedor;
+	@JoinColumn(name = "Proveedor", referencedColumnName= "claveProv")
+	@ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
+	private Proveedor proveedor;
 	 
 	 //Constructor
 	 
-	 public DetFormularioComex() {
+	public DetFormularioComex() {
 			super();
 	 }
 

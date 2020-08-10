@@ -25,7 +25,7 @@ public class FacturaNotaComplemento {
 	private String idDocumento;
 	
 	@Column(nullable = false)
-	private Integer idNumSap;
+	private Long idNumSap;
 	
 	@JoinColumn(name = "idEmpresa")
     @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.LAZY)
@@ -145,11 +145,11 @@ public class FacturaNotaComplemento {
 		this.idDocumento = idDocumento;
 	}
 
-	public Integer getIdNumSap() {
+	public Long getIdNumSap() {
 		return idNumSap;
 	}
 
-	public void setIdNumSap(Integer idNumSap) {
+	public void setIdNumSap(Long idNumSap) {
 		this.idNumSap = idNumSap;
 	}
 

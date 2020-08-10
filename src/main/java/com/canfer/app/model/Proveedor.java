@@ -61,7 +61,7 @@ public class Proveedor {
 	@Column(nullable = true)
 	private String contacto; 
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String correo; 
 	
 	@Column(nullable = true)

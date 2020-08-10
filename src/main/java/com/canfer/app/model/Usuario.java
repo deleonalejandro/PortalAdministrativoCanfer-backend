@@ -60,6 +60,13 @@ public class Usuario {
 	}
 
 	//We create the getters and setters from the class
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
 
 	public String getUsername() {
 		return username;

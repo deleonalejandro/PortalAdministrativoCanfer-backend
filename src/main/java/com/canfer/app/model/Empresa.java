@@ -46,14 +46,11 @@ public class Empresa {
 	
 	@Column(nullable = true)
 	private String cp;
-	
-	@Column(nullable = false)
-	private Boolean bitActivo;	
-	
-	@Column(nullable = false)
+		
+	@Column(nullable = true)
 	private String contacto;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String correo;
 	
 	@Column(nullable = true)
@@ -70,7 +67,6 @@ public class Empresa {
 
 	public Empresa(Long idUsuarioCreador) {
 		this.idUsuarioCreador = idUsuarioCreador;
-		this.bitActivo = true;
 	}
 	
 
@@ -167,14 +163,6 @@ public class Empresa {
 
 	public void setCp(String cp) {
 		this.cp = cp;
-	}
-
-	public Boolean getbitActivo() {
-		return bitActivo;
-	}
-
-	public void setbitActivo(Boolean bitActivo) {
-		this.bitActivo = bitActivo;
 	}
 
 	public String getContacto() {

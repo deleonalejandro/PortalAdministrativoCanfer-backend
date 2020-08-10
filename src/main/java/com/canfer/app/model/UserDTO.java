@@ -5,6 +5,7 @@ import java.util.List;
 
 public class UserDTO {
 	
+	private Long userId;
 	private String username;
 	private String password;
 	private String confirmPassword;
@@ -18,6 +19,14 @@ public class UserDTO {
 	//We make a default constructor
 	public UserDTO() {
 		// Constructor solo
+	}
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getUsername() {
@@ -90,6 +99,13 @@ public class UserDTO {
 
 	public void setPermisos(List<String> permisos) {
 		this.permisos = permisos;
+	}
+	
+	public String getPermisosToString() {
+		if (this.permisos.isEmpty()) {
+			return "Ningun permiso";
+		}
+		return String.join(",", this.permisos);
 	}
 }
 	
