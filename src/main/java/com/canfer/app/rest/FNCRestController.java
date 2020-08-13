@@ -1,4 +1,4 @@
-package com.canfer.app;
+package com.canfer.app.rest;
 
 import java.util.List;
 
