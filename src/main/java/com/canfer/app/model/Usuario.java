@@ -5,11 +5,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 
 @Entity(name = "Usuario")
@@ -19,6 +25,17 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUsuario;
 	
+	@JoinTable(
+			name = "usuario_empresa",
+			joinColumns = @JoinColumn(name="idUsuario", nullable = false),
+			inverseJoinColumns = @JoinColumn(name="idEmpresa", nullable = false)
+			)
+	@ManyToMany
+	private List<Empresa> empresas;
+	
+	@JoinColumn(name = "idProveedor")
+	@ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Proveedor proveedor;
 	
 	@Column(unique = true, nullable = false)
 	private String username;
@@ -140,5 +157,29 @@ public class Usuario {
 		return Arrays.asList(this.permisos.split(",")); 
 	}
 
+	public List<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+	
+	public void addEmpresa(Empresa empresa) {
+		//If the list is null, we create a new list.
+		if (this.empresas.isEmpty()) {
+			this.empresas = new ArrayList<>();
+		}
+		this.empresas.add(empresa);
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+	
 
 }

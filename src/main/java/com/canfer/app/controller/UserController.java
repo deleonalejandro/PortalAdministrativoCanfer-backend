@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.canfer.app.model.UserDTO;
@@ -15,18 +17,17 @@ import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.UsuarioRepository;
 import com.canfer.app.service.UsuarioService;
 
-import javassist.expr.NewArray;
 
 
 
 @Controller
+//@RequestMapping(value = "/administration/users")
 public class UserController {
 	
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
 	private UsuarioRepository userRepository;
-	
 	private static final String USER_SIGNUP = "crear-usuario" ;
 
 	
@@ -35,7 +36,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/addUser")
-	public String userForm(Model model)  {
+	public String getUserForm(Model model)  {
         model.addAttribute("user", new UserDTO());
         return USER_SIGNUP;
     }

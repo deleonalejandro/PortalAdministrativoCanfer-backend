@@ -1,102 +1,41 @@
 package com.canfer.app.model;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
-@Entity(name = "Empresa")
-public class Empresa {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmpresaDTO {
 	private Long idEmpresa;
-	
-	@JoinColumn(name = "idMunicipio")
-    @ManyToOne(targetEntity = Municipio.class, fetch = FetchType.LAZY)
-    private Municipio municipio;
-	
-	@ManyToMany(mappedBy = "empresas")
-	private List<Usuario> usuarios;
-	
-	@Column(nullable = false)
+	private Long idMunicipio;
 	private String rfc;
-	
-	@Column(nullable = false)
 	private String nombre;
-	
-	@Column(nullable = true)
 	private String calle;
-	
-	@Column(nullable = true)
 	private String numExt;
-	
-	@Column(nullable = true)
 	private String numInt;
-	
-	@Column(nullable = true)
 	private String colonia;
-	
-	@Column(nullable = true)
 	private String localidad;
-	
-	@Column(nullable = true)
 	private String referencia;
-	
-	@Column(nullable = true)
 	private String cp;
-		
-	@Column(nullable = true)
 	private String contacto;
-	
-	@Column(nullable = true)
 	private String correo;
-	
-	@Column(nullable = true)
 	private String telefono;
-	
-	@Column(nullable = true)
 	private String paginaWeb;
-	
-	@Column(nullable = false)
 	private Long idUsuarioCreador;
-
-	//Constructor
 	
-
-	public Empresa(Long idUsuarioCreador) {
-		this.idUsuarioCreador = idUsuarioCreador;
-	}
-	
-
-	public Empresa() {
-		super();
+	public EmpresaDTO() {
+		// General constructor, no parameters.
 	}
 
-
-	//Getters and Setters
-	
-	public long getidEmpresa() {
+	public Long getIdEmpresa() {
 		return idEmpresa;
 	}
 
-	public void setidEmpresa(long idEmpresa) {
+	public void setIdEmpresa(Long idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
-
-	public Municipio getMunicipio() {
-		return municipio;
+	
+	public Long getIdMunicipio() {
+		return idMunicipio;
 	}
 
-	public void setMunicipio(Municipio municipio) {
-		this.municipio = municipio;
+	public void setIdMunicipio(Long idMunicipio) {
+		this.idMunicipio = idMunicipio;
 	}
 
 	public String getRfc() {
@@ -203,14 +142,16 @@ public class Empresa {
 		this.paginaWeb = paginaWeb;
 	}
 
-	public long getidUsuarioCreador() {
+	public Long getIdUsuarioCreador() {
 		return idUsuarioCreador;
 	}
 
-	public void setidUsuarioCreador(long idUsuarioCreador) {
+	public void setIdUsuarioCreador(Long idUsuarioCreador) {
 		this.idUsuarioCreador = idUsuarioCreador;
 	}
-
+	
+	
 	
 	
 }
+

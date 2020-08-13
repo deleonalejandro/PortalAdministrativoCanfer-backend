@@ -1,6 +1,7 @@
 package com.canfer.app.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {
@@ -14,7 +15,10 @@ public class UserDTO {
 	private String correo;
 	private Boolean activo;
 	private String rol;
-	private List <String> permisos;
+	private List <String> permisos = new ArrayList<>();
+	private List<Long> empresaIdsList = new ArrayList<>();
+	//El usuario es un proveedor
+	private String rfc;
 	
 	//We make a default constructor
 	public UserDTO() {
@@ -107,6 +111,26 @@ public class UserDTO {
 		}
 		return String.join(",", this.permisos);
 	}
+
+	public List<Long> getEmpresaIdsList() {
+		return empresaIdsList;
+	}
+
+	public void setEmpresaIdsList(List<Long> empresaIdsList) {
+		this.empresaIdsList = empresaIdsList;
+	}
+
+	public String getRfc() {
+		return rfc;
+	}
+
+	public void setRfc(String rfc) {
+		this.rfc = rfc;
+	}
+	
+	
+	
+	
 }
 	
 
