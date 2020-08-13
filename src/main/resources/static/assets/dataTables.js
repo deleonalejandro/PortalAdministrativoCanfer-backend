@@ -4,16 +4,9 @@
 	         // `d` is the original data object for the row
 	         return '<table class="" style="text-align: left">' +
 	             '<tr>' +
-	                 '<td>UUID:</td>' +
-	                 '<td>' + d.uuid + '</td>' +
-	             '</tr>' +
-				'<tr>' +
-	                 '<td>Documentos Relacionados:</td>' +
-	                 '<td>' + d.facturaNotaComplemento + '</td>' +
-	             '</tr>' +
-	             '<tr>' +
-	                 '<td>Complemento de Pago:</td>' +
-	                 '<td>Complemento.xml</td>' +
+						'<i class="far fa-file-pdf float-left ml-3 fa-2x" style="color:red"></i>'+
+						'<i class="far fa-file-code float-left ml-3 fa-2x" style="color:green"></i>'+
+						'<i class="fas fa-file-invoice-dollar float-left ml-3 fa-2x" style="color:orange"></i>'+
 	             '</tr>' +
 	         '</table>';  
 	    };
@@ -26,10 +19,23 @@
 		         var table = $('#facturas').DataTable({
 					ajax: {
 		            url: "/contaduria-nacional/facturas",
-					scrollX:true, 	
 					dataSrc:""
 		        	},
-		             "columns": [
+					scrollX:true,
+					"language": {
+			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			        },
+			             "columns": [
+			 		{
+		                     "className": 'select-control',
+		                     "orderable": false,
+							"bSortable": false,
+		                     "data": null,
+		                     "defaultContent": '',
+		                     "render": function () {
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="far fa-circle fa-sm"></i></a>'
+							 },
+		                 },
 					        {
 			                "className":      'details-control', 
 			                "orderable":      false,
@@ -47,7 +53,7 @@
 		                     "data": null,
 		                     "defaultContent": '',
 		                     "render": function () {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="fa fa-ellipsis-h fa-sm" style="color:#f2ae61"></i></a>'
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="fa fa-ellipsis-h fa-sm" style="color:#0A61F2"></i></a>'
 							 },
 		                 },
 						{
@@ -99,8 +105,7 @@
 		             "order": [[4, 'asc']],
 					
 		 });
-
-		         // Funcion para monitorear si esta cerrado o abierto
+ // Funcion para monitorear si esta cerrado o abierto
 					
 		         $('#facturas tbody').on('click', 'td.details-control', function () {
 		             var tr = $(this).closest('tr');
@@ -179,6 +184,21 @@
 					$('#deleteModal').modal('show');
 				});
 				
+				//Funcion para seleccionar
+				
+				$('#facturas tbody').on('click', 'td.select-control', function () {
+		             var tr = $(this).closest('tr');
+		             if ($(tr).hasClass('selected')) {
+		                 tr.removeClass('selected')
+		             }
+		             else {
+		                 tr.addClass('selected')
+						
+		             }	
+		
+				});
+			 
+			   
 					
 				    // Handle click on "Expand All" button
 				    $('#btn-show-all-children').on('click', function(){
@@ -204,8 +224,83 @@
 				        });
 				    });
 
+					// Boton de borrar varios
+				    $('#btn-del-mul').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var uuids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).uuid;
+									uuids.push(jsonData);
+				 		  }
+				       });
+					$('.deleteForm .delBtn').attr("href","/contaduria-nacional/delete/"+uuids)
+					$('#deleteModal').modal('show');
+					}
 				});
 				
+				$("#selectAll").on( "click", function(e) {
+				
+			    if ($(this).is( ":checked" )) {
+			        table.rows( { search: 'applied' } ).select();        
+			    } else {
+			        table.rows(  ).deselect(); 
+			    }
+				});
+				
+				
+				//PASTEÑAS DEL SIDE NAV BAR
+				
+				$("#pestañaFacturas").on( "click", function() {
+				table.rows().every(function(){($(this.node()).removeClass('selected'))});
+				$("#pestañaFacturas").addClass("active")
+				$("#pestañaInicio, #pestañaAvisos, #pestañaNotas, #pestañaCompl").removeClass("active") 
+				table
+					table
+					    .columns( 10 )
+					    .search( 'I' )
+					    .draw();
+				
+			});
+			
+			$("#pestañaInicio").on( "click", function() {
+				table.rows().every(function(){($(this.node()).removeClass('selected'))});
+				$("#pestañaInicio").addClass("active")
+				$("#pestañaFacturas, #pestañaAvisos, #pestañaNotas, #pestañaCompl").removeClass("active") 
+				table
+					table
+					    .columns( 10 )
+					    .search( '' )
+					    .draw();
+			});
+			
+			$("#pestañaCompl").on( "click", function() {
+				table.rows().every(function(){($(this.node()).removeClass('selected'))});
+				$("#pestañaCompl").addClass("active")
+				$("#pestañaInicio, #pestañaAvisos, #pestañaNotas, #pestañaFacturas").removeClass("active") 
+				table
+					table
+					    .columns( 10 )
+					    .search( 'P' )
+					    .draw();
+			});
+			
+			$("#pestañaNotas").on( "click", function() {
+				table.rows().every(function(){($(this.node()).removeClass('selected'))});
+				$("#pestañaNotas").addClass("active")
+				$("#pestañaFacturas, #pestañaAvisos, #pestañaInicio, #pestañaCompl").removeClass("active") 
+				table
+					table
+					    .columns( 10 )
+					    .search( 'E' )
+					    .draw();
+			});
+			
+			
+				
+		});
 				
 			
  
