@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.canfer.app.model.UserDTO;
+import com.canfer.app.dto.UserDTO;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.UsuarioRepository;
 import com.canfer.app.service.UsuarioService;

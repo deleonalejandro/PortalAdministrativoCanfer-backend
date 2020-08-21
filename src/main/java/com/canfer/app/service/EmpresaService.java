@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Empresa;
-import com.canfer.app.model.EmpresaDTO;
+import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.MunicipioRepository;

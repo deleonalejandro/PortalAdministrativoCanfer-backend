@@ -1,4 +1,10 @@
-package com.canfer.app.model;
+package com.canfer.app.dto;
+
+
+
+
+import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Proveedor;
 
 public class FacturaNotaComplementoDTO {
 	//Transfer fields declaration.
@@ -74,6 +80,7 @@ public class FacturaNotaComplementoDTO {
 		this.proveedor = proveedor;
 	}
 
+
 	public String getSerie() {
 		return serie;
 	}
@@ -82,9 +89,11 @@ public class FacturaNotaComplementoDTO {
 		this.serie = serie;
 	}
 
+	
 	public String getFolio() {
 		return folio;
 	}
+
 
 	public void setFolio(String folio) {
 		this.folio = folio;
@@ -241,6 +250,5 @@ public class FacturaNotaComplementoDTO {
 	public void setBitRSusuario(Boolean bitRSusuario) {
 		this.bitRSusuario = bitRSusuario;
 	}
-	
 	
 }

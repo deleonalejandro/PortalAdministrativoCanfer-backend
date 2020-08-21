@@ -1,6 +1,7 @@
-package com.canfer.app;
+package com.canfer.app.webService;
 
 
+import org.springframework.stereotype.Service;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
@@ -9,6 +10,7 @@ import org.springframework.ws.soap.client.core.SoapActionCallback;
 import com.canfer.app.wsdl.ValidayVerificaXMLResponse;
 import com.canfer.app.wsdl.ValidayVerificaXML;
 
+@Service
 public class Client extends WebServiceGatewaySupport {
 
 		
@@ -22,8 +24,8 @@ public class Client extends WebServiceGatewaySupport {
 
 
 	    ValidayVerificaXMLResponse response = (ValidayVerificaXMLResponse) getWebServiceTemplate()
-	        .marshalSendAndReceive("https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc", request, new SoapActionCallback(
-	                "http://tempuri.org/IConsultaCFDIService/Consulta"));
+	        .marshalSendAndReceive("https://invoiceone.mx/ValidaFiscal/wsValidador.asmx", request, new SoapActionCallback(
+	        		"http://tempuri.org/ValidayVerificaXML"));
 
 	    return response;
 	  }

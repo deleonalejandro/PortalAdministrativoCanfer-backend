@@ -1,5 +1,6 @@
 package com.canfer.app.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -9,41 +10,34 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
-public class FileSystemStorageService implements StorageService {
+public class FacturaStorageService implements StorageService {
 
-	private final Path rootLocation;
-
-	@Autowired
-	public FileSystemStorageService(StorageProperties properties) {
-		this.rootLocation = Paths.get(properties.getLocation());
-	}
+	private final Path rootLocation =  Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores");
 
 	@Override
-	public void store(MultipartFile file) {
-		String filename = StringUtils.cleanPath(file.getOriginalFilename());
+	public void store(InputStream file, Path filename) {
 		try {
-			if (file.isEmpty()) {
-				throw new StorageException("Failed to store empty file " + filename);
-			}
-			if (filename.contains("..")) {
+			if (filename.toString().contains("..")) {
 				// This is a security check
 				throw new StorageException(
 						"Cannot store file with relative path outside current directory "
 								+ filename);
 			}
-			try (InputStream inputStream = file.getInputStream()) {
-				Files.copy(inputStream, this.rootLocation.resolve(filename),
-					StandardCopyOption.REPLACE_EXISTING);
+			
+			File folder = new File(this.rootLocation + File.separator + filename.getParent().toString());
+			if (!folder.exists()) {
+				folder.mkdirs();
+				System.out.println("Directorios creados satisfactoriamente");	
 			}
+			Files.copy(file, this.rootLocation.resolve(filename),
+					StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to store file " + filename, e);

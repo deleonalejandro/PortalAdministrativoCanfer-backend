@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Proveedor;
-import com.canfer.app.model.UserDTO;
+import com.canfer.app.dto.UserDTO;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.UsuarioRepository;

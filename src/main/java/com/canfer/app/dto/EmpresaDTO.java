@@ -1,4 +1,4 @@
-package com.canfer.app.model;
+package com.canfer.app.dto;
 
 public class EmpresaDTO {
 	private Long idEmpresa;

@@ -1,9 +1,8 @@
 package com.canfer.app.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,9 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne; 
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.CreationTimestamp; 
 
 	
 @Entity(name = "FacturaNotaComplemento")
@@ -23,20 +23,16 @@ public class FacturaNotaComplemento {
 	@Column(nullable = false)
 	private String uuid; 
 	
-	@JoinColumn(name = "XML")
+	@JoinColumn(name = "id_XML", nullable = false)
 	@OneToOne(targetEntity = Documento.class, fetch= FetchType.EAGER)
 	private Documento xmlDocumento;
 	
-	@JoinColumn(name = "PDF", nullable = true)
+	@JoinColumn(name = "id_PDF") 
 	@OneToOne(targetEntity = Documento.class, fetch= FetchType.EAGER)
 	private Documento pdfDocumento;
 	
-	@JoinColumn(name = "Documentos Relacionados")
-	@ManyToMany(targetEntity = FacturaNotaComplemento.class, fetch = FetchType.EAGER)
-	private List<FacturaNotaComplemento>  documentosRelacionados;
-	
 	@Column(nullable = false)
-	private Integer idNumSap;
+	private Long idNumSap;
 	
 	@JoinColumn(name = "idEmpresa")
     @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.EAGER)
@@ -46,7 +42,7 @@ public class FacturaNotaComplemento {
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.EAGER)
     private Proveedor proveedor;
 	 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String serie; 
 
 	@Column(nullable = false)
@@ -68,10 +64,10 @@ public class FacturaNotaComplemento {
 	private String noCertificadoEmpresa; 
 	
 	@Column(nullable = false)
-	private String noCertificadoSAT; 
+	private String noCertificadoSat; 
 	
 	@Column(nullable = false)
-	private String versionCFD; 
+	private String versionCfd; 
 	
 	@Column(nullable = false)
 	private String versionTimbre; 
@@ -80,13 +76,14 @@ public class FacturaNotaComplemento {
 	private String moneda; 
 	
 	@Column(nullable = false)
-	private Float total; 
+	private String total; 
 	
 	@Column(nullable = true)
-	private String pdfDate; 
+	private LocalDateTime pdfDate;
 	
+	@CreationTimestamp
 	@Column(nullable = false)
-	private String xmlDate; 
+	private LocalDateTime xmlDate; 
 
 	@Column(nullable = false)
 	private String tipoDocumento; 
@@ -95,13 +92,10 @@ public class FacturaNotaComplemento {
 	private Boolean bitValidoSAT; 
 	
 	@Column(nullable = false)
-	private String estatus; 
-	
-	@Column(nullable = false)
 	private String respuestaValidacion; 
 	
-	@Column(nullable = true)
-	private String errorValidacion; 
+	@Column(nullable = false)
+	private String estatus; 
 	 
 	@Column(nullable = false)
 	private Boolean bitRS; 
@@ -109,31 +103,22 @@ public class FacturaNotaComplemento {
 	@Column(nullable = false)
 	private Boolean bitRSusuario;
 	
+	@Column
+	private String uuidRelacionados;
+	
+	@Column
+	private String comentario;
+	
 	@JoinColumn(name = "uuidComplemento", nullable= true)
     @ManyToOne(targetEntity = FacturaNotaComplemento.class, fetch = FetchType.LAZY)
-    private FacturaNotaComplemento facturaNotaComplemento;
+    private FacturaNotaComplemento complemento;
 
 	//Constructor 
-	
 	public FacturaNotaComplemento() {
-		super();
-		
-	}
-	
-	
-	
-	public FacturaNotaComplemento(String pdfDate, String xmlDate, Boolean bitValidoSAT, String estatus, Boolean bitRS,
-			Boolean bitRSusuario) {
-		
-		Date date = Calendar.getInstance().getTime();  
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
-        String strDate = dateFormat.format(date); 
-        
-		this.xmlDate = strDate;
-		this.bitValidoSAT = false;
 		this.estatus = "En Proceso";
 		this.bitRS = false;
 		this.bitRSusuario = false;
+		this.comentario = "";
 	}
 
 
@@ -172,28 +157,16 @@ public class FacturaNotaComplemento {
 	public void setPdfDocumento(Documento pdfDocumento) {
 		this.pdfDocumento = pdfDocumento;
 	}
+	
 
 
-
-	public List<FacturaNotaComplemento> getDocumentosRelacionados() {
-		return documentosRelacionados;
-	}
-
-
-
-	public void setDocumentosRelacionados(List<FacturaNotaComplemento> documentosRelacionados) {
-		this.documentosRelacionados = documentosRelacionados;
-	}
-
-
-
-	public Integer getIdNumSap() {
+	public Long getIdNumSap() {
 		return idNumSap;
 	}
 
 
 
-	public void setIdNumSap(Integer idNumSap) {
+	public void setIdNumSap(Long idNumSap) {
 		this.idNumSap = idNumSap;
 	}
 
@@ -308,25 +281,25 @@ public class FacturaNotaComplemento {
 
 
 	public String getNoCertificadoSAT() {
-		return noCertificadoSAT;
+		return noCertificadoSat;
 	}
 
 
 
-	public void setNoCertificadoSAT(String noCertificadoSAT) {
-		this.noCertificadoSAT = noCertificadoSAT;
+	public void setNoCertificadoSAT(String noCertificadoSat) {
+		this.noCertificadoSat = noCertificadoSat;
 	}
 
 
 
 	public String getVersionCFD() {
-		return versionCFD;
+		return versionCfd;
 	}
 
 
 
-	public void setVersionCFD(String versionCFD) {
-		this.versionCFD = versionCFD;
+	public void setVersionCFD(String versionCfd) {
+		this.versionCfd = versionCfd;
 	}
 
 
@@ -353,42 +326,37 @@ public class FacturaNotaComplemento {
 		this.moneda = moneda;
 	}
 
+	
 
-
-	public Float getTotal() {
+	public String getTotal() {
 		return total;
 	}
 
 
-
-	public void setTotal(Float total) {
+	public void setTotal(String total) {
 		this.total = total;
 	}
 
 
-
-	public String getPdfDate() {
+	public LocalDateTime getPdfDate() {
 		return pdfDate;
 	}
 
 
 
-	public void setPdfDate(String pdfDate) {
+	public void setPdfDate(LocalDateTime pdfDate) {
 		this.pdfDate = pdfDate;
 	}
+	
 
-
-
-	public String getXmlDate() {
+	public LocalDateTime getXmlDate() {
 		return xmlDate;
 	}
 
 
-
-	public void setXmlDate(String xmlDate) {
+	public void setXmlDate(LocalDateTime xmlDate) {
 		this.xmlDate = xmlDate;
 	}
-
 
 
 	public String getTipoDocumento() {
@@ -438,19 +406,6 @@ public class FacturaNotaComplemento {
 	}
 
 
-
-	public String getErrorValidacion() {
-		return errorValidacion;
-	}
-
-
-
-	public void setErrorValidacion(String errorValidacion) {
-		this.errorValidacion = errorValidacion;
-	}
-
-
-
 	public Boolean getBitRS() {
 		return bitRS;
 	}
@@ -472,18 +427,60 @@ public class FacturaNotaComplemento {
 	public void setBitRSusuario(Boolean bitRSusuario) {
 		this.bitRSusuario = bitRSusuario;
 	}
+	
+
+	public String getUuidRelacionados() {
+		return uuidRelacionados;
+	}
 
 
+	public void setUuidRelacionados(String uuidRelacionados) {
+		this.uuidRelacionados = uuidRelacionados;
+	}
+	
+	
+	public void addUuidRelacionados(String uuid) {
+		if (this.uuidRelacionados.isEmpty()) {
+			this.uuidRelacionados = uuid;
+		} else {
+			this.uuidRelacionados = this.uuidRelacionados + "," + uuid;
+		}
+	}
+	
+	public List<String> getUuidRelacionadosList(){
+		if (this.uuidRelacionados.isEmpty()) {
+			return new ArrayList<>();
+		}
+		return Arrays.asList(this.uuidRelacionados.split(",")); 
+	}
 
-	public FacturaNotaComplemento getFacturaNotaComplemento() {
-		return facturaNotaComplemento;
+
+	public FacturaNotaComplemento getComplemento() {
+		return complemento;
 	}
 
 
 
-	public void setFacturaNotaComplemento(FacturaNotaComplemento facturaNotaComplemento) {
-		this.facturaNotaComplemento = facturaNotaComplemento;
+	public void setComplemento(FacturaNotaComplemento complemento) {
+		this.complemento = complemento;
 	}
+
+
+
+	public String getComentario() {
+		return comentario;
+	}
+
+
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	
+	
+	
+
 
 	
 	

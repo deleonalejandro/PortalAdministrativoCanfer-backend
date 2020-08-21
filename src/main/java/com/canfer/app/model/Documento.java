@@ -1,10 +1,16 @@
 package com.canfer.app.model;
 
+
+import java.time.LocalDateTime;
+
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 	
 @Entity(name = "Documento")
@@ -21,7 +27,8 @@ public class Documento {
 	private String concepto;
 	
 	@Column(nullable = false)
-	private String fecha;
+	@CreationTimestamp
+	private LocalDateTime fecha;
 	
 	@Column(nullable = false)
 	private String extension;
@@ -33,6 +40,13 @@ public class Documento {
 	
 	public Documento() {
 		super();
+	}
+	
+	public Documento(String modulo, String concepto, String extension, String ruta) {
+		this.modulo = modulo;
+		this.concepto = concepto;
+		this.extension = extension;
+		this.ruta = ruta;
 	}
 	
 	//Getters and Setters
@@ -61,11 +75,11 @@ public class Documento {
 		this.concepto = concepto;
 	}
 
-	public String getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -25,6 +26,14 @@ public class Empresa {
 	
 	@ManyToMany(mappedBy = "empresas")
 	private List<Usuario> usuarios;
+	
+	@JoinTable(
+			name = "empresa_proveedor",
+			joinColumns = @JoinColumn(name="idEmpresa"),
+			inverseJoinColumns = @JoinColumn(name="idProveedor")
+			)
+	@ManyToMany
+	private List<Proveedor> proveedores;
 	
 	@Column(nullable = false)
 	private String rfc;
@@ -65,14 +74,15 @@ public class Empresa {
 	@Column(nullable = true)
 	private String paginaWeb;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Long idUsuarioCreador;
 
 	//Constructor
 	
 
-	public Empresa(Long idUsuarioCreador) {
-		this.idUsuarioCreador = idUsuarioCreador;
+	public Empresa(String nombre, String rfc) {
+		this.nombre = nombre;
+		this.rfc = rfc;
 	}
 	
 

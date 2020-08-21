@@ -27,8 +27,8 @@ public class Usuario {
 	
 	@JoinTable(
 			name = "usuario_empresa",
-			joinColumns = @JoinColumn(name="idUsuario", nullable = false),
-			inverseJoinColumns = @JoinColumn(name="idEmpresa", nullable = false)
+			joinColumns = @JoinColumn(name="idUsuario"),
+			inverseJoinColumns = @JoinColumn(name="idEmpresa")
 			)
 	@ManyToMany
 	private List<Empresa> empresas;

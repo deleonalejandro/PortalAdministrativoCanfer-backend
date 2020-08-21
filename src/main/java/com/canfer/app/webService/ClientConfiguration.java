@@ -1,4 +1,4 @@
-package com.canfer.app;
+package com.canfer.app.webService;
 
 
 import org.springframework.context.annotation.Bean;
@@ -19,9 +19,9 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Client countryClient(Jaxb2Marshaller marshaller) {
+  public Client Client(Jaxb2Marshaller marshaller) {
     Client client = new Client();
-    client.setDefaultUri("https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc");
+    client.setDefaultUri("https://invoiceone.mx/ValidaFiscal/wsValidador.asmx");
     client.setMarshaller(marshaller);
     client.setUnmarshaller(marshaller);
     return client;

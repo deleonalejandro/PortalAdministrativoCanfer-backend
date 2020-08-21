@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.canfer.app.model.EmpresaDTO;
+import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.repository.MunicipioRepository;
 import com.canfer.app.service.EmpresaService;
 
