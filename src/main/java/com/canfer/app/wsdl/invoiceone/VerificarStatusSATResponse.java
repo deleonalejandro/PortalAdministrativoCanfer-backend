@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="VerificarStatusSAT_XMLResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="VerificarStatusSATResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "verificarStatusSATXMLResult"
+    "verificarStatusSATResult"
 })
-@XmlRootElement(name = "VerificarStatusSAT_XMLResponse")
-public class VerificarStatusSATXMLResponse {
+@XmlRootElement(name = "VerificarStatusSATResponse")
+public class VerificarStatusSATResponse {
 
-    @XmlElement(name = "VerificarStatusSAT_XMLResult")
-    protected String verificarStatusSATXMLResult;
+    @XmlElement(name = "VerificarStatusSATResult")
+    protected String verificarStatusSATResult;
 
     /**
-     * Gets the value of the verificarStatusSATXMLResult property.
+     * Gets the value of the verificarStatusSATResult property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getVerificarStatusSATXMLResult() {
-        return verificarStatusSATXMLResult;
+    public String getVerificarStatusSATResult() {
+        return verificarStatusSATResult;
     }
 
     /**
-     * Sets the value of the verificarStatusSATXMLResult property.
+     * Sets the value of the verificarStatusSATResult property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setVerificarStatusSATXMLResult(String value) {
-        this.verificarStatusSATXMLResult = value;
+    public void setVerificarStatusSATResult(String value) {
+        this.verificarStatusSATResult = value;
     }
 
 }

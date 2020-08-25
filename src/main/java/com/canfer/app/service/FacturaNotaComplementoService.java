@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.model.Consecutivo;
-import com.canfer.app.model.Documento;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.FacturaNotaComplemento;
 import com.canfer.app.model.Proveedor;
@@ -69,10 +68,7 @@ public class FacturaNotaComplementoService {
 	}
 	
 	public Boolean exist(String uuid) {
-		if (facturaNotaComplementoRepository.findByUuid(uuid) == null) {
-			return false;
-		}
-		return true;
+		return (facturaNotaComplementoRepository.findByUuid(uuid) != null); 
 	}
 	
 	public void delete(String uuid) {
@@ -86,40 +82,36 @@ public class FacturaNotaComplementoService {
 	}
 	
 	
-	public FacturaNotaComplemento createAndSave(Comprobante comprobante, Documento xmlDocumento, List<String> respuestaValidacion) throws NotFoundException {
+	
+	public FacturaNotaComplemento save(Comprobante comprobante) throws NotFoundException {
 		
-		FacturaNotaComplemento documentoFiscal = new FacturaNotaComplemento();
+		FacturaNotaComplemento documentoFiscal;
 		Consecutivo consecutivo;
-		//Encuentra a la empresa y el proveedor registrado
-		Empresa recepetor = empresaRepository.findByRfc(comprobante.getReceptor().getRfc());
-		Proveedor emisor = proveedorRepository.findByRfc(comprobante.getEmisor().getRfc());
+		Empresa receptor;
+		Proveedor emisor;
 		
-		if (recepetor == null) {
-			throw new NotFoundException("La empresa no existen.");
+			
+		//Get the corresponding objects.
+		receptor = empresaRepository.findByRfc(comprobante.getReceptor().getRfc());
+		emisor = proveedorRepository.findByRfc(comprobante.getEmisor().getRfc());
+		
+		if (receptor == null || emisor  == null ) {
+			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. (RFC: " + receptor.getRfc() + emisor.getRfc() + ")");
 		}
+
+		documentoFiscal = new FacturaNotaComplemento();
 		
-		if (emisor == null) {
-			//Creacion de proveedor generico
-			emisor = new Proveedor(comprobante.getEmisor().getRfc());
-			emisor = proveedorRepository.saveAndFlush(emisor);
-		}
-		
-		/*
-		 * XML INFORMATION
-		 * 
-		 */
-		
-		//Asignar el consecutivo NumSap dependiendo de la empresa y el modulo
-		consecutivo = consecutivoRepository.findByEmpresaAndModulo(recepetor, xmlDocumento.getModulo());
+		//TODO Considerar SequenceGenerator or CosecutivoService; Considerar hacer tabla de Modulos.
+		consecutivo = consecutivoRepository.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
 		documentoFiscal.setIdNumSap(consecutivo.getCurrentNum());
-		//Aumentar el consecutivo una unidad y guardar en BD.
 		consecutivo.setCurrentNum(consecutivo.getCurrentNum() + 1);
 		consecutivoRepository.save(consecutivo);
 		
+		
 		//Set the object fields
-		documentoFiscal.setXmlDocumento(xmlDocumento);
-		documentoFiscal.setEmpresa(recepetor);
+		documentoFiscal.setEmpresa(receptor);
 		documentoFiscal.setProveedor(emisor);
+		
 		
 		//Use the information from the XML to fill the information
 		documentoFiscal.setUuid(comprobante.getComplemento().getTimbreFiscalDigital().getUuid());
@@ -130,28 +122,35 @@ public class FacturaNotaComplementoService {
 		documentoFiscal.setFechaEmision(comprobante.getFecha());
 		documentoFiscal.setFechaTimbre(comprobante.getComplemento().getTimbreFiscalDigital().getFechaTimbrado());
 		documentoFiscal.setNoCertificadoEmpresa(comprobante.getNoCertificado());
-		documentoFiscal.setNoCertificadoSAT(comprobante.getComplemento().getTimbreFiscalDigital().getNoCertificadoSat());
-		documentoFiscal.setVersionCFD(comprobante.getVersion());
+		documentoFiscal.setNoCertificadoSat(comprobante.getComplemento().getTimbreFiscalDigital().getNoCertificadoSat());
+		documentoFiscal.setVersionCfd(comprobante.getVersion());
 		documentoFiscal.setVersionTimbre(comprobante.getComplemento().getTimbreFiscalDigital().getVersion());
 		documentoFiscal.setMoneda(comprobante.getMoneda());
 		documentoFiscal.setTotal(comprobante.getTotal());
 		documentoFiscal.setTipoDocumento(comprobante.getTipoDeComprobante());
 		
-		//Documentos UUIDS relacionados
+		//Related UUIDs
 		if (comprobante.getCfdiRelacionados() != null) {
 			//Iterate the list and add all UUIDS
-			comprobante.getCfdiRelacionados().getCdfiList().forEach(cfdi -> documentoFiscal.addUuidRelacionados(cfdi.getUuid()));	
+			comprobante.getCfdiRelacionados().getCdfiList().forEach(cfdi -> documentoFiscal.addUuidRelacionados(cfdi.getUuid()));
+			documentoFiscal.setTipoRelacionUuidRelacionados(comprobante.getCfdiRelacionados().getTipoRelacion());
 		}
-		
-		//Validation PAC responses assignation
-		documentoFiscal.setBitValidoSAT(Boolean.valueOf(respuestaValidacion.get(0)));
-		documentoFiscal.setRespuestaValidacion(respuestaValidacion.get(1));		
-		
+			
 		return facturaNotaComplementoRepository.save(documentoFiscal);
 	}
 	
-	public FacturaNotaComplemento save(FacturaNotaComplemento facturaNotaComplemento) {
+	public FacturaNotaComplemento update(FacturaNotaComplemento facturaNotaComplemento) {
 		return facturaNotaComplementoRepository.save(facturaNotaComplemento);
+	}
+	
+	public FacturaNotaComplemento setValidation(FacturaNotaComplemento factura, List<String> respuestas) {
+		
+		//Update information with the responses from validation service.
+		factura.setBitValidoSAT(Boolean.valueOf(respuestas.get(0)));
+		factura.setRespuestaValidacion(respuestas.get(1));
+		factura.setEstatusSAT(respuestas.get(2));
+		
+		return facturaNotaComplementoRepository.save(factura);
 	}
 	
 	

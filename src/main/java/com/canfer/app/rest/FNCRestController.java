@@ -14,7 +14,7 @@ import com.canfer.app.repository.FacturaNotaComplementoRepository;
 import com.canfer.app.service.FacturaNotaComplementoService;
 
 @RestController
-@RequestMapping(value = "/contaduria-nacional")
+@RequestMapping(value = "/documentosFiscales")
 public class FNCRestController {
 	
 	@Autowired

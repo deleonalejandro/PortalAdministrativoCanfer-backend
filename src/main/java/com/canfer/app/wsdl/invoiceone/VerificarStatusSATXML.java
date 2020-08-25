@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,9 +24,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="pxml" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="pusuario" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="pcontraseña" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="pXml" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -37,40 +37,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "pxml",
     "pusuario",
-    "pcontrase\u00f1a"
+    "pcontrase\u00f1a",
+    "pXml"
 })
-@XmlRootElement(name = "ValidayVerificaXML")
-public class ValidayVerificaXML {
+@XmlRootElement(name = "VerificarStatusSAT_XML")
+public class VerificarStatusSATXML {
 
-    protected String pxml;
     protected String pusuario;
     protected String pcontraseña;
-
-    /**
-     * Gets the value of the pxml property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPxml() {
-        return pxml;
-    }
-
-    /**
-     * Sets the value of the pxml property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPxml(String value) {
-        this.pxml = value;
-    }
+    protected String pXml;
 
     /**
      * Gets the value of the pusuario property.
@@ -118,6 +94,30 @@ public class ValidayVerificaXML {
      */
     public void setPcontraseña(String value) {
         this.pcontraseña = value;
+    }
+
+    /**
+     * Gets the value of the pXml property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPXml() {
+        return pXml;
+    }
+
+    /**
+     * Sets the value of the pXml property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPXml(String value) {
+        this.pXml = value;
     }
 
 }

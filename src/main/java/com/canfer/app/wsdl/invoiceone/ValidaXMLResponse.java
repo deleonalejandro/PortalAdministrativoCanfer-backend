@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="TestValidaXMLResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="ValidaXMLResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "testValidaXMLResult"
+    "validaXMLResult"
 })
-@XmlRootElement(name = "TestValidaXMLResponse")
-public class TestValidaXMLResponse {
+@XmlRootElement(name = "ValidaXMLResponse")
+public class ValidaXMLResponse {
 
-    @XmlElement(name = "TestValidaXMLResult")
-    protected String testValidaXMLResult;
+    @XmlElement(name = "ValidaXMLResult")
+    protected String validaXMLResult;
 
     /**
-     * Gets the value of the testValidaXMLResult property.
+     * Gets the value of the validaXMLResult property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getTestValidaXMLResult() {
-        return testValidaXMLResult;
+    public String getValidaXMLResult() {
+        return validaXMLResult;
     }
 
     /**
-     * Sets the value of the testValidaXMLResult property.
+     * Sets the value of the validaXMLResult property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setTestValidaXMLResult(String value) {
-        this.testValidaXMLResult = value;
+    public void setValidaXMLResult(String value) {
+        this.validaXMLResult = value;
     }
 
 }

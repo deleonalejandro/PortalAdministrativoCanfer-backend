@@ -1,54 +1,60 @@
 package com.canfer.app.cfd;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.io.input.BOMInputStream;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class XmlService {
-	
+
 	public XmlService() {
-		//Constructor vacio
+		// Constructor
 	}
-	
-	public Comprobante xmlToObject(File file) throws JAXBException, IOException{
-		JAXBContext context = JAXBContext.newInstance(Comprobante.class);
-	    return (Comprobante) context.createUnmarshaller().unmarshal(new FileReader(file));
+
+	/* Transform the XML to a POJO */
+	public Comprobante xmlToObject(MultipartFile file) {
+		JAXBContext context;
+		BOMInputStream bis;
+		try (InputStream in = file.getInputStream()) {
+			bis = new BOMInputStream(in);
+			context = JAXBContext.newInstance(Comprobante.class);
+			return (Comprobante) context.createUnmarshaller()
+					.unmarshal(new InputStreamReader(new BufferedInputStream(bis)));
+		} catch (IOException | JAXBException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
-	public String docToString(String filePath)
-	{
-	    try {
-	    	File xmlFile = new File(filePath);
-	        try(Reader fileReader = new FileReader(xmlFile)) {
-	        	
-	        	BufferedReader bufReader = new BufferedReader(fileReader); 
-	        	StringBuilder sb = new StringBuilder(); 
-	        	String line = bufReader.readLine(); 
-	        	while( line != null){ 
-	        		sb.append(line).append("\n"); 
-	        		line = bufReader.readLine(); 
-	        	}
-	        	
-	        	String xmlString = sb.toString(); 
-	        	bufReader.close();
-	        	return xmlString;
-	        }      
-	    
-	    } 
-	    catch (Exception e) 
-	    {
-	        e.printStackTrace();
-	        return null; 
-	    }
+
+	/* Transform the XML to a String type */
+	public String docToString(MultipartFile file) {
+		try {
+			InputStream is = file.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+			while (line != null) {
+				sb.append(line).append("\n");
+				line = br.readLine();
+			}
+
+			String xmlString = sb.toString();
+			br.close();
+
+			return xmlString;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-	
 
 }

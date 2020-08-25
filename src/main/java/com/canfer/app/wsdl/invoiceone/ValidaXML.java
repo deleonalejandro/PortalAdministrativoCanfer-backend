@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,8 +24,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="pUsuario" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="pContraseña" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="pxml" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="pusuario" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="pcontraseña" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,61 +37,87 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "pUsuario",
-    "pContrase\u00f1a"
+    "pxml",
+    "pusuario",
+    "pcontrase\u00f1a"
 })
-@XmlRootElement(name = "ObtenerEstatusCuenta")
-public class ObtenerEstatusCuenta {
+@XmlRootElement(name = "ValidaXML")
+public class ValidaXML {
 
-    protected String pUsuario;
-    protected String pContraseña;
+    protected String pxml;
+    protected String pusuario;
+    protected String pcontraseña;
 
     /**
-     * Gets the value of the pUsuario property.
+     * Gets the value of the pxml property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getPUsuario() {
-        return pUsuario;
+    public String getPxml() {
+        return pxml;
     }
 
     /**
-     * Sets the value of the pUsuario property.
+     * Sets the value of the pxml property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setPUsuario(String value) {
-        this.pUsuario = value;
+    public void setPxml(String value) {
+        this.pxml = value;
     }
 
     /**
-     * Gets the value of the pContraseña property.
+     * Gets the value of the pusuario property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getPContraseña() {
-        return pContraseña;
+    public String getPusuario() {
+        return pusuario;
     }
 
     /**
-     * Sets the value of the pContraseña property.
+     * Sets the value of the pusuario property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setPContraseña(String value) {
-        this.pContraseña = value;
+    public void setPusuario(String value) {
+        this.pusuario = value;
+    }
+
+    /**
+     * Gets the value of the pcontraseña property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPcontraseña() {
+        return pcontraseña;
+    }
+
+    /**
+     * Sets the value of the pcontraseña property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPcontraseña(String value) {
+        this.pcontraseña = value;
     }
 
 }

@@ -6,11 +6,10 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +24,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="ValidaXMLResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="pUsuario" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="pContraseña" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,61 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "validaXMLResult"
+    "pUsuario",
+    "pContrase\u00f1a"
 })
-@XmlRootElement(name = "ValidaXMLResponse")
-public class ValidaXMLResponse {
+@XmlRootElement(name = "ObtenerEstatusCuenta")
+public class ObtenerEstatusCuenta {
 
-    @XmlElement(name = "ValidaXMLResult")
-    protected String validaXMLResult;
+    protected String pUsuario;
+    protected String pContraseña;
 
     /**
-     * Gets the value of the validaXMLResult property.
+     * Gets the value of the pUsuario property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getValidaXMLResult() {
-        return validaXMLResult;
+    public String getPUsuario() {
+        return pUsuario;
     }
 
     /**
-     * Sets the value of the validaXMLResult property.
+     * Sets the value of the pUsuario property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setValidaXMLResult(String value) {
-        this.validaXMLResult = value;
+    public void setPUsuario(String value) {
+        this.pUsuario = value;
+    }
+
+    /**
+     * Gets the value of the pContraseña property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPContraseña() {
+        return pContraseña;
+    }
+
+    /**
+     * Sets the value of the pContraseña property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPContraseña(String value) {
+        this.pContraseña = value;
     }
 
 }

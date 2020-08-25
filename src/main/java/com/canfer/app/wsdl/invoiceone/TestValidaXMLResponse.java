@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="ObtenerEstatusCuentaResult" type="{http://tempuri.org/}EstatusCuenta" minOccurs="0"/&gt;
+ *         &lt;element name="TestValidaXMLResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "obtenerEstatusCuentaResult"
+    "testValidaXMLResult"
 })
-@XmlRootElement(name = "ObtenerEstatusCuentaResponse")
-public class ObtenerEstatusCuentaResponse {
+@XmlRootElement(name = "TestValidaXMLResponse")
+public class TestValidaXMLResponse {
 
-    @XmlElement(name = "ObtenerEstatusCuentaResult")
-    protected EstatusCuenta obtenerEstatusCuentaResult;
+    @XmlElement(name = "TestValidaXMLResult")
+    protected String testValidaXMLResult;
 
     /**
-     * Gets the value of the obtenerEstatusCuentaResult property.
+     * Gets the value of the testValidaXMLResult property.
      * 
      * @return
      *     possible object is
-     *     {@link EstatusCuenta }
+     *     {@link String }
      *     
      */
-    public EstatusCuenta getObtenerEstatusCuentaResult() {
-        return obtenerEstatusCuentaResult;
+    public String getTestValidaXMLResult() {
+        return testValidaXMLResult;
     }
 
     /**
-     * Sets the value of the obtenerEstatusCuentaResult property.
+     * Sets the value of the testValidaXMLResult property.
      * 
      * @param value
      *     allowed object is
-     *     {@link EstatusCuenta }
+     *     {@link String }
      *     
      */
-    public void setObtenerEstatusCuentaResult(EstatusCuenta value) {
-        this.obtenerEstatusCuentaResult = value;
+    public void setTestValidaXMLResult(String value) {
+        this.testValidaXMLResult = value;
     }
 
 }

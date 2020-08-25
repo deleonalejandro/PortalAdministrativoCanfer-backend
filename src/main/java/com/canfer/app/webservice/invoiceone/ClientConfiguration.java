@@ -1,4 +1,4 @@
-package com.canfer.app.webService;
+package com.canfer.app.webservice.invoiceone;
 
 
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ public class ClientConfiguration {
     Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
     // this package must match the package in the <generatePackage> specified in
     // pom.xml
-    marshaller.setContextPath("com.canfer.app.wsdl");
+    marshaller.setContextPath("com.canfer.app.wsdl.invoiceone");
     return marshaller;
   }
 

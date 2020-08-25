@@ -93,7 +93,7 @@ public class Empresa {
 
 	//Getters and Setters
 	
-	public long getidEmpresa() {
+	public Long getidEmpresa() {
 		return idEmpresa;
 	}
 
@@ -213,7 +213,7 @@ public class Empresa {
 		this.paginaWeb = paginaWeb;
 	}
 
-	public long getidUsuarioCreador() {
+	public Long getidUsuarioCreador() {
 		return idUsuarioCreador;
 	}
 

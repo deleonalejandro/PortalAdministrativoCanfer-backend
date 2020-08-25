@@ -1,19 +1,21 @@
 package com.canfer.app.storage;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.canfer.app.model.FacturaNotaComplemento;
 
 
 @Service
@@ -22,7 +24,7 @@ public class FacturaStorageService implements StorageService {
 	private final Path rootLocation =  Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores");
 
 	@Override
-	public void store(InputStream file, Path filename) {
+	public void store(MultipartFile file, Path filename) {
 		try {
 			if (filename.toString().contains("..")) {
 				// This is a security check
@@ -31,12 +33,7 @@ public class FacturaStorageService implements StorageService {
 								+ filename);
 			}
 			
-			File folder = new File(this.rootLocation + File.separator + filename.getParent().toString());
-			if (!folder.exists()) {
-				folder.mkdirs();
-				System.out.println("Directorios creados satisfactoriamente");	
-			}
-			Files.copy(file, this.rootLocation.resolve(filename),
+			Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
 					StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch (IOException e) {
@@ -87,12 +84,36 @@ public class FacturaStorageService implements StorageService {
 	}
 
 	@Override
-	public void init() {
+	public Path init(FacturaNotaComplemento factura) {
+		LocalDateTime today = LocalDateTime.now();
+		Path foldersPath = Paths.get(factura.getEmpresa().getRfc(), String.valueOf(today.getYear()),
+				String.valueOf(today.getMonthValue()), factura.getProveedor().getRfc());
 		try {
-			Files.createDirectories(rootLocation);
+			Files.createDirectories(rootLocation.resolve(foldersPath));
+			return foldersPath;
 		}
 		catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);
 		}
 	}
+	
+	public Path getFilename(FacturaNotaComplemento factura, Path foldersPath, String extension) {
+		
+		String folioFinal;
+		
+		if (factura.getFolio() == null) {
+			folioFinal = String.valueOf(factura.getIdNumSap());
+		} else {
+			folioFinal = factura.getFolio();
+		}
+		
+		if (factura.getSerie() == null) {
+			return Paths.get(foldersPath.toString(), factura.getProveedor().getRfc() + "_" + folioFinal + "."
+					+ extension);
+		} else {
+			return Paths.get(foldersPath.toString(), factura.getProveedor().getRfc() + "_" + factura.getSerie() + "_" + folioFinal + "."
+					+ extension);
+		}
+	}
+	
 }

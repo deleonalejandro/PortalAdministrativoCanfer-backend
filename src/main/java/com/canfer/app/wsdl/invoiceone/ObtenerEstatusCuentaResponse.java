@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="VerificarStatusSATResult" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="ObtenerEstatusCuentaResult" type="{http://tempuri.org/}EstatusCuenta" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "verificarStatusSATResult"
+    "obtenerEstatusCuentaResult"
 })
-@XmlRootElement(name = "VerificarStatusSATResponse")
-public class VerificarStatusSATResponse {
+@XmlRootElement(name = "ObtenerEstatusCuentaResponse")
+public class ObtenerEstatusCuentaResponse {
 
-    @XmlElement(name = "VerificarStatusSATResult")
-    protected String verificarStatusSATResult;
+    @XmlElement(name = "ObtenerEstatusCuentaResult")
+    protected EstatusCuenta obtenerEstatusCuentaResult;
 
     /**
-     * Gets the value of the verificarStatusSATResult property.
+     * Gets the value of the obtenerEstatusCuentaResult property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link EstatusCuenta }
      *     
      */
-    public String getVerificarStatusSATResult() {
-        return verificarStatusSATResult;
+    public EstatusCuenta getObtenerEstatusCuentaResult() {
+        return obtenerEstatusCuentaResult;
     }
 
     /**
-     * Sets the value of the verificarStatusSATResult property.
+     * Sets the value of the obtenerEstatusCuentaResult property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link EstatusCuenta }
      *     
      */
-    public void setVerificarStatusSATResult(String value) {
-        this.verificarStatusSATResult = value;
+    public void setObtenerEstatusCuentaResult(EstatusCuenta value) {
+        this.obtenerEstatusCuentaResult = value;
     }
 
 }

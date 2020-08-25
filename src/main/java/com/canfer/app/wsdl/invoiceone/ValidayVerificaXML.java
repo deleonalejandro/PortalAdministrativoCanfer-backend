@@ -6,7 +6,7 @@
 //
 
 
-package com.canfer.app.wsdl;
+package com.canfer.app.wsdl.invoiceone;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,8 +41,8 @@ import javax.xml.bind.annotation.XmlType;
     "pusuario",
     "pcontrase\u00f1a"
 })
-@XmlRootElement(name = "TestValidaXML")
-public class TestValidaXML {
+@XmlRootElement(name = "ValidayVerificaXML")
+public class ValidayVerificaXML {
 
     protected String pxml;
     protected String pusuario;

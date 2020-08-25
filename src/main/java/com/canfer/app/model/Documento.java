@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -18,7 +20,17 @@ public class Documento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idDocumento; 
+	private Long idDocumento;
+	
+	private Long idTabla;
+	
+	@JoinColumn(name = "idEmpresa")
+	@ManyToOne
+	private Empresa empresa;
+	
+	private String objEntry;
+	
+	private String docEntry;
 	
 	@Column(nullable = false)
 	private String modulo;
@@ -42,13 +54,17 @@ public class Documento {
 		super();
 	}
 	
-	public Documento(String modulo, String concepto, String extension, String ruta) {
+	public Documento(Long idTabla, Empresa empresa, String modulo, String concepto, String extension, String ruta) {
+		super();
+		this.idTabla = idTabla;
+		this.empresa = empresa;
 		this.modulo = modulo;
 		this.concepto = concepto;
 		this.extension = extension;
 		this.ruta = ruta;
 	}
-	
+
+
 	//Getters and Setters
 
 	public Long getIdDocumento() {
@@ -98,6 +114,40 @@ public class Documento {
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
+
+	public Long getIdTabla() {
+		return idTabla;
+	}
+
+	public void setIdTabla(Long idTabla) {
+		this.idTabla = idTabla;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public String getObjEntry() {
+		return objEntry;
+	}
+
+	public void setObjEntry(String objEntry) {
+		this.objEntry = objEntry;
+	}
+
+	public String getDocEntry() {
+		return docEntry;
+	}
+
+	public void setDocEntry(String docEntry) {
+		this.docEntry = docEntry;
+	}
+	
+	
 	
 	
 	

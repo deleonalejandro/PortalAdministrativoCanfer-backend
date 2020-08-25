@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<cfdi:Comprobante xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cfdi="http://www.sat.gob.mx/cfd/3" Version="3.3" Serie="SPMO" Folio="15229" Fecha="2020-08-06T14:57:30" Sello="fAcn3YRc1z83bk0VRkn5S1WguBP6hbvDW+EkTSP0LA8zBA2sDOtjzIidzzeNnNbD4yeiVo3XbVSaEU73xOTVX249tAzlt0vJixn5Xb5xyBu5MlotazXzW6XvXKhu3Y9GfLGI6i7h/T/N3FNAx8PlaBYdXintLenlCxxn3RwIXu3fi/AXVZHoSsq0WNYBg4CnS1GSHQSe1EX8DLbHi6/LLDE+Sd6039GXEARFjAODwyiFIdPygkz68ltnJ1pGIIwqJTZSz3SIMuubczu3rQ2d3j0Z/tDvnLx/gcAa+M1JgK8L+SZ7uV103JmpqNuojJvkI3QGlya+wWuPowdjPC0rFw==" FormaPago="99" NoCertificado="00001000000408856849" Certificado="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" SubTotal="2081.62" Moneda="USD" TipoCambio="19.42620" Total="2414.68" TipoDeComprobante="E" MetodoPago="PUE" LugarExpedicion="54769">
+  <cfdi:CfdiRelacionados TipoRelacion="01">
+    <cfdi:CfdiRelacionado UUID="d1970e97-00d0-4146-a11b-d9294ad03eb9" />
+  </cfdi:CfdiRelacionados>
+  <cfdi:Emisor Rfc="PEM170317EM6" Nombre="PRODUCTOS ESPECIALIZADOS DE MEXICO DDM S DE RL DE CV" RegimenFiscal="601" />
+  <cfdi:Receptor Rfc="PFL830127PP3" Nombre="PROVEEDORA FLEXOGRAFICA SA" UsoCFDI="G02" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="84111506" NoIdentificacion="D11821973" Cantidad="1.000" ClaveUnidad="ACT" Unidad="CAJA" Descripcion="CYU DFM 045 1270X2032 50X80 12P" ValorUnitario="2081.6200" Importe="2081.62">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="2081.62" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="333.06" />
+        </cfdi:Traslados>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosTrasladados="333.06">
+    <cfdi:Traslados>
+      <cfdi:Traslado Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="333.06" />
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital UUID="c8202a6a-b76e-471e-831f-690721cb1462" FechaTimbrado="2020-08-06T15:58:03" Version="1.1" SelloCFD="fAcn3YRc1z83bk0VRkn5S1WguBP6hbvDW+EkTSP0LA8zBA2sDOtjzIidzzeNnNbD4yeiVo3XbVSaEU73xOTVX249tAzlt0vJixn5Xb5xyBu5MlotazXzW6XvXKhu3Y9GfLGI6i7h/T/N3FNAx8PlaBYdXintLenlCxxn3RwIXu3fi/AXVZHoSsq0WNYBg4CnS1GSHQSe1EX8DLbHi6/LLDE+Sd6039GXEARFjAODwyiFIdPygkz68ltnJ1pGIIwqJTZSz3SIMuubczu3rQ2d3j0Z/tDvnLx/gcAa+M1JgK8L+SZ7uV103JmpqNuojJvkI3QGlya+wWuPowdjPC0rFw==" NoCertificadoSAT="00001000000404399419" SelloSAT="eSlEpb64ny/EFlAYcMZ37hcsQ12h+Ptr4vPKqHkACuH1nR7rf2p/z5HWhQ2BjkgVHGOMc+6MCBMOOEa0sF/ZmIaX0asZ7/OeUCx1UUXg7zTx/GXY7eA9PTs5MptISwfvXG6ilTs4IymU40mLE4j4szUlthDRW7vYZvSAE+yF3zMhF9ZeBnVznWMGeIFGLTLD0gh6avuPQ4YZ6kP688SESNWf5YbmYDitBFEwLcCczR2/OKAz2ZvdZcELBz9Gpmz2x7mLKi7Px7csg/kMl/eFftNnUK3yjUgM93KZae5VeJ+vNLcxcZiRGPUgUAFnAJZfwefmSuEluChlnNG+DcNPTQ==" RfcProvCertif="MIS1112095W0" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/timbrefiscaldigital/TimbreFiscalDigitalv11.xsd" />
+  </cfdi:Complemento>
+  <cfdi:Addenda xmlns:ecfd="http://www.edxsolutions.com/schemas/strict" xsi:schemaLocation="http://www.edxsolutions.com/schemas/strict http://www.edxsolutions.com/schemas/strict/ecfd.xsd">
+    <ecfd:ECFD version="1.0">
+      <ecfd:Documento ID="T61SPMO15229">
+        <ecfd:Encabezado>
+          <ecfd:IdDoc>
+            <ecfd:NroAprob>1</ecfd:NroAprob>
+            <ecfd:AnoAprob>1900</ecfd:AnoAprob>
+            <ecfd:Tipo>61</ecfd:Tipo>
+            <ecfd:Serie>SPMO</ecfd:Serie>
+            <ecfd:Folio>15229</ecfd:Folio>
+            <ecfd:Estado>ORIGINAL</ecfd:Estado>
+            <ecfd:NumeroInterno>7050015229</ecfd:NumeroInterno>
+            <ecfd:FechaEmis>2020-08-06T14:57:30</ecfd:FechaEmis>
+            <ecfd:TipoServicio>MX00010</ecfd:TipoServicio>
+            <ecfd:FormaPago>PUE</ecfd:FormaPago>
+            <ecfd:MedioPago>99</ecfd:MedioPago>
+            <ecfd:LugarExpedicion>54769</ecfd:LugarExpedicion>
+          </ecfd:IdDoc>
+          <ecfd:ExEmisor>
+            <ecfd:RFCEmisor>PEM170317EM6</ecfd:RFCEmisor>
+            <ecfd:NmbEmisor>PRODUCTOS ESPECIALIZADOS DE MEXICO DDM S DE RL DE CV</ecfd:NmbEmisor>
+            <ecfd:CdgSucursal>MX43</ecfd:CdgSucursal>
+            <ecfd:Sucursal>FP Warehouse</ecfd:Sucursal>
+            <ecfd:DomFiscal>
+              <ecfd:Calle>Lago Alberto</ecfd:Calle>
+              <ecfd:NroExterior>319-PH2</ecfd:NroExterior>
+              <ecfd:Colonia>Granada</ecfd:Colonia>
+              <ecfd:Municipio>Miguel Hidalgo</ecfd:Municipio>
+              <ecfd:Estado>Ciudad de México</ecfd:Estado>
+              <ecfd:Pais>México</ecfd:Pais>
+              <ecfd:CodigoPostal>11520</ecfd:CodigoPostal>
+            </ecfd:DomFiscal>
+          </ecfd:ExEmisor>
+          <ecfd:ExReceptor>
+            <ecfd:RFCRecep>PFL830127PP3</ecfd:RFCRecep>
+            <ecfd:NmbRecep>PROVEEDORA FLEXOGRAFICA SA</ecfd:NmbRecep>
+            <ecfd:UsoCFDI>G02</ecfd:UsoCFDI>
+            <ecfd:CdgSucursal>SPMO</ecfd:CdgSucursal>
+            <ecfd:Sucursal>PROVEEDORA FLEXOGRAFICA SA DE CV</ecfd:Sucursal>
+            <ecfd:Contacto>0055179848</ecfd:Contacto>
+            <ecfd:DomFiscalRcp>
+              <ecfd:Calle>JESUS MARIA GONZALEZ</ecfd:Calle>
+              <ecfd:NroExterior>220</ecfd:NroExterior>
+              <ecfd:Localidad>Monterrey</ecfd:Localidad>
+              <ecfd:Pais>MEX</ecfd:Pais>
+              <ecfd:CodigoPostal>64640</ecfd:CodigoPostal>
+            </ecfd:DomFiscalRcp>
+            <ecfd:LugarRecep>
+              <ecfd:Calle>AV SAN ISIDRO NO 27 ESQ. CONSTITUCI</ecfd:Calle>
+              <ecfd:Colonia>AMPLIACION PETROLERA</ecfd:Colonia>
+              <ecfd:Localidad>MEXICO</ecfd:Localidad>
+              <ecfd:Municipio>AZCAPOTZALCO</ecfd:Municipio>
+              <ecfd:Estado>Ciudad de México</ecfd:Estado>
+              <ecfd:Pais>MEX</ecfd:Pais>
+              <ecfd:CodigoPostal>03300</ecfd:CodigoPostal>
+            </ecfd:LugarRecep>
+          </ecfd:ExReceptor>
+          <ecfd:Totales>
+            <ecfd:Moneda>USD</ecfd:Moneda>
+            <ecfd:FctConv>19.42620</ecfd:FctConv>
+            <ecfd:SubTotal>2081.62</ecfd:SubTotal>
+            <ecfd:PctDcto>0.00</ecfd:PctDcto>
+            <ecfd:MntRcgo>0.00</ecfd:MntRcgo>
+            <ecfd:PctRcgo>0.00</ecfd:PctRcgo>
+            <ecfd:MntBase>2081.62</ecfd:MntBase>
+            <ecfd:MntImp>333.06</ecfd:MntImp>
+            <ecfd:VlrPagar>2414.68</ecfd:VlrPagar>
+            <ecfd:VlrPalabras>TWO THOUSAND FOUR HUNDRED FOURTEEN, 68/100 USD</ecfd:VlrPalabras>
+          </ecfd:Totales>
+          <ecfd:ExImpuestos>
+            <ecfd:TipoImp>002</ecfd:TipoImp>
+            <ecfd:TipoFactor>Tasa</ecfd:TipoFactor>
+            <ecfd:TasaImp>0.160000</ecfd:TasaImp>
+            <ecfd:MontoImp>333.06</ecfd:MontoImp>
+          </ecfd:ExImpuestos>
+        </ecfd:Encabezado>
+        <ecfd:Detalle>
+          <ecfd:NroLinDet>1</ecfd:NroLinDet>
+          <ecfd:CdgItem>
+            <ecfd:TpoCodigo>EAN</ecfd:TpoCodigo>
+            <ecfd:VlrCodigo>D11821973</ecfd:VlrCodigo>
+          </ecfd:CdgItem>
+          <ecfd:DscLang>ES</ecfd:DscLang>
+          <ecfd:ClaveProdServ>84111506</ecfd:ClaveProdServ>
+          <ecfd:DscItem>CYU DFM 045 1270X2032 50X80 12P</ecfd:DscItem>
+          <ecfd:QtyItem>1.000</ecfd:QtyItem>
+          <ecfd:ClaveUnidad>ACT</ecfd:ClaveUnidad>
+          <ecfd:UnmdItem>CAJA</ecfd:UnmdItem>
+          <ecfd:PrcBrutoItem>2081.6200</ecfd:PrcBrutoItem>
+          <ecfd:PrcNetoItem>2081.6200</ecfd:PrcNetoItem>
+          <ecfd:ImpuestosDet>
+            <ecfd:TipoImp>002</ecfd:TipoImp>
+            <ecfd:TasaImp>0.160000</ecfd:TasaImp>
+            <ecfd:MontoImp>333.06</ecfd:MontoImp>
+            <ecfd:MontoBaseImp>2081.62</ecfd:MontoBaseImp>
+            <ecfd:TipoFactor>Tasa</ecfd:TipoFactor>
+          </ecfd:ImpuestosDet>
+          <ecfd:MontoBrutoItem>2081.62</ecfd:MontoBrutoItem>
+          <ecfd:MontoNetoItem>2081.62</ecfd:MontoNetoItem>
+        </ecfd:Detalle>
+        <ecfd:TimeStamp>2020-08-06T16:58:00</ecfd:TimeStamp>
+      </ecfd:Documento>
+      <ecfd:Personalizados>
+        <ecfd:campoString name="IVA1">002</ecfd:campoString>
+        <ecfd:campoString name="IVAIMP">0.160000</ecfd:campoString>
+        <ecfd:campoString name="IVAMNT">333.06</ecfd:campoString>
+        <ecfd:campoString name="ExRetTipo" />
+        <ecfd:campoString name="IVARET" />
+        <ecfd:campoString name="ExRetTasa" />
+        <ecfd:campoString name="IVARETEN" />
+        <ecfd:campoString name="CustomerNoSold">0055179848</ecfd:campoString>
+        <ecfd:campoString name="VbdkrAnred" />
+        <ecfd:campoString name="CurpstSold" />
+        <ecfd:campoString name="VbdkrKunwe">0055507884</ecfd:campoString>
+        <ecfd:campoString name="RFCShip" />
+        <ecfd:campoString name="NmbShip">PROVEEDORA FLEXO</ecfd:campoString>
+        <ecfd:campoString name="CURPShip" />
+        <ecfd:campoString name="LEC">8962</ecfd:campoString>
+        <ecfd:campoString name="Namezr" />
+        <ecfd:campoString name="Namezu" />
+        <ecfd:campoString name="Namekm" />
+        <ecfd:campoString name="VAUF">2560089879</ecfd:campoString>
+        <ecfd:campoString name="Wadat">00000000</ecfd:campoString>
+        <ecfd:campoString name="Strloc">FP Warehouse</ecfd:campoString>
+        <ecfd:campoString name="Mexico">Mexico</ecfd:campoString>
+        <ecfd:campoString name="Bstkd">NC calidad- DFM045 case 00167748</ecfd:campoString>
+        <ecfd:campoString name="VstelName" />
+        <ecfd:campoString name="Inco1">DAP</ecfd:campoString>
+        <ecfd:campoString name="Inco2">MEXICO</ecfd:campoString>
+        <ecfd:campoString name="Shtcty">Mexico</ecfd:campoString>
+        <ecfd:campoString name="Trmdsc">Net 30 days from date of Invoice</ecfd:campoString>
+        <ecfd:campoString name="SystUname">SPMOSU1053</ecfd:campoString>
+        <ecfd:campoString name="HeaderDoctype">Nota de Crédito</ecfd:campoString>
+        <ecfd:campoString name="Plntnam">PR ESPEC MEXICANA MTOWHSE 8962</ecfd:campoString>
+        <ecfd:campoString name="Erdat">20200806</ecfd:campoString>
+        <ecfd:campoString name="TitleElement">Credit Note / Nota de Crédito</ecfd:campoString>
+        <ecfd:campoString name="Approved">Net 30 days from date of Invoice</ecfd:campoString>
+        <ecfd:campoString name="TipoenFac">Credit Note / Nota de Crédito</ecfd:campoString>
+        <ecfd:campoString name="DeliveryDate" />
+        <ecfd:campoString name="TxtC1">Productos Especializados de México DDM, S. de R.L. de C.V.</ecfd:campoString>
+        <ecfd:campoString name="TxtC2">DOMICILIO FISCAL</ecfd:campoString>
+        <ecfd:campoString name="TxtC3">LAGO ALBERTO 319-PH2, COL. GRANADA, CP 11520 MIGUEL HIDALGO, MEXICO, CMX</ecfd:campoString>
+        <ecfd:campoString name="TxtC4">R.F.C. PEM170317EM6</ecfd:campoString>
+        <ecfd:campoString name="TxtC5">DOMICILIO DEL ESTABLECIMIENTO:</ecfd:campoString>
+        <ecfd:campoString name="TxtC6">CARRETERA MÉXICO - QUERÉTARO KM 30, LOTE 2</ecfd:campoString>
+        <ecfd:campoString name="TxtC7">PARQUE LOGÍSTICO SAN MARTÍN OBISPO PARK II, 4A Y 4B</ecfd:campoString>
+        <ecfd:campoString name="TxtC8">COL. SAN MARTÍN OBISPO, CUAUTITLÁN IZCALLI</ecfd:campoString>
+        <ecfd:campoString name="TxtC9">ESTADO DE MEXICO, C.P. 54763</ecfd:campoString>
+        <ecfd:campoString name="Z5L1" />
+        <ecfd:campoString name="Z5L2" />
+        <ecfd:campoString name="Z5L3" />
+        <ecfd:campoString name="Z5L4" />
+        <ecfd:campoString name="Z5L5" />
+        <ecfd:campoString name="Z5L6" />
+        <ecfd:campoString name="Z5L7" />
+        <ecfd:campoString name="Z5L8" />
+        <ecfd:campoString name="Z5L9" />
+        <ecfd:campoString name="Z5L10" />
+        <ecfd:campoString name="Z5L11" />
+        <ecfd:campoString name="Z5L12" />
+        <ecfd:campoString name="Z5L13" />
+        <ecfd:campoString name="Z5L14" />
+        <ecfd:campoString name="Z5L15" />
+        <ecfd:campoString name="Z5L16" />
+        <ecfd:campoString name="Z5L17" />
+        <ecfd:campoString name="Z5L18" />
+        <ecfd:campoString name="Z5L19" />
+        <ecfd:campoString name="Z5L20" />
+        <ecfd:campoString name="Z5L21" />
+        <ecfd:campoString name="Z5L22" />
+        <ecfd:campoString name="Z5L23" />
+        <ecfd:campoString name="Z5L24" />
+        <ecfd:campoString name="Z5L25" />
+        <ecfd:campoString name="Z5L26" />
+        <ecfd:campoString name="Z5L27" />
+        <ecfd:campoString name="Z5L28" />
+        <ecfd:campoString name="Z5L29" />
+        <ecfd:campoString name="Z5L30" />
+        <ecfd:campoString name="Z3L1" />
+        <ecfd:campoString name="Z3L2" />
+        <ecfd:campoString name="Z3L3" />
+        <ecfd:campoString name="Z3L4" />
+        <ecfd:campoString name="Z3L5" />
+        <ecfd:campoString name="Z3L6" />
+        <ecfd:campoString name="Z3L7" />
+        <ecfd:campoString name="Z3L8" />
+        <ecfd:campoString name="Z3L9" />
+        <ecfd:campoString name="Z3L10" />
+        <ecfd:campoString name="Z3L11" />
+        <ecfd:campoString name="Z3L12" />
+        <ecfd:campoString name="Z3L13" />
+        <ecfd:campoString name="Z3L14" />
+        <ecfd:campoString name="Z3L15" />
+        <ecfd:campoString name="Z3L16" />
+        <ecfd:campoString name="Z3L17" />
+        <ecfd:campoString name="Z3L18" />
+        <ecfd:campoString name="Z3L19" />
+        <ecfd:campoString name="Z3L20" />
+        <ecfd:campoString name="Z3L21" />
+        <ecfd:campoString name="Z3L22" />
+        <ecfd:campoString name="Z3L23" />
+        <ecfd:campoString name="Z3L24" />
+        <ecfd:campoString name="Z3L25" />
+        <ecfd:campoString name="Z3L26" />
+        <ecfd:campoString name="Z3L27" />
+        <ecfd:campoString name="Z3L28" />
+        <ecfd:campoString name="Z3L29" />
+        <ecfd:campoString name="Z3L30" />
+        <ecfd:campoString name="Z10L1" />
+        <ecfd:campoString name="Z10L2" />
+        <ecfd:campoString name="Z10L3" />
+        <ecfd:campoString name="Z10L4" />
+        <ecfd:campoString name="Z10L5" />
+        <ecfd:campoString name="Z10L6" />
+        <ecfd:campoString name="Z10L7" />
+        <ecfd:campoString name="Z10L8" />
+        <ecfd:campoString name="Z10L9" />
+        <ecfd:campoString name="Z10L10" />
+        <ecfd:campoString name="Z10L11" />
+        <ecfd:campoString name="Z10L12" />
+        <ecfd:campoString name="Z10L13" />
+        <ecfd:campoString name="Z10L14" />
+        <ecfd:campoString name="Z10L15" />
+        <ecfd:campoString name="Z10L16" />
+        <ecfd:campoString name="Z10L17" />
+        <ecfd:campoString name="Z10L18" />
+        <ecfd:campoString name="Z10L19" />
+        <ecfd:campoString name="Z10L20" />
+        <ecfd:campoString name="Z10L21" />
+        <ecfd:campoString name="Z10L22" />
+        <ecfd:campoString name="Z10L23" />
+        <ecfd:campoString name="Z10L24" />
+        <ecfd:campoString name="Z10L25" />
+        <ecfd:campoString name="Z10L26" />
+        <ecfd:campoString name="Z10L27" />
+        <ecfd:campoString name="Z10L28" />
+        <ecfd:campoString name="Z10L29" />
+        <ecfd:campoString name="Z10L30" />
+        <ecfd:campoString name="Z16L1" />
+        <ecfd:campoString name="Z16L2" />
+        <ecfd:campoString name="Z16L3" />
+        <ecfd:campoString name="Z16L4" />
+        <ecfd:campoString name="Z16L5" />
+        <ecfd:campoString name="Z16L6" />
+        <ecfd:campoString name="Z16L7" />
+        <ecfd:campoString name="Z16L8" />
+        <ecfd:campoString name="Z16L9" />
+        <ecfd:campoString name="Z16L10" />
+        <ecfd:campoString name="Z16L11" />
+        <ecfd:campoString name="Z16L12" />
+        <ecfd:campoString name="Z16L13" />
+        <ecfd:campoString name="Z16L14" />
+        <ecfd:campoString name="Z16L15" />
+        <ecfd:campoString name="Z16L16" />
+        <ecfd:campoString name="Z16L17" />
+        <ecfd:campoString name="Z16L18" />
+        <ecfd:campoString name="Z16L19" />
+        <ecfd:campoString name="Z16L20" />
+        <ecfd:campoString name="Z16L21" />
+        <ecfd:campoString name="Z16L22" />
+        <ecfd:campoString name="Z16L23" />
+        <ecfd:campoString name="Z16L24" />
+        <ecfd:campoString name="Z16L25" />
+        <ecfd:campoString name="Z16L26" />
+        <ecfd:campoString name="Z16L27" />
+        <ecfd:campoString name="Z16L28" />
+        <ecfd:campoString name="Z16L29" />
+        <ecfd:campoString name="Z16L30" />
+        <ecfd:campoString name="DEC1" />
+        <ecfd:campoString name="DEC2" />
+        <ecfd:campoString name="DEC3" />
+        <ecfd:campoString name="DEC4" />
+        <ecfd:campoString name="DEC5" />
+        <ecfd:campoString name="DEC6" />
+        <ecfd:campoString name="DEC7" />
+        <ecfd:campoString name="DEC8" />
+        <ecfd:campoString name="DEC9" />
+        <ecfd:campoString name="DEC10" />
+        <ecfd:campoString name="TRD1" />
+        <ecfd:campoString name="TRD2" />
+        <ecfd:campoString name="TRD3" />
+        <ecfd:campoString name="TRD4" />
+        <ecfd:campoString name="TRD5" />
+        <ecfd:campoString name="TRD6" />
+        <ecfd:campoString name="TRD7" />
+        <ecfd:campoString name="TRD8" />
+        <ecfd:campoString name="TRD9" />
+        <ecfd:campoString name="TRD10" />
+        <ecfd:campoString name="PAC1" />
+        <ecfd:campoString name="PAC2" />
+        <ecfd:campoString name="PAC3" />
+        <ecfd:campoString name="PAC4" />
+        <ecfd:campoString name="PAC5" />
+        <ecfd:campoString name="PAC6" />
+        <ecfd:campoString name="PAC7" />
+        <ecfd:campoString name="PAC8" />
+        <ecfd:campoString name="PAC9" />
+        <ecfd:campoString name="PAC10" />
+        <ecfd:campoString name="VKORG">F42A</ecfd:campoString>
+        <ecfd:campoString name="ORGNAME">ITECH DUP MX 8962</ecfd:campoString>
+        <ecfd:campoString name="Division">02</ecfd:campoString>
+        <ecfd:campoString name="TipoRelacion">01</ecfd:campoString>
+        <ecfd:campoString name="UUID">d1970e97-00d0-4146-a11b-d9294ad03eb9</ecfd:campoString>
+        <ecfd:campoString name="Confirmacion" />
+        <ecfd:campoString name="datobanc1" />
+        <ecfd:campoString name="datobanc2" />
+        <ecfd:campoString name="datobanc3" />
+        <ecfd:campoString name="datobanc4" />
+        <ecfd:campoString name="datobanc5" />
+        <ecfd:campoString name="datobanc6" />
+        <ecfd:campoString name="datobanc7" />
+        <ecfd:campoString name="datobanc8">1.HSBC SA. ACCOUNT: 7003705134 SWIFT: BIMEMXMM, AND PAYMENT REFERENCE*</ecfd:campoString>
+        <ecfd:campoString name="Tasa1" />
+        <ecfd:campoString name="Tasa2" />
+        <ecfd:campoString name="Tasa3" />
+        <ecfd:campoString name="Tasa4" />
+        <ecfd:campoString name="Timpuesto2" />
+        <ecfd:campoString name="Timpuesto1" />
+        <ecfd:campoString name="Timpuesto3" />
+        <ecfd:campoString name="Timpuesto4" />
+        <ecfd:campoString name="Tfactor1" />
+        <ecfd:campoString name="Tfactor2" />
+        <ecfd:campoString name="Tfactor3" />
+        <ecfd:campoString name="Tfactor4" />
+        <ecfd:campoString name="Mimpuesto1" />
+        <ecfd:campoString name="Montoimpuesto2" />
+        <ecfd:campoString name="Montoimpuesto3" />
+        <ecfd:campoString name="Montoimpuesto4" />
+        <ecfd:campoString name="RegimenFiscal">601</ecfd:campoString>
+        <ecfd:campoString name="LugarDeExpedicion">54769</ecfd:campoString>
+        <ecfd:CustDetalle>
+          <ecfd:CustDetNroLin>1</ecfd:CustDetNroLin>
+          <ecfd:CustDetAFN_07>Cantidad Entregada/Delivered Qty:              1.000BX                                                                                                                                                                                                   Net price             2.081,62</ecfd:CustDetAFN_07>
+          <ecfd:CustDetAFN_15>84111506</ecfd:CustDetAFN_15>
+          <ecfd:CustDetAFN_17>ACT</ecfd:CustDetAFN_17>
+          <ecfd:CustDetAFN_18>CYU DFM 045 1270X2032 50X80 12P</ecfd:CustDetAFN_18>
+          <ecfd:CustDetAFN_19>1.000</ecfd:CustDetAFN_19>
+          <ecfd:CustDetAFN_20>D11821973</ecfd:CustDetAFN_20>
+          <ecfd:CustDetAFN_22>Tasa</ecfd:CustDetAFN_22>
+          <ecfd:CustDetAFN_23>2081.62</ecfd:CustDetAFN_23>
+          <ecfd:CustDetAFN_24>002</ecfd:CustDetAFN_24>
+          <ecfd:CustDetAFN_25>0.160000</ecfd:CustDetAFN_25>
+          <ecfd:CustDetAFN_27>333.06</ecfd:CustDetAFN_27>
+          <ecfd:CustDetAFN_28>2081.6200</ecfd:CustDetAFN_28>
+          <ecfd:CustDetAFN_29>2081.62</ecfd:CustDetAFN_29>
+          <ecfd:CustDetAFN_30>CAJA</ecfd:CustDetAFN_30>
+        </ecfd:CustDetalle>
+      </ecfd:Personalizados>
+    </ecfd:ECFD>
+  </cfdi:Addenda>
+</cfdi:Comprobante>
