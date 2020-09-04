@@ -20,7 +20,7 @@ public class Consecutivo {
     @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.LAZY)
     private Empresa empresa;
 	
-	@JoinColumn(name = "claveSucursal", referencedColumnName = "ClaveProv")
+	@JoinColumn(name = "Sucursal")
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor sucursal;
 	

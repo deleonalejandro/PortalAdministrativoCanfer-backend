@@ -27,7 +27,7 @@ public class DetFormularioComex {
 	@ManyToOne(targetEntity = ClasificacionComex.class, fetch = FetchType.LAZY)
 	private ClasificacionComex clasificacion;
 	
-	@JoinColumn(name = "Proveedor", referencedColumnName= "claveProv")
+	@JoinColumn(name = "Proveedor")
 	@ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
 	private Proveedor proveedor;
 	 

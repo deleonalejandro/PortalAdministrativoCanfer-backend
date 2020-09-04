@@ -1,6 +1,9 @@
 package com.canfer.app.storage;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.model.FacturaNotaComplemento;
@@ -22,9 +26,31 @@ import com.canfer.app.model.FacturaNotaComplemento;
 public class FacturaStorageService implements StorageService {
 
 	private final Path rootLocation =  Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores");
-
+	
 	@Override
-	public void store(MultipartFile file, Path filename) {
+	public void store(MultipartFile file) {
+		String filename = StringUtils.cleanPath(file.getOriginalFilename());
+		try {
+			if (file.isEmpty()) {
+				throw new StorageException("Failed to store empty file " + filename);
+			}
+			if (filename.contains("..")) {
+				// This is a security check
+				throw new StorageException(
+						"Cannot store file with relative path outside current directory "
+								+ filename);
+			}
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, this.rootLocation.resolve(filename),
+					StandardCopyOption.REPLACE_EXISTING);
+			}
+		}
+		catch (IOException e) {
+			throw new StorageException("Failed to store file " + filename, e);
+		}
+	}
+
+	public void storeFactura(MultipartFile file, Path filename) {
 		try {
 			if (filename.toString().contains("..")) {
 				// This is a security check
@@ -40,6 +66,25 @@ public class FacturaStorageService implements StorageService {
 			throw new StorageException("Failed to store file " + filename, e);
 		}
 	}
+	
+	public void storeFactura(Path path, Path filename) {
+		try {
+			
+			//Make a file from the given path
+			File file = new File(path.toString());
+			InputStream is = new FileInputStream(file);
+			
+			Files.copy(is, this.rootLocation.resolve(filename),
+					StandardCopyOption.REPLACE_EXISTING);
+			// closing the input stream 
+			is.close();
+		}
+		catch (IOException e) {
+			throw new StorageException("Failed to store file " + filename, e);
+		}
+	}
+	
+	
 
 	@Override
 	public Stream<Path> loadAll() {
@@ -82,9 +127,18 @@ public class FacturaStorageService implements StorageService {
 	public void deleteAll() {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
-
+	
 	@Override
-	public Path init(FacturaNotaComplemento factura) {
+	public void init() {
+		try {
+			Files.createDirectories(rootLocation);
+		}
+		catch (IOException e) {
+			throw new StorageException("Could not initialize storage", e);
+		}
+	}
+
+	public Path createFacturaDirectory(FacturaNotaComplemento factura) {
 		LocalDateTime today = LocalDateTime.now();
 		Path foldersPath = Paths.get(factura.getEmpresa().getRfc(), String.valueOf(today.getYear()),
 				String.valueOf(today.getMonthValue()), factura.getProveedor().getRfc());

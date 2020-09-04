@@ -46,7 +46,7 @@ public class UsuarioService {
 		Usuario usuario;
 		String ePassword;
 		
-		//First check if we want to creat a usuario or usuario proveedor.
+		//First check if we want to create a usuario or usuario proveedor.
 		if (user.getRfc() == null) {
 			/*USER CREATION*/
 			//We  check if the user already exists.
@@ -74,6 +74,7 @@ public class UsuarioService {
 				throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
 			}
 			//We check if the proveedor exists.
+			// TODO 
 			testProveedor = proveedorRepository.findByRfc(user.getRfc());
 			if (testProveedor == null) {
 				throw new UsernameNotFoundException("El proveedor no es valido. Verifique el RFC");
@@ -126,5 +127,7 @@ public class UsuarioService {
 		
 		usuarioRepository.delete(deleteUsuario.get());
 	}
+	
+	
 
 }

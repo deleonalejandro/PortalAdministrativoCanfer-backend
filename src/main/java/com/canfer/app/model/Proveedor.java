@@ -4,24 +4,19 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity(name = "Proveedor")
 public class Proveedor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idProveedor;
+	private Long idProveedor;
 
-	@JoinColumn(name = "idMunicipio")
-	@ManyToOne(targetEntity = Municipio.class, fetch = FetchType.LAZY)
-	private Municipio municipio;
+	private String municipio;
 
 	@ManyToMany(mappedBy = "proveedores")
 	private List<Empresa> empresas;
@@ -99,19 +94,19 @@ public class Proveedor {
 
 	// Getters and Setters
 
-	public long getIdProveedor() {
+	public Long getIdProveedor() {
 		return idProveedor;
 	}
 
-	public void setIdProveedor(long idProveedor) {
+	public void setIdProveedor(Long idProveedor) {
 		this.idProveedor = idProveedor;
 	}
 
-	public Municipio getMunicipio() {
+	public String getMunicipio() {
 		return municipio;
 	}
 
-	public void setMunicipio(Municipio municipio) {
+	public void setMunicipio(String municipio) {
 		this.municipio = municipio;
 	}
 

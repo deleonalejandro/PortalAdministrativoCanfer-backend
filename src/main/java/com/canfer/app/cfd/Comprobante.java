@@ -1,12 +1,8 @@
 package com.canfer.app.cfd;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

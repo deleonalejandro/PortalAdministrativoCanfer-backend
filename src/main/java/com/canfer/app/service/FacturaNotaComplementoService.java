@@ -3,6 +3,7 @@ package com.canfer.app.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,10 @@ public class FacturaNotaComplementoService {
 		
 	}
 	
+	public void delete(Long id) {
+		facturaNotaComplementoRepository.deleteById(id);
+	}
+	
 	public FacturaNotaComplemento findByUUID(String uuid) {
 		FacturaNotaComplemento fncDocumento = facturaNotaComplementoRepository.findByUuid(uuid);
 		//Check if the document really exists in the database.
@@ -83,30 +88,54 @@ public class FacturaNotaComplementoService {
 	
 	
 	
-	public FacturaNotaComplemento save(Comprobante comprobante) throws NotFoundException {
+	public FacturaNotaComplemento save(Comprobante comprobante) throws FileExistsException, NotFoundException {
 		
 		FacturaNotaComplemento documentoFiscal;
 		Consecutivo consecutivo;
 		Empresa receptor;
 		Proveedor emisor;
+		List<Proveedor> emisores;
 		
-			
-		//Get the corresponding objects.
-		receptor = empresaRepository.findByRfc(comprobante.getReceptor().getRfc());
-		emisor = proveedorRepository.findByRfc(comprobante.getEmisor().getRfc());
-		
-		if (receptor == null || emisor  == null ) {
-			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. (RFC: " + receptor.getRfc() + emisor.getRfc() + ")");
+		if (exist(comprobante.getComplemento().getTimbreFiscalDigital().getUuid())) {
+			throw new FileExistsException("La factura ya ha sido registrada. UUID " + comprobante.getComplemento().getTimbreFiscalDigital().getUuid());
 		}
+		
+		
+		
+		//Get the corresponding objects.
+		
+		//TODO CHECK FOR DIFFERENT PROVEEDORES, SAME RFC ITS NOT ENOUGH!!!!!!!!! RECORDAR VARIOS PROVEEDORES NO ESTAN UNICAMENTE IDENTIFICADOS
+		
+		receptor = empresaRepository.findByRfc(comprobante.getReceptor().getRfc());
+		emisores = proveedorRepository.findAllByRfc(comprobante.getEmisor().getRfc());
+		
+		// verify not null
+		if (receptor == null || emisores  == null ) {
+			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. (RFC: " + 
+		comprobante.getReceptor().getRfc() + comprobante.getEmisor().getRfc() + ")");
+		}
+		
+		// TODO check for the right emisor; test just the first for now
+		
+		emisor = emisores.get(0);
 
+
+		
 		documentoFiscal = new FacturaNotaComplemento();
 		
 		//TODO Considerar SequenceGenerator or CosecutivoService; Considerar hacer tabla de Modulos.
 		consecutivo = consecutivoRepository.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
-		documentoFiscal.setIdNumSap(consecutivo.getCurrentNum());
-		consecutivo.setCurrentNum(consecutivo.getCurrentNum() + 1);
-		consecutivoRepository.save(consecutivo);
 		
+		// TODO TEST PURPOSES, REMOVE FOR PRODUCTION CODE.
+		if (consecutivo == null) {
+			documentoFiscal.setIdNumSap(0L);
+		} else {
+			//
+			documentoFiscal.setIdNumSap(consecutivo.getCurrentNum());
+			consecutivo.setCurrentNum(consecutivo.getCurrentNum() + 1);
+			consecutivoRepository.save(consecutivo);
+			
+		}
 		
 		//Set the object fields
 		documentoFiscal.setEmpresa(receptor);
@@ -152,8 +181,6 @@ public class FacturaNotaComplementoService {
 		
 		return facturaNotaComplementoRepository.save(factura);
 	}
-	
-	
-	
+		
 
 }

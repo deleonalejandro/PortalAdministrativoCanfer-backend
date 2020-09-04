@@ -1,7 +1,7 @@
 package com.canfer.app.dto;
 
 public class EmpresaDTO {
-	private Long idEmpresa;
+	private Long idEmpresa = 0L;
 	private Long idMunicipio;
 	private String rfc;
 	private String nombre;

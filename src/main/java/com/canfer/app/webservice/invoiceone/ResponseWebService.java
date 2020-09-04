@@ -35,11 +35,11 @@ public class ResponseWebService {
 			String[] valuesInQuotes2 = StringUtils.substringsBetween(root.getAttributes().item(2).toString(), "\"",
 					"\"");
 			if (valuesInQuotes2[0].equalsIgnoreCase("ACCEPTED")) {
-				answer.add("1");
+				answer.add("true");
 				answer.add("Este documento es válido ante el SAT.");
 				answer.add(StringUtils.substringAfter(message, "2ESTATUS SAT:"));
 			} else {
-				answer.add("0");
+				answer.add("false");
 				answer.add(StringUtils.substringBetween(message, "InvoiceOne", "2ESTATUS"));
 				answer.add("No encontrado");
 			}
@@ -47,7 +47,6 @@ public class ResponseWebService {
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
-
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();

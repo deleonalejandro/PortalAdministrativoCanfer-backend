@@ -1,26 +1,35 @@
 package com.canfer.app.controller;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
+import com.canfer.app.model.Documento;
 import com.canfer.app.model.FacturaNotaComplemento;
-import com.canfer.app.repository.ConsecutivoRepository;
-import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.FacturaNotaComplementoService;
 import com.canfer.app.storage.FacturaStorageService;
+import com.canfer.app.storage.FileStorageService;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 
 @Controller
-public class FilesController {
+@RequestMapping("/documentosFiscalesClient")
+public class DocumentosFiscalesController {
 	
 	@Autowired
 	XmlService xmlService;
@@ -33,12 +42,11 @@ public class FilesController {
 	@Autowired
 	ValidationService validationService;
 	@Autowired
-	EmpresaRepository empresaRepository;
-	@Autowired
-	ConsecutivoRepository conrepo;
+	FileStorageService fileStorageService;
 	
-	public FilesController() {
-		// Constructor vacio
+	
+	public DocumentosFiscalesController() {
+		// Constructor empty
 	}
 	
 	@PostMapping("/uploadFactura")
@@ -64,11 +72,11 @@ public class FilesController {
 			 */ 
 			
 			//Initialize folders and get the route.
-			folderName = facturaStorageService.init(factura);
+			folderName = facturaStorageService.createFacturaDirectory(factura);
 			//Get the filename including the parent folders without the root folder.
 			filename = facturaStorageService.getFilename(factura, folderName, "xml");
 			//Store the XML in the server.
-			facturaStorageService.store(files[0], filename);
+			facturaStorageService.storeFactura(files[0], filename);
 			//Take the route.
 			rutaXml = facturaStorageService.load(filename.toString());
 			//Save document object.
@@ -83,7 +91,7 @@ public class FilesController {
 				//Get the filename including the parent folders without the root folder.
 				filename = facturaStorageService.getFilename(factura, folderName, "pdf");
 				//Store the XML in the server.
-				facturaStorageService.store(files[1], filename);
+				facturaStorageService.storeFactura(files[1], filename);
 				//Take the route.
 				rutaPdf = facturaStorageService.load(filename.toString());
 				//Save document object.
@@ -102,10 +110,82 @@ public class FilesController {
 			e.printStackTrace();
 		}
 		
-		
-		
 		return "redirect:/documentosFiscales";
 		
 	}
-
+	
+	@PostMapping(value = "/deleteMultipleFacturas")
+	public String deleteMultipleFactura(@RequestParam("idFacturas") Long[] ids) {
+		try {
+			
+			for(Long id : ids) {
+				
+				// delete the object using the id
+				facturaNotaComplementoService.delete(id);
+				
+				// delete files first, since we use document info to get route
+				List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
+				
+				// delete all files 
+				facturaDocuments.forEach(document -> {
+					// get the route from each document
+					Path file = Paths.get(document.getRuta());
+					if (file.toFile().exists()) {
+						try {
+							// delete file if exists
+							Files.delete(file);
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+				// finally delete documents
+				documentoService.deleteFacturaDocuments(id);
+			}
+				
+		} catch (Exception e) {
+			System.out.println("Ocurrio un error al borrar multiples facturas.");
+		}
+		return "redirect:/documentosFiscales";	
+	}
+	
+	@GetMapping(value = "/delete/{id}")
+	public String deleteFactura(@PathVariable Long id, Model model) {
+		try {
+			// delete the object using the id
+			facturaNotaComplementoService.delete(id);
+			
+			// delete files first, since we use document info to get route
+			List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
+			
+			// delete all files 
+			facturaDocuments.forEach(document -> {
+				// get the route from each document
+				Path file = Paths.get(document.getRuta());
+				if (file.toFile().exists()) {
+					try {
+						// delete file if exists
+						Files.delete(file);
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			// finally delete documents
+			documentoService.deleteFacturaDocuments(id);
+				
+		} catch (Exception e) {
+			System.out.println("Ocurrio un error al borrar la factura.");
+			model.addAttribute("DeleteFacturaError", e.getMessage());
+		}
+		return "redirect:/documentosFiscales";	
+	}
+	
+	
+	
+	
 }

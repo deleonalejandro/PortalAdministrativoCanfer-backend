@@ -24,7 +24,7 @@ public class FormularioRepGastos {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idFormularioRepGastos; 
 	
-    @JoinColumn(name = "SocioNegocio", referencedColumnName= "claveProv")
+    @JoinColumn(name = "SocioNegocio")
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor proveedor;
 	
