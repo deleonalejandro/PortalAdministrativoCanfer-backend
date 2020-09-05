@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -115,223 +116,223 @@ public abstract class ComprobanteFiscal {
 		this.comentario = "";
 	}
 
-	protected Long getIdComprobanteFiscal() {
+	public Long getIdComprobanteFiscal() {
 		return idComprobanteFiscal;
 	}
 
-	protected void setIdComprobanteFiscal(Long idComprobanteFiscal) {
+	public void setIdComprobanteFiscal(Long idComprobanteFiscal) {
 		this.idComprobanteFiscal = idComprobanteFiscal;
 	}
 
-	protected String getUuid() {
+	public String getUuid() {
 		return uuid;
 	}
 
-	protected void setUuid(String uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 
-	protected Long getIdNumSap() {
+	public Long getIdNumSap() {
 		return idNumSap;
 	}
 
-	protected void setIdNumSap(Long idNumSap) {
+	public void setIdNumSap(Long idNumSap) {
 		this.idNumSap = idNumSap;
 	}
 
-	protected Empresa getEmpresa() {
+	public Empresa getEmpresa() {
 		return empresa;
 	}
 
-	protected void setEmpresa(Empresa empresa) {
+	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
 
-	protected Proveedor getProveedor() {
+	public Proveedor getProveedor() {
 		return proveedor;
 	}
 
-	protected void setProveedor(Proveedor proveedor) {
+	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
 
-	protected String getSerie() {
+	public String getSerie() {
 		return serie;
 	}
 
-	protected void setSerie(String serie) {
+	public void setSerie(String serie) {
 		this.serie = serie;
 	}
 
-	protected String getFolio() {
+	public String getFolio() {
 		return folio;
 	}
 
-	protected void setFolio(String folio) {
+	public void setFolio(String folio) {
 		this.folio = folio;
 	}
 
-	protected String getRfcEmpresa() {
+	public String getRfcEmpresa() {
 		return rfcEmpresa;
 	}
 
-	protected void setRfcEmpresa(String rfcEmpresa) {
+	public void setRfcEmpresa(String rfcEmpresa) {
 		this.rfcEmpresa = rfcEmpresa;
 	}
 
-	protected String getRfcProveedor() {
+	public String getRfcProveedor() {
 		return rfcProveedor;
 	}
 
-	protected void setRfcProveedor(String rfcProveedor) {
+	public void setRfcProveedor(String rfcProveedor) {
 		this.rfcProveedor = rfcProveedor;
 	}
 
-	protected String getFechaEmision() {
+	public String getFechaEmision() {
 		return fechaEmision;
 	}
 
-	protected void setFechaEmision(String fechaEmision) {
+	public void setFechaEmision(String fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
 
-	protected String getFechaTimbre() {
+	public String getFechaTimbre() {
 		return fechaTimbre;
 	}
 
-	protected void setFechaTimbre(String fechaTimbre) {
+	public void setFechaTimbre(String fechaTimbre) {
 		this.fechaTimbre = fechaTimbre;
 	}
 
-	protected String getNoCertificadoEmpresa() {
+	public String getNoCertificadoEmpresa() {
 		return noCertificadoEmpresa;
 	}
 
-	protected void setNoCertificadoEmpresa(String noCertificadoEmpresa) {
+	public void setNoCertificadoEmpresa(String noCertificadoEmpresa) {
 		this.noCertificadoEmpresa = noCertificadoEmpresa;
 	}
 
-	protected String getNoCertificadoSat() {
+	public String getNoCertificadoSat() {
 		return noCertificadoSat;
 	}
 
-	protected void setNoCertificadoSat(String noCertificadoSat) {
+	public void setNoCertificadoSat(String noCertificadoSat) {
 		this.noCertificadoSat = noCertificadoSat;
 	}
 
-	protected String getVersionCfd() {
+	public String getVersionCfd() {
 		return versionCfd;
 	}
 
-	protected void setVersionCfd(String versionCfd) {
+	public void setVersionCfd(String versionCfd) {
 		this.versionCfd = versionCfd;
 	}
 
-	protected String getVersionTimbre() {
+	public String getVersionTimbre() {
 		return versionTimbre;
 	}
 
-	protected void setVersionTimbre(String versionTimbre) {
+	public void setVersionTimbre(String versionTimbre) {
 		this.versionTimbre = versionTimbre;
 	}
 
-	protected String getMoneda() {
+	public String getMoneda() {
 		return moneda;
 	}
 
-	protected void setMoneda(String moneda) {
+	public void setMoneda(String moneda) {
 		this.moneda = moneda;
 	}
 
-	protected String getTotal() {
+	public String getTotal() {
 		return total;
 	}
 
-	protected void setTotal(String total) {
+	public void setTotal(String total) {
 		this.total = total;
 	}
 
-	protected String getTipoDocumento() {
+	public String getTipoDocumento() {
 		return tipoDocumento;
 	}
 
-	protected void setTipoDocumento(String tipoDocumento) {
+	public void setTipoDocumento(String tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
 
-	protected Boolean getBitValidoSAT() {
+	public Boolean getBitValidoSAT() {
 		return bitValidoSAT;
 	}
 
-	protected void setBitValidoSAT(Boolean bitValidoSAT) {
+	public void setBitValidoSAT(Boolean bitValidoSAT) {
 		this.bitValidoSAT = bitValidoSAT;
 	}
 
-	protected String getRespuestaValidacion() {
+	public String getRespuestaValidacion() {
 		return respuestaValidacion;
 	}
 
-	protected void setRespuestaValidacion(String respuestaValidacion) {
+	public void setRespuestaValidacion(String respuestaValidacion) {
 		this.respuestaValidacion = respuestaValidacion;
 	}
 
-	protected String getEstatusSAT() {
+	public String getEstatusSAT() {
 		return estatusSAT;
 	}
 
-	protected void setEstatusSAT(String estatusSAT) {
+	public void setEstatusSAT(String estatusSAT) {
 		this.estatusSAT = estatusSAT;
 	}
 
-	protected String getEstatusPago() {
+	public String getEstatusPago() {
 		return estatusPago;
 	}
 
-	protected void setEstatusPago(String estatusPago) {
+	public void setEstatusPago(String estatusPago) {
 		this.estatusPago = estatusPago;
 	}
 
-	protected Boolean getBitRS() {
+	public Boolean getBitRS() {
 		return bitRS;
 	}
 
-	protected void setBitRS(Boolean bitRS) {
+	public void setBitRS(Boolean bitRS) {
 		this.bitRS = bitRS;
 	}
 
-	protected Boolean getBitRSusuario() {
+	public Boolean getBitRSusuario() {
 		return bitRSusuario;
 	}
 
-	protected void setBitRSusuario(Boolean bitRSusuario) {
+	public void setBitRSusuario(Boolean bitRSusuario) {
 		this.bitRSusuario = bitRSusuario;
 	}
 
-	protected String getComentario() {
+	public String getComentario() {
 		return comentario;
 	}
 
-	protected void setComentario(String comentario) {
+	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}
 	
-	protected String getUuidRelacionados() {
+	public String getUuidRelacionados() {
 		return uuidRelacionados;
 	}
 
-	protected void setUuidRelacionados(String uuidRelacionados) {
+	public void setUuidRelacionados(String uuidRelacionados) {
 		this.uuidRelacionados = uuidRelacionados;
 	}
 
-	protected String getTipoRelacionUuidRelacionados() {
+	public String getTipoRelacionUuidRelacionados() {
 		return tipoRelacionUuidRelacionados;
 	}
 
-	protected void setTipoRelacionUuidRelacionados(String tipoRelacionUuidRelacionados) {
+	public void setTipoRelacionUuidRelacionados(String tipoRelacionUuidRelacionados) {
 		this.tipoRelacionUuidRelacionados = tipoRelacionUuidRelacionados;
 	}
 	
-	protected void addUuidRelacionados(String uuid) {
+	public void addUuidRelacionados(String uuid) {
 		if (this.uuidRelacionados.isEmpty()) {
 			this.uuidRelacionados = uuid;
 		} else {
@@ -340,7 +341,7 @@ public abstract class ComprobanteFiscal {
 	}
 	
 	@JsonIgnore
-	protected List<String> getUuidRelacionadosList(){
+	public List<String> getUuidRelacionadosList(){
 		if (this.uuidRelacionados.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -348,7 +349,50 @@ public abstract class ComprobanteFiscal {
 	}
 
 	
+	@Entity
+	@DiscriminatorValue("Factura")
+	public static class Factura extends ComprobanteFiscal {
+		
+		@JoinColumn(name = "uuidComplemento", nullable= true)
+	    @ManyToOne(targetEntity = FacturaNotaComplemento.class, fetch = FetchType.LAZY)
+	    private FacturaNotaComplemento complemento;
+		
+		public Factura() {
+			super();
+		}
+
+		public FacturaNotaComplemento getComplemento() {
+			return complemento;
+		}
+
+		public void setComplemento(FacturaNotaComplemento complemento) {
+			this.complemento = complemento;
+		}
+		
+		
+		
+	}
 	
+	@Entity
+	@DiscriminatorValue("NotaDeCredito")
+	public static class NotaDeCredito extends ComprobanteFiscal {
+
+		public NotaDeCredito() {
+			super();
+		}
+		
+	}
+	
+	@Entity
+	@DiscriminatorValue("ComplementoDePago")
+	public static class ComplementoPago extends ComprobanteFiscal {
+		
+		public ComplementoPago() {
+			super();
+		}
+
+	}
+
 	
 	
 

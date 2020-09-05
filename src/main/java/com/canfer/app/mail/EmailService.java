@@ -60,7 +60,7 @@ public class EmailService {
 
 	public void handleEmails(Message[] messages) {
 
-		List<BodyPart> attachments = new ArrayList<>();
+		List<BodyPart> attachments;
 		
 		attachments = getAllAttachments(messages);
 		
@@ -235,7 +235,7 @@ public class EmailService {
 			//La empresa o el proveedor no se encuentran en el catalogo
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
 			e.printStackTrace();
-		}  catch (Exception e) {
+		} catch (Exception e) {
 			// Error inesperado
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
 			e.printStackTrace();
