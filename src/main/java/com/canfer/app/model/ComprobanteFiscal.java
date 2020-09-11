@@ -17,6 +17,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.canfer.app.cfd.Comprobante;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -107,14 +108,51 @@ public abstract class ComprobanteFiscal {
 	
 	@Column
 	private String comentario;
-
-	//Constructor 
+	
 	public ComprobanteFiscal() {
+		// Default constructor
+	}
+
+	// Concrete Constructor 
+	public ComprobanteFiscal(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
+		
 		this.estatusPago = "EN PROCESO";
 		this.bitRS = false;
 		this.bitRSusuario = false;
 		this.comentario = "";
+		
+		//Set SAP ID
+		this.idNumSap = consecutivo;
+		
+		//Set the object fields
+		this.empresa = empresa;
+		this.proveedor = proveedor;
+		
+		
+		//Use the information from the XML to fill the information
+		this.uuid = comprobante.getComplemento().getTimbreFiscalDigital().getUuid();
+		this.serie = comprobante.getSerie();
+		this.folio = comprobante.getFolio();
+		this.rfcEmpresa = comprobante.getReceptor().getRfc();
+		this.rfcProveedor = comprobante.getEmisor().getRfc();
+		this.fechaEmision = comprobante.getFecha();
+		this.fechaTimbre = comprobante.getComplemento().getTimbreFiscalDigital().getFechaTimbrado();
+		this.noCertificadoEmpresa = comprobante.getNoCertificado();
+		this.noCertificadoSat = comprobante.getComplemento().getTimbreFiscalDigital().getNoCertificadoSat();
+		this.versionCfd = comprobante.getVersion();
+		this.versionTimbre = comprobante.getComplemento().getTimbreFiscalDigital().getVersion();
+		this.moneda = comprobante.getMoneda();
+		this.total = comprobante.getTotal();
+		this.tipoDocumento = comprobante.getTipoDeComprobante();
+		
+		//Related UUIDs
+		if (comprobante.getCfdiRelacionados() != null) {
+			//Iterate the list and add all UUIDS
+			comprobante.getCfdiRelacionados().getCdfiList().forEach(cfdi -> this.addUuidRelacionados(cfdi.getUuid()));
+			this.tipoRelacionUuidRelacionados = comprobante.getCfdiRelacionados().getTipoRelacion();
+		}
 	}
+	
 
 	public Long getIdComprobanteFiscal() {
 		return idComprobanteFiscal;
@@ -347,49 +385,61 @@ public abstract class ComprobanteFiscal {
 		}
 		return Arrays.asList(this.uuidRelacionados.split(",")); 
 	}
-
+	
 	
 	@Entity
-	@DiscriminatorValue("Factura")
+	@DiscriminatorValue("FACTURA")
 	public static class Factura extends ComprobanteFiscal {
 		
 		@JoinColumn(name = "uuidComplemento", nullable= true)
-	    @ManyToOne(targetEntity = FacturaNotaComplemento.class, fetch = FetchType.LAZY)
-	    private FacturaNotaComplemento complemento;
+	    @ManyToOne(fetch = FetchType.LAZY)
+	    private ComplementoPago complemento;
 		
 		public Factura() {
-			super();
+			// Default constructor
 		}
-
-		public FacturaNotaComplemento getComplemento() {
+		
+		public Factura(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
+			super(comprobante, empresa, proveedor, consecutivo);
+		}
+		
+		public ComplementoPago getComplemento() {
 			return complemento;
 		}
-
-		public void setComplemento(FacturaNotaComplemento complemento) {
+		public void setComplemento(ComplementoPago complemento) {
 			this.complemento = complemento;
 		}
 		
 		
-		
 	}
 	
 	@Entity
-	@DiscriminatorValue("NotaDeCredito")
+	@DiscriminatorValue("NOTA_DE_CREDITO")
 	public static class NotaDeCredito extends ComprobanteFiscal {
-
+		
 		public NotaDeCredito() {
-			super();
+			// Default constructor
+		}
+
+		public NotaDeCredito(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
+			super(comprobante, empresa, proveedor, consecutivo);
 		}
 		
+		
 	}
 	
 	@Entity
-	@DiscriminatorValue("ComplementoDePago")
+	@DiscriminatorValue("COMPLEMENTO_DE_PAGO")
 	public static class ComplementoPago extends ComprobanteFiscal {
 		
 		public ComplementoPago() {
-			super();
+			// Default constructor
 		}
+		
+		public ComplementoPago(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
+			super(comprobante, empresa, proveedor, consecutivo);
+		}
+		
 
 	}
 

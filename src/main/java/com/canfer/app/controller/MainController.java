@@ -16,7 +16,7 @@ public class MainController {
 		return "index";
 	}
 	
-	@GetMapping(value = "/documentosFiscales")
+	@GetMapping(value = "/documentosFiscalesClient")
 	public String getModuloDocumentosFiscales() {
 		return "documentos-fiscales";
 	}

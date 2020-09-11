@@ -5,10 +5,14 @@ import java.time.LocalDateTime;
 
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -16,6 +20,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 	
 @Entity(name = "Documento")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Tipo_Documento")
 public class Documento {
 
 	@Id
@@ -145,6 +151,32 @@ public class Documento {
 
 	public void setDocEntry(String docEntry) {
 		this.docEntry = docEntry;
+	}
+	
+	@Entity
+	@DiscriminatorValue("DOCUMENTO_XML")
+	public static class DocumentoXML extends Documento {
+		
+		public DocumentoXML() {
+			// Default constructor
+		}
+		
+		public DocumentoXML(Long idTabla, Empresa empresa, String modulo, String concepto, String extension, String ruta) {
+			super(idTabla, empresa, modulo, concepto, extension, ruta);
+		}
+	}
+	
+	@Entity
+	@DiscriminatorValue("DOCUMENTO_PDF")
+	public static class DocumentoPDF extends Documento {
+		
+		public DocumentoPDF() {
+			// Default constructor
+		}
+		
+		public DocumentoPDF(Long idTabla, Empresa empresa, String modulo, String concepto, String extension, String ruta) {
+			super(idTabla, empresa, modulo, concepto, extension, ruta);
+		}
 	}
 	
 	

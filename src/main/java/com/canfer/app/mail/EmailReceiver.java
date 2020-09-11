@@ -89,7 +89,7 @@ public class EmailReceiver {
 			ex.printStackTrace();
 
 		} catch (MessagingException ex) {
-			System.out.println("No se puedo conectar al servicio de mensajeria");
+			System.out.println("No se pudo conectar al servicio de mensajeria");
 			ex.printStackTrace();
 
 		} catch (NoResultException e) {

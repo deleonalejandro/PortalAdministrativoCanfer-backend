@@ -8,29 +8,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.canfer.app.model.FacturaNotaComplemento;
-import com.canfer.app.service.FacturaNotaComplementoService;
+import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.service.ComprobanteFiscalService;
 
 @RestController
 @RequestMapping(value = "/documentosFiscalesApi")
 public class FNCRestController {
 	
 	@Autowired
-	private FacturaNotaComplementoService facturaNotaComplementoService;
+	private ComprobanteFiscalService comprobanteFiscalService;
 	
 	@GetMapping("/facturas")
-	public List<FacturaNotaComplemento> getAll() {
-	    return facturaNotaComplementoService.findAll();
+	public List<ComprobanteFiscal> getAll() {
+	    return comprobanteFiscalService.findAll();
 	  }
 	  
 	@GetMapping("/factura/{id}")
-	public FacturaNotaComplemento getOne(String uuid) {
-		return facturaNotaComplementoService.findByUUID(uuid);
+	public ComprobanteFiscal getOne(String uuid) {
+		return comprobanteFiscalService.findByUUID(uuid);
 	  }
 	
 	@GetMapping("/delete/{id}")
 	public void deleteOneFactura(@PathVariable String uuid) {
-		facturaNotaComplementoService.delete(uuid);
+		comprobanteFiscalService.delete(uuid);
 	  }
 	
 	

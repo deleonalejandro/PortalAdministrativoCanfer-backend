@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "Empresa")
 public class Empresa {
 
@@ -27,12 +29,13 @@ public class Empresa {
 	@ManyToMany(mappedBy = "empresas")
 	private List<Usuario> usuarios;
 	
+	@JsonIgnore
 	@JoinTable(
 			name = "empresa_proveedor",
 			joinColumns = @JoinColumn(name="idEmpresa"),
 			inverseJoinColumns = @JoinColumn(name="idProveedor")
 			)
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Proveedor> proveedores;
 	
 	@Column(nullable = false)

@@ -12,6 +12,8 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,17 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.canfer.app.model.FacturaNotaComplemento;
+import com.canfer.app.model.ComprobanteFiscal;
 
 
 @Service
-public class FacturaStorageService implements StorageService {
+public class ComprobanteStorageService implements StorageService {
 
-	private final Path rootLocation =  Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores");
+	private Path rootLocation;
+	
+	public ComprobanteStorageService(StorageProperties storageProperties) {
+		this.rootLocation = storageProperties.getFacturasLocation();
+	}
 	
 	@Override
 	public void store(MultipartFile file) {
@@ -50,7 +56,9 @@ public class FacturaStorageService implements StorageService {
 		}
 	}
 
-	public void storeFactura(MultipartFile file, Path filename) {
+	public String store(MultipartFile file, ComprobanteFiscal comprobante) {
+		
+		Path filename = getFilename(comprobante, FilenameUtils.getExtension(file.getOriginalFilename()));
 		try {
 			if (filename.toString().contains("..")) {
 				// This is a security check
@@ -65,9 +73,13 @@ public class FacturaStorageService implements StorageService {
 		catch (IOException e) {
 			throw new StorageException("Failed to store file " + filename, e);
 		}
+		
+		return this.rootLocation.resolve(filename).toString();
 	}
 	
-	public void storeFactura(Path path, Path filename) {
+	public String store(Path path, ComprobanteFiscal comprobante) {
+		
+		Path filename = getFilename(comprobante, FilenameUtils.getExtension(path.getFileName().toString()));
 		try {
 			
 			//Make a file from the given path
@@ -82,10 +94,10 @@ public class FacturaStorageService implements StorageService {
 		catch (IOException e) {
 			throw new StorageException("Failed to store file " + filename, e);
 		}
+		
+		return this.rootLocation.resolve(filename).toString();
 	}
 	
-	
-
 	@Override
 	public Stream<Path> loadAll() {
 		try {
@@ -122,6 +134,23 @@ public class FacturaStorageService implements StorageService {
 			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
 		}
 	}
+	
+	public Resource loadAsResource(Path file) {
+		try {
+			Resource resource = new UrlResource(file.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return resource;
+			}
+			else {
+				throw new StorageFileNotFoundException(
+						"Could not read file: " + file.getFileName());
+
+			}
+		}
+		catch (MalformedURLException e) {
+			throw new StorageFileNotFoundException("Could not read file: " + file.getFileName(), e);
+		}
+	}
 
 	@Override
 	public void deleteAll() {
@@ -137,35 +166,37 @@ public class FacturaStorageService implements StorageService {
 			throw new StorageException("Could not initialize storage", e);
 		}
 	}
-
-	public Path createFacturaDirectory(FacturaNotaComplemento factura) {
+	
+	public void init(ComprobanteFiscal comprobante) {
 		LocalDateTime today = LocalDateTime.now();
-		Path foldersPath = Paths.get(factura.getEmpresa().getRfc(), String.valueOf(today.getYear()),
-				String.valueOf(today.getMonthValue()), factura.getProveedor().getRfc());
+		this.rootLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores", 
+				comprobante.getEmpresa().getRfc(), 
+				String.valueOf(today.getYear()),
+				String.valueOf(today.getMonthValue()), 
+				comprobante.getProveedor().getRfc());
 		try {
-			Files.createDirectories(rootLocation.resolve(foldersPath));
-			return foldersPath;
+			Files.createDirectories(rootLocation);
 		}
 		catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);
 		}
 	}
 	
-	public Path getFilename(FacturaNotaComplemento factura, Path foldersPath, String extension) {
+	private Path getFilename(ComprobanteFiscal comprobante, String extension) {
 		
 		String folioFinal;
 		
-		if (factura.getFolio() == null) {
-			folioFinal = String.valueOf(factura.getIdNumSap());
+		if (comprobante.getFolio() == null) {
+			folioFinal = String.valueOf(comprobante.getIdNumSap());
 		} else {
-			folioFinal = factura.getFolio();
+			folioFinal = comprobante.getFolio();
 		}
 		
-		if (factura.getSerie() == null) {
-			return Paths.get(foldersPath.toString(), factura.getProveedor().getRfc() + "_" + folioFinal + "."
+		if (comprobante.getSerie() == null) {
+			return Paths.get(comprobante.getProveedor().getRfc() + "_" + folioFinal + "."
 					+ extension);
 		} else {
-			return Paths.get(foldersPath.toString(), factura.getProveedor().getRfc() + "_" + factura.getSerie() + "_" + folioFinal + "."
+			return Paths.get(comprobante.getProveedor().getRfc() + "_" + comprobante.getSerie() + "_" + folioFinal + "."
 					+ extension);
 		}
 	}

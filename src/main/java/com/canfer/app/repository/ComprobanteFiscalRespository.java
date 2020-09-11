@@ -4,11 +4,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.canfer.app.model.ComprobanteFiscal.Factura;
-
+import com.canfer.app.model.ComprobanteFiscal;
 @Transactional
 @Repository
-public interface FacturaRepository extends ComprobanteFiscalBaseRepository<Factura> {
+public interface ComprobanteFiscalRespository extends ComprobanteFiscalBaseRepository<ComprobanteFiscal> {
 
 }
 

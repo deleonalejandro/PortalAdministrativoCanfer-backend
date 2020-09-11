@@ -8,7 +8,7 @@ import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 
 @Transactional
 @Repository
-public interface NotaDeCreditoRepository extends ComprobanteFiscalRepository<NotaDeCredito> {
+public interface NotaDeCreditoRepository extends ComprobanteFiscalBaseRepository<NotaDeCredito> {
 
 }
 

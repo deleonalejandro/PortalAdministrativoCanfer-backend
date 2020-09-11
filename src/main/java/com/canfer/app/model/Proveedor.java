@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "Proveedor")
 public class Proveedor {
 
@@ -18,6 +20,7 @@ public class Proveedor {
 
 	private String municipio;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "proveedores")
 	private List<Empresa> empresas;
 

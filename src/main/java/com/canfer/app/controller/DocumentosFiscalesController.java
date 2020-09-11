@@ -1,15 +1,25 @@
 package com.canfer.app.controller;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
+import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
-import com.canfer.app.model.FacturaNotaComplemento;
 import com.canfer.app.service.DocumentoService;
-import com.canfer.app.service.FacturaNotaComplementoService;
-import com.canfer.app.storage.FacturaStorageService;
+import com.canfer.app.service.ComprobanteFiscalService;
+import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.FileStorageService;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 
@@ -32,18 +43,18 @@ import com.canfer.app.webservice.invoiceone.ValidationService;
 public class DocumentosFiscalesController {
 	
 	@Autowired
-	XmlService xmlService;
+	private XmlService xmlService;
 	@Autowired
-	FacturaNotaComplementoService facturaNotaComplementoService;
+	private ComprobanteFiscalService comprobanteService;
 	@Autowired
-	DocumentoService documentoService;
+	private DocumentoService documentoService;
 	@Autowired
-	FacturaStorageService facturaStorageService;
+	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
-	ValidationService validationService;
+	private ValidationService validationService;
 	@Autowired
-	FileStorageService fileStorageService;
-	
+	private FileStorageService fileStorageService;
+
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -53,49 +64,36 @@ public class DocumentosFiscalesController {
 	public String upload(@RequestParam("files") MultipartFile[] files) {
 		 
 		Comprobante comprobante;
-		FacturaNotaComplemento factura;
-		Path folderName;
-		Path filename;
-		Path rutaXml;
-		Path rutaPdf;
+		ComprobanteFiscal comprobanteFiscal;
+		String ruta;
 		
 		try {
 			//Read the information from the XML.
 			comprobante = xmlService.xmlToObject(files[0]);
 			
 			//Send the information to FacturaNotaComplementoService.
-			factura = facturaNotaComplementoService.save(comprobante);
+			comprobanteFiscal = comprobanteService.save(comprobante);
 			
 			/***************************
-			 * Save XML into the server
-			 * 
+			 * Save XML into the server 
 			 */ 
 			
 			//Initialize folders and get the route.
-			folderName = facturaStorageService.createFacturaDirectory(factura);
-			//Get the filename including the parent folders without the root folder.
-			filename = facturaStorageService.getFilename(factura, folderName, "xml");
+			comprobanteStorageService.init(comprobanteFiscal);
 			//Store the XML in the server.
-			facturaStorageService.storeFactura(files[0], filename);
-			//Take the route.
-			rutaXml = facturaStorageService.load(filename.toString());
+			ruta = comprobanteStorageService.store(files[0], comprobanteFiscal);
 			//Save document object.
-			documentoService.saveDocumentoFiscal(factura, "xml", "Documentos Fiscales", rutaXml.toString());
+			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
 			
 			/************************************* 
-			 * If exists, save PDF into the server
-			 *
+			 *Save PDF into the server
 			 */ 
 			
 			if (!files[1].getOriginalFilename().isEmpty()) {
-				//Get the filename including the parent folders without the root folder.
-				filename = facturaStorageService.getFilename(factura, folderName, "pdf");
-				//Store the XML in the server.
-				facturaStorageService.storeFactura(files[1], filename);
 				//Take the route.
-				rutaPdf = facturaStorageService.load(filename.toString());
+				ruta = comprobanteStorageService.store(files[1], comprobanteFiscal);
 				//Save document object.
-				documentoService.saveDocumentoFiscal(factura, "pdf", "Documentos Fiscales", rutaPdf.toString());
+				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
 			}
 			
 			
@@ -103,15 +101,25 @@ public class DocumentosFiscalesController {
 			 * Use InvoiceOne web service to validate and set responses.
 			 *
 			 */ 
-			facturaNotaComplementoService.setValidation(factura, validationService.validaVerifica(files[0]));
+			comprobanteService.setValidation(comprobanteFiscal, validationService.validaVerifica(files[0]));
 				
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/documentosFiscales";
+		return "redirect:/documentosFiscalesClient";
 		
+	}
+	
+	public String saveComprobanteFiscal(@RequestParam ComprobanteFiscalDTO comprobante) {
+		try {
+			comprobanteService.updateInfo(comprobante);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return "redirect:/documentosFiscalesClient";
 	}
 	
 	@PostMapping(value = "/deleteMultipleFacturas")
@@ -121,7 +129,7 @@ public class DocumentosFiscalesController {
 			for(Long id : ids) {
 				
 				// delete the object using the id
-				facturaNotaComplementoService.delete(id);
+				comprobanteService.delete(id);
 				
 				// delete files first, since we use document info to get route
 				List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
@@ -148,14 +156,14 @@ public class DocumentosFiscalesController {
 		} catch (Exception e) {
 			System.out.println("Ocurrio un error al borrar multiples facturas.");
 		}
-		return "redirect:/documentosFiscales";	
+		return "redirect:/documentosFiscalesClient";	
 	}
 	
 	@GetMapping(value = "/delete/{id}")
 	public String deleteFactura(@PathVariable Long id, Model model) {
 		try {
 			// delete the object using the id
-			facturaNotaComplementoService.delete(id);
+			comprobanteService.delete(id);
 			
 			// delete files first, since we use document info to get route
 			List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
@@ -179,11 +187,87 @@ public class DocumentosFiscalesController {
 			documentoService.deleteFacturaDocuments(id);
 				
 		} catch (Exception e) {
-			System.out.println("Ocurrio un error al borrar la factura.");
+			System.out.println("Ocurrio un error al borrar la factura." + e.getMessage());
 			model.addAttribute("DeleteFacturaError", e.getMessage());
 		}
-		return "redirect:/documentosFiscales";	
+		return "redirect:/documentosFiscalesClient";	
 	}
+	
+	@GetMapping("/download/{extension:.+}/{id}")
+	public ResponseEntity<Resource> downloadLocalFile(@PathVariable Long id, @PathVariable String extension) {
+		String contentType = "application/octet-stream";
+		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
+		Path path = Paths.get(doc.getRuta());
+		Resource resource = null;
+		try {
+			// try to load resource
+			resource = comprobanteStorageService.loadAsResource(path);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
+	
+	@GetMapping("/preview/{extension:.+}/{id}")
+	public ResponseEntity<Resource> previewLocalFile(@PathVariable Long id, @PathVariable String extension) {
+		String contentType = "application/pdf";
+		
+		if (extension.equalsIgnoreCase("xml")) {
+			contentType = "text/xml";
+		}
+		
+		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
+		Path path = Paths.get(doc.getRuta());
+		Resource resource = null;
+		try {
+			// try to load resource
+			resource = comprobanteStorageService.loadAsResource(path);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
+	
+	@GetMapping(value = "/zip-download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> zipDownload(@RequestParam List<Long> cfdId) throws IOException {
+		// TODO
+		// checkout for errors and how to display them
+		String zipFileName = "comprobantes_canfer.zip";
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ZipOutputStream zipOut = new ZipOutputStream(bos);
+		List<Documento> docs;
+		for (Long id : cfdId) {
+			docs = documentoService.findAllByIdTabla(id);
+			for (Documento doc : docs) {
+				
+				// take the route of the document
+				Path path = Paths.get(doc.getRuta());
+				FileSystemResource resource = new FileSystemResource(path);
+				ZipEntry zipEntry = new ZipEntry(resource.getFilename());
+				zipEntry.setSize(resource.contentLength());
+				zipOut.putNextEntry(zipEntry);
+				StreamUtils.copy(resource.getInputStream(), zipOut);
+				zipOut.closeEntry();
+			}
+		}
+		zipOut.finish();
+		zipOut.close();
+		
+	    return ResponseEntity.ok()
+	    		.contentType(MediaType.APPLICATION_OCTET_STREAM)
+	    		.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFileName + "\"")
+	    		.body(bos.toByteArray());
+
+	}
+
+	
 	
 	
 	

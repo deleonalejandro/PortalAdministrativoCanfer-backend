@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -28,15 +27,13 @@ public class FileStorageService implements StorageService {
 
 	private final Path rootLocation;
 	private final Path rootLocationError;
-	private final Path rootLocationOk;
 	private final Path rootLocationUnknown;
 
 	@Autowired
 	public FileStorageService(StorageProperties properties) {
-		this.rootLocation = Paths.get(properties.getEntriesLocation());
-		this.rootLocationError = Paths.get(properties.getErrorLocation());
-		this.rootLocationOk = Paths.get(properties.getOkLocation());
-		this.rootLocationUnknown = Paths.get(properties.getDownloadLocation());
+		this.rootLocation = properties.getEntriesLocation();
+		this.rootLocationError = properties.getErrorLocation();
+		this.rootLocationUnknown = properties.getDownloadLocation();
 	}
 
 	@Override
@@ -100,6 +97,7 @@ public class FileStorageService implements StorageService {
 			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + filename, e);
 		}
 	}
+	
 
 	@Override
 	public void deleteAll() {
@@ -111,7 +109,6 @@ public class FileStorageService implements StorageService {
 		try {
 			Files.createDirectories(rootLocation);
 			Files.createDirectories(rootLocationError);
-			Files.createDirectories(rootLocationOk);
 			Files.createDirectories(rootLocationUnknown);
 		} catch (IOException e) {
 			throw new StorageException("No se pudo inicializar los directorios.", e);
@@ -159,10 +156,8 @@ public class FileStorageService implements StorageService {
 		
 		try(InputStream is = new FileInputStream(file)) { 
 			
-			if (folder.equalsIgnoreCase("OK")) {
-				//saving 
-				Files.copy(is, this.rootLocationOk.resolve(path.getFileName()), StandardCopyOption.REPLACE_EXISTING);
-			} else if (folder.equalsIgnoreCase("ERROR")) {
+			
+			if (folder.equalsIgnoreCase("ERROR")) {
 				//saving 
 				Files.copy(is, this.rootLocationError.resolve(path.getFileName()), StandardCopyOption.REPLACE_EXISTING);
 			} else {
