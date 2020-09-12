@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-
+import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -35,8 +35,9 @@ import com.canfer.app.model.Documento;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
-import com.canfer.app.storage.FileStorageService;
 import com.canfer.app.webservice.invoiceone.ValidationService;
+
+import javassist.NotFoundException;
 
 @Controller
 @RequestMapping("/documentosFiscalesClient")
@@ -52,9 +53,6 @@ public class DocumentosFiscalesController {
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
 	private ValidationService validationService;
-	@Autowired
-	private FileStorageService fileStorageService;
-
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -104,7 +102,14 @@ public class DocumentosFiscalesController {
 			comprobanteService.setValidation(comprobanteFiscal, validationService.validaVerifica(files[0]));
 				
 			
+		} catch (FileExistsException e) {
+			// La factura ya existe
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// La empresa o el proveedor no se encuentran en el catalogo
+			e.printStackTrace();
 		} catch (Exception e) {
+			// Error inesperado
 			e.printStackTrace();
 		}
 		

@@ -27,14 +27,14 @@ public class EmpresaService {
 	@Autowired
 	private IAuthenticationFacade authenticationFacade;
 	
-	public List<Empresa> findAll(){
+	public List<Empresa> findAll() {
 		return empresaRepository.findAll();
 	}
 	
-	public Empresa findById(Long id) throws Exception {
+	public Empresa findById(Long id) throws NotFoundException {
 		Optional<Empresa> empresa = empresaRepository.findById(id);
 		if (empresa.isEmpty()) {
-			throw new Exception("La empresa no existe.");
+			throw new NotFoundException("La empresa no existe.");
 		}
 		return empresa.get();
 	}

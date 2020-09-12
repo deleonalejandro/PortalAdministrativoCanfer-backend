@@ -65,19 +65,19 @@ public class ComprobanteFiscalService {
 		Proveedor emisor;
 		List<Proveedor> proveedores;
 
-		if (exist(comprobante.getComplemento().getTimbreFiscalDigital().getUuid())) {
+		if (exist(comprobante.getUuidTfd())) {
 			throw new FileExistsException("El comprobante fiscal ya ha sido registrado. UUID: "
-					+ comprobante.getComplemento().getTimbreFiscalDigital().getUuid());
+					+ comprobante.getUuidTfd());
 		}
 
-		receptor = empresaRepository.findByRfc(comprobante.getReceptor().getRfc());
-		proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisor().getRfc());
+		receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
+		proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
 
 		// check if the company or the provider exist on the data base.
 		if (receptor == null || proveedores == null) {
 			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. \n "
-					+ "Empresa RFC: " + comprobante.getReceptor().getRfc() + ". \n"
-					+ "Proveedor RFC: " + comprobante.getEmisor().getRfc() + ". \n");
+					+ "Empresa RFC: " + comprobante.getReceptorRfc() + ". \n"
+					+ "Proveedor RFC: " + comprobante.getEmisorRfc() + ". \n");
 		}
 		
 		// get the proper provider

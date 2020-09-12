@@ -130,27 +130,27 @@ public abstract class ComprobanteFiscal {
 		
 		
 		//Use the information from the XML to fill the information
-		this.uuid = comprobante.getComplemento().getTimbreFiscalDigital().getUuid();
+		this.uuid = comprobante.getUuidTfd();
 		this.serie = comprobante.getSerie();
 		this.folio = comprobante.getFolio();
-		this.rfcEmpresa = comprobante.getReceptor().getRfc();
-		this.rfcProveedor = comprobante.getEmisor().getRfc();
+		this.rfcEmpresa = comprobante.getReceptorRfc();
+		this.rfcProveedor = comprobante.getEmisorRfc();
 		this.fechaEmision = comprobante.getFecha();
-		this.fechaTimbre = comprobante.getComplemento().getTimbreFiscalDigital().getFechaTimbrado();
+		this.fechaTimbre = comprobante.getFechaTimbradoTfd();
 		this.noCertificadoEmpresa = comprobante.getNoCertificado();
-		this.noCertificadoSat = comprobante.getComplemento().getTimbreFiscalDigital().getNoCertificadoSat();
+		this.noCertificadoSat = comprobante.getNoCertificadoSatTfd();
 		this.versionCfd = comprobante.getVersion();
-		this.versionTimbre = comprobante.getComplemento().getTimbreFiscalDigital().getVersion();
+		this.versionTimbre = comprobante.getVersionTfd();
 		this.moneda = comprobante.getMoneda();
 		this.total = comprobante.getTotal();
 		this.tipoDocumento = comprobante.getTipoDeComprobante();
 		
 		//Related UUIDs
-		if (comprobante.getCfdiRelacionados() != null) {
-			//Iterate the list and add all UUIDS
-			comprobante.getCfdiRelacionados().getCdfiList().forEach(cfdi -> this.addUuidRelacionados(cfdi.getUuid()));
-			this.tipoRelacionUuidRelacionados = comprobante.getCfdiRelacionados().getTipoRelacion();
+		if (comprobante.haveUuidsRelacionados()) {
+			this.uuidRelacionados = comprobante.getUuidsRelacionados();
+			this.tipoRelacionUuidRelacionados = comprobante.getTipoRelacionUuidRelacionados();
 		}
+		
 	}
 	
 
