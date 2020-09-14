@@ -18,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.webservice.sat.ClientConfigurationSAT;
+import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -384,6 +386,16 @@ public abstract class ComprobanteFiscal {
 			return Collections.emptyList();
 		}
 		return Arrays.asList(this.uuidRelacionados.split(",")); 
+	}
+	
+	public String verificaSat() {
+		ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
+		SatVerificacionService service = new SatVerificacionService(clientconfigurationSAT);
+		String msg = "re=" + this.proveedor.getRfc() + "&" +
+					 "rr=" + this.empresa.getRfc() + "&" +
+					 "tt=" + this.total + "&" +
+					 "id=" + this.uuid;
+		return service.validaVerifica(msg);
 	}
 	
 	
