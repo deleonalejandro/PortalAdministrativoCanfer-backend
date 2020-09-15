@@ -31,6 +31,10 @@ public class EmpresaService {
 		return empresaRepository.findAll();
 	}
 	
+	public List<Empresa> findAllById(List<Long> ids) {
+		return empresaRepository.findAllById(ids);
+	}
+	
 	public Empresa findById(Long id) throws NotFoundException {
 		Optional<Empresa> empresa = empresaRepository.findById(id);
 		if (empresa.isEmpty()) {

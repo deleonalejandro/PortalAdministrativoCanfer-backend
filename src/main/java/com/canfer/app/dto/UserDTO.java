@@ -19,12 +19,23 @@ public class UserDTO {
 	private List<Long> empresaIdsList = new ArrayList<>();
 	//El usuario es un proveedor
 	private String rfc;
+	private Long empresaCreadoraId;
 	
 	//We make a default constructor
 	public UserDTO() {
 		// Constructor solo
 	}
 	
+	
+	
+	public Long getEmpresaCreadoraId() {
+		return empresaCreadoraId;
+	}
+
+	public void setEmpresaCreadoraId(Long empresaCreadoraId) {
+		this.empresaCreadoraId = empresaCreadoraId;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}

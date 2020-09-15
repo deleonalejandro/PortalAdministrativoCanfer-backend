@@ -7,11 +7,15 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -19,7 +23,9 @@ import javax.persistence.ManyToOne;
 
 
 @Entity(name = "Usuario")
-public class Usuario {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Tipo_Usuario")
+public abstract class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +38,6 @@ public class Usuario {
 			)
 	@ManyToMany
 	private List<Empresa> empresas;
-	
-	@JoinColumn(name = "idProveedor")
-	@ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Proveedor proveedor;
 	
 	@Column(unique = true, nullable = false)
 	private String username;
@@ -172,13 +174,42 @@ public class Usuario {
 		}
 		this.empresas.add(empresa);
 	}
-
-	public Proveedor getProveedor() {
-		return proveedor;
+	
+	@Entity
+	@DiscriminatorValue("USUARIO_CANFER")
+	public static class UsuarioCanfer extends Usuario {
+		
+		public UsuarioCanfer(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
+			// use the super class constructor
+			super(username, password, nombre, apellido, correo, rol, permisos);
+		}
 	}
 
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
+	@Entity
+	@DiscriminatorValue("USUARIO_PROVEEDOR")
+	public static class UsuarioProveedor extends Usuario {
+		
+		@JoinColumn(name = "idProveedor")
+		@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+		private Proveedor proveedor;
+		
+		public UsuarioProveedor(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
+			super(username, password, nombre, apellido, correo, rol, permisos);
+		}
+		
+		public UsuarioProveedor() {
+			// default constructor
+		}
+
+		public Proveedor getProveedor() {
+			return proveedor;
+		}
+
+		public void setProveedor(Proveedor proveedor) {
+			this.proveedor = proveedor;
+		}
+		
+		
 	}
 	
 
