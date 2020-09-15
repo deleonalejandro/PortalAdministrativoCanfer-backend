@@ -9,11 +9,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.dto.UserDTO;
 import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Usuario.UsuarioCanfer;
+import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.ProveedorRepository;
+import com.canfer.app.repository.UsuarioCanferRepository;
+import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.repository.UsuarioRepository;
+
+import javassist.NotFoundException;
 
 @Service
 public class UsuarioService {
@@ -24,6 +31,12 @@ public class UsuarioService {
 	private ProveedorRepository proveedorRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private EmpresaService empresaService;
+	@Autowired
+	private UsuarioCanferRepository usuarioCanferRepository;
+	@Autowired
+	private UsuarioProveedorRepository usuarioProveedorRepository;
 
 	
 	
@@ -39,61 +52,55 @@ public class UsuarioService {
 		return userUsuario.get(); 
 	}
 	
-	public Usuario save(UserDTO user) {
-		//Defining variables
+	public Usuario save(UserDTO user) throws NotFoundException {
+		
 		Usuario testUsuario;
 		Proveedor testProveedor;
-		Usuario usuario;
 		String ePassword;
+		List<Empresa> empresas = empresaService.findAllById(user.getEmpresaIdsList());
+		Empresa empresaCreadora = empresaService.findById(user.getEmpresaCreadoraId());
 		
-		//First check if we want to create a usuario or usuario proveedor.
-		if (user.getRfc() == null) {
-			/*USER CREATION*/
-			//We  check if the user already exists.
-			testUsuario = usuarioRepository.findByUsername(user.getUsername());
-			if (testUsuario != null) {
-				throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
-			}
+		// we  check if the user already exists.
+		testUsuario = usuarioRepository.findByUsername(user.getUsername());
+		if (testUsuario != null) {
+			throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
+		}
+		
+		// first check if we want to create a company user or provider user.
+		if (user.getRfc() == null) {		
 			
 			if (user.getRol().isEmpty()) {
 				throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
 			}
 			
-			//Before creating the Usuario object, we (e)ncode the information
 			ePassword = passwordEncoder.encode(user.getPassword());
 			
-			//Create a user object from the Entity class Usuario.java
-			usuario = new Usuario(user.getUsername(), ePassword,
+			UsuarioCanfer usuario = new UsuarioCanfer(user.getUsername(), ePassword,
 					user.getNombre(), user.getApellido(), user.getCorreo(), user.getRol(), user.getPermisosToString());
 			
+			// assign the companies that the user will manage
+			usuario.setEmpresas(empresas);
+			
+			return usuarioCanferRepository.save(usuario);
+			
 		} else {
-			/*USER PROVEEDOR CREATION*/
-			//We  check if the user already exists.
-			testUsuario = usuarioRepository.findByUsername(user.getUsername());
-			if (testUsuario != null) {
-				throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
-			}
-			//We check if the proveedor exists.
-			// TODO 
-			testProveedor = proveedorRepository.findByRfc(user.getRfc());
+			
+			testProveedor = proveedorRepository.findByEmpresasAndRfc(empresaCreadora, user.getRfc());
 			if (testProveedor == null) {
 				throw new UsernameNotFoundException("El proveedor no es valido. Verifique el RFC");
 			}
 			
-			//Before creating the Usuario object, we (e)ncode the information
 			ePassword = passwordEncoder.encode(user.getPassword());
 			
-			//Create a user object from the Entity class Usuario.java
-			usuario = new Usuario(user.getUsername(), ePassword,
+			UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword,
 					user.getNombre(), user.getApellido(), user.getCorreo(), "USUARIO_PROVEEDOR", user.getPermisosToString());
 			
-			//Proveedor assignation
 			usuario.setProveedor(testProveedor);
+			
+			return usuarioProveedorRepository.save(usuario);
 
 		}
 		
-		
-		return usuarioRepository.save(usuario);
 	}
 	
 	public Usuario update(UserDTO user) {
@@ -106,7 +113,6 @@ public class UsuarioService {
 		Usuario updateUsuario = checkUsuario.get();
 		
 		//Use setters to transfer the basic information, except password.
-		updateUsuario.setIdUsuario(user.getUserId());
 		updateUsuario.setUsername(user.getUsername());
 		updateUsuario.setActivo(user.getActivo());
 		updateUsuario.setApellido(user.getApellido());

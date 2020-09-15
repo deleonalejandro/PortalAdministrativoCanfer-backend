@@ -8,7 +8,7 @@ import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 
 @Transactional
 @Repository
-public interface ComplementoPagoRepository extends ComprobanteFiscalRepository<ComplementoPago> {
+public interface ComplementoPagoRepository extends ComprobanteFiscalBaseRepository<ComplementoPago> {
 
 }
 

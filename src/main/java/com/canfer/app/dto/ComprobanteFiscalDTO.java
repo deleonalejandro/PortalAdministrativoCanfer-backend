@@ -6,8 +6,9 @@ package com.canfer.app.dto;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Proveedor;
 
-public class FacturaNotaComplementoDTO {
+public class ComprobanteFiscalDTO {
 	//Transfer fields declaration.
+	private Long idComprobanteFiscal;
 	private String uuid; 
 	private String idDocumento;
 	private Long idNumSap;
@@ -34,10 +35,21 @@ public class FacturaNotaComplementoDTO {
 	private String errorValidacion;
 	private Boolean bitRS;
 	private Boolean bitRSusuario;
+	private String comentario;
 	
 	//Constructor
-	public FacturaNotaComplementoDTO() {
+	public ComprobanteFiscalDTO() {
 		// Empty constructor, no parameters. 
+	}
+
+	
+	
+	public Long getIdComprobanteFiscal() {
+		return idComprobanteFiscal;
+	}
+	
+	public void setIdComprobanteFiscal(Long idComprobanteFiscal) {
+		this.idComprobanteFiscal = idComprobanteFiscal;
 	}
 
 	public String getUuid() {
@@ -250,5 +262,15 @@ public class FacturaNotaComplementoDTO {
 	public void setBitRSusuario(Boolean bitRSusuario) {
 		this.bitRSusuario = bitRSusuario;
 	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+	
+	
 	
 }

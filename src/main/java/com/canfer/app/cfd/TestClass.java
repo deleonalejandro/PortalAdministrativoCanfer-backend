@@ -17,7 +17,7 @@ public class TestClass {
 	public static void main(String[] args) throws JAXBException, FileNotFoundException {
 		JAXBContext context;
 		Comprobante comprobante;
-		File file = new File("C:\\Users\\alex2\\eclipse-workspace\\PortalAdministrativoCanfer\\src\\main\\java\\com\\canfer\\app\\cfd\\TMM720509PYA_1_66797.xml");
+		File file = new File("C:\\Users\\alex2\\Desktop\\Canfer Workspace\\test-cases\\BCO130927JU4_119097.xml");
 		InputStream in = new FileInputStream(file);
 		try {
 			BOMInputStream bomInputStream = new BOMInputStream(in);

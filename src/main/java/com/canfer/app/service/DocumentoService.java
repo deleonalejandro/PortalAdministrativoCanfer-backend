@@ -5,29 +5,47 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
-import com.canfer.app.model.FacturaNotaComplemento;
+import com.canfer.app.model.Documento.DocumentoPDF;
+import com.canfer.app.model.Documento.DocumentoXML;
+import com.canfer.app.repository.DocumentoPDFRepository;
 import com.canfer.app.repository.DocumentoRepository;
+import com.canfer.app.repository.DocumentoXMLRepository;
 
 @Service
 public class DocumentoService {
 
 	@Autowired
 	DocumentoRepository documentoRepository;
+	@Autowired
+	DocumentoXMLRepository documentoXMLRepository;
+	@Autowired
+	DocumentoPDFRepository documentoPDFRepository;
 	
-	public Documento saveDocumentoFiscal(FacturaNotaComplemento factura, String extension, String modulo, String ruta) {
-		Documento documento = new Documento();
+	public Documento save(ComprobanteFiscal comprobante, String extension, String modulo, String ruta) {
 		
-		documento.setIdTabla(factura.getIdFnc());
-		documento.setEmpresa(factura.getEmpresa());
-		documento.setConcepto(factura.getTipoDocumento() + "_" + factura.getUuid());
-		documento.setExtension(extension);
-		documento.setModulo(modulo);
-		documento.setRuta(ruta);
-		
-		//Use methods to create route.
-		
-		return documentoRepository.save(documento);
+		if (extension.equalsIgnoreCase("xml")) {
+			DocumentoXML doc = new DocumentoXML(comprobante.getIdComprobanteFiscal(), 
+					comprobante.getEmpresa(), 
+					modulo, 
+					comprobante.getTipoDocumento() + "_" + comprobante.getUuid(), 
+					extension, 
+					ruta); 
+			// save document xml 
+			return documentoXMLRepository.save(doc);
+			
+		} else {
+			DocumentoPDF doc = new DocumentoPDF(comprobante.getIdComprobanteFiscal(), 
+					comprobante.getEmpresa(), 
+					modulo, 
+					comprobante.getTipoDocumento() + "_" + comprobante.getUuid(), 
+					extension, 
+					ruta);
+			// save document pdf
+			return documentoPDFRepository.save(doc);
+		}
+
 	}
 	
 	public void deleteFacturaDocuments(Long id) {
@@ -36,7 +54,12 @@ public class DocumentoService {
 	}
 	
 	public List<Documento> findAllByIdTabla(Long id) {
-		// find all the documents by idTable
+		// find all the documents by idTable 
 		return documentoRepository.findAllByIdTabla(id);
 	}
+	
+	public Documento findByIdTablaAndExtension(Long id, String extension) {
+		return documentoRepository.findByIdTablaAndExtension(id, extension);
+	}
+	
 }

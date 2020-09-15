@@ -107,6 +107,12 @@ public class Consecutivo {
 		this.currentNum = currentNum;
 	}
 	
+	// always start sequence in zero.
+	public Long getNext() {
+		this.currentNum = this.currentNum + 1;
+		return this.currentNum;
+	}
+	
 	
 	
 	
