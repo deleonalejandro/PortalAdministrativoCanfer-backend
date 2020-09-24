@@ -6,6 +6,17 @@
     (function($) {
   "use strict";
 
+
+  //Check if the password and confirm password match
+  $('#contrasena, #confirmar-contrasena').on('keyup', function () {
+  if ($('#contrasena').val() == $('#confirmar-contrasena').val()) {
+    $('#message').html('').css('color', 'green');
+  } else 
+    {
+		$('#message').html('*Contraseñas no concuerdan.').css('color', 'red');
+	}
+  });
+
   // Enable Bootstrap tooltips via data-attributes globally
   $('[data-toggle="tooltip"]').tooltip();
 

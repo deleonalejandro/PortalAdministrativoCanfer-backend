@@ -5,20 +5,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 
 @Entity(name = "Usuario")
-public class Usuario {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Tipo_Usuario")
+public abstract class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUsuario;
 	
+	@JoinTable(
+			name = "usuario_empresa",
+			joinColumns = @JoinColumn(name="idUsuario"),
+			inverseJoinColumns = @JoinColumn(name="idEmpresa")
+			)
+	@ManyToMany
+	private List<Empresa> empresas;
 	
 	@Column(unique = true, nullable = false)
 	private String username;
@@ -60,6 +79,13 @@ public class Usuario {
 	}
 
 	//We create the getters and setters from the class
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
 
 	public String getUsername() {
 		return username;
@@ -133,5 +159,58 @@ public class Usuario {
 		return Arrays.asList(this.permisos.split(",")); 
 	}
 
+	public List<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+	
+	public void addEmpresa(Empresa empresa) {
+		//If the list is null, we create a new list.
+		if (this.empresas.isEmpty()) {
+			this.empresas = new ArrayList<>();
+		}
+		this.empresas.add(empresa);
+	}
+	
+	@Entity
+	@DiscriminatorValue("USUARIO_CANFER")
+	public static class UsuarioCanfer extends Usuario {
+		
+		public UsuarioCanfer(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
+			// use the super class constructor
+			super(username, password, nombre, apellido, correo, rol, permisos);
+		}
+	}
+
+	@Entity
+	@DiscriminatorValue("USUARIO_PROVEEDOR")
+	public static class UsuarioProveedor extends Usuario {
+		
+		@JoinColumn(name = "idProveedor")
+		@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+		private Proveedor proveedor;
+		
+		public UsuarioProveedor(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
+			super(username, password, nombre, apellido, correo, rol, permisos);
+		}
+		
+		public UsuarioProveedor() {
+			// default constructor
+		}
+
+		public Proveedor getProveedor() {
+			return proveedor;
+		}
+
+		public void setProveedor(Proveedor proveedor) {
+			this.proveedor = proveedor;
+		}
+		
+		
+	}
+	
 
 }

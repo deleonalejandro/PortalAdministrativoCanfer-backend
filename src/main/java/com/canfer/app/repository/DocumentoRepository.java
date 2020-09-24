@@ -1,9 +1,13 @@
 package com.canfer.app.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Repository;
 
 import com.canfer.app.model.Documento;
 
-public interface DocumentoRepository extends JpaRepository<Documento, Long>{
-	
+@Transactional
+@Repository
+public interface DocumentoRepository extends DocumentoBaseRepository<Documento> {
+
 }

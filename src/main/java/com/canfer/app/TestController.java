@@ -1,16 +1,19 @@
 package com.canfer.app;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.canfer.app.webservice.sat.SatVerificacionService;
 
-@Controller
 
 public class TestController {
 
-	@GetMapping(value="/")
-    public String test(){
-        return "contaduria-nacional";
+	@Autowired
+	SatVerificacionService s; 
+	@GetMapping(value = "/pruebas")
+	public void pruebas()  {
+		
+
     }
-	
+
 }

@@ -1,7 +1,9 @@
 package com.canfer.app.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,18 +11,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.canfer.app.security.UserPrincipalDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
+	@Autowired
+	private UserPrincipalDetailsService userPrincipalDetailsService;
+	
+	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService) {
+		this.userPrincipalDetailsService = userPrincipalDetailsService;
+	}
+
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-		auth
-				.inMemoryAuthentication()
-				.withUser("admin").password(passwordEncoder().encode("admin123")).roles("ADMIN").authorities("CAJACHICA")
-				.and()
-				.withUser("alex").password(passwordEncoder().encode("alex123")).roles("USER");
+		//We pass our authentication provider
+		auth.authenticationProvider(authenticationProvider());
 	}
 	
 	@Override
@@ -28,19 +36,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http	
 				.authorizeRequests()
-				.antMatchers("/index.html").permitAll()
-				.antMatchers("/users").authenticated()
-				.antMatchers("/admin").hasRole("ADMIN")
-				.antMatchers("/cajachica/").hasAuthority("CAJACHICA")
+				.antMatchers("/uploadFacturas").permitAll()
 				.and()
-				.httpBasic();
-		
-		//SOLO PARA DEVELOPMENT, ES PARA ACCEDER A LA CONSOLA DE H2
-		http.authorizeRequests().antMatchers("/console/**").permitAll();
-		http.csrf().disable();
-		http.headers().frameOptions().disable();
+				.httpBasic()
+				.and()
+				.csrf().disable();
+		http
+				.headers().frameOptions().disable();
 	}
 	
+	
+	@Bean
+	DaoAuthenticationProvider authenticationProvider() {
+		//Configuration of the provider
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		daoAuthenticationProvider.setUserDetailsService(this.userPrincipalDetailsService);
+		
+		return daoAuthenticationProvider;
+	}
 
 	@Bean
 	PasswordEncoder passwordEncoder() {

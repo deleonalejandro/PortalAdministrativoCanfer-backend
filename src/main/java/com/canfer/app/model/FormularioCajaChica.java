@@ -23,7 +23,7 @@ public class FormularioCajaChica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idFormularioCajaChica; 
 	
-    @JoinColumn(name = "socioNegocio", referencedColumnName= "claveProv")
+    @JoinColumn(name = "SocioNegocio")
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor proveedor;
 	
@@ -43,7 +43,7 @@ public class FormularioCajaChica {
 	private Float total;
 
 	//Constructor
-	public FormularioCajaChica(Proveedor proveedor, Integer folio, String fecha, String estatus) {
+	public FormularioCajaChica(Proveedor proveedor, Integer folio, String estatus) {
 		
 		super();
 		Date date = Calendar.getInstance().getTime();  

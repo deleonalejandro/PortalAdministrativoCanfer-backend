@@ -29,6 +29,7 @@
                                     </div>
                                     <hr class="my-0" />
                                     <div class="card-body p-5">
+                                    	<p th:text="${errorMessage}" style="color:red"></p>
                                         <!-- Login form-->
                                         <form action="#" th:action="@{/addUser}" class="form-group" th:object="${user}" method="post" >
                                             <!-- Form Row-->
@@ -60,6 +61,7 @@
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="usuario">Usuario</label>
                                                         <input class="form-control form-control-solid py-4" required type="text" id="usuario" th:field="*{username}" name="username" placeholder="" aria-label="username" aria-describedby="usuario" />
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,6 +79,7 @@
                                                     <div class="form-group">
                                                         <label class="text-gray-600 small" for="confirmar-contrasena">Confirmar Contraseña</label>
                                                         <input class="form-control form-control-solid py-4" required type="password" id="confirmar-contrasena" th:field="*{confirmPassword}" name="confirm-password" placeholder="" aria-label="Confirmar Constraseña" aria-describedby="contrasena" />
+                                                        <span id='message'></span>
                                                     </div>
                                                 </div>
                                                 
@@ -96,6 +99,7 @@
                                          
 												        </select>
                                                     </div>
+                                                    
                                                 </div>
                                                 <div class="col-md-3">
                                                     <!-- Form Group (Permisos)-->
@@ -115,6 +119,7 @@
                                             <!-- Form Group (form submission)-->
                                             <div class="form-group d-flex float-right">                 
                                                 <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                                                
                                             </div>
                                         </form>
                                     </div>
@@ -130,11 +135,11 @@
                 <footer class="footer mt-auto footer-dark">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-6 small">Copyright &copy; Your Website 2020</div>
+                            <div class="col-md-6 small"></div>
                             <div class="col-md-6 text-md-right small">
-                                <a href="#!">Privacy Policy</a>
-                                &middot;
-                                <a href="#!">Terms &amp; Conditions</a>
+                                <a href="#!"></a>
+                                
+                                <a href="#!"></a>
                             </div>
                         </div>
                     </div>

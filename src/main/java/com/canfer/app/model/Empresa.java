@@ -1,5 +1,7 @@
 package com.canfer.app.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,18 +9,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "Empresa")
 public class Empresa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idEmpresa;
+	private Long idEmpresa;
 	
 	@JoinColumn(name = "idMunicipio")
     @ManyToOne(targetEntity = Municipio.class, fetch = FetchType.LAZY)
     private Municipio municipio;
+	
+	@ManyToMany(mappedBy = "empresas")
+	private List<Usuario> usuarios;
+	
+	@JsonIgnore
+	@JoinTable(
+			name = "empresa_proveedor",
+			joinColumns = @JoinColumn(name="idEmpresa"),
+			inverseJoinColumns = @JoinColumn(name="idProveedor")
+			)
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<Proveedor> proveedores;
 	
 	@Column(nullable = false)
 	private String rfc;
@@ -46,14 +64,11 @@ public class Empresa {
 	
 	@Column(nullable = true)
 	private String cp;
-	
-	@Column(nullable = false)
-	private Boolean bitActivo;	
-	
-	@Column(nullable = false)
+		
+	@Column(nullable = true)
 	private String contacto;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String correo;
 	
 	@Column(nullable = true)
@@ -62,15 +77,15 @@ public class Empresa {
 	@Column(nullable = true)
 	private String paginaWeb;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Long idUsuarioCreador;
 
 	//Constructor
 	
 
-	public Empresa(Long idUsuarioCreador) {
-		this.idUsuarioCreador = idUsuarioCreador;
-		this.bitActivo = true;
+	public Empresa(String nombre, String rfc) {
+		this.nombre = nombre;
+		this.rfc = rfc;
 	}
 	
 
@@ -81,7 +96,7 @@ public class Empresa {
 
 	//Getters and Setters
 	
-	public long getidEmpresa() {
+	public Long getidEmpresa() {
 		return idEmpresa;
 	}
 
@@ -169,14 +184,6 @@ public class Empresa {
 		this.cp = cp;
 	}
 
-	public Boolean getbitActivo() {
-		return bitActivo;
-	}
-
-	public void setbitActivo(Boolean bitActivo) {
-		this.bitActivo = bitActivo;
-	}
-
 	public String getContacto() {
 		return contacto;
 	}
@@ -209,7 +216,7 @@ public class Empresa {
 		this.paginaWeb = paginaWeb;
 	}
 
-	public long getidUsuarioCreador() {
+	public Long getidUsuarioCreador() {
 		return idUsuarioCreador;
 	}
 
