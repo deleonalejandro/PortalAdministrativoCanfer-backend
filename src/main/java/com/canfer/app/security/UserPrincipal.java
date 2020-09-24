@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Usuario;
 
 
@@ -64,6 +65,14 @@ public class UserPrincipal implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.usuario.getActivo();
+	}
+	
+	public Long getUserId() {
+		return this.usuario.getIdUsuario();
+	}
+	
+	public List<Empresa> getEmpresas() {
+		return this.usuario.getEmpresas();
 	}
 
 }

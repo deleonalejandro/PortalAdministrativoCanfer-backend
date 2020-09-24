@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+<<<<<<< HEAD
 import org.springframework.security.web.util.ThrowableCauseExtractor;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,44 @@ import com.canfer.app.model.UserDTO;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.UsuarioRepository;
 
+=======
+import org.springframework.stereotype.Service;
+
+import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Proveedor;
+import com.canfer.app.dto.UserDTO;
+import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Usuario.UsuarioCanfer;
+import com.canfer.app.model.Usuario.UsuarioProveedor;
+import com.canfer.app.repository.ProveedorRepository;
+import com.canfer.app.repository.UsuarioCanferRepository;
+import com.canfer.app.repository.UsuarioProveedorRepository;
+import com.canfer.app.repository.UsuarioRepository;
+
+import javassist.NotFoundException;
+
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 @Service
 public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
+<<<<<<< HEAD
 	private PasswordEncoder passwordEncoder;
+=======
+	private ProveedorRepository proveedorRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private EmpresaService empresaService;
+	@Autowired
+	private UsuarioCanferRepository usuarioCanferRepository;
+	@Autowired
+	private UsuarioProveedorRepository usuarioProveedorRepository;
+
+	
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 	
 	public List<Usuario> findAll(){
 		return usuarioRepository.findAll();
@@ -34,13 +66,27 @@ public class UsuarioService {
 		return userUsuario.get(); 
 	}
 	
+<<<<<<< HEAD
 	public Usuario save(UserDTO user) {
 		//We  check if the user already exists.
 		Usuario testUsuario = usuarioRepository.findByUsername(user.getUsername());
+=======
+	public Usuario save(UserDTO user) throws NotFoundException {
+		
+		Usuario testUsuario;
+		Proveedor testProveedor;
+		String ePassword;
+		List<Empresa> empresas = empresaService.findAllById(user.getEmpresaIdsList());
+		Empresa empresaCreadora = empresaService.findById(user.getEmpresaCreadoraId());
+		
+		// we  check if the user already exists.
+		testUsuario = usuarioRepository.findByUsername(user.getUsername());
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 		if (testUsuario != null) {
 			throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
 		}
 		
+<<<<<<< HEAD
 		if (user.getRol().isEmpty()) {
 			throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
 		}
@@ -54,6 +100,43 @@ public class UsuarioService {
 				user.getNombre(), user.getApellido(), user.getCorreo(), user.getRol(), user.getPermisosToString());
 		
 		return usuarioRepository.save(usuario);
+=======
+		// first check if we want to create a company user or provider user.
+		if (user.getRfc() == null) {		
+			
+			if (user.getRol().isEmpty()) {
+				throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
+			}
+			
+			ePassword = passwordEncoder.encode(user.getPassword());
+			
+			UsuarioCanfer usuario = new UsuarioCanfer(user.getUsername(), ePassword,
+					user.getNombre(), user.getApellido(), user.getCorreo(), user.getRol(), user.getPermisosToString());
+			
+			// assign the companies that the user will manage
+			usuario.setEmpresas(empresas);
+			
+			return usuarioCanferRepository.save(usuario);
+			
+		} else {
+			
+			testProveedor = proveedorRepository.findByEmpresasAndRfc(empresaCreadora, user.getRfc());
+			if (testProveedor == null) {
+				throw new UsernameNotFoundException("El proveedor no es valido. Verifique el RFC");
+			}
+			
+			ePassword = passwordEncoder.encode(user.getPassword());
+			
+			UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword,
+					user.getNombre(), user.getApellido(), user.getCorreo(), "USUARIO_PROVEEDOR", user.getPermisosToString());
+			
+			usuario.setProveedor(testProveedor);
+			
+			return usuarioProveedorRepository.save(usuario);
+
+		}
+		
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 	}
 	
 	public Usuario update(UserDTO user) {
@@ -66,7 +149,10 @@ public class UsuarioService {
 		Usuario updateUsuario = checkUsuario.get();
 		
 		//Use setters to transfer the basic information, except password.
+<<<<<<< HEAD
 		updateUsuario.setIdUsuario(user.getUserId());
+=======
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 		updateUsuario.setUsername(user.getUsername());
 		updateUsuario.setActivo(user.getActivo());
 		updateUsuario.setApellido(user.getApellido());
@@ -82,10 +168,19 @@ public class UsuarioService {
 		//We  check if the user already exists.
 		Optional<Usuario> deleteUsuario = usuarioRepository.findById(id);
 		if (deleteUsuario.isEmpty()) {
+<<<<<<< HEAD
 			throw new UsernameNotFoundException("El usuario: " + deleteUsuario.get().getUsername() + " no existe.");
+=======
+			throw new UsernameNotFoundException("El usuario no existe.");
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 		}
 		
 		usuarioRepository.delete(deleteUsuario.get());
 	}
+<<<<<<< HEAD
+=======
+	
+	
+>>>>>>> c1572cf570c8810305b62260b3bc8bd1864bbd21
 
 }

@@ -23,7 +23,7 @@ public class FormularioComex {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idFormularioComex; 
 	
-    @JoinColumn(name = "AgenciaAduanal", referencedColumnName= "claveProv")
+    @JoinColumn(name = "AgenciaAduanal")
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor proveedor;
     
