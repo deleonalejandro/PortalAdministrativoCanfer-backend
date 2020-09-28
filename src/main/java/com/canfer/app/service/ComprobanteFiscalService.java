@@ -28,7 +28,7 @@ import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 import com.canfer.app.repository.ComplementoPagoRepository;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.ComprobanteFiscalRepository;
 import com.canfer.app.repository.ConsecutivoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.FacturaRepository;
@@ -187,4 +187,11 @@ public class ComprobanteFiscalService {
 		return (comprobanteFiscalRepository.findByUuid(uuid) != null);
 	}
 
+	public ComprobanteFiscal updateEstatus(ComprobanteFiscal comprobante, String estatus) {
+
+		// Update information from payment.
+		comprobante.setEstatusPago(estatus);
+		
+		return comprobanteFiscalRepository.save(comprobante);
+	}
 }
