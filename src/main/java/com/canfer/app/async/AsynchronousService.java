@@ -5,8 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
-import com.canfer.app.avisopago.DBThread;
-import com.canfer.app.mail.receiver.EmailThread;
+import com.canfer.app.mail.EmailThread;
 
 @Service
 public class AsynchronousService {
@@ -21,9 +20,5 @@ public class AsynchronousService {
 
         EmailThread emailThread = applicationContext.getBean(EmailThread.class);
         taskExecutor.execute(emailThread);
-        
-        DBThread dbThread = applicationContext.getBean(DBThread.class);
-        taskExecutor.execute(dbThread);
-
     }
 }
