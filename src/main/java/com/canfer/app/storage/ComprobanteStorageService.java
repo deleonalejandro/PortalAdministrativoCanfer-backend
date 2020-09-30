@@ -38,13 +38,12 @@ public class ComprobanteStorageService implements StorageService {
 		String filename = StringUtils.cleanPath(file.getOriginalFilename());
 		try {
 			if (file.isEmpty()) {
-				throw new StorageException("Failed to store empty file " + filename);
+				throw new StorageException("Error al guardar un archivo vacío. " + filename);
 			}
 			if (filename.contains("..")) {
 				// This is a security check
 				throw new StorageException(
-						"Cannot store file with relative path outside current directory "
-								+ filename);
+						"No es posible guardar un archivo con una ruta relativa fuera del directorio " + filename);
 			}
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, this.rootLocation.resolve(filename),
@@ -52,7 +51,7 @@ public class ComprobanteStorageService implements StorageService {
 			}
 		}
 		catch (IOException e) {
-			throw new StorageException("Failed to store file " + filename, e);
+			throw new StorageException("Error al guardar el archivo " + filename, e);
 		}
 	}
 
@@ -63,15 +62,14 @@ public class ComprobanteStorageService implements StorageService {
 			if (filename.toString().contains("..")) {
 				// This is a security check
 				throw new StorageException(
-						"Cannot store file with relative path outside current directory "
-								+ filename);
+						"No es posible guardar un archivo con una ruta relativa fuera del directorio " + filename);
 			}
 			
 			Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
 					StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch (IOException e) {
-			throw new StorageException("Failed to store file " + filename, e);
+			throw new StorageException("Error al guardar el archivo " + filename, e);
 		}
 		
 		return this.rootLocation.resolve(filename).toString();
@@ -106,7 +104,7 @@ public class ComprobanteStorageService implements StorageService {
 				.map(this.rootLocation::relativize);
 		}
 		catch (IOException e) {
-			throw new StorageException("Failed to read stored files", e);
+			throw new StorageException("Error al leer los archivos alamacenados", e);
 		}
 
 	}
@@ -125,13 +123,12 @@ public class ComprobanteStorageService implements StorageService {
 				return resource;
 			}
 			else {
-				throw new StorageFileNotFoundException(
-						"Could not read file: " + filename);
+				throw new StorageFileNotFoundException("No se pudo leer el archivo: " + filename);
 
 			}
 		}
 		catch (MalformedURLException e) {
-			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + filename);
 		}
 	}
 	
@@ -142,13 +139,12 @@ public class ComprobanteStorageService implements StorageService {
 				return resource;
 			}
 			else {
-				throw new StorageFileNotFoundException(
-						"Could not read file: " + file.getFileName());
+				throw new StorageFileNotFoundException("No se pudo leer el archivo: " + file.getFileName());
 
 			}
 		}
 		catch (MalformedURLException e) {
-			throw new StorageFileNotFoundException("Could not read file: " + file.getFileName(), e);
+			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + file.getFileName());
 		}
 	}
 
@@ -163,7 +159,7 @@ public class ComprobanteStorageService implements StorageService {
 			Files.createDirectories(rootLocation);
 		}
 		catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
+			throw new StorageException("No fué posible inicializar los directorios.", e);
 		}
 	}
 	
@@ -178,7 +174,7 @@ public class ComprobanteStorageService implements StorageService {
 			Files.createDirectories(rootLocation);
 		}
 		catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
+			throw new StorageException("No fué posible inicializar los directorios.", e);
 		}
 	}
 	

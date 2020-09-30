@@ -55,7 +55,7 @@ public class ComprobanteFiscalService {
 	@Autowired
 	private ConsecutivoRepository consecutivoRepository;
 
-	private static final String DOCUMENT_NOT_FOUND = "El documento no existe.";
+	private static final String DOCUMENT_NOT_FOUND = "El comprobante fiscal no existe en la base de datos.";
 
 	public ComprobanteFiscal save(Comprobante comprobante) throws FileExistsException, NotFoundException {
 
@@ -66,15 +66,15 @@ public class ComprobanteFiscalService {
 		List<Proveedor> proveedores;
 
 		if (exist(comprobante.getUuidTfd())) {
-			throw new FileExistsException("El comprobante fiscal ya ha sido registrado. UUID: "
-					+ comprobante.getUuidTfd());
+			throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
 		}
 
 		receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
 		proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
 
 		// check if the company or the provider exist on the data base.
-		if (receptor == null || proveedores == null) {
+		if (receptor == null || proveedores.isEmpty()) {
 			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. \n "
 					+ "Empresa RFC: " + comprobante.getReceptorRfc() + ". \n"
 					+ "Proveedor RFC: " + comprobante.getEmisorRfc() + ". \n");
@@ -115,6 +115,7 @@ public class ComprobanteFiscalService {
 	}
 	
 	public ComprobanteFiscal updateInfo(ComprobanteFiscalDTO comprobanteDTO) {
+		
 		ComprobanteFiscal comprobanteUpdate = findById(comprobanteDTO.getIdComprobanteFiscal());
 		
 		// TODO work on this will be needed... stay tuned with the front end

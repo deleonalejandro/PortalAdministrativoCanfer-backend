@@ -6,14 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileExistsException;
+import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +35,11 @@ import com.canfer.app.cfd.XmlService;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
+import com.canfer.app.model.Log;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 
 import javassist.NotFoundException;
@@ -61,7 +66,7 @@ public class DocumentosFiscalesController {
 	@PostMapping("/uploadFactura")
 	public String upload(@RequestParam("files") MultipartFile[] files) {
 		 
-		Comprobante comprobante;
+		Comprobante comprobante = null;
 		ComprobanteFiscal comprobanteFiscal;
 		String ruta;
 		
@@ -103,15 +108,21 @@ public class DocumentosFiscalesController {
 				
 			
 		} catch (FileExistsException e) {
-			// La factura ya existe
+			// handle exception for a duplicated invoice
+			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
 			e.printStackTrace();
 		} catch (NotFoundException e) {
 			// La empresa o el proveedor no se encuentran en el catalogo
+			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
+			e.printStackTrace();
+		} catch (XmlInfrastructureException e) {
+			Log.falla("Error al leer el CFD: " + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
 			// Error inesperado
+			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado", comprobante.getReceptorNombre());
 			e.printStackTrace();
-		}
+		} 
 		
 		return "redirect:/documentosFiscalesClient";
 		
@@ -120,8 +131,8 @@ public class DocumentosFiscalesController {
 	public String saveComprobanteFiscal(@RequestParam ComprobanteFiscalDTO comprobante) {
 		try {
 			comprobanteService.updateInfo(comprobante);
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (DataAccessResourceFailureException e) {
+			Log.falla("Error al actualizar la factura " + comprobante.getUuid() + ": " + e.getMessage());
 		}
 		
 		return "redirect:/documentosFiscalesClient";
@@ -133,9 +144,6 @@ public class DocumentosFiscalesController {
 			
 			for(Long id : ids) {
 				
-				// delete the object using the id
-				comprobanteService.delete(id);
-				
 				// delete files first, since we use document info to get route
 				List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
 				
@@ -145,21 +153,27 @@ public class DocumentosFiscalesController {
 					Path file = Paths.get(document.getRuta());
 					if (file.toFile().exists()) {
 						try {
+							
 							// delete file if exists
 							Files.delete(file);
 							
 						} catch (IOException e) {
+							Log.activity("No se logró eliminar el archivo " + file.getFileName() + ".", document.getEmpresa().getNombre());
 							e.printStackTrace();
 						}
 					}
 				});
 				
+				
 				// finally delete documents
 				documentoService.deleteFacturaDocuments(id);
+				
+				// delete the object using the id
+				comprobanteService.delete(id);
 			}
 				
 		} catch (Exception e) {
-			System.out.println("Ocurrio un error al borrar multiples facturas.");
+			Log.falla("Ocurrio un error al borrar multiples facturas. " + e.getCause());
 		}
 		return "redirect:/documentosFiscalesClient";	
 	}
@@ -167,8 +181,6 @@ public class DocumentosFiscalesController {
 	@GetMapping(value = "/delete/{id}")
 	public String deleteFactura(@PathVariable Long id, Model model) {
 		try {
-			// delete the object using the id
-			comprobanteService.delete(id);
 			
 			// delete files first, since we use document info to get route
 			List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
@@ -183,6 +195,7 @@ public class DocumentosFiscalesController {
 						Files.delete(file);
 						
 					} catch (IOException e) {
+						Log.activity("No se logró eliminar el archivo " + file.getFileName() + ".", document.getEmpresa().getNombre());
 						e.printStackTrace();
 					}
 				}
@@ -190,9 +203,12 @@ public class DocumentosFiscalesController {
 			
 			// finally delete documents
 			documentoService.deleteFacturaDocuments(id);
+			
+			// delete the object using the id
+			comprobanteService.delete(id);
 				
 		} catch (Exception e) {
-			System.out.println("Ocurrio un error al borrar la factura." + e.getMessage());
+			Log.falla("Ocurrio un error al borrar la factura." + e.getCause());
 			model.addAttribute("DeleteFacturaError", e.getMessage());
 		}
 		return "redirect:/documentosFiscalesClient";	
@@ -207,8 +223,11 @@ public class DocumentosFiscalesController {
 		try {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
-		} catch (Exception e) {
+		} catch (StorageFileNotFoundException e) {
+			Log.activity("Error durante la descarga: " + e.getMessage(), doc.getEmpresa().getNombre());
 			e.printStackTrace();
+			return ResponseEntity.badRequest()
+					.body(resource);
 		}
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
@@ -230,8 +249,11 @@ public class DocumentosFiscalesController {
 		try {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
-		} catch (Exception e) {
+		} catch (StorageFileNotFoundException e) {
+			Log.activity("Error al previsualizar el documento: " + e.getMessage(), doc.getEmpresa().getNombre());
 			e.printStackTrace();
+			return ResponseEntity.badRequest()
+					.body(resource);
 		} 
 		
 		return ResponseEntity.ok()
@@ -241,29 +263,47 @@ public class DocumentosFiscalesController {
 	}
 	
 	@GetMapping(value = "/zip-download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<byte[]> zipDownload(@RequestParam List<Long> cfdId) throws IOException {
-		// TODO
+	public ResponseEntity<byte[]> zipDownload(@RequestParam List<Long> cfdId) {
 		// checkout for errors and how to display them
 		String zipFileName = "comprobantes_canfer.zip";
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ZipOutputStream zipOut = new ZipOutputStream(bos);
-		List<Documento> docs;
+		List<Documento> docs = new ArrayList<>();
+		
 		for (Long id : cfdId) {
+			
 			docs = documentoService.findAllByIdTabla(id);
+			
 			for (Documento doc : docs) {
 				
-				// take the route of the document
 				Path path = Paths.get(doc.getRuta());
 				FileSystemResource resource = new FileSystemResource(path);
 				ZipEntry zipEntry = new ZipEntry(resource.getFilename());
-				zipEntry.setSize(resource.contentLength());
-				zipOut.putNextEntry(zipEntry);
-				StreamUtils.copy(resource.getInputStream(), zipOut);
-				zipOut.closeEntry();
+				
+				try {
+					
+					zipEntry.setSize(resource.contentLength());
+					zipOut.putNextEntry(zipEntry);
+					StreamUtils.copy(resource.getInputStream(), zipOut);
+					zipOut.closeEntry();
+					
+				} catch (IOException e) {
+					Log.activity("Error al comprimir archivo: "
+							+ path.getFileName() + ".", doc.getEmpresa().getNombre());
+					e.printStackTrace();
+				}
 			}
 		}
-		zipOut.finish();
-		zipOut.close();
+		
+		try {
+			zipOut.finish();
+			zipOut.close();
+		} catch (IOException e) {
+			Log.activity("Error durante la descarga: No fué posible comprimir los documentos.", docs.get(0).getEmpresa().getNombre());
+			e.printStackTrace();
+			return ResponseEntity.badRequest()
+					.body(bos.toByteArray());
+		}
 		
 	    return ResponseEntity.ok()
 	    		.contentType(MediaType.APPLICATION_OCTET_STREAM)

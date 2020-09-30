@@ -12,7 +12,7 @@
 	    };
 
 
-            //Tabla en si
+        //Tabla en si
 		
 		$(document).ready(function () {
 			

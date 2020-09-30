@@ -354,7 +354,7 @@ public class Comprobante {
 		}
 
 	}
-
+	
 	@XmlRootElement(name = "Receptor")
 	private static class Receptor {
 

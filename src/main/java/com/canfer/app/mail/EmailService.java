@@ -23,12 +23,14 @@ import javax.persistence.NoResultException;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Log;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -95,35 +97,47 @@ public class EmailService {
 				}
 
 			} catch (StorageException | MessagingException e) {
-				System.out.println("No fue posible recibir el archivo." + e.getMessage());
+				Log.falla("Error al procesar correo: No fue posible recibir el archivo adjunto. " + e.getMessage());
 			}
 
 		}
 
 		if (processDocuments()) {
-			System.out.println(
-					"Los documentos fueron procesados satisfactoriamente. La bandeja de entrada ha sido vaciada.");
+			Log.activity("Los documentos fueron procesados satisfactoriamente. La bandeja de entrada ha sido vaciada.", "CANFER");
 		}
 
 	}
 
-	public boolean processDocuments() {
+	private boolean processDocuments() {
 
+		List<Path> filePaths = new ArrayList<>();
+		
 		// list of XML paths
-		List<Path> filePaths = fileStorageService.loadAllRoutes()
-				.filter(file -> FilenameUtils.getExtension(file.getFileName().toString()).equalsIgnoreCase("xml"))
-				.collect(Collectors.toList());
+		try {
+			
+			filePaths = fileStorageService.loadAllRoutes()
+					.filter(file -> FilenameUtils.getExtension(file.getFileName().toString()).equalsIgnoreCase("xml"))
+					.collect(Collectors.toList());
+			
+		} catch (StorageException e2) {
+			Log.falla("Error al procesar documentos descargados: " + e2.getMessage());
+		}
 
 		for (Path path : filePaths) {
 
-			// Extract the base name from the xml file
+			List<Path> files = new ArrayList<>();
 			String baseName = FilenameUtils.getBaseName(path.getFileName().toString());
 
-			// Filter the directory and throw the paths that contain the base name on it
-			// Sort the list (.pdf comes first)
-			List<Path> files = fileStorageService.loadAllRoutes()
-					.filter(file -> file.getFileName().toString().contains(baseName)).sorted(Comparator.reverseOrder())
-					.collect(Collectors.toList());
+			// Filter the directory and throw the paths that contain the base name on it.
+			try {
+				
+				files = fileStorageService.loadAllRoutes()
+						.filter(file -> file.getFileName().toString().contains(baseName)).sorted(Comparator.reverseOrder())
+						.collect(Collectors.toList());
+
+			} catch (Exception e2) {
+				Log.falla("Error al procesar documentos descargados: " + e2.getMessage());
+			}
 
 			// Move files to corresponding official directories
 			saveOfficialDocuments(files);
@@ -136,27 +150,35 @@ public class EmailService {
 						Files.delete(file);
 
 					} catch (IOException e) {
+						Log.falla("Error al procesar documentos descargados: No fue posible eliminar el archivo del directorio de descargas." + e.getMessage());
 						e.printStackTrace();
 					}
 				}
 			});
 		}
-
-		// clear entries directory
-		Stream<Path> remainingFiles = fileStorageService.loadAllRoutes();
-
-		if (remainingFiles.findAny().isPresent()) {
-			// finally copy remaining files into the unknown directory
-			fileStorageService.loadAllRoutes().forEach(file -> fileStorageService.migrateAttachments(file, "OTHER"));
-			fileStorageService.deleteAll();
+		
+		try {
+			
+			// clear entries directory
+			Stream<Path> remainingFiles = fileStorageService.loadAllRoutes();
+			
+			if (remainingFiles.findAny().isPresent()) {
+				// finally copy remaining files into the unknown directory and delete all from the entries.
+				fileStorageService.loadAllRoutes().forEach(file -> fileStorageService.migrateAttachments(file, "OTHER"));
+				fileStorageService.deleteAll();
+			}
+			
+		} catch (StorageException e2) {
+			Log.falla("Error al procesar documentos descargados: " + e2.getMessage());
 		}
+
 
 		return true;
 	}
 
-	public void saveOfficialDocuments(List<Path> files) {
+	private void saveOfficialDocuments(List<Path> files) {
 
-		Comprobante comprobante;
+		Comprobante comprobante = null;
 		ComprobanteFiscal comprobanteFiscal;
 		String ruta;
 
@@ -199,19 +221,26 @@ public class EmailService {
 		} catch (FileExistsException e) {
 			// La factura ya existe
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
+			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
 			e.printStackTrace();
 		} catch (NotFoundException e) {
 			// La empresa o el proveedor no se encuentran en el catalogo
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
+			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
+			e.printStackTrace();
+		} catch (XmlInfrastructureException e) {
+			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
+			Log.falla("Error al leer el CFD: " + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
 			// Error inesperado
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
+			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado", comprobante.getReceptorNombre());
 			e.printStackTrace();
 		}
 	}
 
-	public void zipExtraction(BodyPart bodyPart) {
+	private void zipExtraction(BodyPart bodyPart) {
 		try {
 
 			InputStream is = bodyPart.getInputStream();
@@ -244,31 +273,40 @@ public class EmailService {
 			zis.close();
 
 		} catch (IOException | MessagingException e) {
-			// La lectura del archivo ZIP fue interrumpida
+			Log.falla("Error al procesar el archivo comprimido ZIP: " + e.getMessage());
 			e.printStackTrace();
 		}
 
 	}
 
-	public List<BodyPart> getAllAttachments(Message[] messages) {
+	private List<BodyPart> getAllAttachments(Message[] messages) {
 
+		// TODO try to reduce algorithm complexity
+		
 		List<BodyPart> bodyParts = new ArrayList<>();
+		Message msg;
+		Multipart multipart;
+		BodyPart bodyPart;
+		String fileName;
+		String extension;
+		
 
 		for (int i = 0; i < messages.length; i++) {
-			Message msg = messages[i];
-			// get content of message
+			// assign first message
+			msg = messages[i];
 
 			try {
-
-				Multipart multipart = (Multipart) msg.getContent();
+				
+				// get message content
+				multipart = (Multipart) msg.getContent();
 
 				for (int j = 0; j < multipart.getCount(); j++) {
 
-					BodyPart bodyPart = multipart.getBodyPart(j);
-					String fileName = bodyPart.getFileName();
-					String extension = FilenameUtils.getExtension(fileName);
+					bodyPart = multipart.getBodyPart(j);
+					fileName = bodyPart.getFileName();
+					extension = FilenameUtils.getExtension(fileName);
 
-					// check if extension is not null
+					// check if extension is not null, we make sure that a file exists.
 					if (fileName == null && extension == null) {
 						continue;
 					}
@@ -283,9 +321,10 @@ public class EmailService {
 				}
 
 			} catch (MessagingException e) {
-				// Ocurrio un error durante la lectura del mensaje.
+				Log.falla("Ocurrió un error durante la lectura del mensaje de correo.");
+				e.printStackTrace();
 			} catch (IOException e) {
-				// No fue posible extraer el contenido del mensaje
+				Log.falla("No fué posible extraer el contenido del mensaje de correo.");
 			}
 		}
 

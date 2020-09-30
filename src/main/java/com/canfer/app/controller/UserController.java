@@ -1,7 +1,8 @@
 package com.canfer.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.canfer.app.dto.UserDTO;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.UsuarioRepository;
 import com.canfer.app.service.UsuarioService;
+
+import javassist.NotFoundException;
 
 
 
@@ -49,9 +53,13 @@ public class UserController {
 		
 			usuarioService.save(user);
 			
-		} catch (Exception e) {
+		} catch (UsernameNotFoundException | EmptyResultDataAccessException e) {
+			Log.falla("Error al crear usuario: " + e.getMessage());
 			model.addAttribute("errorMessage", e.getMessage());
 			return USER_SIGNUP;
+		} catch (NotFoundException e) {
+			// company not identified
+			e.printStackTrace();
 		}
 				
 		return "redirect:/users";
@@ -65,7 +73,11 @@ public class UserController {
 	
 	@PostMapping(value = "/save")
 	public String saveUser(UserDTO user) {
-		usuarioService.update(user);
+		try {
+			usuarioService.update(user);
+		} catch (UsernameNotFoundException e) {
+			Log.falla("Error al actualizar usuario: " + e.getMessage());
+		}
 		return "redirect:/users";
 	}
 	
@@ -73,9 +85,9 @@ public class UserController {
 	public String deleteUser(@PathVariable Long id, Model model) {
 		try {
 			usuarioService.delete(id);
-		} catch (Exception e) {
+		} catch (UsernameNotFoundException e) {
+			Log.falla("Error al actualizar usuario: " + e.getMessage());
 			model.addAttribute("UserNotFoundMessage",e.getMessage());
-			return "redirect:/users";
 		}
 		return "redirect:/users";
 	}

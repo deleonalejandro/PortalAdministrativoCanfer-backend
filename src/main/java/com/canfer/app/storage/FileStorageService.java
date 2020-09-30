@@ -111,7 +111,7 @@ public class FileStorageService implements StorageService {
 			Files.createDirectories(rootLocationError);
 			Files.createDirectories(rootLocationUnknown);
 		} catch (IOException e) {
-			throw new StorageException("No se pudo inicializar los directorios.", e);
+			throw new StorageException("No fue posible inicializar los directorios.", e);
 		}
 	}
 

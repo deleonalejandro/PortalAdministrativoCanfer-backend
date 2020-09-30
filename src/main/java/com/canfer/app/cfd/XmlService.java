@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,6 +13,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,12 +37,12 @@ public class XmlService {
 					.unmarshal(new InputStreamReader(new BufferedInputStream(bis)));
 		} catch (IOException | JAXBException e) {
 			e.printStackTrace();
-			return null;
+			throw new XmlInfrastructureException("No fue posible leer el comprobante fiscal digital: " + file.getOriginalFilename());
 		}
 	}
 
 	// Transform with a Path
-	public Comprobante xmlToObject(Path path) throws JAXBException, FileNotFoundException, IOException {
+	public Comprobante xmlToObject(Path path) {
 		// Make a file from the given path
 		File file = path.toAbsolutePath().toFile();
 		JAXBContext context;
@@ -53,6 +53,9 @@ public class XmlService {
 			context = JAXBContext.newInstance(Comprobante.class);
 			return (Comprobante) context.createUnmarshaller()
 					.unmarshal(new InputStreamReader(new BufferedInputStream(bis)));
+		} catch (JAXBException | IOException e) {
+			e.printStackTrace();
+			throw new XmlInfrastructureException("No fue posible leer el comprobante fiscal digital: " + path.getFileName());
 		} 
 
 	}

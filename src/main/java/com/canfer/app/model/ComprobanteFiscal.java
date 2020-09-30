@@ -1,5 +1,6 @@
 package com.canfer.app.model;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +18,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
@@ -30,6 +33,10 @@ public abstract class ComprobanteFiscal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idComprobanteFiscal;
+	
+	@Column(nullable = false)
+	@CreationTimestamp
+	private LocalDateTime fechaCarga;
 	
 	@Column(nullable = false)
 	private String uuid; 
@@ -162,6 +169,14 @@ public abstract class ComprobanteFiscal {
 
 	public void setIdComprobanteFiscal(Long idComprobanteFiscal) {
 		this.idComprobanteFiscal = idComprobanteFiscal;
+	}
+
+	public LocalDateTime getFechaCarga() {
+		return fechaCarga;
+	}
+
+	public void setFechaCarga(LocalDateTime fechaCarga) {
+		this.fechaCarga = fechaCarga;
 	}
 
 	public String getUuid() {
