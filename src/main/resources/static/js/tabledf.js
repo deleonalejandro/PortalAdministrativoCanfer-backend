@@ -18,7 +18,7 @@
 			
 		         var table = $('#facturas').DataTable({
 					ajax: {
-		            url: "/documentosFiscalesApi/facturas",
+		            url: "/documentosFiscalesApi",
 					dataSrc:""
 		        	},
 					scrollX:true,

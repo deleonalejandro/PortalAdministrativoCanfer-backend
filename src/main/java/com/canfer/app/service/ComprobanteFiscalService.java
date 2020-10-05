@@ -74,14 +74,13 @@ public class ComprobanteFiscalService {
 		proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
 
 		// check if the company or the provider exist on the data base.
-		if (receptor == null || proveedores.isEmpty()) {
-			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. \n "
-					+ "Empresa RFC: " + comprobante.getReceptorRfc() + ". \n"
-					+ "Proveedor RFC: " + comprobante.getEmisorRfc() + ". \n");
+		if (receptor == null) {
+			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
+					+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
 		}
 		
 		// get the proper provider
-		if (proveedores.size() > 1) {
+		if (proveedores.size() > 1 || proveedores.isEmpty()) {
 			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO instead.
 			emisor = proveedorRepository.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
 		} else {

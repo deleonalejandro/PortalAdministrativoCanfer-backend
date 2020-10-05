@@ -103,7 +103,7 @@ public class EmailService {
 		}
 
 		if (processDocuments()) {
-			Log.activity("Los documentos fueron procesados satisfactoriamente. La bandeja de entrada ha sido vaciada.", "CANFER");
+			Log.general("Los correos fueron procesados satisfactoriamente. La bandeja de entrada ha sido vaciada.");
 		}
 
 	}
