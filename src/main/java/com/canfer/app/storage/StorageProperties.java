@@ -13,6 +13,7 @@ public class StorageProperties {
 	/**
 	 * Folder location for storing files
 	 */
+	// take values from .properties file
 	private Path facturasLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores");
 	private Path entriesLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Entradas");
 	private Path errorLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Error");
