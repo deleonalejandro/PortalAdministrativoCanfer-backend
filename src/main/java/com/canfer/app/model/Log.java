@@ -38,6 +38,18 @@ public class Log {
 		ThreadContext.clearMap();
 
 	}
+	
+	public static void general(String message) {
+
+		final Level activity = Level.forName("GENERAL", 300);
+
+		final Logger logger = LogManager.getLogger();
+
+		logger.log(activity, message);
+
+	}
+	
+	
 
 	public static void warn(String message) {
 

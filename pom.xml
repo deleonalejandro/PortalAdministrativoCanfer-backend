@@ -15,10 +15,27 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
+		<!-- PROJECT BUILD FOR CRYSTAL REPORTS-->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
 
+	<!-- Make repository for crystal report libraries -->
+	<repositories>
+  		<repository>
+      		<id>lib_id</id>
+       		<url>file://${project.basedir}/cr-repository</url>
+   		</repository>
+	</repositories>
+	
 	<dependencies>
+	<!-- BORRAR, SOLO ES PARA H2 -->
+		<dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -124,6 +141,96 @@
 			<artifactId>specification-arg-resolver</artifactId>
 			<version>2.6.1</version>
 		</dependency>
+		
+		
+		<!--CR Dependencies-->
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azalea.ufl</groupId>
+            <artifactId>barcode</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>crystal-common</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>crystal-reports-runtime</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>cvom</artifactId>
+            <version>12.2.220.r2677_v20160627</version>
+        </dependency>
+        <dependency>
+            <groupId>com.crystaldecisions</groupId>
+            <artifactId>database-connectors</artifactId>
+            <version>1.5.0_12-b04</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>jdbinterface</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.crystaldecisions</groupId>
+            <artifactId>reports</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.crystaldecisions</groupId>
+            <artifactId>keycode-decoder</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>logging</artifactId>
+            <version>12.2.220.r2677_v20160627</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>pfjgraphics</artifactId>
+            <version>12.2.220.r2677_v20160627</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>pojo</artifactId>
+            <version>12.2.220.r2677_v20160627</version>
+        </dependency>
+        <dependency>
+            <groupId>com.crystaldecisions</groupId>
+            <artifactId>query-builder</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>web-reporting</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.crystaldecisions</groupId>
+            <artifactId>xml-connector</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>xpp3</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <dependency>
+            <groupId>com.businessobjects</groupId>
+            <artifactId>jai_imageio</artifactId>
+            <version>12.2.220.2677</version>
+        </dependency>
+        <!--End of CR Dependencies-->
+        
 	</dependencies>
 
 	<build>

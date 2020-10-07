@@ -83,7 +83,7 @@ public class EmailReceiver {
 			ex.printStackTrace();
 
 		} catch (NoResultException e) {
-			Log.activity("Los bandeja fue procesada: " + e.getMessage(), "CANFER");
+			Log.general("Los bandeja fue procesada: " + e.getMessage());
 		}
 	}
 	

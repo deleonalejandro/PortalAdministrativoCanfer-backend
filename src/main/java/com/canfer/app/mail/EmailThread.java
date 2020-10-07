@@ -8,7 +8,7 @@ public class EmailThread implements Runnable {
 	
 	@Autowired
 	private EmailReceiver emailReceiver;
-	private boolean doStop = false;
+	private boolean doStop = true;
 	
 	
 	public EmailThread() {
