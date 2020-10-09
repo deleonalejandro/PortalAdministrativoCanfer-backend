@@ -1,4 +1,4 @@
-package com.canfer.app.async;
+package com.canfer.app.pdfExport;
 
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CrystalReportService {
 
-	static final String REPORT_NAME = "Report2.rpt";
-	static final String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs\\myExportedReport.pdf";
+	 String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
+	 String EXPORT_FILE = "C:\\Users\\aadministrador\\Desktop\\ExportedReport.pdf";
 	
-	public void exportPDF() {
+	public String exportPDF(String empresa, Integer pago, String user, String password) {
 
 		try {
 
@@ -26,6 +26,13 @@ public class CrystalReportService {
 			
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
+			
+			//Incluir Parametros
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "Empresa", empresa);
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "Pago", pago);
+			
+			//Incluir DB login
+			reportClientDoc.getDatabaseController().logon(user, password);
 			
 			//Export report and obtain an input stream that can be written to disk.
 			//See the Java Reporting Component Developer's Guide for more information on the supported export format enumerations
@@ -66,6 +73,8 @@ public class CrystalReportService {
 			ex.printStackTrace();
 						
 		}
+		
+		return EXPORT_FILE;
 
 	}
 

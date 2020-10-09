@@ -31,7 +31,7 @@ public class EmailThread implements Runnable {
 			
 			// Thread running externally
 			System.out.println("Llamare al metodo");
-			emailReceiver.downloadEmails(true);
+			emailReceiver.downloadEmails();
 			
 			try {
 				System.out.println("Thread running... ya me fui a dormir");

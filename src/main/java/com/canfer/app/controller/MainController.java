@@ -6,13 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.canfer.app.async.CrystalReportService;
+import com.canfer.app.mail.EmailSenderService;
+import com.canfer.app.pdfExport.CrystalReportService;
 
 @Controller
 public class MainController {
 	
 	@Autowired
     CrystalReportService crService;
+	@Autowired
+	EmailSenderService eSenderService; 
 	
 	public MainController() {
 		// Constructor
@@ -28,11 +31,5 @@ public class MainController {
 		return "documentos-fiscales";
 	}
 	
-	@GetMapping(value = "/crystal")
-	public String crystal() throws Exception {
-		crService.exportPDF();
-         
-		return "documentos-fiscales";
-	}
 
 }

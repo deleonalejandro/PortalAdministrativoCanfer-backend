@@ -40,7 +40,7 @@ public class EmailReceiver {
 	}
 
 	@Async
-	public void downloadEmails(Boolean open) {
+	public void downloadEmails() {
 
 		try {
 
