@@ -63,7 +63,7 @@ public class EmailSenderService {
 
     }
 	
-	public void sendEmail(String to,String subject,String msgBody, String path, String name){
+	public void sendEmail(String to,String subject,String msgBody, String path){
 
 	    MimeMessage message = javaMailSender.createMimeMessage();
 	    try {
@@ -71,7 +71,7 @@ public class EmailSenderService {
 	        helper.setTo(to);
 	        helper.setSubject(subject);
 	        helper.setText(msgBody);
-	        helper.addAttachment("happyBirthday", new File(path));
+	        helper.addAttachment("AvisoDePago.pdf", new File(path));
 	        javaMailSender.send(message);
 	    } catch (MessagingException e) {
 
