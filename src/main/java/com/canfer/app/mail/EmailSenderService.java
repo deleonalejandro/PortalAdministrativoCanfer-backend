@@ -7,10 +7,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import com.canfer.app.model.Log;
 
 /**
  * 
@@ -47,21 +48,6 @@ public class EmailSenderService {
 	   * @return void
 	   */
 	
-	public void sendEmail() {
-		
-		//Crete message
-        SimpleMailMessage msg = new SimpleMailMessage();
-        
-        //Include attachment, subject, destination address and content
-        msg.setTo("xialeexix@gmail.com");
-        msg.setSubject("Testing from Spring Boot");
-        msg.setText("Hello World \n Spring Boot Email");
-
-        //Send mail
-        javaMailSender.send(msg);
-	
-
-    }
 	
 	public void sendEmail(String to,String subject,String msgBody, String path){
 
@@ -75,7 +61,7 @@ public class EmailSenderService {
 	        javaMailSender.send(message);
 	    } catch (MessagingException e) {
 
-	        e.printStackTrace();
+	        Log.falla("No se pudo enviar correo a " + to + " con el aviso de Pago.");;
 	    }
 	}
 
