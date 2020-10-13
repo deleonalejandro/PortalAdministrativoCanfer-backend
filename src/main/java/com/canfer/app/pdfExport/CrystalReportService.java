@@ -1,5 +1,6 @@
 package com.canfer.app.pdfExport;
 
+import com.canfer.app.model.Log;
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
 import com.crystaldecisions.sdk.occa.report.lib.*;
@@ -14,9 +15,9 @@ import org.springframework.stereotype.Service;
 public class CrystalReportService {
 
 	 String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
-	 String EXPORT_FILE = "C:\\Users\\aadministrador\\Desktop\\ExportedReport.pdf";
+	 String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs";
 	
-	public String exportPDF(String empresa, Integer pago, String user, String password) {
+	public String exportPDF(String empresa, Integer pago, String user, String password, String rfc) {
 
 		try {
 
@@ -46,7 +47,7 @@ public class CrystalReportService {
 			byte byteArray[] = new byte[byteArrayInputStream.available()];
 
 			//Create a new file that will contain the exported result.
-			File file = new File(EXPORT_FILE);
+			File file = new File(EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf");
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(byteArrayInputStream.available());
@@ -60,21 +61,22 @@ public class CrystalReportService {
 			byteArrayOutputStream.close();
 			fileOutputStream.close();
 			
-			System.out.println("Successfully exported report to " + EXPORT_FILE);
-								
+			System.out.println("Se exportó el PDF:  " + EXPORT_FILE);
+			return EXPORT_FILE;			
 		}
 		catch(ReportSDKException ex) {
 		
-			ex.printStackTrace();
-			
+			Log.falla("No se pudo generar el Crystal Report para el Pago: " + pago );
+			return null; 
 		}
 		catch(Exception ex) {
 			
+			Log.falla("Ocurrió un error al exportar el reporte.");
 			ex.printStackTrace();
-						
+			return null; 	
 		}
 		
-		return EXPORT_FILE;
+		
 
 	}
 
