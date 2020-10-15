@@ -219,16 +219,18 @@
 					<div class="col-2">
 
 						<!-- Buttons SideNav -->
-						<nav class="nav nav-borders flex-column">
+						<nav class="nav nav-borders flex-column" style="position: fixed">
 							<a class="nav-link active" id="pestañaInicio" href="#!">Inicio</a>
-							<a class="nav-link" href="#!" id="pestañaFacturas">Facturas</a> <a
-								class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a>
-							<a class="nav-link" id="pestañaNotas" href="#!">Notas de
-								Crédito</a> <a class="nav-link" id="pestañaCompl" href="#!">Complementos
-								de Pago</a> <img src="assets/img/logosEmpresas/Canfer.png"
+							<a class="nav-link" href="#!" id="pestañaFacturas">Facturas</a> 
+							<a class="nav-link" id="pestañaNotas" href="#!">Notas de Crédito</a> 
+							<a class="nav-link" id="pestañaCompl" href="#!">Complementos de Pago</a> 
+							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a>
+							
+							<img src="assets/img/logosEmpresas/Canfer.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
+							
 						</nav>
 					</div>
 					<div class="col-10">
@@ -400,7 +402,7 @@
 								<div class="modal fade" id="detailsModal" tabindex="-1"
 									role="dialog" aria-labelledby="myLargeModalLabel"
 									aria-hidden="true">
-									<div class="modal-dialog" role="document">
+									<div class="modal-dialog modal-dialog-scrollable" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
 												<div class="col-11">
@@ -760,24 +762,19 @@
 															</div>
 														</form>
 													</div>
-
 												</div>
-
-												<div class="pl-0">
-													<button type="button" class="btn btn-primary ">Guardar</button>
-													<a
-														class="btn btn-datatable btn-icon btn-transparent-dark float-right pdfBtn"><i
-														class="fa fa-file-pdf fa-2x" style="color: red"></i></a> <a
-														class="btn btn-datatable btn-icon btn-transparent-dark float-right xmlBtn"><i
-														class="fas fa-file-code fa-2x" style="color: green"></i></a> <span
-														class="ml-0 float-left fa-stack fa-2x"><i
-														class="fas fa-file-invoice-dollar fa-stack-1x float-left sinPagoBtn"
-														style="color: teal"></i><i
-														class="fas fa-slash fa-stack-1x" style="color: red"></i></span> <a
-														class="btn btn-datatable btn-icon btn-transparent-dark float-right pagoBtn"><i
-														class="fas fa-file-invoice-dollar fa-2x"
-														style="color: teal"></i></a>
+											</div>
+											<div class="modal-footer">
+												<a class="btn btn-datatable btn-icon btn-transparent-dark float-right pdfBtn mr-1"><i class="fa fa-file-pdf fa-2x" style="color: red"></i></a> 
+												<a class="btn btn-datatable btn-icon btn-transparent-dark float-right xmlBtn mr-1"><i class="fas fa-file-code fa-2x" style="color: green"></i></a> 
+												<div th:if="${true}" class="mr-auto">
+													<a class="btn btn-datatable btn-icon btn-transparent-dark float-right pagoBtn"><i class="fas fa-file-invoice-dollar fa-2x" style="color: teal"></i></a>
 												</div>
+												<div th:if="${false}" class="mr-auto">
+													<span class="ml-0  fa-stack fa-2x mr-1"><i class="fas fa-file-invoice-dollar fa-stack-1x float-left sinPagoBtn" style="color: teal"></i><i
+														class="fas fa-slash fa-stack-1x" style="color: red"></i></span> 
+												</div>
+												<button type="button" class="btn btn-primary">Guardar</button>
 											</div>
 										</div>
 									</div>
@@ -819,12 +816,16 @@
 			</div>
 		</main>
 		<footer class="footer mt-auto footer-light">
-			<div class="container fixed-bottom">
+			<div class="container">
 				<div class="row">
-					<div class="col-md-6 small">Copyright &copy; Canfer 2020</div>
-					<div class="col-md-6 text-md-right small">
-						<a href="#!"> Políticas de Privacidad</a> &middot; <a href="#!">Términos
-							&amp; Condiciones</a>
+					<div class="col-md-10 offset-md-2">
+						<div class="row">
+							<div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
+							<div class="col-md-6 text-md-right small">
+								<a href="#!"> Políticas de Privacidad</a> &middot; <a href="#!">Términos
+									&amp; Condiciones</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -180,7 +180,7 @@
 					$('.detailsForm #uuid').val(jsonData.uuid)
 					$('.detailsForm #idNumSap').val(jsonData.idNumSap)
 					$('.detailsForm #empresa').val(jsonData.empresa.nombre)
-					$('.detailsForm #proveedor').val(jsonData.proveedor)
+					$('.detailsForm #proveedor').val(jsonData.proveedor.nombre)
 					$('.detailsForm #serie').val(jsonData.serie)
 					$('.detailsForm #folio').val(jsonData.folio)
 					
@@ -304,7 +304,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#xml').attr("href","/documentosFiscalesClient/download/xml?="+ids)
+					$('#xml').attr("href","/documentosFiscalesClient/download/xml?ids="+ids)
 					}
 				});
 				
@@ -319,7 +319,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#pdf').attr("href","/documentosFiscalesClient/download/pdf?="+ids)
+					$('#pdf').attr("href","/documentosFiscalesClient/download/pdf?ids="+ids)
 					}
 				});
 				
@@ -334,7 +334,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#csv').attr("href","/documentosFiscalesClient/csv?="+ids)
+					$('#csv').attr("href","/documentosFiscalesClient/csv?ids="+ids)
 					}
 				});
 				
@@ -351,7 +351,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#comprimir').attr("href","/documentosFiscalesClient/zip-download?="+ids)
+					$('#comprimir').attr("href","/documentosFiscalesClient/zip-download?cfdId="+ids)
 					}
 				});
 				

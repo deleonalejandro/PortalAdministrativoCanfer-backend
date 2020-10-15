@@ -54,7 +54,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 import javassist.NotFoundException;
-
+//TODO CONSIDERAR QUE SI NO EXISTE PDF O XML HANDLEAR EL ERROR! PDF GENERICO!!!!!!!!
 @Controller
 @RequestMapping("/documentosFiscalesClient")
 public class DocumentosFiscalesController {
@@ -248,6 +248,7 @@ public class DocumentosFiscalesController {
 				.body(resource);
 	}
 	
+	//TODO this method is not working 
 	@GetMapping("/download/{extension:.+}")
 	public void downloadLocalFiles(@RequestParam List<Long> ids, @PathVariable String extension) {
 		

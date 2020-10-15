@@ -42,7 +42,7 @@ public class FNCRestController {
 				@Spec(path="p.rfc", params="proveedor", spec=Like.class) 
 			})
     		@And({
-    			@Spec(path="e.idEmpresa", params= "empresa", spec = Equal.class),
+    			@Spec(path="e.rfc", params= "empresa", spec = Equal.class),
                 @Spec(path="fechaEmision", params={"registeredAfter","registeredBefore"}, config = "YYYY-MM-dd", spec=Between.class),
                 @Spec(path="folio", params={"sequenceAfter","sequenceBefore"}, spec=Between.class),
 				@Spec(path="total", params= {"totalAfter", "totalBefore"}, spec = Between.class),
