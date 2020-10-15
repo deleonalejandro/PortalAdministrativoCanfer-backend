@@ -30,8 +30,8 @@ public class Empresa {
 	@JsonIgnore
 	@JoinTable(
 			name = "empresa_proveedor",
-			joinColumns = @JoinColumn(name="idEmpresa"),
-			inverseJoinColumns = @JoinColumn(name="idProveedor")
+			joinColumns = @JoinColumn(name="idEmpresa", nullable=true),
+			inverseJoinColumns = @JoinColumn(name="idProveedor", nullable=true)
 			)
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Proveedor> proveedores;

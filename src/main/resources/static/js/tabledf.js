@@ -151,9 +151,12 @@
 					$('.detailsForm #moneda').val(jsonData.moneda)
 					$('.detailsForm #total').val(jsonData.total)
 					$('.detailsForm #tipoDocumento').val(jsonData.tipoDocumento)
-					$('.detailsForm #estatus').val(jsonData.estatus)
+					$('.detailsForm #estatusPago').val(jsonData.estatusPago)
+					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT)
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
 					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
+					$('.detailsForm #comentario').val(jsonData.comentario)
+					$('.detailsForm #pdfOccurs').val("")
 					         
 			        $('.detailsForm #bitRSusuario').prop("checked", jsonData.bitRSusuario);
 			        $('.detailsForm #bitRS').prop("checked", jsonData.bitRS);

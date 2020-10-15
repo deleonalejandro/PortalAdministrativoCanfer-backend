@@ -235,7 +235,7 @@
                                 
                                 <!-- BOTON NUEVA FACTURA -->
                                  <div class="col-2 pb-3 pl-0">
-                          		  	  <button type="button" id="btn-add" class="btn btn-outline-primary" data-toggle="modal" data-target="#nuevoModal">Nuevo</button>
+                          		  	  <button type="button" id="btn-add" class="btn btn-outline-primary" data-toggle="modal" data-target="#detailsModal">Nuevo</button>
                           		  </div>
                           		  
                           		  
@@ -363,189 +363,238 @@
                                
                                <!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
          					<div class="detailsForm">
-         						<div class="modal fade bd-example-modal-lg" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-							    <div class="modal-dialog modal-lg" role="document">
+         						<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							    <div class="modal-dialog" role="document">
 							        <div class="modal-content">
 							            <div class="modal-header">
-									        <h5 class="modal-title"> Detalles del documento UUD: </h5>
-									           				<input type="text" readonly class="form-control-plaintext"id="uuid" value=""/>
-									        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									          <span aria-hidden="true">&times;</span>
-									        </button>
+							            	<div class="col-4">
+							            		<p class="modal-title"> <b>Documento UUID: </b></p>
+							            	</div>
+							            	<div class="col-7">
+									           <input type="text" style="height:20px"  readonly class="form-control-plaintext"id="uuid" value=""/>
+									        </div>
+									        <div class="col-1">	
+									        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									          		<span aria-hidden="true">&times;</span>
+									        	</button>
+									        </div>	
 									    </div>
 							            <div class="modal-body">
 							                <div class="form-group"> 
 							                
 								                <!-- Bits de documento -->
-								                <div class="row float-right">
-									           			<div class="form-check form-check-inline">
-														  <input class="form-check-input" type="checkbox" id="bitValidoSAT" value="" disabled/>
-														  <label class="form-check-label" for="bitValidoSAT">Valido SAT </label>
-														</div>
-														<div class="form-check form-check-inline">
-														  <input class="form-check-input" type="checkbox" id="bitRS" value="" disabled/>
-														  <label class="form-check-label" for="bitRS">RS </label>
-														</div>
-														<div class="form-check form-check-inline">
-														  <input class="form-check-input" type="checkbox" id="bitRSusuario" value=""/>
-														  <label class="form-check-label" for="bitRSusuario"> RS Usuario</label>
-														</div>
-								           		</div>	
+								                <div class="row">
+									                <div class = "pl-3">
+										           			<div class="form-check form-check-inline ">
+															  <input class="form-check-input" type="checkbox" id="bitValidoSAT" value="" disabled/>
+															  <label class="form-check-label" for="bitValidoSAT">Valido SAT </label>
+															</div>
+															<div class="form-check form-check-inline">
+															  <input class="form-check-input" type="checkbox" id="bitRS" value="" disabled/>
+															  <label class="form-check-label" for="bitRS">RS </label>
+															</div>
+															<div class="form-check form-check-inline">
+															  <input class="form-check-input" type="checkbox" id="bitRSusuario" value=""/>
+															  <label class="form-check-label" for="bitRSusuario"> RS Usuario</label>
+															</div>
+									           		</div>	
+								           		</div>
 							                		<div class="row"> 
-									           			<div class="col-2">
+									           			<div class="col-3">
 									           				<label for="idNumSap" class="form-control-label mb-0"> <small>No. SAP: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="idNumSap" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px" readonly class="form-control form-control-sm bg-white" id="idNumSap" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="serie" class="form-control-label mb-0"> <small>Serie: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="serie" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="serie" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="folio" class="form-control-label mb-0"> <small>Folio: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="folio" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="folio" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="versionCfD" class="form-control-label mb-0"> <small>Versión CFD: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="versionCFD" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="versionCFD" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="fechaEmision" class="form-control-label mb-0"> <small>Fecha Emisión:</small> </label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="fechaEmision" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="fechaEmision" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="fechaTimbre" class="form-control-label mb-0"> <small>Fecha Timbre: </small> </label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="fechaTimbre" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="fechaTimbre" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row">
-								                		<div class="col-6">
+							                		<div class="row pt-1">
+								                		<div class="col-3">
 									                		<label for="rfcEmpresa" class="form-control-label mb-0"> <small>RFC Empresa: </small></label>
-									                		<input type="text" readonly class="form-control form-control-sm bg-white" id="rfcEmpresa" value=""/>
 									                	</div>
-									                	<div class="col-6">
+									                	<div class="col-9">	
+									                		<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="rfcEmpresa" value=""/>
+									                	</div>
+									                </div>
+									                <div class="row pt-1">
+								                		<div class="col-3">	
 									                		<label for="empresa" class="form-control-label mb-0"> <small>Empresa: </small></label>
-								                		<input type="text" readonly class="form-control form-control-sm bg-white" id="empresa" value=""/>
+								                		</div>
+								                		<div class="col-9">
+								                			<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="empresa" value=""/>
 								                		</div>
 							                		</div>
-							                		<div class="row">
-								                		<div class="col-6">
+							                		<div class="row pt-1">
+								                		<div class="col-3">	
 									                		<label for="rfcProveedor" class="form-control-label mb-0"><small> RFC Proveedor:</small> </label>
-									                		<input type="text" readonly class="form-control form-control-sm bg-white" id="rfcProveedor" value=""/>
 									                	</div>
-									                	<div class="col-6">
+									                	<div class="col-9">	
+									                		<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="rfcProveedor" value=""/>
+									                	</div>
+									                </div>
+									                <div class="row pt-1">
+								                		<div class="col-3">
 									                		<label for="proveedor" class="form-control-label mb-0"> <small>Proveedor:</small> </label>
-								                			<input type="text" readonly class="form-control form-control-sm bg-white" id="proveedor" value=""/>
+								                		</div>
+								                		<div class="col-9">	
+								                			<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="proveedor" value=""/>
 								                		</div>
 							                		</div>
-							                		<div class="row">
-							                			<div class="col-2">
+							                		<div class="row pt-1">
+							                			<div class="col-3">
 							                				<label for="noCertificadoEmpresa" class="form-control-label mb-0"> <small>No. Certificado de Empresa: </small></label>
 							                			</div>
-							                			<div class="col-10">
-							                				<input type="text" readonly class="form-control form-control-sm bg-white" id="noCertificadoEmpresa" value=""/>
+							                			<div class="col-9">
+							                				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="noCertificadoEmpresa" value=""/>
 							                			</div>
 							                		</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="noCertificadoSAT" class="form-control-label mb-0"> <small>No. Certificado SAT:</small> </label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="noCertificadoSAT" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="noCertificadoSAT" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="versionTimbre" class="form-control-label mb-0"> <small>Versión Timbre: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="versionTimbre" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="versionTimbre" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
-									           				<label for="moneda" class="form-control-label mb-0"> <small>Moneda:</small> </label>
-									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="moneda" value=""/>
-									           			</div>
-								           			</div>
-								           			<div class="row"> 
-									           			<div class="col-2">
+								           			<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="tipoDocumento" class="form-control-label mb-0"> <small>Tipo Documento:</small> </label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="tipoDocumento" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="tipoDocumento" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
-									           				<label for="estatus" class="form-control-label mb-0"> <small>Estatus: </small></label>
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
+									           				<label for="estatusPago" class="form-control-label mb-0"> <small>Estatus: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="estatus" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="estatusPago" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+								           			<div class="row pt-1"> 
+									           			<div class="col-3">
+									           				<label for="estatusSAT" class="form-control-label mb-0"> <small>Vigente SAT: </small></label>
+									           			</div>
+									           			<div class= "col-9">
+										           			<div class="input-group input-group-joined">
+										           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="estatusSAT" value=""/>
+																<div class="input-group-append">
+															        <span class="input-group-text" style="height:20px">
+															            <i data-feather="refresh-cw"></i>
+															        </span>
+															    </div>									           			
+										           			</div>
+										           		</div>
+								           			</div>
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="respuestaValidacion" class="form-control-label mb-0"> <small>Respuesta Validación: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="respuestaValidacion" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="text-danger form-control form-control-sm bg-white" id="respuestaValidacion" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="errorValidacion" class="form-control-label mb-0"> <small>Error Validación: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="errorValidacion" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px" readonly  class="text-danger form-control form-control-sm bg-white" id="errorValidacion" value=""/>
 									           			</div>
 								           			</div>
-							                		<div class="row"> 
-									           			<div class="col-2">
+							                		<div class="row pt-1"> 
+									           			<div class="col-3">
 									           				<label for="facturaNotaComplemento" class="form-control-label mb-0"> <small>Documento Relacionado: </small></label>
 									           			</div>
-									           			<div class="col-10">
-									           				<input type="text" readonly class="form-control form-control-sm bg-white" id="facturaNotaComplemento" value=""/>
+									           			<div class="col-9">
+									           				<input type="text" style="height:20px"  readonly class="form-control form-control-sm bg-white" id="facturaNotaComplemento" value=""/>
 									           			</div>
 								           			</div>
-							                		<label for="total" class="form-control-label mb-0 text-align-right"> <small>Total: </small></label>
-							                		<input type="text" readonly class="form-control form-control-sm bg-white text-align-right" id="total" value=""/>
-							           			</div>
-							           			
-							           			<!-- UPLOAD CON CHOOSE FILE & DRAG AND DROP -->
+								           			<div class="row mt-0 pt-0">
+								           				<div class="col-6"></div>
+								           				<div class="col-6">
+									           				<label for="total" class="form-control-label mb-0 pull-right"> <small>Total: </small></label>
+								                			 <div class="input-group"> 
+									                			 <div class="input-group-prepend ">  
+														          	<div class="input-group-text" style="height:20px"><i data-feather="dollar-sign" style="color:green"></i></div>
+														          </div>
+														          <input type="text" style="height:20px"   class=" text-success form-control form-control-sm bg-white pull-right" id="total" value=""/>						           		
+																<div class="input-group-append ">  
+														          	<span th:text="${moneda}" class="input-group-text text-success" style="width:50px" id="moneda"></span>
+														          </div>													         
+													         </div>
+									                	</div>
+							           				</div>
+								           			<div class="row pt-1"> 
+									           			<div class="col-3">
+									           				<label for="comentario" class="form-control-label mb-0"> <small>Comentarios: </small></label>
+									           			</div>
+									           			<div class="col-9">
+									           				<textarea type="text" style="height:50px"  class="form-control form-control-sm bg-white" cols="40" rows="5" id="comentario" value=""></textarea>
+									           			</div>
+								           			</div>
+								           		<!-- UPLOAD CON CHOOSE FILE & DRAG AND DROP -->
 							           			<div class="container pt-2">
-											      <form method="post" enctype="multipart/form-data" action="savefile" id="#archivo">
+											      <form method="post" enctype="multipart/form-data"  action="savefile" id="#archivo">
 										              <div class="input-group mb-2"> 
-													        <div class="input-group-prepend">  
-													          <div class="input-group-text"><i class="far fa-file-pdf float-left fa-lg" style="color:red"></i></div>
+													        <div class="input-group-prepend" >  
+													          <div class="input-group-text" style="height:40px"><i class="far fa-file-pdf float-left fa-lg" style="color:red"></i></div>
 													        </div>
-													        <input class="form-control" id="InputGroupPDF" type="file" name="file"/>
+													        <input class="form-control" style="height:40px" id="InputGroupPDFModal" type="file" name="file"/>
 													    </div>
 										          </form>
 												</div>
+												
+							                		</div>
+							           			
 												<div class="pl-3"><button type="button" class="btn btn-primary ">Guardar</button></div>
 							           		</div>
 							            </div>

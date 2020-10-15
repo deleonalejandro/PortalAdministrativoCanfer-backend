@@ -1,7 +1,5 @@
 package com.canfer.app.controller;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.canfer.app.service.EmpresaService;
 
+import com.canfer.app.mail.EmailSenderService;
+import com.canfer.app.pdfExport.CrystalReportService;
+
 @Controller
 public class MainController {
 	
+	@Autowired
+    CrystalReportService crService;
+	@Autowired
+	EmailSenderService eSenderService; 
 	@Autowired
 	private EmpresaService empresaService;
 
@@ -57,10 +62,6 @@ public class MainController {
 		return "documentos-fiscales";
 	}
 	
-	@GetMapping(value = "/dashboard")
-	public String getDashboard(Model model) {
-		model.addAttribute("empresa", empresaService.findAll());
-		return "dashboard-2";
-	}
+	
 
 }

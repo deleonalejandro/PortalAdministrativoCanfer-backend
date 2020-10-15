@@ -36,6 +36,7 @@ import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
+import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -58,6 +59,8 @@ public class DocumentosFiscalesController {
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
 	private ValidationService validationService;
+	@Autowired
+	private ComprobanteFiscalRespository comprobanteFiscalRepository; 
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -312,9 +315,14 @@ public class DocumentosFiscalesController {
 
 	}
 
+	@PostMapping(value = "/getVigencia/{uuid}")
+	public void getVigencia(@PathVariable String uuid) {
 	
-	
-	
-	
-	
+		ComprobanteFiscal comprobante = comprobanteFiscalRepository.findByUuid(uuid);
+		String respuestaSat = comprobante.verificaSat(); 
+		
+		comprobante.setEstatusSAT(respuestaSat);
+		comprobanteFiscalRepository.save(comprobante);
+		
+	}
 }

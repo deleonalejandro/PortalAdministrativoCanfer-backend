@@ -80,7 +80,7 @@ public class FNCRestController {
 
         return facturaRepo.findAll(facturaSpec);
     }
-			
+    		
 
 	
 }
