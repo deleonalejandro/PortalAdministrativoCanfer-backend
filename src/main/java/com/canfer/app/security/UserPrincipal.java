@@ -67,12 +67,20 @@ public class UserPrincipal implements UserDetails {
 		return this.usuario.getActivo();
 	}
 	
+	public String getCorreo() {
+		return this.usuario.getCorreo();
+	}
+	
 	public Long getUserId() {
 		return this.usuario.getIdUsuario();
 	}
 	
-	public List<Empresa> getEmpresas() {
-		return this.usuario.getEmpresas();
+	public List<Long> getEmpresaIds() {
+		return this.usuario.getEmpresasId();
+	}
+	
+	public List<String> getEmpresas() {
+		return this.usuario.getEmpresasNombre();
 	}
 
 }

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Registrar Empresa</title>
+<link href="/css/styles.css" rel="stylesheet" />
+<link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js"
+	crossorigin="anonymous"></script>
+</head>
+
+
+<body class="bg-primary">
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-xl-8 col-lg-9">
+							<!-- Social registration form-->
+							<div class="card my-5">
+								<div class="card-header p-5 text-center">
+									<div class="h3 font-weight-light mb-3">Añadir Empresa</div>
+									<!-- Social registration links-->
+								</div>
+								<hr class="my-0" />
+								<div class="card-body p-5">
+									<div class="alert alert-danger" role="alert" th:text="${companyExistsError}" th:if="${companyExistsError}"></div>
+									<div class="alert alert-danger" role="alert" th:text="${nullValuesError}" th:if="${nullValuesError}"></div>
+									<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+									<!-- Login form-->
+									<form action="#" th:action="@{addCompany}" method="post">
+										<input type="hidden" name=idEmpresa id="idEmpresa">
+										<!-- Form Row-->
+										<div class="form-row">
+											<!-- Form Group (NOMBRE)-->
+											<div class="form-group col-md-12">
+												<label class="small mb-1" for="inputNombre">Nombre</label> <input
+													class="form-control input-lg" id="inputNombre" type="text"
+													placeholder="Ingresa el nombre" name="nombre" />
+											</div>
+										</div>
+										<!-- Form Row-->
+										<div class="form-row">
+											<!-- Form Group (RFC)-->
+											<div class="form-group col-md-6">
+												<label class="small mb-1" for="inputRfc">RFC</label> <input
+													class="form-control input-lg" id="inputRfc" type="text"
+													placeholder="Ingresa el RFC" name="rfc" />
+											</div>
+										</div>
+										<!-- Form Row-->
+										<div class="form-row">
+											<!-- Form Group (CONTACTO)-->
+											<div class="form-group col-md-12">
+												<label class="small mb-1" for="inputContacto">Contacto</label> <input
+													class="form-control" id="inputContacto" type="text"
+													placeholder="Ingresa el contacto" name="contacto" />
+											</div>
+											<!-- Form Group (CORREO)-->
+											<div class="form-group col-md-12">
+												<label class="small mb-1" for="inputCorreo">Correo
+													Eléctronico</label> <input class="form-control" id="inputCorreo"
+													type="text" name="correo" placeholder="Ingresa el correo" />
+											</div>
+										</div>
+										<div class="form-row">
+											<!-- Form Group (CALLE)-->
+											<div class="form-group col-md-8">
+												<label class="small mb-1" for="inputCalle">Calle</label> <input
+													class="form-control" id="inputCalle" type="text"
+													placeholder="Ingresa la calle" name="calle" />
+											</div>
+											<!-- Form Group (EXTERIOR)-->
+											<div class="form-group col-md-2">
+												<label class="small mb-1" for="inputExterior">Exterior</label> <input
+													class="form-control" id="inputExterior" type="text"
+													name="numExt" />
+											</div>
+											<!-- Form Group (EXTERIOR)-->
+											<div class="form-group col-md-2">
+												<label class="small mb-1" for="inputInterior">Interior</label> <input
+													class="form-control" id="inputInterior" type="text"
+													name="numInt" />
+											</div>
+										</div>
+										<div class="form-row">
+											<!-- Form Group (COLONIA)-->
+											<div class="form-group col-md-12">
+												<label class="small mb-1" for="inputColonia">Colonia</label> <input
+													class="form-control" id="inputColonia" type="text"
+													placeholder="Ingresa la colonia" name="colonia" />
+											</div>
+										</div>
+										<!-- Form Row        -->
+										<div class="form-row">
+											<!-- Form Group (ESTADO)-->
+											<div class="form-group col-md-6">
+												<label class="text-gray-600 small" for="inputEstado">Estado</label>
+												<select id="inputEstado" class="form-control" name="idEstado">
+													<option selected value=0>--Selecciona--</option>
+													<option>...</option>
+												</select>
+											</div>
+											<!-- Form Group (MUNICIPIO)-->
+											<div class="form-group col-md-6">
+												<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
+												<select id="inputMunicipio" class="form-control" name="idMunicipio">
+													<option selected value=0>--Selecciona--</option>
+													<option>...</option>
+												</select>
+											</div>
+										</div>
+										<!-- Form Group (LOCALIDAD)-->
+										<div class="form-group">
+											<label class="small mb-1" for="inputLocalidad">Localidad</label>
+											<input class="form-control" id="inputLocalidad" type="text"
+												placeholder="Ingresa la localidad" name="localidad" />
+										</div>
+										<div class="form-row">
+											<!-- Form Group (first name)-->
+											<div class="form-group col-md-8">
+												<label class="small mb-1" for="inputReferencia">Referencia</label>
+												<input class="form-control" id="inputReferencia" type="text"
+													placeholder="Ingresa la referencia" name="referencia" />
+											</div>
+											<!-- Form Group (last name)-->
+											<div class="form-group col-md-4">
+												<label class="small mb-1" for="inputCp">CP</label> <input
+													class="form-control" id="inputCp" type="text" name="cp"
+													placeholder="Ingresa el código postal" />
+											</div>
+										</div>
+										<!-- Form Group (email address)-->
+										<div class="form-group">
+											<label class="small mb-1" for="inputPaginaWeb">Pagina Web</label>
+											<input class="form-control" id="inputPaginaWeb" type="text"
+												placeholder="Ingresa la pagina web" name="paginaWeb" />
+										</div>
+										<!-- Save changes button-->
+										<br />
+										<button class="btn btn-primary" type="submit">Guardar</button>
+									</form>
+								</div>
+								<hr class="my-0" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+		<div id="layoutAuthentication_footer">
+			<footer class="footer mt-auto footer-dark">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6 small"></div>
+						<div class="col-md-6 text-md-right small">
+							<a href="#!"></a> <a href="#!"></a>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		crossorigin="anonymous"></script>
+	<script src="/js/scripts.js"></script>
+</body>
+</html>

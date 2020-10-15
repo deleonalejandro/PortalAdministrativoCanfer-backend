@@ -2,7 +2,7 @@ package com.canfer.app.dto;
 
 public class EmpresaDTO {
 	private Long idEmpresa = 0L;
-	private Long idMunicipio;
+	private String municipio;
 	private String rfc;
 	private String nombre;
 	private String calle;
@@ -30,12 +30,12 @@ public class EmpresaDTO {
 		this.idEmpresa = idEmpresa;
 	}
 	
-	public Long getIdMunicipio() {
-		return idMunicipio;
+	public String getMunicipio() {
+		return municipio;
 	}
 
-	public void setIdMunicipio(Long idMunicipio) {
-		this.idMunicipio = idMunicipio;
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
 	}
 
 	public String getRfc() {

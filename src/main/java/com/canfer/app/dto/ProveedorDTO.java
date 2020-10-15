@@ -1,114 +1,55 @@
-package com.canfer.app.model;
+package com.canfer.app.dto;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity(name = "Empresa")
-public class Empresa {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idEmpresa;
-	
-    private String municipio;
-	
-	@ManyToMany(mappedBy = "empresas")
-	private List<Usuario> usuarios;
-	
-	@JsonIgnore
-	@JoinTable(
-			name = "empresa_proveedor",
-			joinColumns = @JoinColumn(name="idEmpresa", nullable=true),
-			inverseJoinColumns = @JoinColumn(name="idProveedor", nullable=true)
-			)
-	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Proveedor> proveedores;
-	
-	@Column(nullable = false)
+public class ProveedorDTO {
+	private Long idProveedor = 0L;
+	private String municipio;
 	private String rfc;
-	
-	@Column(nullable = false)
 	private String nombre;
-	
-	@Column(nullable = true)
 	private String calle;
-	
-	@Column(nullable = true)
 	private String numExt;
-	
-	@Column(nullable = true)
 	private String numInt;
-	
-	@Column(nullable = true)
 	private String colonia;
-	
-	@Column(nullable = true)
 	private String localidad;
-	
-	@Column(nullable = true)
 	private String referencia;
-	
-	@Column(nullable = true)
 	private String cp;
-		
-	@Column(nullable = true)
 	private String contacto;
-	
-	@Column(nullable = true)
 	private String correo;
-	
-	@Column(nullable = true)
 	private String telefono;
-	
-	@Column(nullable = true)
 	private String paginaWeb;
-	
-	@Column(nullable = true)
 	private Long idUsuarioCreador;
-
-	//Constructor
 	
-
-	public Empresa(String nombre, String rfc) {
-		this.nombre = nombre;
-		this.rfc = rfc;
-	}
+	//additional attributes 
+	private List<Long> idEmpresas;
+	private String claveProv;
+	private String moneda;
+	private String serie;
+	private Boolean bitActivo;
 	
-
-	public Empresa() {
-		super();
+	public ProveedorDTO() {
+		// General constructor, no parameters.
 	}
 
-
-	//Getters and Setters
 	
-	public Long getidEmpresa() {
-		return idEmpresa;
+	public Long getIdProveedor() {
+		return idProveedor;
 	}
 
-	public void setidEmpresa(long idEmpresa) {
-		this.idEmpresa = idEmpresa;
+
+	public void setIdProveedor(Long idProveedor) {
+		this.idProveedor = idProveedor;
 	}
 
 	public String getMunicipio() {
 		return municipio;
 	}
 
+
 	public void setMunicipio(String municipio) {
 		this.municipio = municipio;
 	}
+
 
 	public String getRfc() {
 		return rfc;
@@ -214,37 +155,66 @@ public class Empresa {
 		this.paginaWeb = paginaWeb;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-
-
-	public List<Proveedor> getProveedores() {
-		return proveedores;
-	}
-
-
-	public void setProveedores(List<Proveedor> proveedores) {
-		this.proveedores = proveedores;
-	}
-
-
 	public Long getIdUsuarioCreador() {
 		return idUsuarioCreador;
 	}
 
-
 	public void setIdUsuarioCreador(Long idUsuarioCreador) {
 		this.idUsuarioCreador = idUsuarioCreador;
 	}
-	
-	
 
+
+	public List<Long> getIdEmpresas() {
+		return idEmpresas;
+	}
+
+
+	public void setIdEmpresas(List<Long> idEmpresas) {
+		this.idEmpresas = idEmpresas;
+	}
+
+
+	public String getClaveProv() {
+		return claveProv;
+	}
+
+
+	public void setClaveProv(String claveProv) {
+		this.claveProv = claveProv;
+	}
+
+
+	public String getMoneda() {
+		return moneda;
+	}
+
+
+	public void setMoneda(String moneda) {
+		this.moneda = moneda;
+	}
+
+
+	public String getSerie() {
+		return serie;
+	}
+
+
+	public void setSerie(String serie) {
+		this.serie = serie;
+	}
+
+
+	public Boolean getBitActivo() {
+		return bitActivo;
+	}
+
+
+	public void setBitActivo(Boolean bitActivo) {
+		this.bitActivo = bitActivo;
+	}
+	
+	
 	
 	
 }
+

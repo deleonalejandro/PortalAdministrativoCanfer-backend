@@ -265,6 +265,12 @@ public class Proveedor {
 		this.empresas = empresas;
 	}
 	
+	public String getNombreEmpresa() {
+		StringBuilder sb = new StringBuilder();
+		this.empresas.forEach(empresa -> sb.append(empresa.getNombre() + " "));
+		return sb.toString();
+	}
+	
 	
 
 }

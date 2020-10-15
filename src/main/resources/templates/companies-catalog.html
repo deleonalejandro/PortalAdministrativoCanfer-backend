@@ -193,84 +193,106 @@
                         </div>
                     </div>
                 </header>
-                    <!-- Main page content-->
+			<!-- Main page content-->
 			<div class="container-fluid" style="padding-top: 150px">
 				<div class="row">
 					<div class="col-2">
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column">
-							<a class="nav-link active" th:href="@{users}">Usuarios</a> 
-							<a class="nav-link" th:href="@{companies}">Empresas</a> 
+							<a class="nav-link" th:href="@{users}">Usuarios</a> 
+							<a class="nav-link active" th:href="@{companies}">Empresas</a> 
 							<a class="nav-link" th:href="@{suppliers}">Proveedores</a>
 						</nav>
 					</div>
 					<div class="col-10">
-					<div th:text="${#authentication.principal.empresas}">Hola</div>
 						<!-- Main Content Tables -->
 						<div class="card mb-4">
 							<div class="alert alert-danger" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
-							<div class="alert alert-danger" role="alert" th:text="${UserNotFoundMessage}" th:if="${UserNotFoundMessage}"></div>
+							<div class="alert alert-danger" role="alert" th:text="${CompanyNotFoundMsg}" th:if="${CompanyNotFoundMsg}"></div>
 							<div class="card-header">
-								<a th:href="@{addUser}" class="btn btn-primary">Añadir</a>
+								<a th:href="@{addCompany}" class="btn btn-primary">Añadir</a>
 							</div>
 							<div class="card-body">
 								<div class="datatable">
-									<table class="table table-hover" id="userTable" width="100%">
-										<thead>
-											<tr>
-												<th></th>
-												<th></th>
-												<th>Nombre</th>
-												<th>Apellido</th>
-												<th>Usuario</th>
-												<th>Contraseña</th>
-												<th>Correo</th>
-												<th>Rol</th>
-												<th>Permisos</th>
-												<th>Activo</th>
-											</tr>
-										</thead>
-										<tfoot>
-											<tr>
-												<th></th>
-												<th></th>
-												<th>Nombre</th>
-												<th>Apellido</th>
-												<th>Usuario</th>
-												<th>Contraseña</th>
-												<th>Correo</th>
-												<th>Rol</th>
-												<th>Permisos</th>
-												<th>Activo</th>
-											</tr>
-										</tfoot>
-									</table>
-								</div>
-							</div>
-						</div>
-						<!-- MODAL PARA BORRAR -->
-						<div class="deleteForm">
-							<div class="modal fade" id="deleteModal" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalCenterTitle"
-								aria-hidden="true">
-								<div class="modal-dialog modal-dialog-centered" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalCenterTitle">Eliminar
-												Usuario</h5>
-											<button class="close" type="button" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">×</span>
-											</button>
-										</div>
-										<div class="modal-body">¿Está seguro que desea eliminar
-											el usuario?</div>
-										<div class="modal-footer">
-											<button class="btn btn-primary" type="button"
-												data-dismiss="modal">Cancelar</button>
-											<a class="btn btn-danger delBtn" type="button">Eliminar</a>
-										</div>
-									</div>
+								<table class="table table-hover" id="empresaTable" width="100%">
+									<thead>
+										<tr>
+											<th>Acciones</th>
+											<th>Nombre</th>
+											<th>RFC</th>
+											<th>Contacto</th>
+											<th>Correo</th>
+											<th>Telefono</th>
+											<th>Pagina Web</th>
+											<th>Localidad</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="company : ${empresas}">
+											<!--  ACTION BUTTONS -->
+											<td>
+											<!-- DELETE BUTTON -->
+											<a class="btn btn-datatable btn-icon btn-transparent-dark mr-2"
+											data-toggle="modal" th:attr="data-target='#modalDelete'+${company.getidEmpresa()}">
+											<i data-feather="trash-2"></i></a>
+											
+											<!-- MODAL TO DELETE COMPANY -->
+											<div class="modal fade"
+											th:id="'modalDelete'+${company.getidEmpresa()}"
+											tabindex="-1" role="dialog"
+											aria-labelledby="exampleModalLabel" aria-hidden="true">
+												<div class="modal-dialog modal-dialog-centered" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h5 class="modal-title" id="exampleModalLabel">Eliminar Empresa</h5>
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																<span aria-hidden="true">&times;</span>
+															</button>
+														</div>
+														<div class="modal-body">¿Está seguro que desea eliminar esta empresa?</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+															<a class="btn btn-danger"
+																th:href="@{companies/delete/{id}(id=${company.getidEmpresa()})}"
+																role="button">Eliminar</a>
+														</div>
+													</div>
+												
+												</div>
+											
+											</div>
+											
+											<!-- EDIT BUTTON -->
+											<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark mr-2"
+											th:href="@{company/save/{id}(id=${company.getidEmpresa()})}"
+											role="button"><i data-feather="edit"></i></a>
+											
+											</td>
+											<td th:text="${company.nombre}"></td>
+											<td th:text="${company.rfc}">RFC</td>
+											<td th:text="${company.contacto}">Contacto</td>
+											<td th:text="${company.correo}">Correo</td>
+											<td th:text="${company.telefono}">Telefono</td>
+											<td th:text="${company.paginaWeb}">Pagina Web</td>
+											<td th:text="${company.localidad}">Localidad</td>
+										
+										</tr>
+										
+									
+									</tbody>
+									<tfoot>
+										<tr>
+											<th>Acciones</th>
+											<th>Nombre</th>
+											<th>RFC</th>
+											<th>Contacto</th>
+											<th>Correo</th>
+											<th>Telefono</th>
+											<th>Pagina Web</th>
+											<th>Localidad</th>
+										</tr>
+									</tfoot>
+								</table>
 								</div>
 							</div>
 						</div>
@@ -278,108 +300,136 @@
 				</div>
 			</div>
 		</main>
-             <footer class="footer mt-auto footer-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
-                        <div class="col-md-6 text-md-right small">
-                            <a href="#!">Privacy Policy</a>
-                            &middot;
-                            <a href="#!">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
+		<footer class="footer mt-auto footer-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
+					<div class="col-md-6 text-md-right small">
+						<a href="#!">Privacy Policy</a> 
+						&middot; 
+						<a href="#!">Terms &amp; Conditions</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
 	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Editar Usuario</h5>
+					<h5 class="modal-title">Editar Empresa</h5>
 					<button class="close" type="button" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="#" th:action="@{user/save}" method="post">
-						<!-- Form Group (username)-->
-						<input type="hidden" name="userId" id="userId">
-						<div class="form-group">
-							<label class="small mb-1" for="inputUsername">Usuario</label> 
-							<input class="form-control" id="inputUsername" type="text"
-								placeholder="Ingresa tu usuario" name="username" />
+					<form action="#" th:action="@{company/save}" method="post">
+						<input type="hidden" name=idEmpresa id="idEmpresa">
+						<!-- Form Row-->
+						<div class="form-row">
+							<!-- Form Group (NOMBRE)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputNombre">Nombre</label> <input
+									class="form-control input-lg" id="inputNombre" type="text"
+									placeholder="Ingresa el nombre" name="nombre" />
+							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (first name)-->
+							<!-- Form Group (RFC)-->
 							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputFirstName">Nombre</label> 
-								<input class="form-control" id="inputFirstName"
-								type="text" placeholder="Ingresa tu nombre" name="nombre"/>
+								<label class="small mb-1" for="inputRfc">RFC</label> <input
+									class="form-control input-lg" id="inputRfc" type="text"
+									placeholder="Ingresa el RFC" name="rfc" />
 							</div>
-							<!-- Form Group (last name)-->
-							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputLastName">Apellido</label>
-								<input class="form-control" id="inputLastName" type="text" name="apellido"
-									placeholder="Ingresa tu apellido"  />
+						</div>
+						<!-- Form Row-->
+						<div class="form-row">
+							<!-- Form Group (CONTACTO)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputContacto">Contacto</label> <input
+									class="form-control" id="inputContacto" type="text"
+									placeholder="Ingresa el contacto" name="contacto" />
+							</div>
+							<!-- Form Group (CORREO)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputCorreo">Correo
+									Eléctronico</label> <input class="form-control" id="inputCorreo"
+									type="text" name="correo" placeholder="Ingresa el correo" />
+							</div>
+						</div>
+						<div class="form-row">
+							<!-- Form Group (CALLE)-->
+							<div class="form-group col-md-8">
+								<label class="small mb-1" for="inputCalle">Calle</label> <input
+									class="form-control" id="inputCalle" type="text"
+									placeholder="Ingresa la calle" name="calle" />
+							</div>
+							<!-- Form Group (EXTERIOR)-->
+							<div class="form-group col-md-4">
+								<label class="small mb-1" for="inputExterior">Exterior</label> <input
+									class="form-control" id="inputExterior" type="text"
+									name="numExt" />
+							</div>
+						</div>
+						<div class="form-row">
+							<!-- Form Group (COLONIA)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputColonia">Colonia</label> <input
+									class="form-control" id="inputColonia" type="text"
+									placeholder="Ingresa la colonia" name="colonia" />
 							</div>
 						</div>
 						<!-- Form Row        -->
 						<div class="form-row">
-							<!-- Form Group (Roles)-->
+							<!-- Form Group (ESTADO)-->
 							<div class="form-group col-md-6">
-								<label class="text-gray-600 small" for="dropdownRoles">Roles</label> 
-								<select class="form-control selectpicker" id="dropdownRoles" name="rol">
-									<option >--Roles--</option>
-									<option value="ADMIN">Administrador</option>
-									<option value="USER_CONTADOR">Contador</option>
-									<option value="USER_CAJA">Caja Chica</option>
-									<option value="USER_EMPLEADO">Agente</option>
-									<option value="USER_COMEX">Comercio Exterior</option>
-
+								<label class="text-gray-600 small" for="inputEstado">Estado</label>
+								<select id="inputEstado" class="form-control" name="idEstado">
+									<option selected>Choose...</option>
+									<option>...</option>
 								</select>
 							</div>
-							<!-- Form Group (Permisos)-->
+							<!-- Form Group (MUNICIPIO)-->
 							<div class="form-group col-md-6">
-								<label class="text-gray-600 small" for="dropdownPermisos">Permisos</label> 
-								<select class="form-control selectpicker" id="dropdownPermisos" name="permisos" multiple>
-									<option value="">--Accesos--</option>
-									<option value="ACCESO_CAJACHICA">Caja Chica</option>
-									<option value="ACCESO_CONTADURIA">Contaduría Nacional</option>
-									<option value="ACCESO_EXTRANJEROS">Documentos Extranjeros</option>
-									<option value="ACCESO_REPGASTOS">R. Gastos de Terceros</option>
-									<option value="ACCESO_ADMIN">Administrador</option>
+								<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
+								<select id="inputMunicipio" class="form-control" name="municipio">
+									<option selected>Choose...</option>
+									<option>...</option>
 								</select>
+							</div>
+						</div>
+						<!-- Form Group (LOCALIDAD)-->
+						<div class="form-group">
+							<label class="small mb-1" for="inputLocalidad">Localidad</label>
+							<input class="form-control" id="inputLocalidad" type="text"
+								placeholder="Ingresa la localidad" name="localidad" />
+						</div>
+						<div class="form-row">
+							<!-- Form Group (first name)-->
+							<div class="form-group col-md-8">
+								<label class="small mb-1" for="inputReferencia">Referencia</label>
+								<input class="form-control" id="inputReferencia" type="text"
+									placeholder="Ingresa la referncia" name="referencia" />
+							</div>
+							<!-- Form Group (last name)-->
+							<div class="form-group col-md-4">
+								<label class="small mb-1" for="inputCp">CP</label> <input
+									class="form-control" id="inputCp" type="text" name="cp"
+									placeholder="Ingresa el código postal" />
 							</div>
 						</div>
 						<!-- Form Group (email address)-->
 						<div class="form-group">
-							<label class="small mb-1" for="inputEmailAddress">Correo electrónico</label> <input class="form-control" id="inputEmailAddress"
-								type="email" placeholder="Ingresa el correo electrónico" name="correo"/>
-						</div>
-						<!-- Form Group (Empresa)-->
-						<div class="form-group">
-							<label class="text-gray-600 small" for="dropdownEmpresas">Empresa</label>
-							<select class="form-control selectpicker" id="dropdownEmpresas" name="empresas" multiple>
-								<option value="" selected>--Selecciona Empresa--</option>
-								<option th:each="empresa : ${empresas}" th:value="${empresa.getidEmpresa()}" th:text="${empresa.nombre}"></option>
-							</select>
-						</div>
-						<!-- Form Row-->
-						<div class="form-row">
-							<!-- Form Group (ACTIVO)-->
-							<div class="form-group custom-control custom-checkbox">
-								<input class="custom-control-input" id="checkActivo" name="activo" type="checkbox"> 
-								<label class="custom-control-label" for="checkActivo">Activo</label>
-							</div>
-							
+							<label class="small mb-1" for="inputPaginaWeb">Pagina Web</label>
+							<input class="form-control" id="inputPaginaWeb" type="text"
+								placeholder="Ingresa la pagina web" name="paginaWeb" />
 						</div>
 						<!-- Save changes button-->
-						<br/>
-                        <button class="btn btn-primary" type="submit">Guardar</button>
-                        <button class="btn btn-primary" type="button">Restablecer Contraseña</button>
+						<br />
+						<button class="btn btn-primary" type="submit">Guardar</button>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -389,16 +439,16 @@
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="/js/scripts.js"></script>
-        <script src="/js/admin.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="/assets/demo/chart-area-demo.js"></script>
-        <script src="/assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/date-range-picker-demo.js"></script>
-    </body>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+		<script src="/js/scripts.js"></script>
+		<script src="/js/admin.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
+		<script src="/assets/demo/chart-area-demo.js"></script>
+		<script src="/assets/demo/chart-bar-demo.js"></script>
+		<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" crossorigin="anonymous"></script>
+		<script src="assets/demo/date-range-picker-demo.js"></script>
+	</body>
 </html>

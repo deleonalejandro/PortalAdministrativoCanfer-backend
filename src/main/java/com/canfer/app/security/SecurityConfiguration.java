@@ -1,4 +1,4 @@
-package com.canfer.app.model;
+package com.canfer.app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.canfer.app.security.UserPrincipalDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -35,8 +34,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http	
+				.formLogin()
+				.loginPage("/login")
+				.loginProcessingUrl("/login")
+				.defaultSuccessUrl("/dashboard")
+				.failureUrl("/login-error")
+				.and()
+				.logout()
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/logoutSuccess")
+				.and()
 				.authorizeRequests()
-				.antMatchers("/uploadFacturas").permitAll()
+				.antMatchers("/dashboard").authenticated()
+				.antMatchers("/admin/**").hasRole("ADMIN")
+				
 				.and()
 				.httpBasic()
 				.and()
