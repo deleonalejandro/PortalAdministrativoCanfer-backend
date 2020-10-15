@@ -62,6 +62,12 @@ public class MainController {
 		return "documentos-fiscales";
 	}
 	
+	@GetMapping(value = "/dashboard")
+	public String getDashboard(Model model) {
+		model.addAttribute("empresa", empresaService.findAll());
+		return "dashboard-2";
+	}
+	
 	
 
 }
