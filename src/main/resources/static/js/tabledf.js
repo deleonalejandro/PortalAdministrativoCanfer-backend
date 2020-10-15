@@ -1,22 +1,35 @@
 	//Formato para rows tipo child	  
   function format(d){
-	        
+	        if (d.complemento == null) {
 	         // `d` is the original data object for the row
 	         return '<table class="" style="text-align: left">' +
 	             '<tr>' +
-						'<i class="far fa-file-pdf float-left ml-3 fa-lg" style="color:red"></i>'+
-						'<i class="far fa-file-code float-left ml-3 fa-lg" style="color:green"></i>'+
-						'<i class="fas fa-file-invoice-dollar float-left ml-3 fa-lg" style="color:orange"></i>'+
+	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
+					'<span class="ml-0 float-left fa-stack fa-2x"><i class="fas fa-file-invoice-dollar fa-stack-1x " style="color:teal"></i><i class="fas fa-slash fa-stack-1x" style="color:red"></i></span>'+
 	             '</tr>' +
 	         '</table>';  
+	         } else{
+	         return '<table class="" style="text-align: left">' +
+	             '<tr>' +
+	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.complemento.getIdComprobanteFiscal()+'"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
+	             '</tr>' +
+	         '</table>';
+	         
+	         }
 	    };
-
-
+	    
         //Tabla en si
 		
 		$(document).ready(function () {
 			
 		         var table = $('#facturas').DataTable({
+		         
+			         buttons: [
+				        'csv'
+				    ],
 					ajax: {
 		            url: "/documentosFiscalesApi",
 					dataSrc:""
@@ -26,25 +39,23 @@
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			        },
 			             "columns": [
-			 		{
-		                     "className": 'select-control',
-		                     "orderable": false,
-							"bSortable": false,
-		                     "data": null,
-		                     "defaultContent": '',
-		                     "render": function () {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="far fa-circle fa-sm"></i></a>'
-							 },
-		                 },
+			              {
+			                "className":  'select-control', 
+			                "orderable":  false,
+			                "data": null,
+			                "defaultContent": '',
+							"render": function () {
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="check-circle"></i><script> feather.replace()</script></a>' ;
+		                     },
+			            },
 					        {
 			                "className":      'details-control', 
 			                "orderable":      false,
 			                "data":           null,
-							"width": "2%",
 			                "defaultContent": '',
 							"render": function () {
-								return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"></a>'
-								},
+		                        return '<a class="btn btn-datatable btn-icon btn-chevrons btn-transparent-dark m-0"><i data-feather="chevrons-down"></i><script> feather.replace()</script></a>' ;
+		                     },
 			            },
 							{
 		                     "className": 'modal-control',
@@ -53,7 +64,7 @@
 		                     "data": null,
 		                     "defaultContent": '',
 		                     "render": function () {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="fa fa-ellipsis-h fa-sm" style="color:#0A61F2"></i></a>'
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
 							 },
 		                 },
 						{
@@ -63,7 +74,7 @@
 		                     "data": null,
 		                     "defaultContent": '',
 		                     "render": function () {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="fa fa-trash-alt fa-sm" style=""></i></a>' ;
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>' ;
 		                     },
 		                 },
 		
@@ -82,7 +93,19 @@
 						{ data : "proveedor.claveProv"},
 						{ data : "proveedor.nombre" },
 						{ data : "rfcProveedor" },
-						{ data : "tipoDocumento" },
+						{ data : "tipoDocumento",
+		                    "render": function(data) {
+		                        if(data == 'I') {
+		                            return '<button class="btn btn-pink btn-icon btn-xs" type="button">I</button>';
+		                        }
+		                        if(data == 'E') {
+		                            return '<button class="btn btn-indigo btn-icon btn-xs" type="button">E</button>';
+		                        }
+								if(data == 'P') {
+								    return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
+								}
+						     }
+						},
 						{ data : "total" },
 						{ data: "estatusPago",
 		                    "render": function(data) {
@@ -105,7 +128,8 @@
 		             "order": [[4, 'asc']],
 					
 		 });
- // Funcion para monitorear si esta cerrado o abierto
+ 			
+ 			// Funcion para monitorear si esta cerrado o abierto
 					
 		         $('#facturas tbody').on('click', 'td.details-control', function () {
 		             var tr = $(this).closest('tr');
@@ -119,7 +143,27 @@
 		                 //Esta cerrado, se abre
 		                 row.child(format(row.data())).show();
 		                 tr.addClass('shown')
-						
+		                 tr.a.find('.svg').hide();		             
+		             }	
+		
+				});
+				
+				// Funcion para monitorear si esta cerrado o abierto
+					
+		         $('#btn-prev-pdf tbody').on('click', function () {
+		          
+		             var tr = $(this).closest('tr');
+		             var row = table.row(tr);
+		             if (row.child.isShown()) {
+		                 // Esta abierto, se cierra
+		                 row.child.hide();
+		                 tr.removeClass('shown')
+		             }
+		             else {
+		                 //Esta cerrado, se abre
+		                 row.child(format(row.data())).show();
+		                 tr.addClass('shown'); 
+		                 $("svg.feather.feather-chevrons-down").replaceWith(feather.icons.square.toSvg());		             
 		             }	
 		
 				});
@@ -135,7 +179,7 @@
 					
 					$('.detailsForm #uuid').val(jsonData.uuid)
 					$('.detailsForm #idNumSap').val(jsonData.idNumSap)
-					$('.detailsForm #empresa').val(jsonData.empresa)
+					$('.detailsForm #empresa').val(jsonData.empresa.nombre)
 					$('.detailsForm #proveedor').val(jsonData.proveedor)
 					$('.detailsForm #serie').val(jsonData.serie)
 					$('.detailsForm #folio').val(jsonData.folio)
@@ -145,8 +189,8 @@
 					$('.detailsForm #fechaEmision').val(jsonData.fechaEmision)
 					$('.detailsForm #fechaTimbre').val(jsonData.fechaTimbre)
 					$('.detailsForm #noCertificadoEmpresa').val(jsonData.noCertificadoEmpresa)
-					$('.detailsForm #noCertificadoSAT').val(jsonData.noCertificadoSAT)
-					$('.detailsForm #versionCFD').val(jsonData.versionCFD)
+					$('.detailsForm #noCertificadoSAT').val(jsonData.noCertificadoSat)
+					$('.detailsForm #versionCFD').val(jsonData.versionCfd)
 					$('.detailsForm #versionTimbre').val(jsonData.versionTimbre)
 					$('.detailsForm #moneda').val(jsonData.moneda)
 					$('.detailsForm #total').val(jsonData.total)
@@ -156,14 +200,17 @@
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
 					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
 					$('.detailsForm #comentario').val(jsonData.comentario)
-					$('.detailsForm #pdfOccurs').val("")
 					         
 			        $('.detailsForm #bitRSusuario').prop("checked", jsonData.bitRSusuario);
 			        $('.detailsForm #bitRS').prop("checked", jsonData.bitRS);
 					$('.detailsForm #bitValidoSAT').prop("checked", jsonData.bitValidoSAT);
 					
+					$('.detailsForm .refreshBtn').attr("href","/documentosFiscalesClient/getVigencia/"+jsonData.idComprobanteFiscal)
 					
 					$('.detailsForm #facturaNotaComplemento').val(jsonData.facturaNotaComplemento)
+					
+					$('.detailsForm .pdfBtn').attr("href","/documentosFiscalesClient/download/pdf/"+jsonData.idComprobanteFiscal)
+					$('.detailsForm .xmlBtn').attr("href","/documentosFiscalesClient/download/xml/"+jsonData.idComprobanteFiscal)
 					
 					
 					$(' .detailsForm #detailsModal').modal('show');
@@ -183,7 +230,7 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
-					$('.deleteForm .delBtn').attr("href","/contaduria-nacional/delete/"+jsonData.uuid)
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal)
 					$('#deleteModal').modal('show');
 				});
 				
@@ -201,7 +248,6 @@
 		
 				});
 			 
-			   
 					
 				    // Handle click on "Expand All" button
 				    $('#btn-show-all-children').on('click', function(){
@@ -226,21 +272,86 @@
 				            }
 				        });
 				    });
+				    
 
 					// Boton de borrar varios
 				    $('#btn-del-mul').on('click', function(){
 					if ( table.rows( '.selected' ).any() ) {
 				        // Enumerate all rows
-						var uuids = [];
+						var ids = [];
 						table.rows().every(function(){
 				            if ($(this.node()).hasClass('selected')) {
 							var data = this.data()
-							var jsonData = JSON.parse(JSON.stringify(data)).uuid;
-									uuids.push(jsonData);
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
 				 		  }
 				       });
-					$('.deleteForm .delBtn').attr("href","/contaduria-nacional/delete/"+uuids)
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids)
 					$('#deleteModal').modal('show');
+					}
+				});
+				
+				
+				// Boton de descargar varios
+				    $('#xml').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var ids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
+				 		  }
+				       });
+					$('#xml').attr("href","/documentosFiscalesClient/download/xml?="+ids)
+					}
+				});
+				
+				$('#pdf').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var ids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
+				 		  }
+				       });
+					$('#pdf').attr("href","/documentosFiscalesClient/download/pdf?="+ids)
+					}
+				});
+				
+				$('#csv').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var ids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
+				 		  }
+				       });
+					$('#csv').attr("href","/documentosFiscalesClient/csv?="+ids)
+					}
+				});
+				
+				
+				
+				$('#comprimir').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var ids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
+				 		  }
+				       });
+					$('#comprimir').attr("href","/documentosFiscalesClient/zip-download?="+ids)
 					}
 				});
 				
