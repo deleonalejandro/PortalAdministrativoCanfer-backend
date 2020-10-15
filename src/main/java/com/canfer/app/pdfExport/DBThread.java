@@ -9,7 +9,7 @@ public class DBThread implements Runnable {
 	
 	@Autowired
 	private DbObserver dbObserver;
-	private boolean doStop = false;
+	private boolean doStop = true;
 	
 	
 	public DBThread() {
