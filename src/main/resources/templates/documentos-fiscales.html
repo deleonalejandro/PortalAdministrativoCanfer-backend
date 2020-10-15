@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -228,7 +228,6 @@
 							</nav>
 	                	</div>
 	                	<div class="col-10">
-	                	
 	                		<!-- Main Content Tables -->
 	                		<div class="card mb-0">
                             <div class="card-body">
@@ -283,6 +282,7 @@
 						
 							<!-- BOTONES DE CHEVRON Y CHECKBOX-->
                                 <div class="row pb-1">
+                                
                                  <div class="col-1">
 	                                <button id="btn-show-all-children" class="btn btn-outline-primary p-0 " type="button"><i data-feather="chevrons-down" style="width:10px"></i></button>
 									<button id="btn-hide-all-children" class="btn btn-outline-primary p-0" type="button"><i data-feather="chevrons-up" style="width:10px"></i></button>
@@ -292,7 +292,7 @@
 	   								 <label class="form-check-label" for="exampleCheck1">Seleccionar todo</label>
                           		  </div>
                           		 </div>
-                          		  
+	
                           		  <!-- TABLA -->
                           		    <table class="compact table-hover" id="facturas" style="text-align: center; width:100%">
                                         <thead>

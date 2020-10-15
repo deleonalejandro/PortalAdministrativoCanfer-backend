@@ -19,6 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css"/>
 		
         <link th:href="@{/css/stylesdf.css}" rel="stylesheet" />
+        
     </head>
     <body class="nav-fixed">
         <nav class="topnav navbar navbar-expand shadow navbar-light bg-white" id="sidenavAccordion">
@@ -199,84 +200,81 @@
 					<div class="col-2">
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column">
-							<a class="nav-link active" th:href="@{users}">Usuarios</a> 
+							<a class="nav-link" th:href="@{users}">Usuarios</a> 
 							<a class="nav-link" th:href="@{companies}">Empresas</a> 
-							<a class="nav-link" th:href="@{suppliers}">Proveedores</a>
+							<a class="nav-link active" th:href="@{suppliers}">Proveedores</a>
 						</nav>
 					</div>
 					<div class="col-10">
 					<div th:text="${#authentication.principal.empresas}">Hola</div>
 						<!-- Main Content Tables -->
 						<div class="card mb-4">
-							<div class="alert alert-danger" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
-							<div class="alert alert-danger" role="alert" th:text="${UserNotFoundMessage}" th:if="${UserNotFoundMessage}"></div>
+						<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+						<div class="alert alert-danger" role="alert" th:text="${supplierNotFound}" th:if="${supplierNotFound}"></div>
 							<div class="card-header">
-								<a th:href="@{addUser}" class="btn btn-primary">Añadir</a>
+								<a th:href="@{addSupplier}" class="btn btn-primary">Añadir</a>
 							</div>
 							<div class="card-body">
 								<div class="datatable">
-									<table class="table table-hover" id="userTable" width="100%">
+									<table class="table table-hover" id="proveedorTable" width="100%">
 										<thead>
 											<tr>
 												<th></th>
 												<th></th>
 												<th>Nombre</th>
-												<th>Apellido</th>
-												<th>Usuario</th>
-												<th>Contraseña</th>
-												<th>Correo</th>
-												<th>Rol</th>
-												<th>Permisos</th>
+												<th>Clave de Proveedor</th>
+												<th>RFC</th>
+												<th>Serie</th>
+												<th>Moneda</th>
 												<th>Activo</th>
+												<th>Contacto</th>
+												<th>Correo</th>
+												<th>Telefono</th>
+												<th>Pagina Web</th>
+												<th>Localidad</th>
 											</tr>
 										</thead>
 										<tfoot>
 											<tr>
+												<!-- Pendiente de colocar Empresa al que Corresponde -->
 												<th></th>
 												<th></th>
 												<th>Nombre</th>
-												<th>Apellido</th>
-												<th>Usuario</th>
-												<th>Contraseña</th>
-												<th>Correo</th>
-												<th>Rol</th>
-												<th>Permisos</th>
+												<th>Clave de Proveedor</th>
+												<th>RFC</th>
+												<th>Serie</th>
+												<th>Moneda</th>
 												<th>Activo</th>
+												<th>Contacto</th>
+												<th>Correo</th>
+												<th>Telefono</th>
+												<th>Pagina Web</th>
+												<th>Localidad</th>
 											</tr>
 										</tfoot>
 									</table>
 								</div>
 							</div>
-						</div>
-						<!-- MODAL PARA BORRAR -->
-						<div class="deleteForm">
-							<div class="modal fade" id="deleteModal" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalCenterTitle"
-								aria-hidden="true">
-								<div class="modal-dialog modal-dialog-centered" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalCenterTitle">Eliminar
-												Usuario</h5>
-											<button class="close" type="button" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">×</span>
-											</button>
-										</div>
-										<div class="modal-body">¿Está seguro que desea eliminar
-											el usuario?</div>
-										<div class="modal-footer">
-											<button class="btn btn-primary" type="button"
-												data-dismiss="modal">Cancelar</button>
-											<a class="btn btn-danger delBtn" type="button">Eliminar</a>
-										</div>
-									</div>
+							<!-- MODAL PARA BORRAR -->
+							<div class="deleteForm">
+								<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+								    <div class="modal-dialog modal-dialog-centered" role="document">
+								        <div class="modal-content">
+								            <div class="modal-header">
+								                <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar Proveedor</h5>
+								                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+								            </div>
+								            <div class="modal-body">¿Está seguro que desea eliminar el proveedor? </div>
+								            <div class="modal-footer"><button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button><a class="btn btn-danger delBtn" type="button">Eliminar</a></div>
+								        </div>
+								    </div>		
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</main>
              <footer class="footer mt-auto footer-light">
                 <div class="container">
@@ -291,85 +289,133 @@
                 </div>
             </footer>
         </div>
-	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Editar Usuario</h5>
+					<h5 class="modal-title">Editar Proveedor</h5>
 					<button class="close" type="button" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="#" th:action="@{user/save}" method="post">
-						<!-- Form Group (username)-->
-						<input type="hidden" name="userId" id="userId">
-						<div class="form-group">
-							<label class="small mb-1" for="inputUsername">Usuario</label> 
-							<input class="form-control" id="inputUsername" type="text"
-								placeholder="Ingresa tu usuario" name="username" />
+					<form action="#" th:action="@{companies/save}" method="post">
+						<input type="hidden" name=idProveedor id="idProveedor">
+						<div class="form-row">
+							<!-- Form Group (EMPRESA DEL PROVEEDOR)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputEmpresa">Proveedor de:</label> 
+								<input class="form-control input-lg" id="inputEmpresa" type="text" name="rfc" readonly/>
+							</div>
+						</div>		
+						<!-- Form Row-->
+						<div class="form-row">
+							<!-- Form Group (RFC)-->
+							<div class="form-group col-md-8">
+								<label class="small mb-1" for="inputRfc">RFC</label> <input
+									class="form-control input-lg" id="inputRfc" type="text"
+									placeholder="Ingresa el RFC" name="rfc" />
+							</div>
+							<!-- Form Group (RFC)-->
+							<div class="form-group col-md-4">
+								<label class="small mb-1" for="inputClaveProv">Clave de Proveedor</label> <input
+									class="form-control input-lg" id="inputClaveProv" type="text"
+									name="claveProv" />
+							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (first name)-->
-							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputFirstName">Nombre</label> 
-								<input class="form-control" id="inputFirstName"
-								type="text" placeholder="Ingresa tu nombre" name="nombre"/>
+							<!-- Form Group (NOMBRE)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputNombre">Nombre</label> <input
+									class="form-control" id="inputNombre" type="text"
+									placeholder="Ingresa el nombre del proveedor" name="contacto" />
 							</div>
-							<!-- Form Group (last name)-->
-							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputLastName">Apellido</label>
-								<input class="form-control" id="inputLastName" type="text" name="apellido"
-									placeholder="Ingresa tu apellido"  />
+							<!-- Form Group (CORREO)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputCorreo">Correo
+									Eléctronico</label> <input class="form-control" id="inputCorreo"
+									type="text" name="correo" placeholder="Ingresa el correo" />
+							</div>
+						</div>
+						<div class="form-row">
+							<!-- Form Group (CALLE)-->
+							<div class="form-group col-md-8">
+								<label class="small mb-1" for="inputCalle">Calle</label> <input
+									class="form-control" id="inputCalle" type="text"
+									placeholder="Ingresa la calle" name="calle" />
+							</div>
+							<!-- Form Group (EXTERIOR)-->
+							<div class="form-group col-md-2">
+								<label class="small mb-1" for="inputExterior">Exterior</label> <input
+									class="form-control" id="inputExterior" type="text"
+									name="exterior"  />
+							</div>
+							<!-- Form Group (INTERIOR)-->
+							<div class="form-group col-md-2">
+								<label class="small mb-1" for="inputInterior">Interior</label> <input
+									class="form-control" id="inputInterior" type="text"
+									name="exterior" />
 							</div>
 						</div>
 						<!-- Form Row        -->
 						<div class="form-row">
-							<!-- Form Group (Roles)-->
-							<div class="form-group col-md-6">
-								<label class="text-gray-600 small" for="dropdownRoles">Roles</label> 
-								<select class="form-control selectpicker" id="dropdownRoles" name="rol">
-									<option >--Roles--</option>
-									<option value="ADMIN">Administrador</option>
-									<option value="USER_CONTADOR">Contador</option>
-									<option value="USER_CAJA">Caja Chica</option>
-									<option value="USER_EMPLEADO">Agente</option>
-									<option value="USER_COMEX">Comercio Exterior</option>
+							<!-- Form Group (ESTADO)-->
+							<div class="form-group col-md-4">
+								<label class="text-gray-600 small" for="inputEstado">Estado</label>
+								<select id="inputEstado" class="form-control">
+									<option selected>Choose...</option>
+									<option>...</option>
+								</select>
+							</div>
+							<!-- Form Group (MUNICIPIO)-->
+							<div class="form-group col-md-4">
+								<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
+								<select id="inputMunicipio" class="form-control">
+									<option selected>Choose...</option>
+									<option>...</option>
+								</select>
+							</div>
+							<!-- Form Group (MUNICIPIO)-->
+							<div class="form-group col-md-4">
+								<label class="small mb-1" for="inputLocalidad">Localidad</label>
+								<input class="form-control" id="inputLocalidad" type="text" placeholder="Ingresa la localidad" name="correo" />
+							</div>
+						</div>
 
-								</select>
+						<div class="form-row">
+							<!-- Form Group (REFERENCIA)-->
+							<div class="form-group col-md-8">
+								<label class="small mb-1" for="inputReferencia">Referencia</label>
+								<input class="form-control" id="inputReferencia" type="text"
+									placeholder="Ingresa la referncia" name="nombre" />
 							</div>
-							<!-- Form Group (Permisos)-->
-							<div class="form-group col-md-6">
-								<label class="text-gray-600 small" for="dropdownPermisos">Permisos</label> 
-								<select class="form-control selectpicker" id="dropdownPermisos" name="permisos" multiple>
-									<option value="">--Accesos--</option>
-									<option value="ACCESO_CAJACHICA">Caja Chica</option>
-									<option value="ACCESO_CONTADURIA">Contaduría Nacional</option>
-									<option value="ACCESO_EXTRANJEROS">Documentos Extranjeros</option>
-									<option value="ACCESO_REPGASTOS">R. Gastos de Terceros</option>
-									<option value="ACCESO_ADMIN">Administrador</option>
-								</select>
+							<!-- Form Group (CODIGO POSTAL)-->
+							<div class="form-group col-md-4">
+								<label class="small mb-1" for="inputCp">CP</label> <input
+									class="form-control" id="inputCp" type="text" name="apellido"
+									 />
 							</div>
 						</div>
-						<!-- Form Group (email address)-->
-						<div class="form-group">
-							<label class="small mb-1" for="inputEmailAddress">Correo electrónico</label> <input class="form-control" id="inputEmailAddress"
-								type="email" placeholder="Ingresa el correo electrónico" name="correo"/>
+						
+						<div class="form-row">
+							<!-- Form Group (MONEDA)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputMoneda">Moneda</label>
+								<input class="form-control input-lg" id="inputMoneda" type="text"  name="moneda" />
+							</div>
 						</div>
-						<!-- Form Group (Empresa)-->
+						<!-- Form Group (PAGINA WEB)-->
 						<div class="form-group">
-							<label class="text-gray-600 small" for="dropdownEmpresas">Empresa</label>
-							<select class="form-control selectpicker" id="dropdownEmpresas" name="empresas" multiple>
-								<option value="" selected>--Selecciona Empresa--</option>
-								<option th:each="empresa : ${empresas}" th:value="${empresa.getidEmpresa()}" th:text="${empresa.nombre}"></option>
-							</select>
+							<label class="small mb-1" for="inputPaginaWeb">Pagina Web</label>
+							<input class="form-control" id="inputPaginaWeb" type="text"
+								placeholder="Ingresa la pagina web" name="correo" />
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (ACTIVO)-->
+							<!-- Form Group (phone number)-->
 							<div class="form-group custom-control custom-checkbox">
 								<input class="custom-control-input" id="checkActivo" name="activo" type="checkbox"> 
 								<label class="custom-control-label" for="checkActivo">Activo</label>
@@ -377,9 +423,8 @@
 							
 						</div>
 						<!-- Save changes button-->
-						<br/>
-                        <button class="btn btn-primary" type="submit">Guardar</button>
-                        <button class="btn btn-primary" type="button">Restablecer Contraseña</button>
+						<br />
+						<button class="btn btn-primary" type="submit">Guardar</button>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -387,7 +432,8 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	   
+	
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/js/scripts.js"></script>

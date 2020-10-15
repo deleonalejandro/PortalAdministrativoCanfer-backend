@@ -11,6 +11,12 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --pae: #dd042b;
+  --newland: #488f4c;
+  --pfl: #4a2e82;
+  --whis: #dc212a;
+  --excelcuts: #434d87;
+  --sdp: #f3af4e;
   --blue: #0061f2;
   --indigo: #5800e8;
   --purple: #6900c7;
@@ -9636,6 +9642,30 @@ a.close.disabled {
   vertical-align: text-top !important;
 }
 
+.bg-pae {
+  background-color: #dd042b !important;
+}
+
+.bg-newland {
+  background-color: #488f4c !important;
+}
+
+.bg-pfl {
+  background-color: #4a2e82 !important;
+}
+
+.bg-whis {
+  background-color: #dc212a !important;
+}
+
+.bg-excelcuts {
+  background-color: #434d87 !important;
+}
+
+.bg-sdp {
+  background-color: #f3af4e !important;
+}
+
 .bg-primary {
   background-color: #0061f2 !important;
 }
@@ -16020,6 +16050,11 @@ body {
 .bg-gradient-primary-to-secondary {
   background-color: #0061f2;
   background-image: linear-gradient(135deg, #0061f2 0%, rgba(0, 74, 178, 1) 80%);
+}
+
+.bg-gradient-canfer {
+  background-color: #0061f2;
+  background-image: linear-gradient(135deg, #dfac12 0%, #c49300 80%);
 }
 
 .bg-gray-100 {

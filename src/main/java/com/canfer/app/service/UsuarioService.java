@@ -52,13 +52,15 @@ public class UsuarioService {
 		return userUsuario.get(); 
 	}
 	
+	// TODO add more try catch to handle unexpected errors
 	public Usuario save(UserDTO user) throws NotFoundException {
 		
 		Usuario testUsuario;
 		Proveedor testProveedor;
 		String ePassword;
 		List<Empresa> empresas = empresaService.findAllById(user.getEmpresaIdsList());
-		Empresa empresaCreadora = empresaService.findById(user.getEmpresaCreadoraId());
+		//TODO finish first with the CANFER modules
+		Empresa empresaCreadora = empresaService.findById(1L);
 		
 		// we  check if the user already exists.
 		testUsuario = usuarioRepository.findByUsername(user.getUsername());
@@ -103,6 +105,7 @@ public class UsuarioService {
 		
 	}
 	
+	// TODO add more try catch to handle unexpected errors
 	public Usuario update(UserDTO user) {
 		//Create the object user, that will be updated in the DB.
 		Optional<Usuario> checkUsuario = usuarioRepository.findById(user.getUserId());

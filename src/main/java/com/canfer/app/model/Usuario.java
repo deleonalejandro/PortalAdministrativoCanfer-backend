@@ -36,7 +36,7 @@ public abstract class Usuario {
 			joinColumns = @JoinColumn(name="idUsuario"),
 			inverseJoinColumns = @JoinColumn(name="idEmpresa")
 			)
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Empresa> empresas;
 	
 	@Column(unique = true, nullable = false)
@@ -162,6 +162,22 @@ public abstract class Usuario {
 	public List<Empresa> getEmpresas() {
 		return empresas;
 	}
+	
+	public List<Long> getEmpresasId() {
+		List<Long> ids = new ArrayList<>();
+		for (Empresa company : this.empresas) {
+			ids.add(company.getidEmpresa());
+		}
+		return ids;
+	}
+	
+	public List<String> getEmpresasNombre() {
+		List<String> names = new ArrayList<>();
+		for (Empresa company : this.empresas) {
+			names.add(company.getNombre());
+		}
+		return names;
+	}
 
 	public void setEmpresas(List<Empresa> empresas) {
 		this.empresas = empresas;
@@ -183,6 +199,11 @@ public abstract class Usuario {
 			// use the super class constructor
 			super(username, password, nombre, apellido, correo, rol, permisos);
 		}
+		
+		public UsuarioCanfer() {
+			// default constructor
+		}
+		
 	}
 
 	@Entity
