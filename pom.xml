@@ -76,7 +76,12 @@
 		    <artifactId>jsonevent-layout</artifactId>
 		    <version>1.7</version>  
 		</dependency>
-		
+		<!-- Export CSV -->
+		<dependency>
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>4.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

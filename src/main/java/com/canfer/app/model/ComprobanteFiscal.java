@@ -404,6 +404,7 @@ public abstract class ComprobanteFiscal {
 	}
 	
 	public String verificaSat() {
+		
 		ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
 		SatVerificacionService service = new SatVerificacionService(clientconfigurationSAT);
 		String msg = "re=" + this.proveedor.getRfc() + "&" +

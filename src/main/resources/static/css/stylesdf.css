@@ -76,19 +76,16 @@
   box-sizing: border-box;
 }
 
-/*!Sacado de DataTables*/
 
-td.details-control {
-	width:20px;
-	color:green;
-	background: url('https://api.iconify.design/feather-chevron-down.svg?color=green') no-repeat center center / contain;
-}
-tr.shown td.details-control {
-	width:20px;
-	color:red;
-	background: url('https://api.iconify.design/feather-chevron-up.svg?color=red') no-repeat center center / contain;
+tr.selected td.select-control svg {
+
+	color:blue;
 }
 
+tr.shown td.details-control svg {
+	transform: rotate(180deg);
+	color:blue;
+}
 
 html {
   font-family: sans-serif;
