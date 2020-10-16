@@ -30,6 +30,7 @@
 	href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <link href="css/stylesdf.css" rel="stylesheet" />
 </head>
@@ -40,14 +41,40 @@
 		id="sidenavAccordion">
 
 		<!-- LOGO DE LA EMPRESA -->
-		<a class="navbar-brand" href="#"> <img
-			src="assets/img/logosEmpresas/PAE.png" class="pl-3 img-fluid mr-0"
-			alt="Logo PAE" style="height: 30px" />
+		<a class="navbar-brand" href="#"> 
+			<!-- PRINT THE CORRESPONDING LOGO -->
+			<div th:if="${selectedCompany} == PAE920709D75">
+				<img src="assets/img/logosEmpresas/PAE.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 30px" />
+			</div>
+			<div th:if="${selectedCompany} == NME801205JE7">
+				<img src="assets/img/logosEmpresas/newland.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == PFL830127PP3">
+				<img src="assets/img/logosEmpresas/PFL.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == WHI020314BE4">
+				<img src="assets/img/logosEmpresas/WHIS_head_logo.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == CSO080325968">
+				<img src="assets/img/logosEmpresas/logo_excelcuts.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 35px" />
+			</div>
+			<div th:if="${selectedCompany} == SPE880430485">
+				<img src="assets/img/logosEmpresas/SDP.jpg" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == PRO070511ST2">
+				<img src="assets/img/logosEmpresas/PROFLUX.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
 		</a>
 
 
 		<!-- ICONOS DE TOP NAV BAR -->
 		<ul class="navbar-nav align-items-center ml-auto">
+			
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline">
+            	<a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
+            </li>
+		
+		
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownModulo" href="javascript:void(0);" role="button"
@@ -118,27 +145,9 @@
 							Documentos Extranjeros
 						</div>
 					</a>
-				</div></li>
-			<li class="nav-item dropdown no-caret mr-3 d-md-none"><a
-				class="btn btn-icon btn-transparent-dark dropdown-toggle"
-				id="searchDropdown" href="#" role="button" data-toggle="dropdown"
-				aria-haspopup="true" aria-expanded="false"><i
-					data-feather="search"></i></a> <!-- Dropdown - Search-->
-				<div
-					class="dropdown-menu dropdown-menu-right p-3 shadow animated--fade-in-up"
-					aria-labelledby="searchDropdown">
-					<form class="form-inline mr-auto w-100">
-						<div class="input-group input-group-joined input-group-solid">
-							<input class="form-control" type="text" placeholder="Buscar..."
-								aria-label="Search" aria-describedby="basic-addon2" />
-							<div class="input-group-append">
-								<div class="input-group-text">
-									<i data-feather="search"></i>
-								</div>
-							</div>
-						</div>
-					</form>
-				</div></li>
+				</div>
+			</li>
+			
 
 
 			<!-- CONFIGURACIONES -->
@@ -167,30 +176,26 @@
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownUserImage" href="javascript:void(0);"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"><img class="img-fluid"
-					src="https://source.unsplash.com/QAB-WJcbgJk/60x60" /></a>
+				aria-expanded="false" ><img class="img-fluid"
+					th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}"/></a>
 				<div
 					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
 					aria-labelledby="navbarDropdownUserImage">
 					<h6 class="dropdown-header d-flex align-items-center">
 						<img class="dropdown-user-img"
-							src="https://source.unsplash.com/QAB-WJcbgJk/60x60" />
+							th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}" />
 						<div class="dropdown-user-details">
-							<div class="dropdown-user-details-name">Valerie Luna</div>
-							<div class="dropdown-user-details-email">vluna@aol.com</div>
+							<div class="dropdown-user-details-name"><span sec:authentication="name"></div>
+							<div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
 						</div>
 					</h6>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#!">
-						<div class="dropdown-item-icon">
-							<i data-feather="corner-down-right"></i>
-						</div> Newland
-					</a> <a class="dropdown-item" href="#!">
-						<div class="dropdown-item-icon">
-							<i data-feather="log-out"></i>
-						</div> Cerrar Sesión
-					</a>
-				</div></li>
+					<a class="dropdown-item" href="/logout">
+                        <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                        Cerrar Sesión
+                    </a>
+				</div>
+			</li>
 		</ul>
 	</nav>
 	<div class="overflow:hidden">
@@ -226,7 +231,7 @@
 							<a class="nav-link" id="pestañaCompl" href="#!">Complementos de Pago</a> 
 							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a>
 							
-							<img src="assets/img/logosEmpresas/Canfer.png"
+							<img src="assets/img/logosEmpresas/canfer.gif"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
@@ -237,14 +242,21 @@
 
 						<!-- Main Content Tables -->
 						<div class="card mb-0">
+							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
 
-									<!-- BOTON NUEVA FACTURA -->
-									<div class="col-2 pb-3 pl-0">
-										<button type="button" id="btn-add"
-											class="btn btn-outline-primary" data-toggle="modal"
-											data-target="#nuevoModal">Nuevo</button>
+									<div class="row">
+										<!-- BOTON NUEVA FACTURA -->
+										<div class="col-6 pb-3 pl-3">
+											<button type="button" id="btn-add"
+												class="btn btn-outline-primary mr-2" data-toggle="modal"
+												data-target="#nuevoModal">Nuevo</button>
+											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+											    Filtros de Búsqueda
+											</button>
+											
+										</div>
 									</div>
 
 
@@ -305,6 +317,161 @@
 											</div>
 										</div>
 									</div>
+									
+									<!-- FILTROS DE BUSQUEDA -->
+									
+									<div class="collapse" id="collapseExample">
+										<div class="card shadow-none mb-3">
+										  <div class="card-header">
+										  	<i class="mr-2 text-primary" data-feather="search"></i>
+										    Filtros de Busqueda
+										    
+										  </div>
+										  <div class="card-body">
+   
+											<div class="row pb-1">
+												<div class="col">
+													<label class="form-check-label" for="reportrangeCarga">Fecha de Carga:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroProveedor">Proveedor:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroImporteDesde">Importe:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroImporteHasta">Importe:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
+												</div>
+												<div class="col">
+													
+												</div>
+												
+											</div>
+											<div class="row pb-1">
+												<div class="col">
+												  	<!-- Date Range Picker CARGA-->
+													<button class="btn btn-light btn-sm line-height-normal p-2 " id="reportrangeCarga">
+													    <i class="mr-2 text-primary" data-feather="calendar"></i>
+													    <span></span>
+													    <i class="ml-1" data-feather="chevron-down"></i>
+													</button>
+												</div>
+												<div class="col">
+												  	<!-- INPUT PROVEEDOR -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroProveedor" type="text" placeholder="Nombre o RFC">
+												</div>
+												<div class="col">
+												  	<!-- INPUT IMPORTE DESDE -->
+												  	<div class="input-group input-group-joined input-group-solid">
+														<div class="input-group-append">
+													        <span class="input-group-text pl-3" >
+													            <i class="text-primary" data-feather="dollar-sign"></i>
+													        </span>
+													    </div>
+														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteDesde" type="text" placeholder="Desde">
+												  	</div>
+												</div>
+												<div class="col">
+												  	<!-- INPUT IMPORTE HASTA -->
+													<div class="input-group input-group-joined input-group-solid">
+														<div class="input-group-append">
+													        <span class="input-group-text pl-3" >
+													            <i class="text-primary" data-feather="dollar-sign"></i>
+													        </span>
+													    </div>
+														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteHasta" type="text" placeholder="Hasta">
+												  	</div>
+												</div> 
+												<div class="col">
+												  	<!-- INPUT IMPORTE ESTATUS -->
+													<select class="form-control form-control-solid"  style="height: 30px; font-size: 14px" id="inputFiltroEstatus">
+											            <option>EN PROCESO</option>
+											            <option>PAGADO</option>
+											            <option>CANCELADO</option>
+											        </select>
+												</div>
+												<div class="col">
+													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+													    <input class="custom-control-input" id="checkRS" type="checkbox">
+													    <label class="custom-control-label" for="checkRS">RS</label>
+													    
+													</div>
+													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+													    <input class="custom-control-input" id="checkGenerico" type="checkbox">
+													    <label class="custom-control-label" for="checkGenerico">Genérico</label>
+													</div>
+													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+													    <input class="custom-control-input" id="checkComplemento" name="checkComplemento" type="checkbox">
+													    <label class="custom-control-label" for="checkComplemento">Complemento</label>
+													</div>
+												</div>
+											</div>
+											<div class="row pb-1">
+												<div class="col">
+													<label class="form-check-label" for="reportrangeEmision">Fecha de Emisión:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroUUID">UUID:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroFolioInicial">Folio:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroFolioFinal">Folio:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroFolioFinal">ID SAP:</label>
+												</div>
+												<div class="col">
+													
+												</div>
+												
+											</div>
+											<div class="row pb-1">
+												<div class="col">
+												  	<!-- Date Range Picker EMISION-->
+													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
+													    <i class="mr-2 text-primary" data-feather="calendar"></i>
+													    <span></span>
+													    <i class="ml-1" data-feather="chevron-down"></i>
+													</button>
+												</div>
+												<div class="col">
+												  	<!-- INPUT UUID -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroUUID" type="text" placeholder="UUID">
+												</div>
+												<div class="col">
+												  	<!-- INPUT FOLIO INICIAL -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioInicial" type="text" placeholder="Inicial">
+												</div>
+												<div class="col">
+												  	<!-- INPUT FOLIO FINAL -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioFinal" type="text" placeholder="Final">
+												</div>
+												<div class="col">
+												  	<!-- INPUT ID SAP -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroIdSap" type="text" placeholder="#ID">
+												</div>
+												<div class="col">
+													
+												</div>
+												
+											</div>
+											<div class="row justify-content-end">
+												<div class="col">
+													<button class="btn btn-blue float-right" type="button" id="reloadTableBtn"
+													>
+												     Buscar<i class="ml-2" data-feather="search"></i>
+													</button>
+												</div>
+											</div>
+											
+										</div>
+										</div>
+									</div>
 
 									<!-- BOTONES DE CHEVRON Y CHECKBOX-->
 									<div class="row pb-1">
@@ -318,7 +485,7 @@
 												<i data-feather="chevrons-up" style="width: 10px"></i>
 											</button>
 										</div>
-										<div class="col-2">
+										<div class="col-1">
 											<input type="checkbox" class="form-check-input"
 												id="selectAll"> <label class="form-check-label"
 												for="exampleCheck1">Seleccionar todo</label>
@@ -862,6 +1029,10 @@
 		src="https://cdn.datatables.net/searchpanes/1.1.1/js/searchPanes.bootstrap4.min.js"></script>
 	<script type="text/javascript"
 		src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script src="assets/demo/date-range-picker-demo.js"></script>
+
 
 
 </body>
