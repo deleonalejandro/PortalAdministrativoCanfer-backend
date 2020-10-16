@@ -31,7 +31,7 @@
 				        'csv'
 				    ],
 					ajax: {
-		            url: "/documentosFiscalesApi",
+		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").text(),
 					dataSrc:""
 		        	},
 					scrollX:true,
@@ -129,6 +129,36 @@
 					
 		 });
  			
+			// IMPROVE METHODS
+			$('#reloadTableBtn').on('click', function() {
+				var proveedor = "proveedor=" + $("#inputFiltroProveedor").val();
+				var empresa = "empresa=" + $("#selectedCompany").text();
+				var fechaInicial = "registeredBefore=" + $("#inputFiltroProveedor").text();
+				var fechaFinal = "registeredAfter=" + $("#inputFiltroProveedor").text();
+				var folioInicial = "sequenceAfter=" + $("#inputFiltroFolioInicial").val();
+				var folioFinal = "sequenceBefore=" + $("#inputFiltroFolioFinal").val();
+				var importeInicial = "totalAfter=" + $("#inputFiltroImporteDesde").val();
+				var importeFinal = "totalBefore=" + $("#inputFiltroImporteHasta").val();
+				var uuid = "uuid=" + $("#inputFiltroUUID").val();
+				var numSap = "idNumSap=" + $("#inputFiltroIdSap").val();
+				var estatus = "estatusPago=" + $("#inputFiltroEstatus").val();
+				var rs = "checkSap=" + $("#checkRS").val();
+				if($("#checkGenerico").val() == true){
+					var generico = "generico" 
+				}
+				var link = "/documentosFiscalesApi?"
+							+ empresa + "&"
+							+ proveedor + "&"
+							+ uuid + "&"
+							+ numSap + "&"
+							+ estatus + "&"
+							+ rs + "&";
+							
+				table.ajax.url(link).load();
+			
+			});
+			
+			
  			// Funcion para monitorear si esta cerrado o abierto
 					
 		         $('#facturas tbody').on('click', 'td.details-control', function () {
