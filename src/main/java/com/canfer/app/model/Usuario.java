@@ -21,6 +21,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity(name = "Usuario")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -151,6 +153,7 @@ public abstract class Usuario {
 		this.permisos = permisos;
 	}
 	
+	@JsonIgnore
 	public List<String> getPermisosList(){
 		if (this.permisos.isEmpty()) {
 			return new ArrayList<>();
@@ -159,10 +162,6 @@ public abstract class Usuario {
 		return Arrays.asList(this.permisos.split(",")); 
 	}
 
-	public List<Empresa> getEmpresas() {
-		return empresas;
-	}
-	
 	public List<Long> getEmpresasId() {
 		List<Long> ids = new ArrayList<>();
 		for (Empresa company : this.empresas) {
@@ -177,6 +176,14 @@ public abstract class Usuario {
 			names.add(company.getNombre());
 		}
 		return names;
+	}
+	
+	public List<String> getEmpresasRfc() {
+		List<String> rfc = new ArrayList<>();
+		for (Empresa company : this.empresas) {
+			rfc.add(company.getRfc());
+		}
+		return rfc;
 	}
 
 	public void setEmpresas(List<Empresa> empresas) {

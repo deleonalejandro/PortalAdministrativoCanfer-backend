@@ -16,6 +16,7 @@ import com.canfer.app.repository.FacturaRepository;
 import net.kaczmarzyk.spring.data.jpa.domain.Between;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
+import net.kaczmarzyk.spring.data.jpa.domain.In;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.domain.NotNull;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
@@ -39,7 +40,8 @@ public class FNCRestController {
 			@Join(path = "empresa", alias = "e")
 			@Or({
 				@Spec(path="p.nombre", params="proveedor", spec=Like.class), 
-				@Spec(path="p.rfc", params="proveedor", spec=Like.class) 
+				@Spec(path="p.rfc", params="proveedor", spec=Like.class), 
+				@Spec(path="rfcProveedor", params="proveedor", spec=Like.class) 
 			})
     		@And({
     			@Spec(path="e.rfc", params= "empresa", spec = Equal.class),

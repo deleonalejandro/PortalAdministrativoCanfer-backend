@@ -1,7 +1,7 @@
 package com.canfer.app.webservice.sat;
 
 
-import org.apache.commons.lang.StringUtils;
+
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +28,7 @@ public class SatVerificacionService {
 	    //send request to web service
 		ConsultaResponse response = client.getInfo(expresionImpresa);
         
-        return StringUtils.substringAfter(response.getConsultaResult().getValue().getEstado().getValue()
-        		, "Resultado de SAT: ");
+        return response.getConsultaResult().getValue().getEstado().getValue();
         
 		}catch(Exception e) {
 			e.printStackTrace();

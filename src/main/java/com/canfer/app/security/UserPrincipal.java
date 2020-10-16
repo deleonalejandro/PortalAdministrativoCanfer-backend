@@ -8,11 +8,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Usuario;
 
 
+
 public class UserPrincipal implements UserDetails {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private Usuario usuario;
 	
@@ -67,6 +72,10 @@ public class UserPrincipal implements UserDetails {
 		return this.usuario.getActivo();
 	}
 	
+	public boolean isAdmin() {
+		return this.usuario.getRol().equalsIgnoreCase("ADMIN");
+	}
+	
 	public String getCorreo() {
 		return this.usuario.getCorreo();
 	}
@@ -82,5 +91,14 @@ public class UserPrincipal implements UserDetails {
 	public List<String> getEmpresas() {
 		return this.usuario.getEmpresasNombre();
 	}
+	
+	public List<String> getEmpresasRfc() {
+		return this.usuario.getEmpresasRfc();
+	}
+	
+	public String getName() {
+		return this.usuario.getNombre() + "+" +this.usuario.getApellido();
+	}
+	
 
 }
