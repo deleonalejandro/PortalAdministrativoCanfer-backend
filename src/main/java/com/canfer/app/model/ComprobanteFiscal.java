@@ -404,7 +404,7 @@ public abstract class ComprobanteFiscal {
 	}
 	
 	public String verificaSat() {
-		
+		try {
 		ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
 		SatVerificacionService service = new SatVerificacionService(clientconfigurationSAT);
 		String msg = "re=" + this.proveedor.getRfc() + "&" +
@@ -412,6 +412,10 @@ public abstract class ComprobanteFiscal {
 					 "tt=" + this.total + "&" +
 					 "id=" + this.uuid;
 		return service.validaVerifica(msg);
+	}catch(Exception e) {
+		Log.general(e.getLocalizedMessage());;
+		return "Error al Procesar";
+	}
 	}
 	
 	
