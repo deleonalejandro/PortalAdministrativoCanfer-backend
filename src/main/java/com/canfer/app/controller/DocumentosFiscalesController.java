@@ -34,7 +34,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
@@ -43,6 +45,7 @@ import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
+import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
@@ -70,7 +73,11 @@ public class DocumentosFiscalesController {
 	@Autowired
 	private ValidationService validationService;
 	@Autowired
-	private ComprobanteFiscalRespository comprobanteFiscalRepository; 
+	private ComprobanteFiscalService comprobanteFiscalService; 
+	@Autowired
+	private ComprobanteFiscalRespository comprobanteFiscalRepository;
+	@Autowired
+	private CrystalReportService crystalReportService; 
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -231,7 +238,18 @@ public class DocumentosFiscalesController {
 	public ResponseEntity<Resource> downloadLocalFile(@PathVariable Long id, @PathVariable String extension) {
 		String contentType = "application/octet-stream";
 		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
-		Path path = Paths.get(doc.getRuta());
+		Path path = null; 
+		
+		if (doc == null) {
+			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
+			 path = Paths.get(crystalReportService.exportGenerico(id, "Nombre Emisor", "rfc Emisor", cfdi.getFolio(), cfdi.getEmpresa().getRfc(),
+					cfdi.getEmpresa().getNombre(), "uso CFDI", cfdi.getUuid(), "CSD", cfdi.getSerie(), cfdi.getFechaEmision(), 
+					cfdi.getTipoDocumento(), "Regimen"));
+			 doc = documentoService.findByIdTablaAndExtension(id, extension);
+			
+		} else {
+		path = Paths.get(doc.getRuta());
+		}
 		Resource resource = null;
 		try {
 			// try to load resource
@@ -250,13 +268,51 @@ public class DocumentosFiscalesController {
 	
 	//TODO this method is not working 
 	@GetMapping("/download/{extension:.+}")
-	public void downloadLocalFiles(@RequestParam List<Long> ids, @PathVariable String extension) {
+	public ResponseEntity<byte[]> downloadLocalFiles(@RequestParam List<Long> ids, @PathVariable String extension) {
 		
+		String zipFileName = "comprobantes_canfer.zip";
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ZipOutputStream zipOut = new ZipOutputStream(bos);
+		List<Documento> docs = new ArrayList<>();
 		
 		for (Long id : ids) {
-		
-			downloadLocalFile(id, extension);
+			
+			docs = documentoService.findAllByIdTablaAndExtension(id, extension);
+			
+			for (Documento doc : docs) {
+				
+				Path path = Paths.get(doc.getRuta());
+				FileSystemResource resource = new FileSystemResource(path);
+				ZipEntry zipEntry = new ZipEntry(resource.getFilename());
+				
+				try {
+					
+					zipEntry.setSize(resource.contentLength());
+					zipOut.putNextEntry(zipEntry);
+					StreamUtils.copy(resource.getInputStream(), zipOut);
+					zipOut.closeEntry();
+					
+				} catch (IOException e) {
+					Log.activity("Error al comprimir archivo: "
+							+ path.getFileName() + ".", doc.getEmpresa().getNombre());
+					e.printStackTrace();
+				}
+			}
 		}
+		
+		try {
+			zipOut.finish();
+			zipOut.close();
+		} catch (IOException e) {
+			Log.activity("Error durante la descarga: No fué posible comprimir los documentos.", docs.get(0).getEmpresa().getNombre());
+			e.printStackTrace();
+			return ResponseEntity.badRequest()
+					.body(bos.toByteArray());
+		}
+		return ResponseEntity.ok()
+	    		.contentType(MediaType.APPLICATION_OCTET_STREAM)
+	    		.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFileName + "\"")
+	    		.body(bos.toByteArray());
 		
 	}
 	
@@ -267,9 +323,18 @@ public class DocumentosFiscalesController {
 		if (extension.equalsIgnoreCase("xml")) {
 			contentType = "text/xml";
 		}
-		
+		Path path = null; 
 		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
-		Path path = Paths.get(doc.getRuta());
+		if (doc == null) {
+			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
+			 path = Paths.get(crystalReportService.exportGenerico(id, "Nombre Emisor", "rfc Emisor", cfdi.getFolio(), cfdi.getEmpresa().getRfc(),
+					cfdi.getEmpresa().getNombre(), "uso CFDI", cfdi.getUuid(), "CSD", cfdi.getSerie(), cfdi.getFechaEmision(), 
+					cfdi.getTipoDocumento(), "Regimen"));
+			 doc = documentoService.findByIdTablaAndExtension(id, extension);
+			
+		} else {
+		 path = Paths.get(doc.getRuta());
+		}
 		Resource resource = null;
 		try {
 			// try to load resource
@@ -361,17 +426,18 @@ public class DocumentosFiscalesController {
 
 	}
 
-	@PostMapping(value = "/getVigencia/{id}")
-	public void getVigencia(@PathVariable long id) {
+
+	@PostMapping(value = "/update")
+	public String update(ComprobanteFiscalDTO documento, RedirectAttributes ra) {
 	
-		Optional<ComprobanteFiscal> comprobante = comprobanteFiscalRepository.findById(id);
-		if(comprobante.isPresent()) {
-			String respuestaSat = comprobante.get().verificaSat(); 
-		
-			comprobante.get().setEstatusSAT(respuestaSat);
-			comprobanteFiscalRepository.save(comprobante.get());
+		try {
+			comprobanteFiscalService.updateInfo(documento);
+		} catch (Exception e) {
+			Log.falla("Error al actualizar CFDI: " + e.getMessage());
+			ra.addFlashAttribute("updateError", e.getMessage());
 		}
 		
+		return "redirect:/documentosFiscalesClient";
 	}
 	
 	@GetMapping(value = "/csv")

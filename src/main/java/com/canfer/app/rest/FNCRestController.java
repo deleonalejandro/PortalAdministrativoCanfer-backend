@@ -82,7 +82,22 @@ public class FNCRestController {
 
         return facturaRepo.findAll(facturaSpec);
     }
-    		
-
+  
+      @PostMapping(value = "/getVigencia/{id}")
+    @ResponseBody
+	public String getVigencia(@PathVariable long id) {
 	
+		Optional<ComprobanteFiscal> comprobante = comprobanteFiscalRepo.findById(id);
+		if(comprobante.isPresent()) {
+			String respuestaSat = comprobante.get().verificaSat(); 
+			
+			comprobante.get().setEstatusSAT(respuestaSat);
+			comprobanteFiscalRepo.save(comprobante.get());
+			
+			return respuestaSat; 
+		}
+		return null; 
+		
+	}
+
 }

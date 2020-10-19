@@ -502,6 +502,7 @@
 												<th></th>
 												<th></th>
 												<th>No. SAP</th>
+												<th>UUID</th>
 												<th>RS</th>
 												<th>Folio</th>
 												<th>Clave Proveedor</th>
@@ -512,8 +513,6 @@
 												<th>Estatus</th>
 												<th>Fecha de Carga</th>
 												<th>Fecha de Emisión</th>
-												<th>Monto de Pago</th>
-												<th>Fecha de Pago</th>
 											</tr>
 										</thead>
 										<tfoot>
@@ -523,6 +522,7 @@
 												<th></th>
 												<th></th>
 												<th>No. SAP</th>
+												<th>UUID</th>
 												<th>RS</th>
 												<th>Folio</th>
 												<th>Clave Proveedor</th>
@@ -533,8 +533,6 @@
 												<th>Estatus</th>
 												<th>Fecha de Carga</th>
 												<th>Fecha de Emisión</th>
-												<th>Monto de Pago</th>
-												<th>Fecha de Pago</th>
 											</tr>
 										</tfoot>
 									</table>
@@ -565,7 +563,7 @@
 
 
 							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
-							<div class="detailsForm">
+							<form class="detailsForm" th:action="@{documentosFiscalesClient/update}" method="post" >
 								<div class="modal fade" id="detailsModal" tabindex="-1"
 									role="dialog" aria-labelledby="myLargeModalLabel"
 									aria-hidden="true">
@@ -604,7 +602,7 @@
 															</div>
 															<div class="form-check form-check-inline">
 																<input class="form-check-input" type="checkbox"
-																	id="bitRSusuario" value="" /> <label
+																	 id="bitRSusuario" value="" /> <label
 																	class="form-check-label font-weight-bold"
 																	for="bitRSusuario"> RS Usuario</label>
 															</div>
@@ -622,6 +620,11 @@
 																class="form-control form-control-sm bg-white"
 																id="idNumSap" value="" />
 														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"
+																id="bitRSusuarioText" hidden name="bitRSusuario" value="" />
+														</div>
 													</div>
 													<div class="row">
 														<div class="col-3">
@@ -632,7 +635,7 @@
 														</div>
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
-																class="form-control form-control-sm bg-white" id="uuid"
+																class="form-control form-control-sm bg-white" name="uuid" id="uuid"
 																value="" />
 														</div>
 													</div>
@@ -832,7 +835,7 @@
 																<div class="input-group-append">
 																	<span class="input-group-text" style="height: 20px">
 																		<a class="refreshBtn pt-2" type="button"><i
-																			data-feather="refresh-cw"></i></a>
+																			data-feather="refresh-cw" style="color:blue"></i></a>
 																	</span>
 																</div>
 															</div>
@@ -910,45 +913,29 @@
 														<div class="col-9">
 															<textarea type="text" style="height: 50px"
 																class="form-control form-control-sm bg-white" cols="40"
-																rows="5" id="comentario" value=""></textarea>
+																rows="5" id="comentario" name="comentario" value=""></textarea>
 														</div>
-													</div>
-													<!-- UPLOAD CON CHOOSE FILE & DRAG AND DROP -->
-													<div class="container pt-2 pl-0">
-														<form method="post" enctype="multipart/form-data"
-															action="savefile" id="#archivo">
-															<div class="input-group mb-2">
-																<div class="input-group-prepend">
-																	<div class="input-group-text" style="height: 40px">
-																		<i class="far fa-file-pdf float-left fa-lg"
-																			style="color: red"></i>
-																	</div>
-																</div>
-																<input class="form-control" style="height: 40px"
-																	id="InputGroupPDFModal" type="file" name="file" />
-															</div>
-														</form>
 													</div>
 												</div>
 											</div>
 											<div class="modal-footer">
 												<a class="btn btn-datatable btn-icon btn-transparent-dark float-right pdfBtn mr-1"><i class="fa fa-file-pdf fa-2x" style="color: red"></i></a> 
 												<a class="btn btn-datatable btn-icon btn-transparent-dark float-right xmlBtn mr-1"><i class="fas fa-file-code fa-2x" style="color: green"></i></a> 
-												<div th:if="${true}" class="mr-auto">
+												<div id="conpago" class="mr-auto">
 													<a class="btn btn-datatable btn-icon btn-transparent-dark float-right pagoBtn"><i class="fas fa-file-invoice-dollar fa-2x" style="color: teal"></i></a>
 												</div>
-												<div th:if="${false}" class="mr-auto">
+												<div id="sinpago" class="mr-auto">
 													<span class="ml-0  fa-stack fa-2x mr-1"><i class="fas fa-file-invoice-dollar fa-stack-1x float-left sinPagoBtn" style="color: teal"></i><i
 														class="fas fa-slash fa-stack-1x" style="color: red"></i></span> 
 												</div>
-												<button type="button" class="btn btn-primary">Guardar</button>
+												<button  class="btn btn-primary" type="submit">Guardar</button>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</form>
 
-
+			
 							<!-- MODAL PARA CONFIRMAR BORRAR -->
 							<div class="deleteForm">
 								<div class="modal fade" id="deleteModal" tabindex="-1"
@@ -981,6 +968,16 @@
 					</div>
 				</div>
 			</div>
+			<!-- TOAST PARA REFRESH DE SAT -->
+							<div class="toast" role="alert" id="toastSAT" data-autohide="true" data-delay="4000" style=" z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;" aria-live="assertive" aria-atomic="true">
+							    <div class="toast-header bg-primary text-white">
+							        <i data-feather="alert-circle"></i>
+							        <strong class="mr-auto">Cambio de Estatus de Vigencia</strong>
+							        <small class="text-white-50 ml-2">Ahora</small>
+							    </div>
+							    <div class="toast-body">Se procesó la petición ante el SAT.</div> 
+							</div>
+							
 		</main>
 		<footer class="footer mt-auto footer-light">
 			<div class="container">

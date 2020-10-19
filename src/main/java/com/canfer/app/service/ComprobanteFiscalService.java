@@ -115,13 +115,14 @@ public class ComprobanteFiscalService {
 	
 	public ComprobanteFiscal updateInfo(ComprobanteFiscalDTO comprobanteDTO) {
 		
-		ComprobanteFiscal comprobanteUpdate = findById(comprobanteDTO.getIdComprobanteFiscal());
+		ComprobanteFiscal comprobanteUpdate = findByUUID(comprobanteDTO.getUuid());
 		
 		// TODO work on this will be needed... stay tuned with the front end
-		comprobanteUpdate.setProveedor(comprobanteDTO.getProveedor());
 		
-		comprobanteUpdate.setEstatusPago(comprobanteDTO.getEstatus());
+		//comprobanteUpdate.setProveedor(comprobanteDTO.getProveedor());}
+		
 		comprobanteUpdate.setBitRSusuario(comprobanteDTO.getBitRSusuario());
+		System.out.println(comprobanteDTO.getBitRSusuario());
 		comprobanteUpdate.setComentario(comprobanteDTO.getComentario());
 		
 		return comprobanteFiscalRepository.save(comprobanteUpdate);
