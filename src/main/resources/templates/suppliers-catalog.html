@@ -206,11 +206,11 @@
 						</nav>
 					</div>
 					<div class="col-10">
-					<div th:text="${#authentication.principal.empresas}">Hola</div>
+						<div class="alert alert-danger mb-4" role="alert" th:text="${error}" th:if="${error}"></div>
+						<div class="alert alert-danger mb-4" role="alert" th:text="${supplierNotFound}" th:if="${supplierNotFound}"></div>
 						<!-- Main Content Tables -->
 						<div class="card mb-4">
-						<div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-						<div class="alert alert-danger" role="alert" th:text="${supplierNotFound}" th:if="${supplierNotFound}"></div>
+						
 							<div class="card-header">
 								<a th:href="@{addSupplier}" class="btn btn-primary">Añadir</a>
 							</div>
@@ -291,7 +291,7 @@
         </div>
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-scrollable" role="document">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Editar Proveedor</h5>
@@ -301,13 +301,13 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="#" th:action="@{companies/save}" method="post">
+					<form action="#" th:action="@{supplier/update}" method="post">
 						<input type="hidden" name=idProveedor id="idProveedor">
 						<div class="form-row">
 							<!-- Form Group (EMPRESA DEL PROVEEDOR)-->
 							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputEmpresa">Proveedor de:</label> 
-								<input class="form-control input-lg" id="inputEmpresa" type="text" name="rfc" readonly/>
+								<input class="form-control input-lg" id="inputEmpresa" type="text" readonly/>
 							</div>
 						</div>		
 						<!-- Form Row-->
@@ -331,13 +331,27 @@
 							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputNombre">Nombre</label> <input
 									class="form-control" id="inputNombre" type="text"
-									placeholder="Ingresa el nombre del proveedor" name="contacto" />
+									placeholder="Ingresa el nombre del proveedor" name="nombre" />
 							</div>
 							<!-- Form Group (CORREO)-->
 							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputCorreo">Correo
 									Eléctronico</label> <input class="form-control" id="inputCorreo"
 									type="text" name="correo" placeholder="Ingresa el correo" />
+							</div>
+						</div>
+						<div class="form-row">
+							<!-- Form Group (CONTACTO)-->
+							<div class="form-group col-md-6">
+								<label class="small mb-1" for="inputContacto">Contacto</label> <input
+									class="form-control" id="inputContacto" type="text"
+									placeholder="Ingresa el contacto" name="contacto" />
+							</div>
+							<!-- Form Group (TELEFONO)-->
+							<div class="form-group col-md-6">
+								<label class="small mb-1" for="inputTelefono">Teléfono</label> 
+								<input class="form-control" id="inputTelefono"
+									type="tel" name="telefono" placeholder="Ingresa el teléfono" />
 							</div>
 						</div>
 						<div class="form-row">
@@ -351,37 +365,39 @@
 							<div class="form-group col-md-2">
 								<label class="small mb-1" for="inputExterior">Exterior</label> <input
 									class="form-control" id="inputExterior" type="text"
-									name="exterior"  />
+									name="numExt"  />
 							</div>
 							<!-- Form Group (INTERIOR)-->
 							<div class="form-group col-md-2">
 								<label class="small mb-1" for="inputInterior">Interior</label> <input
 									class="form-control" id="inputInterior" type="text"
-									name="exterior" />
+									name="numInt" />
 							</div>
 						</div>
 						<!-- Form Row        -->
 						<div class="form-row">
 							<!-- Form Group (ESTADO)-->
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label class="text-gray-600 small" for="inputEstado">Estado</label>
-								<select id="inputEstado" class="form-control">
-									<option selected>Choose...</option>
-									<option>...</option>
+								<select id="inputEstado" class="form-control" name="idEstado" required>
+									<option selected value="">--Selecciona--</option>
+									<option th:each="state : ${estados}" th:text="${state.nombre}" th:value="${state.getidEstado()}">
 								</select>
 							</div>
 							<!-- Form Group (MUNICIPIO)-->
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-6">
 								<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
-								<select id="inputMunicipio" class="form-control">
-									<option selected>Choose...</option>
-									<option>...</option>
+								<select id="inputMunicipio" class="form-control" name="idMunicipio" required>
+									<option selected value="">--Selecciona--</option>
+									
 								</select>
 							</div>
-							<!-- Form Group (MUNICIPIO)-->
-							<div class="form-group col-md-4">
+						</div>
+						<div class="form-row">
+							<!-- Form Group (LOCALIDAD)-->
+							<div class="form-group col-md-6">
 								<label class="small mb-1" for="inputLocalidad">Localidad</label>
-								<input class="form-control" id="inputLocalidad" type="text" placeholder="Ingresa la localidad" name="correo" />
+								<input class="form-control" id="inputLocalidad" type="text" placeholder="Ingresa la localidad" name="localidad" />
 							</div>
 						</div>
 
@@ -390,13 +406,12 @@
 							<div class="form-group col-md-8">
 								<label class="small mb-1" for="inputReferencia">Referencia</label>
 								<input class="form-control" id="inputReferencia" type="text"
-									placeholder="Ingresa la referncia" name="nombre" />
+									placeholder="Ingresa la referencia" name="referencia" />
 							</div>
 							<!-- Form Group (CODIGO POSTAL)-->
 							<div class="form-group col-md-4">
-								<label class="small mb-1" for="inputCp">CP</label> <input
-									class="form-control" id="inputCp" type="text" name="apellido"
-									 />
+								<label class="small mb-1" for="inputCp">CP</label> 
+								<input class="form-control" id="inputCp" type="text" name="cp"  />
 							</div>
 						</div>
 						
@@ -411,13 +426,27 @@
 						<div class="form-group">
 							<label class="small mb-1" for="inputPaginaWeb">Pagina Web</label>
 							<input class="form-control" id="inputPaginaWeb" type="text"
-								placeholder="Ingresa la pagina web" name="correo" />
+								placeholder="Ingresa la pagina web" name="paginaWeb" />
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (phone number)-->
+							<div class="col-md-6">
+								<!-- Form Group (Empresa)-->
+								<div class="form-group">
+									<label class="text-gray-600 small" for="dropdownEmpresa">Empresa</label>
+									<select class="form-control selectpicker"
+										id="dropdownEmpresas" name="idEmpresa" required>
+										<option value="" selected>--Selecciona Empresa--</option>
+										<option th:each="empresa : ${empresas}" th:value="${empresa.getidEmpresa()}" th:text="${empresa.nombre}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<!-- Form Row-->
+						<div class="form-row">
+							<!-- Form Group (ACTIVO)-->
 							<div class="form-group custom-control custom-checkbox">
-								<input class="custom-control-input" id="checkActivo" name="activo" type="checkbox"> 
+								<input class="custom-control-input" id="checkActivo" name="bitActivo" type="checkbox"> 
 								<label class="custom-control-label" for="checkActivo">Activo</label>
 							</div>
 							

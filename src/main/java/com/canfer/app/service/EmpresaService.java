@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Municipio;
 import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.MunicipioRepository;
 import com.canfer.app.security.IAuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 
@@ -24,6 +26,8 @@ public class EmpresaService {
 	private EmpresaRepository empresaRepository;
 	@Autowired
 	private IAuthenticationFacade authenticationFacade;
+	@Autowired
+	private MunicipioRepository municipioRepository;
 	
 	public List<Empresa> findAll() {
 		return empresaRepository.findAll();
@@ -83,7 +87,13 @@ public class EmpresaService {
 			saveEmpresa.setRfc(empresa.getRfc());
 			saveEmpresa.setTelefono(empresa.getTelefono());
 			saveEmpresa.setIdUsuarioCreador(userDetails.getUserId());
-			saveEmpresa.setMunicipio(empresa.getMunicipio());
+			saveEmpresa.setProfilePictureName(empresa.getProfilePictureName());
+			saveEmpresa.setColor(empresa.getColor());
+			
+			Optional<Municipio> mun = municipioRepository.findById(empresa.getIdMunicipio());
+			if (mun.isPresent()) {
+				saveEmpresa.setMunicipio(mun.get().getNombre());
+			}
 			
 		} catch (Exception e) {
 			throw new UnknownError("Ocurrio un error inesperado");

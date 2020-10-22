@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 	
@@ -22,6 +24,7 @@ public class Municipio {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idMunicipio; 
 	
+	@JsonIgnore
     @JoinColumn(name = "idEstado")
     @ManyToOne(targetEntity = Estado.class, fetch = FetchType.LAZY)
     private Estado estado;

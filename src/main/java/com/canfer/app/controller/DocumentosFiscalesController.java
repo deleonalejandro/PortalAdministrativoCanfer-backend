@@ -8,21 +8,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.File;
-import org.apache.commons.io.FileUtils;
-import org.json.*;
+
 import org.apache.commons.io.FileExistsException;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -84,7 +79,7 @@ public class DocumentosFiscalesController {
 	}
 	
 	@PostMapping("/uploadFactura")
-	public String upload(@RequestParam("files") MultipartFile[] files) {
+	public String upload(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
 		 
 		Comprobante comprobante = null;
 		ComprobanteFiscal comprobanteFiscal;
@@ -144,22 +139,13 @@ public class DocumentosFiscalesController {
 			e.printStackTrace();
 		} 
 		
-		return "redirect:/documentosFiscalesClient";
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 		
 	}
-	
-	public String saveComprobanteFiscal(@RequestParam ComprobanteFiscalDTO comprobante) {
-		try {
-			comprobanteService.updateInfo(comprobante);
-		} catch (DataAccessResourceFailureException e) {
-			Log.falla("Error al actualizar la factura " + comprobante.getUuid() + ": " + e.getMessage());
-		}
-		
-		return "redirect:/documentosFiscalesClient";
-	}
+
 	
 	@PostMapping(value = "/deleteMultipleFacturas")
-	public String deleteMultipleFactura(@RequestParam List<Long> ids) {
+	public String deleteMultipleFactura(@RequestParam List<Long> ids, @RequestParam String rfc) {
 		try {
 			
 			for(Long id : ids) {
@@ -195,11 +181,11 @@ public class DocumentosFiscalesController {
 		} catch (Exception e) {
 			Log.falla("Ocurrio un error al borrar multiples facturas. " + e.getCause());
 		}
-		return "redirect:/documentosFiscalesClient";	
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;	
 	}
 	
 	@GetMapping(value = "/delete/{id}")
-	public String deleteFactura(@PathVariable Long id, Model model) {
+	public String deleteFactura(@PathVariable Long id, Model model, @RequestParam String rfc) {
 		try {
 			
 			// delete files first, since we use document info to get route
@@ -231,26 +217,42 @@ public class DocumentosFiscalesController {
 			Log.falla("Ocurrio un error al borrar la factura." + e.getCause());
 			model.addAttribute("DeleteFacturaError", e.getMessage());
 		}
-		return "redirect:/documentosFiscalesClient";	
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;	
 	}
 	
-	@GetMapping("/download/{extension:.+}/{id}")
-	public ResponseEntity<Resource> downloadLocalFile(@PathVariable Long id, @PathVariable String extension) {
+	//TODO configurar updateError using alert
+	@PostMapping(value = "/update")
+	public String update(ComprobanteFiscalDTO documento, RedirectAttributes ra, @RequestParam String rfc) {
+	
+		try {
+			comprobanteFiscalService.updateInfo(documento);
+		} catch (Exception e) {
+			Log.falla("Error al actualizar CFDI: " + e.getMessage());
+			ra.addFlashAttribute("updateError", e.getMessage());
+		}
+		
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
+	}
+	
+	@GetMapping("/download/{extension:.+}/{id}/{uuid}")
+	public ResponseEntity<Resource> downloadLocalFile(@PathVariable String uuid, @PathVariable Long id, @PathVariable String extension) {
 		String contentType = "application/octet-stream";
-		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
+		Documento doc = documentoService.findByConceptoAndExtension(uuid, extension);
 		Path path = null; 
+		Resource resource = null;
 		
 		if (doc == null) {
+			
 			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
-			 path = Paths.get(crystalReportService.exportGenerico(id, "Nombre Emisor", "rfc Emisor", cfdi.getFolio(), cfdi.getEmpresa().getRfc(),
+			path = Paths.get(crystalReportService.exportGenerico(id, "Nombre Emisor", "rfc Emisor", cfdi.getFolio(), cfdi.getEmpresa().getRfc(),
 					cfdi.getEmpresa().getNombre(), "uso CFDI", cfdi.getUuid(), "CSD", cfdi.getSerie(), cfdi.getFechaEmision(), 
 					cfdi.getTipoDocumento(), "Regimen"));
-			 doc = documentoService.findByIdTablaAndExtension(id, extension);
+			doc = documentoService.findByIdTablaAndExtension(id, extension);
 			
 		} else {
 		path = Paths.get(doc.getRuta());
 		}
-		Resource resource = null;
+		
 		try {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
@@ -266,7 +268,6 @@ public class DocumentosFiscalesController {
 				.body(resource);
 	}
 	
-	//TODO this method is not working 
 	@GetMapping("/download/{extension:.+}")
 	public ResponseEntity<byte[]> downloadLocalFiles(@RequestParam List<Long> ids, @PathVariable String extension) {
 		
@@ -426,19 +427,6 @@ public class DocumentosFiscalesController {
 
 	}
 
-
-	@PostMapping(value = "/update")
-	public String update(ComprobanteFiscalDTO documento, RedirectAttributes ra) {
-	
-		try {
-			comprobanteFiscalService.updateInfo(documento);
-		} catch (Exception e) {
-			Log.falla("Error al actualizar CFDI: " + e.getMessage());
-			ra.addFlashAttribute("updateError", e.getMessage());
-		}
-		
-		return "redirect:/documentosFiscalesClient";
-	}
 	
 	@GetMapping(value = "/csv")
 	public void exportCSV(HttpServletResponse response, @RequestParam List<Long> ids) throws Exception {

@@ -1,12 +1,17 @@
 package com.canfer.app.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,7 +26,12 @@ public class Proveedor {
 	private String municipio;
 
 	@JsonIgnore
-	@ManyToMany(mappedBy = "proveedores")
+	@JoinTable(
+			name = "empresa_proveedor",
+			joinColumns = @JoinColumn(name="idProveedor", nullable=true),
+			inverseJoinColumns = @JoinColumn(name="idEmpresa", nullable=true)
+			)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Empresa> empresas;
 
 	@Column(nullable = false)
@@ -269,6 +279,14 @@ public class Proveedor {
 		StringBuilder sb = new StringBuilder();
 		this.empresas.forEach(empresa -> sb.append(empresa.getNombre() + " "));
 		return sb.toString();
+	}
+	
+	public List<Long> getEmpresasId() {
+		List<Long> ids = new ArrayList<>();
+		for (Empresa company : this.empresas) {
+			ids.add(company.getidEmpresa());
+		}
+		return ids;
 	}
 	
 	

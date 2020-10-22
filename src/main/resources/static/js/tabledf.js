@@ -31,7 +31,7 @@
 				        'csv'
 				    ],
 					ajax: {
-		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").text(),
+		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").val(),
 					dataSrc:""
 		        	},
 					scrollX:true,
@@ -268,7 +268,7 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
-					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal)
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal+"?rfc=" + $("#selectedCompany").val())
 					$('#deleteModal').modal('show');
 				});
 				
