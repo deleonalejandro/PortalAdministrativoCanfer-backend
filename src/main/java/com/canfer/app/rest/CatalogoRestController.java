@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario;
+import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.UsuarioRepository;
 
@@ -20,6 +23,8 @@ public class CatalogoRestController {
 	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private ProveedorRepository proveedorRepository;
+	@Autowired
+	private EmpresaRepository empresaRepository;
 	
 	public CatalogoRestController() {
 		// Este es el constructor vacio del controlador
@@ -34,6 +39,11 @@ public class CatalogoRestController {
 	public List<Proveedor> getAllSuppliers(){
 		return proveedorRepository.findAll();
 	}
-
+	
+	@GetMapping(value="/getProveedores/{rfcProveedor}/{rfcEmpresa}")
+	public List<Proveedor> getPossibleSuppliers(@PathVariable String rfcProveedor, @PathVariable String rfcEmpresa){
+		Empresa empresa = empresaRepository.findByRfc(rfcEmpresa);
+		return proveedorRepository.findAllByEmpresasAndRfc(empresa, rfcProveedor);
+	}
 	
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Consecutivo;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.ComprobanteFiscal;
@@ -54,6 +55,8 @@ public class ComprobanteFiscalService {
 	private ProveedorRepository proveedorRepository;
 	@Autowired
 	private ConsecutivoRepository consecutivoRepository;
+	@Autowired
+	private EmailSenderService emailSender; 
 
 	private static final String DOCUMENT_NOT_FOUND = "El comprobante fiscal no existe en la base de datos.";
 
@@ -116,13 +119,14 @@ public class ComprobanteFiscalService {
 	public ComprobanteFiscal updateInfo(ComprobanteFiscalDTO comprobanteDTO) {
 		
 		ComprobanteFiscal comprobanteUpdate = findByUUID(comprobanteDTO.getUuid());
+		//Checar que la clave del proveedor del comprobante sea consistente 
 		
-		// TODO work on this will be needed... stay tuned with the front end
 		
-		//comprobanteUpdate.setProveedor(comprobanteDTO.getProveedor());}
-		
+		comprobanteUpdate.setProveedor(comprobanteDTO.getProveedor());
+
 		comprobanteUpdate.setBitRSusuario(comprobanteDTO.getBitRSusuario());
-		System.out.println(comprobanteDTO.getBitRSusuario());
+		
+		comprobanteUpdate.setEstatusPago(comprobanteDTO.getEstatus());
 		comprobanteUpdate.setComentario(comprobanteDTO.getComentario());
 		
 		return comprobanteFiscalRepository.save(comprobanteUpdate);
@@ -135,6 +139,7 @@ public class ComprobanteFiscalService {
 		comprobante.setRespuestaValidacion(respuestas.get(1));
 		comprobante.setEstatusSAT(respuestas.get(2));
 
+		emailSender.sendEmailNewDoc(comprobante, respuestas.get(1),respuestas.get(2));
 		return comprobanteFiscalRepository.save(comprobante);
 	}
 

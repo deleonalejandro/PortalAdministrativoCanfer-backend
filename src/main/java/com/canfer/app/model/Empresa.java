@@ -38,6 +38,9 @@ public class Empresa {
 	@Column(nullable = false)
 	private String rfc;
 	
+	@Column(nullable = true)
+	private String color;
+	
 	@Column(nullable = false)
 	private String nombre;
 	
