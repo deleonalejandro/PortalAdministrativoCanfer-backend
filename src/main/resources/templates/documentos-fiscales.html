@@ -240,9 +240,9 @@
 					</div>
 					<div class="col-10">
 
-						<!-- Main Content Tables  facturas-->
+						<!-- Main Content Tables -->
 						<div class="card mb-0"  id="divFacturas">
-							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
+							<input id="selectedCompany" name="selectedCompany" th:value="${selectedCompany}" hidden/>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -290,7 +290,7 @@
 															<div>
 																<form method="post" enctype="multipart/form-data"
 																	action="#"
-																	th:action="@{/documentosFiscalesClient/uploadFactura}">
+																	th:action="@{/documentosFiscalesClient/uploadFactura(rfc=${selectedCompany})}">
 																	<table>
 																		<div>Cargar un XML:</div>
 																		<div class="input-group mb-2">
@@ -555,7 +555,7 @@
 
 
 							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
-							<form class="detailsForm" th:action="@{documentosFiscalesClient/update}" method="post" >
+							<form class="detailsForm" th:action="@{documentosFiscalesClient/update(rfc=${selectedCompany})}" method="post" >
 								<div class="modal fade" id="detailsModal" tabindex="-1"
 									role="dialog" aria-labelledby="myLargeModalLabel"
 									aria-hidden="true">

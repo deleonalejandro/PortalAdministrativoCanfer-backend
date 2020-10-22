@@ -1,5 +1,10 @@
 package com.canfer.app.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
@@ -12,14 +17,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
+import com.canfer.app.model.Municipio;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.EstadoRepository;
 import com.canfer.app.repository.MunicipioRepository;
 import com.canfer.app.service.EmpresaService;
+import com.canfer.app.storage.LogoStorageService;
+import com.canfer.app.storage.StorageException;
+
+import javassist.NotFoundException;
 
 
 @Controller
@@ -32,6 +44,10 @@ public class EmpresaController {
 	private EmpresaRepository empresaRepo;
 	@Autowired
 	private MunicipioRepository municipioRepository;
+	@Autowired
+	private EstadoRepository estadoRepository;
+	@Autowired
+	private LogoStorageService logoService;
 	
 	public EmpresaController() {
 	}
@@ -39,20 +55,23 @@ public class EmpresaController {
 	@GetMapping("/companies")
 	public String getCompanies(Model model) {
 		model.addAttribute("empresas", empresaService.findAll());
+		model.addAttribute("estados", estadoRepository.findAll());
 		return "companies-catalog";
 	}
 	
 	@GetMapping(value = "/addCompany")
 	public String getCompanyForm(Model model) {
 		model.addAttribute("company", new EmpresaDTO());
-		model.addAttribute("estados", municipioRepository.findAll());
+		model.addAttribute("estados", estadoRepository.findAll());
 		
 		return "crear-empresa";
 	}
 	
+	
 	@PostMapping(value = "/addCompany")
-	public String addCompany(@ModelAttribute("company") EmpresaDTO empresa, RedirectAttributes ra) {
+	public String addCompany(@ModelAttribute("company") EmpresaDTO empresa, MultipartFile logo, RedirectAttributes ra) {
 		try {
+			empresa.setProfilePictureName(logo.getOriginalFilename());
 			empresaService.save(empresa);
 		} catch (EntityExistsException e) {
 			Log.falla("Error al añadir la empresa: " + e.getMessage());
@@ -65,6 +84,15 @@ public class EmpresaController {
 		} catch (UnknownError e) {
 			Log.falla("Error al añadir la empresa: " + e.getMessage());
 			ra.addFlashAttribute("error", e.getMessage());
+			return "redirect:/admin/addCompany";
+		}
+		try {
+			logoService.init();
+			logoService.store(logo);
+			
+		} catch (StorageException e) {
+			Log.falla("Error al añadir la empresa: " + e.getMessage());
+			ra.addFlashAttribute("logoError", e.getMessage());
 			return "redirect:/admin/addCompany";
 		}
 		
@@ -90,12 +118,41 @@ public class EmpresaController {
 	
 	@GetMapping(value = "/company/delete/{id}")
 	public String deleteCompany(@PathVariable Long id, RedirectAttributes ra) {
+		Path file = null;
+		Empresa company = null;
+		
 		try {
+			company = empresaService.findById(id);
 			empresaService.delete(id);
-		} catch (Exception e) {
-			ra.addFlashAttribute("CompanyNotFoundMsg",e.getMessage());
+		} catch (NotFoundException e) {
+			ra.addFlashAttribute("CompanyNotFoundMsg", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
 		}
-		return "redirect:/";
+		
+		try {
+			
+			file = logoService.load(company.getProfilePictureName());
+			if (file.toFile().exists()) {
+				
+				// delete file if exists
+				Files.delete(file);	
+				
+			}
+			
+		} catch (IOException e) {
+			Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".");
+		} catch (Exception e) {
+			ra.addFlashAttribute("logoError", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
+		}
+		
+		return "redirect:/admin/companies";
 	}
+	
+	@GetMapping(value = "/findMunicipios/{idEstado}")
+	@ResponseBody
+	public List<Municipio> getMunicipios(@PathVariable Long idEstado) {
+		return municipioRepository.findAllByEstado(estadoRepository.findById(idEstado).get());
+	}
+	
+	
 
 }

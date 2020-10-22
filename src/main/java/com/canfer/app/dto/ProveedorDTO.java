@@ -5,6 +5,7 @@ import java.util.List;
 public class ProveedorDTO {
 	private Long idProveedor = 0L;
 	private String municipio;
+	private Long idMunicipio;
 	private String rfc;
 	private String nombre;
 	private String calle;
@@ -21,7 +22,7 @@ public class ProveedorDTO {
 	private Long idUsuarioCreador;
 	
 	//additional attributes 
-	private List<Long> idEmpresas;
+	private Long idEmpresa;
 	private String claveProv;
 	private String moneda;
 	private String serie;
@@ -48,6 +49,16 @@ public class ProveedorDTO {
 
 	public void setMunicipio(String municipio) {
 		this.municipio = municipio;
+	}
+
+
+	public Long getIdMunicipio() {
+		return idMunicipio;
+	}
+
+
+	public void setIdMunicipio(Long idMunicipio) {
+		this.idMunicipio = idMunicipio;
 	}
 
 
@@ -164,13 +175,13 @@ public class ProveedorDTO {
 	}
 
 
-	public List<Long> getIdEmpresas() {
-		return idEmpresas;
+	public Long getIdEmpresa() {
+		return idEmpresa;
 	}
 
 
-	public void setIdEmpresas(List<Long> idEmpresas) {
-		this.idEmpresas = idEmpresas;
+	public void setIdEmpresa(Long idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 
 

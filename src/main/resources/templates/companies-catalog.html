@@ -206,9 +206,10 @@
 					</div>
 					<div class="col-10">
 						<!-- Main Content Tables -->
-						<div class="card mb-4">
-							<div class="alert alert-danger" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
-							<div class="alert alert-danger" role="alert" th:text="${CompanyNotFoundMsg}" th:if="${CompanyNotFoundMsg}"></div>
+						<div class="alert alert-danger mb-4" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
+						<div class="alert alert-danger mb-4" role="alert" th:text="${logoError}" th:if="${logoError}"></div>
+						<div class="alert alert-danger mb-4" role="alert" th:text="${CompanyNotFoundMsg}" th:if="${CompanyNotFoundMsg}"></div>
+						<div class="card mb-4"> 
 							<div class="card-header">
 								<a th:href="@{addCompany}" class="btn btn-primary">Añadir</a>
 							</div>
@@ -253,7 +254,7 @@
 														<div class="modal-footer">
 															<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
 															<a class="btn btn-danger"
-																th:href="@{companies/delete/{id}(id=${company.getidEmpresa()})}"
+																th:href="@{company/delete/{id}(id=${company.getidEmpresa()})}"
 																role="button">Eliminar</a>
 														</div>
 													</div>
@@ -348,11 +349,20 @@
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (CONTACTO)-->
-							<div class="form-group col-md-12">
+							<div class="form-group col-md-6">
 								<label class="small mb-1" for="inputContacto">Contacto</label> <input
 									class="form-control" id="inputContacto" type="text"
 									placeholder="Ingresa el contacto" name="contacto" />
 							</div>
+							<!-- Form Group (CORREO)-->
+							<div class="form-group col-md-6">
+								<label class="small mb-1" for="inputTelefono">Teléfono</label> 
+								<input class="form-control" id="inputTelefono"
+									type="tel" name="telefono" placeholder="Ingresa el teléfono" />
+							</div>
+						</div>
+						<!-- Form Row-->
+						<div class="form-row">
 							<!-- Form Group (CORREO)-->
 							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputCorreo">Correo
@@ -387,17 +397,17 @@
 							<!-- Form Group (ESTADO)-->
 							<div class="form-group col-md-6">
 								<label class="text-gray-600 small" for="inputEstado">Estado</label>
-								<select id="inputEstado" class="form-control" name="idEstado">
-									<option selected>Choose...</option>
-									<option>...</option>
+								<select id="inputEstado" class="form-control" name="idEstado" required>
+									<option selected value=null>--Selecciona--</option>
+									<option th:each="state : ${estados}" th:text="${state.nombre}" th:value="${state.getidEstado()}">
 								</select>
 							</div>
 							<!-- Form Group (MUNICIPIO)-->
 							<div class="form-group col-md-6">
 								<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
-								<select id="inputMunicipio" class="form-control" name="municipio">
-									<option selected>Choose...</option>
-									<option>...</option>
+								<select id="inputMunicipio" class="form-control" name="idMunicipio" required>
+									<option selected value=null>--Selecciona--</option>
+									
 								</select>
 							</div>
 						</div>
@@ -412,7 +422,7 @@
 							<div class="form-group col-md-8">
 								<label class="small mb-1" for="inputReferencia">Referencia</label>
 								<input class="form-control" id="inputReferencia" type="text"
-									placeholder="Ingresa la referncia" name="referencia" />
+									placeholder="Ingresa la referencia" name="referencia" />
 							</div>
 							<!-- Form Group (last name)-->
 							<div class="form-group col-md-4">
@@ -426,6 +436,26 @@
 							<label class="small mb-1" for="inputPaginaWeb">Pagina Web</label>
 							<input class="form-control" id="inputPaginaWeb" type="text"
 								placeholder="Ingresa la pagina web" name="paginaWeb" />
+						</div>
+						<div class="form-row">
+							<!-- Form Group (IMAGEN EMPRESA)-->
+							<div class="form-group col-md-8">
+							<label class="small mb-1" for="inputLogo">Cargar Logotipo</label>
+							<div class="input-group mb-2"> 
+								<div class="input-group-prepend">
+									<div class="input-group-text">
+										<i class="text-primary" data-feather="image"></i>
+									</div>
+								</div>
+								<input class="form-control" id="inputLogo"
+									type="file" accept=".png, .jpg, .gif" name="logo" />
+							</div>
+							</div>
+							<!-- Form Group (COLOR)-->
+							<div class="form-group col-md-4">
+								<label class="small mb-1" for="inputColor">Color</label> 
+								<input class="form-control" id="inputColor" type="color" name="color"/>
+							</div>
 						</div>
 						<!-- Save changes button-->
 						<br />

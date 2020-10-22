@@ -43,13 +43,13 @@
 											<div class="form-group col-md-8">
 												<label class="small mb-1" for="inputNombre">Nombre</label> <input
 													class="form-control input-lg" id="inputNombre" type="text"
-													placeholder="Ingresa el nombre" name="nombre" />
+													placeholder="Ingresa el nombre" name="nombre" required/>
 											</div>
 											<!-- Form Group (CLAVE DE PROVEEDOR)-->
 											<div class="form-group col-md-4">
 												<label class="small mb-1" for="inputClaveProv">Clave de Proveedor</label> <input
 													class="form-control input-lg" id="inputClaveProv" type="text"
-													placeholder="Ingresa la clave de proveedor" name="claveProv" />
+													placeholder="Ingresa la clave de proveedor" name="claveProv" required />
 											</div>
 										</div>
 										<!-- Form Row-->
@@ -58,7 +58,7 @@
 											<div class="form-group col-md-6">
 												<label class="small mb-1" for="inputRfc">RFC</label> <input
 													class="form-control input-lg" id="inputRfc" type="text"
-													placeholder="Ingresa el RFC" name="rfc" />
+													placeholder="Ingresa el RFC" name="rfc" required/>
 											</div>
 										</div>
 										<!-- Form Row-->
@@ -79,11 +79,20 @@
 										<!-- Form Row-->
 										<div class="form-row">
 											<!-- Form Group (CONTACTO)-->
-											<div class="form-group col-md-12">
+											<div class="form-group col-md-6">
 												<label class="small mb-1" for="inputContacto">Contacto</label> <input
 													class="form-control" id="inputContacto" type="text"
 													placeholder="Ingresa el contacto" name="contacto" />
 											</div>
+											<!-- Form Group (TELEFONO)-->
+											<div class="form-group col-md-6">
+												<label class="small mb-1" for="inputTelefono">Teléfono</label> 
+												<input class="form-control" id="inputTelefono"
+													type="tel" name="telefono" placeholder="Ingresa el teléfono" />
+											</div>
+										</div>
+										<!-- Form Row-->
+										<div class="form-row">
 											<!-- Form Group (CORREO)-->
 											<div class="form-group col-md-12">
 												<label class="small mb-1" for="inputCorreo">Correo
@@ -125,16 +134,16 @@
 											<div class="form-group col-md-6">
 												<label class="text-gray-600 small" for="inputEstado">Estado</label>
 												<select id="inputEstado" class="form-control" name="idEstado">
-													<option selected value=0>--Selecciona--</option>
-													<option>...</option>
+													<option selected value="">--Selecciona--</option>
+													<option th:each="state : ${estados}" th:text="${state.nombre}" th:value="${state.getidEstado()}">
 												</select>
 											</div>
 											<!-- Form Group (MUNICIPIO)-->
 											<div class="form-group col-md-6">
 												<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
 												<select id="inputMunicipio" class="form-control" name="idMunicipio">
-													<option selected value=0>--Selecciona--</option>
-													<option>...</option>
+													<option selected value="">--Selecciona--</option>
+													
 												</select>
 											</div>
 										</div>
@@ -171,7 +180,7 @@
 												<div class="form-group">
 													<label class="text-gray-600 small" for="dropdownEmpresa">Empresa</label>
 													<select class="form-control selectpicker"
-														id="dropdownEmpresas" th:field="*{idEmpresas}" multiple>
+														id="dropdownEmpresas" th:field="*{idEmpresa}" required>
 														<option value="" selected>--Selecciona Empresa--</option>
 														<option th:each="empresa : ${empresas}" th:value="${empresa.getidEmpresa()}" th:text="${empresa.nombre}"></option>
 													</select>
