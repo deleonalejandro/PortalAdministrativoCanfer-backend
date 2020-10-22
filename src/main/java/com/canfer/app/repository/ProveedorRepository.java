@@ -1,6 +1,7 @@
 package com.canfer.app.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,6 +15,8 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Long>{
 	List<Proveedor> findAllByRfc(String rfc);
 
 	Proveedor findByEmpresasAndRfc(Empresa empresa, String rfc);
+	
+	Optional<Proveedor> findByEmpresasAndClaveProv(Empresa empresa, String claveProv);
 	
 	List<Proveedor> findAllByEmpresasAndRfc(Empresa empresa, String rfc);
 	

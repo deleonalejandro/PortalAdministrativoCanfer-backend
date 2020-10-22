@@ -1,17 +1,25 @@
 package com.canfer.app.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.service.EmpresaService;
+import com.canfer.app.storage.LogoStorageService;
 import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.pdfExport.CrystalReportService;
@@ -32,6 +40,8 @@ public class MainController {
 	private AuthenticationFacade authenticationFacade;
 	@Autowired
 	SatVerificacionService satserv;
+	@Autowired
+	LogoStorageService logoStorageService;
 
 	public MainController() {
 		// Constructor
@@ -99,8 +109,19 @@ public class MainController {
 	
 	@GetMapping(value = "/dashboard")
 	public String getDashboard(Model model) {
-		
+		model.addAttribute("empresas", empresaService.findAll());
 		return "dashboard-2";
+	}
+	
+	@GetMapping("/company/profile/{name}")
+	public ResponseEntity<Resource> showProfileImage(@PathVariable String name) throws IOException {
+		
+		Resource resource = logoStorageService.loadAsResource(name);
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType("image/png"))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
 	}
 	
 

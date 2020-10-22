@@ -2,7 +2,7 @@ package com.canfer.app.dto;
 
 public class EmpresaDTO {
 	private Long idEmpresa = 0L;
-	private String municipio;
+	private Long idMunicipio;
 	private String rfc;
 	private String nombre;
 	private String calle;
@@ -17,10 +17,34 @@ public class EmpresaDTO {
 	private String telefono;
 	private String paginaWeb;
 	private Long idUsuarioCreador;
+	private String color;
+	private String profilePictureName;
 	
 	public EmpresaDTO() {
 		// General constructor, no parameters.
 	}
+	
+	
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getProfilePictureName() {
+		return profilePictureName;
+	}
+
+
+
+	public void setProfilePictureName(String profilePictureName) {
+		this.profilePictureName = profilePictureName;
+	}
+
+
 
 	public Long getIdEmpresa() {
 		return idEmpresa;
@@ -30,12 +54,12 @@ public class EmpresaDTO {
 		this.idEmpresa = idEmpresa;
 	}
 	
-	public String getMunicipio() {
-		return municipio;
+	public Long getIdMunicipio() {
+		return idMunicipio;
 	}
 
-	public void setMunicipio(String municipio) {
-		this.municipio = municipio;
+	public void setIdMunicipio(Long idMunicipio) {
+		this.idMunicipio = idMunicipio;
 	}
 
 	public String getRfc() {

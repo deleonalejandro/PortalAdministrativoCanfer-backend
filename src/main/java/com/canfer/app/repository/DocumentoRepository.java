@@ -13,5 +13,10 @@ import com.canfer.app.model.Documento;
 public interface DocumentoRepository extends DocumentoBaseRepository<Documento> {
 
 	List<Documento> findAllByIdTablaAndExtension(Long id, String extension);
+	
+	Documento findByConceptoAndExtension(String concepto, String extension);
+	
+	Documento findByConceptoAndIdTabla(String concepto, Long idTabla);
+	
 
 }

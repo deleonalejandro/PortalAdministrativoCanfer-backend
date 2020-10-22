@@ -61,6 +61,14 @@ public class DocumentoService {
 	public Documento findByIdTablaAndExtension(Long id, String extension) {
 		return documentoRepository.findByIdTablaAndExtension(id, extension);
 	}
+	
+	public Documento findByConceptoAndExtension(String concepto, String extension) {
+		return documentoRepository.findByConceptoAndExtension(concepto, extension);
+	}
+	
+	public Documento findByConceptoAndIdTabla(String concepto, Long idTabla) {
+		return documentoRepository.findByConceptoAndIdTabla(concepto, idTabla);
+	}
 
 	public List<Documento> findAllByIdTablaAndExtension(Long id, String extension) {
 		
