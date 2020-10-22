@@ -40,7 +40,7 @@ public class DbObserver {
 				continue; 
 			}
 			if(pago.getBitEnviarCorreo()) {
-				eSenderService.sendEmail(pago.getCorreo(), "Aviso de Pago", "Le presentamos el Aviso de Pago de su Factura.", exportedFile);
+				eSenderService.sendEmailAvisoPago(pago, exportedFile);
 			}
 			
 			//Guardamos el bit procesado en la bd

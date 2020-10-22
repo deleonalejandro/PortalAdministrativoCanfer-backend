@@ -13,7 +13,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.apache.commons.io.FileExistsException;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,6 +42,7 @@ import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
 import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -244,9 +245,7 @@ public class DocumentosFiscalesController {
 		if (doc == null) {
 			
 			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
-			path = Paths.get(crystalReportService.exportGenerico(id, "Nombre Emisor", "rfc Emisor", cfdi.getFolio(), cfdi.getEmpresa().getRfc(),
-					cfdi.getEmpresa().getNombre(), "uso CFDI", cfdi.getUuid(), "CSD", cfdi.getSerie(), cfdi.getFechaEmision(), 
-					cfdi.getTipoDocumento(), "Regimen"));
+			path = Paths.get(crystalReportService.exportGenerico(id,  cfdi.getUuid()));
 			doc = documentoService.findByIdTablaAndExtension(id, extension);
 			
 		} else {
@@ -328,9 +327,7 @@ public class DocumentosFiscalesController {
 		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
 		if (doc == null) {
 			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
-			 path = Paths.get(crystalReportService.exportGenerico(id, "Nombre Emisor", "rfc Emisor", cfdi.getFolio(), cfdi.getEmpresa().getRfc(),
-					cfdi.getEmpresa().getNombre(), "uso CFDI", cfdi.getUuid(), "CSD", cfdi.getSerie(), cfdi.getFechaEmision(), 
-					cfdi.getTipoDocumento(), "Regimen"));
+			 path = Paths.get(crystalReportService.exportGenerico(id, cfdi.getUuid()));
 			 doc = documentoService.findByIdTablaAndExtension(id, extension);
 			
 		} else {
@@ -376,6 +373,7 @@ public class DocumentosFiscalesController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
 				.body(resource);
 	}
+	
 	
 	@GetMapping(value = "/zip-download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> zipDownload(@RequestParam List<Long> cfdId) {
@@ -452,4 +450,6 @@ public class DocumentosFiscalesController {
         writer.write(list);
                 
     }
+	
+	
 }

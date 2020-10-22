@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
+import com.canfer.app.model.Pago;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.FacturaRepository;
+import com.canfer.app.repository.PagoRepository;
 
 import net.kaczmarzyk.spring.data.jpa.domain.Between;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
@@ -35,6 +37,8 @@ public class FNCRestController {
 	private ComprobanteFiscalRespository comprobanteFiscalRepo;
 	@Autowired
 	private FacturaRepository facturaRepo;
+	@Autowired
+	private PagoRepository avisosRepo;
 	
     @GetMapping
     public List<ComprobanteFiscal> filterComprobanteFiscalBy(
@@ -102,5 +106,10 @@ public class FNCRestController {
 		return null; 
 		
 	}
-
+      
+    @GetMapping("/avisos")
+  	public List<Pago> findAvisosBy(){
+    	return avisosRepo.findByBitProcesado(true);
+    }
+  			
 }
