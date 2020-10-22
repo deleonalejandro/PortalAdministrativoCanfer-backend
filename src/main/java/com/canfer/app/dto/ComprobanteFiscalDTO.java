@@ -14,6 +14,7 @@ public class ComprobanteFiscalDTO {
 	private Long idNumSap;
 	private Empresa empresa;
 	private Proveedor proveedor;
+	private Long idProveedor;
 	private String serie;
 	private String folio;
 	private String rfcEmpresa;
@@ -43,7 +44,16 @@ public class ComprobanteFiscalDTO {
 	}
 
 	
-	
+	public Long getIdProveedor() {
+		return idProveedor;
+	}
+
+
+
+	public void setIdProveedor(Long idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+
 	public Long getIdComprobanteFiscal() {
 		return idComprobanteFiscal;
 	}

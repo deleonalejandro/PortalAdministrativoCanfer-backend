@@ -752,6 +752,11 @@
 																	</span>
 																</div>
 														</div>
+														<div class="col-3"></div>
+														<div class="col-9 input-group align-self-end" >
+															<select class="form-control form-control-sm bg-white" hidden="true" name="idProveedor" style="height: 30px; font-size: 14px" id="newSuppliers">
+													        </select>
+														</div>
 													</div>
 													<div class="row pt-1">
 														<div class="col-3">
@@ -815,10 +820,9 @@
 														<div class="col-9">
 														  	<!-- INPUT IMPORTE ESTATUS -->
 															<select class="form-control form-control-sm bg-white"  name="estatus" style="height: 30px; font-size: 14px" id="estatusPago">
-													            <option>PAGADO</option>
-													            <option>CANCELADO</option>
-													            <option>EN PROCESO</option>
-													            <option th:selected = "${estatusPago}"></option>
+													            <option value="PAGADO">PAGADO</option>
+													            <option value="CANCELADO">CANCELADO</option>
+													            <option value="EN PROCESO">EN PROCESO</option>
 													        </select>
 														</div>
 													</div>

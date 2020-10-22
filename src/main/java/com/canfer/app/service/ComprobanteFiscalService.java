@@ -121,9 +121,13 @@ public class ComprobanteFiscalService {
 		ComprobanteFiscal comprobanteUpdate = findByUUID(comprobanteDTO.getUuid());
 		//Checar que la clave del proveedor del comprobante sea consistente 
 		
-		
-		comprobanteUpdate.setProveedor(comprobanteDTO.getProveedor());
-
+		if(comprobanteDTO.getIdProveedor() != null) {
+			
+			Optional<Proveedor> proveedor = proveedorRepository.findById(comprobanteDTO.getIdProveedor());
+			if (proveedor.isPresent()) {
+				comprobanteUpdate.setProveedor(proveedor.get());
+			}
+		}
 		comprobanteUpdate.setBitRSusuario(comprobanteDTO.getBitRSusuario());
 		
 		comprobanteUpdate.setEstatusPago(comprobanteDTO.getEstatus());

@@ -247,6 +247,7 @@
 					$('.detailsForm #total').val(jsonData.total)
 					$('.detailsForm #tipoDocumento').val(jsonData.tipoDocumento)
 					$('.detailsForm #estatusPago').val(jsonData.estatusPago)
+					$('.detailsForm #newSuppliers').val(jsonData.proveedor.claveProv)
 					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT)
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
 					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
@@ -267,6 +268,20 @@
 						document.getElementById("conpago").hidden = true
 					}
 					
+					document.getElementById("newSuppliers").hidden = true;
+					$.get( "/catalogsAPI/getProveedores/"+jsonData.rfcProveedor+"/"+jsonData.rfcEmpresa, function( data ) {
+						$('#newSuppliers').empty()
+						data.forEach(function(value) { 
+						     $('#newSuppliers')
+						         .append($("<option></option>")
+						         .attr("value",value.idProveedor)
+						         .text(value.claveProv)); 
+						});
+							if(jsonData.proveedor.nombre =='PROVEEDOR GENÉRICO') {
+								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedor.idProveedor).text(jsonData.proveedor.claveProv));
+							}
+						});
+						
 					$(' .detailsForm #detailsModal').modal('show');
 					
 					$('.detailsForm .refreshBtn').on('click', function(event){
@@ -288,16 +303,7 @@
   
 					$('.detailsForm .refreshProv').on('click', function(event){
 					
-						$.get( "/catalogsAPI/getProveedores/"+jsonData.rfcProveedor+"/"+jsonData.rfcEmpresa, function( data ) {
-							var list = []
-						for (var s of data) 
-						  {
-						   list.push(s.claveProv);
-						  }
-						});
-						
-						
-						
+						document.getElementById("newSuppliers").hidden = false;
 					});
 					
 					 $('.detailsForm #bitRSusuario').on('click', function() {
@@ -517,7 +523,9 @@
 				$("#pestañaAvisos").addClass("active")
 				$("#pestañaFacturas, #pestañaNotas, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				document.getElementById("divFacturas").hidden = true;
+				table2.columns.adjust();
 				document.getElementById("divAvisos").hidden = false;
+				table2.columns.adjust();
 				
 				
 			});
