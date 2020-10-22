@@ -19,5 +19,6 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Long>{
 	
 	Proveedor findByEmpresasAndNombre(Empresa empresa, String nombre);
 
+
 }
 

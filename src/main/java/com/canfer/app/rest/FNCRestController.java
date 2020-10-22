@@ -1,22 +1,27 @@
 package com.canfer.app.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
+import com.canfer.app.model.Pago;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.FacturaRepository;
+import com.canfer.app.repository.PagoRepository;
 
 import net.kaczmarzyk.spring.data.jpa.domain.Between;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
-import net.kaczmarzyk.spring.data.jpa.domain.In;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.domain.NotNull;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
@@ -32,6 +37,8 @@ public class FNCRestController {
 	private ComprobanteFiscalRespository comprobanteFiscalRepo;
 	@Autowired
 	private FacturaRepository facturaRepo;
+	@Autowired
+	private PagoRepository avisosRepo;
 	
     @GetMapping
     public List<ComprobanteFiscal> filterComprobanteFiscalBy(
@@ -83,7 +90,7 @@ public class FNCRestController {
         return facturaRepo.findAll(facturaSpec);
     }
   
-      @PostMapping(value = "/getVigencia/{id}")
+    @PostMapping(value = "/getVigencia/{id}")
     @ResponseBody
 	public String getVigencia(@PathVariable long id) {
 	
@@ -99,5 +106,12 @@ public class FNCRestController {
 		return null; 
 		
 	}
+      
+    @GetMapping("/avisos")
+  	public List<Pago> findAvisosBy(){
+    	return avisosRepo.findByBitProcesado(true);
+    }
+  			
+
 
 }

@@ -240,8 +240,8 @@
 					</div>
 					<div class="col-10">
 
-						<!-- Main Content Tables -->
-						<div class="card mb-0">
+						<!-- Main Content Tables  facturas-->
+						<div class="card mb-0"  id="divFacturas">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
@@ -253,9 +253,20 @@
 												class="btn btn-outline-primary mr-2" data-toggle="modal"
 												data-target="#nuevoModal">Nuevo</button>
 											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-											    Filtros de Búsqueda
+											    <i class="" style="color:white" data-feather="search"></i>
 											</button>
-											
+											<button id="btn-show-all-children"
+												class="btn btn-outline-primary p-0 ml-2" type="button">
+												<i data-feather="chevrons-down" style="width: 10px"></i>
+											</button>
+											<button id="btn-hide-all-children"
+												class="btn btn-outline-primary p-0" type="button">
+												<i data-feather="chevrons-up" style="width: 10px"></i>
+											</button>
+											<label class="form-check-label ml-2"
+												for="exampleCheck1">Seleccionar todo</label>
+												 <input type="checkbox" class="form-check-input ml-2 mt-2 pt-1"
+												id="selectAll"> 
 										</div>
 									</div>
 
@@ -473,25 +484,6 @@
 										</div>
 									</div>
 
-									<!-- BOTONES DE CHEVRON Y CHECKBOX-->
-									<div class="row pb-1">
-										<div class="col-1">
-											<button id="btn-show-all-children"
-												class="btn btn-outline-primary p-0 " type="button">
-												<i data-feather="chevrons-down" style="width: 10px"></i>
-											</button>
-											<button id="btn-hide-all-children"
-												class="btn btn-outline-primary p-0" type="button">
-												<i data-feather="chevrons-up" style="width: 10px"></i>
-											</button>
-										</div>
-										<div class="col-1">
-											<input type="checkbox" class="form-check-input"
-												id="selectAll"> <label class="form-check-label"
-												for="exampleCheck1">Seleccionar todo</label>
-										</div>
-									</div>
-
 									<!-- TABLA -->
 									<table class="compact table-hover" id="facturas"
 										style="text-align: center; width: 100%">
@@ -502,7 +494,6 @@
 												<th></th>
 												<th></th>
 												<th>No. SAP</th>
-												<th>UUID</th>
 												<th>RS</th>
 												<th>Folio</th>
 												<th>Clave Proveedor</th>
@@ -510,6 +501,7 @@
 												<th>RFC Emisor</th>
 												<th>Tipo de Documento</th>
 												<th>Total</th>
+												<th>Moneda</th>
 												<th>Estatus</th>
 												<th>Fecha de Carga</th>
 												<th>Fecha de Emisión</th>
@@ -522,7 +514,6 @@
 												<th></th>
 												<th></th>
 												<th>No. SAP</th>
-												<th>UUID</th>
 												<th>RS</th>
 												<th>Folio</th>
 												<th>Clave Proveedor</th>
@@ -530,6 +521,7 @@
 												<th>RFC Emisor</th>
 												<th>Tipo de Documento</th>
 												<th>Total</th>
+												<th>Moneda</th>
 												<th>Estatus</th>
 												<th>Fecha de Carga</th>
 												<th>Fecha de Emisión</th>
@@ -749,10 +741,16 @@
 																<small>Proveedor:</small>
 															</label>
 														</div>
-														<div class="col-9">
+														<div class="col-9 input-group">
 															<input type="text" style="height: 20px" readonly
 																class="form-control form-control-sm bg-white"
 																id="proveedor" value="" />
+																<div class="input-group-append">
+																	<span class="input-group-text" style="height: 20px">
+																		<a class=" refreshProv pt-2" type="button"><i
+																			data-feather="edit" style="color:blue"></i></a>
+																	</span>
+																</div>
 														</div>
 													</div>
 													<div class="row pt-1">
@@ -815,9 +813,13 @@
 															</label>
 														</div>
 														<div class="col-9">
-															<input type="text" style="height: 20px" readonly
-																class="form-control form-control-sm bg-white"
-																id="estatusPago" value="" />
+														  	<!-- INPUT IMPORTE ESTATUS -->
+															<select class="form-control form-control-sm bg-white"  name="estatus" style="height: 30px; font-size: 14px" id="estatusPago">
+													            <option>PAGADO</option>
+													            <option>CANCELADO</option>
+													            <option>EN PROCESO</option>
+													            <option th:selected = "${estatusPago}"></option>
+													        </select>
 														</div>
 													</div>
 													<div class="row pt-1">
@@ -916,6 +918,17 @@
 																rows="5" id="comentario" name="comentario" value=""></textarea>
 														</div>
 													</div>
+													<div>Adjuntar un PDF:</div>
+																		<div class="input-group mb-2">
+																			<div class="input-group-prepend">
+																				<div class="input-group-text">
+																					<i class="far fa-file-pdf float-left fa-lg"
+																						style="color: red"></i>
+																				</div>
+																			</div>
+																			<input class="form-control" id="InputGroupPDF"
+																				type="file" accept=".pdf" name="files" />
+																		</div>
 												</div>
 											</div>
 											<div class="modal-footer">
@@ -965,6 +978,43 @@
 
 
 						</div>
+					
+						<!-- Main Content Table avisos de Pago -->
+						<div class="card mb-0" hidden="true" id="divAvisos">
+							<div class="card-body">
+								<div class="datatable">
+								<!-- TABLA -->
+									<table class="compact table-hover" id="avisosDePago"
+										style="text-align: center; width: 100%">
+										<thead>
+											<tr>
+												<th></th>
+												<th>No. Pago</th>
+												<th>Total</th>
+												<th>Moneda</th>
+												<th>Nuevo Estatus</th>
+												<th>Fecha de Pago</th>
+												<th>Clave Proveedor</th>
+												<th>RFC Proveedor</th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<th></th>
+												<th>No. Pago</th>
+												<th>Total</th>
+												<th>Moneda</th>
+												<th>Nuevo Estatus</th>
+												<th>Fecha de Pago</th>
+												<th>Clave Proveedor</th>
+												<th>RFC Proveedor</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+					
 					</div>
 				</div>
 			</div>

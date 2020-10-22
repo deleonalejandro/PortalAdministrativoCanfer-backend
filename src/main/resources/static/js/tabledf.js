@@ -26,10 +26,6 @@
 		$(document).ready(function () {
 			var xhttp = new XMLHttpRequest();
 		         var table = $('#facturas').DataTable({
-		         
-			         buttons: [
-				        'csv'
-				    ],
 					ajax: {
 		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").text(),
 					dataSrc:""
@@ -79,7 +75,6 @@
 		                 },
 		
 		                { data : "idNumSap" },
-		                { data : "uuid" },
 		                { data : "bitRS" ,
 		                    "render": function(data) {
 		                        if(data == false) {
@@ -108,6 +103,7 @@
 						     }
 						},
 						{ data : "total" },
+						{ data : "moneda" },
 						{ data: "estatusPago",
 		                    "render": function(data) {
 		                        if(data == 'EN PROCESO') {
@@ -124,7 +120,53 @@
 						{ data : "fechaCarga" },
 						{ data : "fechaEmision" }
 		             ],
-		             "order": [[4, 'asc']],
+		             "order": [[14, 'desc']],
+					
+		 });
+		 
+		 //Tabla de Avisos
+		  var table2 = $('#avisosDePago').DataTable({
+					ajax: {
+		            url: "/documentosFiscalesApi/avisos",
+					dataSrc:""
+		        	},
+					scrollX:true,
+					"language": {
+			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			        },
+			             "columns": [
+			              
+							{
+		                     "className": 'pdfAviso-control',
+		                     "orderable": false,
+							"bSortable": false,
+		                     "data": null,
+		                     "defaultContent": '',
+		                     "render": function (data) {
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/documentosFiscalesClient/preview/aviso/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
+							 },
+		                 },
+
+						{ data : "idNumPago" },
+		                { data : "totalPago" },
+		                { data : "moneda" },
+						{ data: "nuevoEstatusFactura",
+		                    "render": function(data) {
+		                        if(data == 'EN PROCESO') {
+		                            return '<span class="badge badge-orange">En Proceso</span>';
+		                        }
+		                        if(data == 'PAGADO') {
+		                            return '<span class="badge badge-green">Pagado</span>';
+		                        }
+								if(data == 'CANCELADO') {
+								    return '<span class="badge badge-red">Cancelado</span>';
+								}
+						     }
+						},
+						{ data : "fecMvto" },
+						{ data : "claveProveedor" },
+						{ data : "rfcProveedor" }
+		             ]
 					
 		 });
  			
@@ -242,9 +284,21 @@
 					  xhttp.open("POST", '/documentosFiscalesApi/getVigencia/'+jsonData.idComprobanteFiscal, true);
 					  xhttp.send();
 					  
-					 
 					});
   
+					$('.detailsForm .refreshProv').on('click', function(event){
+					
+						$.get( "/catalogsAPI/getProveedores/"+jsonData.rfcProveedor+"/"+jsonData.rfcEmpresa, function( data ) {
+							var list = []
+						for (var s of data) 
+						  {
+						   list.push(s.claveProv);
+						  }
+						});
+						
+						
+						
+					});
 					
 					 $('.detailsForm #bitRSusuario').on('click', function() {
 					 		if (document.getElementById("bitRSusuario").checked == true){
@@ -408,6 +462,8 @@
 				$("#pestañaFacturas").on( "click", function() {
 				table.rows().every(function(){($(this.node()).removeClass('selected'))});
 				$("#pestañaFacturas").addClass("active")
+				document.getElementById("divFacturas").hidden = false;
+				document.getElementById("divAvisos").hidden = true;
 				$("#pestañaInicio, #pestañaAvisos, #pestañaNotas, #pestañaCompl").removeClass("active") 
 				table
 					table
@@ -420,6 +476,8 @@
 			$("#pestañaInicio").on( "click", function() {
 				table.rows().every(function(){($(this.node()).removeClass('selected'))});
 				$("#pestañaInicio").addClass("active")
+				document.getElementById("divFacturas").hidden = false;
+				document.getElementById("divAvisos").hidden = true;
 				$("#pestañaFacturas, #pestañaAvisos, #pestañaNotas, #pestañaCompl").removeClass("active") 
 				table
 					table
@@ -431,6 +489,8 @@
 			$("#pestañaCompl").on( "click", function() {
 				table.rows().every(function(){($(this.node()).removeClass('selected'))});
 				$("#pestañaCompl").addClass("active")
+				document.getElementById("divFacturas").hidden = false;
+				document.getElementById("divAvisos").hidden = true;
 				$("#pestañaInicio, #pestañaAvisos, #pestañaNotas, #pestañaFacturas").removeClass("active") 
 				table
 					table
@@ -442,6 +502,8 @@
 		       $("#pestañaNotas").on( "click", function() {
 				table.rows().every(function(){($(this.node()).removeClass('selected'))});
 				$("#pestañaNotas").addClass("active")
+				document.getElementById("divFacturas").hidden = false;
+				document.getElementById("divAvisos").hidden = true;
 				$("#pestañaFacturas, #pestañaAvisos, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				table
 					table
@@ -450,6 +512,16 @@
 					    .draw();
 			});
 			
+			 $("#pestañaAvisos").on( "click", function() {
+				table.rows().every(function(){($(this.node()).removeClass('selected'))});
+				$("#pestañaAvisos").addClass("active")
+				$("#pestañaFacturas, #pestañaNotas, #pestañaInicio, #pestañaCompl").removeClass("active") 
+				document.getElementById("divFacturas").hidden = true;
+				document.getElementById("divAvisos").hidden = false;
+				
+				
+			});
+			 
 			
 				
 		});

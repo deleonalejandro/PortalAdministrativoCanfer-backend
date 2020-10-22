@@ -24,7 +24,6 @@ import com.crystaldecisions.sdk.occa.report.exportoptions.*;
 
 //Java imports.
 import java.io.*;
-import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,11 +87,13 @@ public class CrystalReportService {
 			
 			//TODO rutas del crystal 
 			//Guardamos el Crystal
+			String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
+					
  			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de pago", 
-					"pdf", EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf");
+					"pdf", path);
 			documentoRepository.save(doc);
 			
-			return EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";			
+			return path;			
 		}
 		catch(ReportSDKException ex) {
 		
@@ -110,8 +111,7 @@ public class CrystalReportService {
 
 	}
 
-	public String exportGenerico(Long id, String rfcEmisor, String nombreEmisor, String folio, String rfcReceptor, String nombreReceptor,
-			String usoCFDI, String uuid, String csd, String serie, String fecha, String tipo, String regimen) {
+	public String exportGenerico(Long id, String uuid) {
 
 		 String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\pdfGenerico.rpt";
 		 String EXPORT_FILE = "C:\\Users\\aadministrador\\Desktop\\PDFGenerico";
@@ -180,7 +180,8 @@ public class CrystalReportService {
 			byte byteArray[] = new byte[byteArrayInputStream.available()];
 
 			//Create a new file that will contain the exported result.
-			File file = new File(EXPORT_FILE + File.separator + folio + ".pdf");
+			String path = EXPORT_FILE + File.separator  + uuid + ".pdf";
+			File file = new File(path);
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(byteArrayInputStream.available());
@@ -195,11 +196,11 @@ public class CrystalReportService {
 			fileOutputStream.close();
 			
 			//Guardamos el PDF Generico
-			DocumentoPDF documento = new DocumentoPDF(id, empresaRepository.findByRfc(rfcReceptor),"Documentos Fiscales", uuid, 
-					"pdf", EXPORT_FILE + File.separator  + folio + ".pdf");
-			documentoRepository.save(doc);
+			DocumentoPDF documento = new DocumentoPDF(id, empresaRepository.findByRfc(comprobante.getReceptorRfc()),"Documentos Fiscales", uuid, 
+					"pdf", path);
+			documentoRepository.save(documento);
 			
-			return EXPORT_FILE + File.separator  + folio + ".pdf";			
+			return path;			
 		}
 		catch(ReportSDKException ex) {
 		
