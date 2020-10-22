@@ -2,6 +2,7 @@ package com.canfer.app.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,13 +29,11 @@ public class Empresa {
 	private List<Usuario> usuarios;
 	
 	@JsonIgnore
-	@JoinTable(
-			name = "empresa_proveedor",
-			joinColumns = @JoinColumn(name="idEmpresa", nullable=true),
-			inverseJoinColumns = @JoinColumn(name="idProveedor", nullable=true)
-			)
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "empresas", cascade = CascadeType.REMOVE)
 	private List<Proveedor> proveedores;
+	
+	@OneToMany(mappedBy = "empresa", cascade = CascadeType.REMOVE)
+    private List<Consecutivo> consecutivos;
 	
 	@Column(nullable = false)
 	private String rfc;
@@ -80,9 +79,12 @@ public class Empresa {
 	
 	@Column(nullable = true)
 	private Long idUsuarioCreador;
+	
+	private String color;
+	
+	private String profilePictureName;
 
 	//Constructor
-	
 
 	public Empresa(String nombre, String rfc) {
 		this.nombre = nombre;
@@ -245,9 +247,27 @@ public class Empresa {
 	public void setIdUsuarioCreador(Long idUsuarioCreador) {
 		this.idUsuarioCreador = idUsuarioCreador;
 	}
-	
-	
 
+
+	public String getColor() {
+		return color;
+	}
+
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+	public String getProfilePictureName() {
+		return profilePictureName;
+	}
+
+
+	public void setProfilePictureName(String profilePictureName) {
+		this.profilePictureName = profilePictureName;
+	}
+	
 	
 	
 }

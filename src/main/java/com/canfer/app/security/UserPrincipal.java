@@ -13,7 +13,6 @@ import com.canfer.app.model.Usuario;
 
 
 public class UserPrincipal implements UserDetails {
-
 	
 	private Usuario usuario;
 	

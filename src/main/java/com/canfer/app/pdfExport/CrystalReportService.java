@@ -28,6 +28,9 @@ import java.io.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+//TODO COMPROBAR QUE TODAS LAS RUTAS ESTEN CORRECTAS
+
 @Service
 public class CrystalReportService {
 	
@@ -113,11 +116,12 @@ public class CrystalReportService {
 
 	public String exportGenerico(Long id, String uuid) {
 
-		 String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\pdfGenerico.rpt";
-		 String EXPORT_FILE = "C:\\Users\\aadministrador\\Desktop\\PDFGenerico";
+		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\pdfGenerico.rpt";
+		String EXPORT_FILE = "C:\\Users\\aadministrador\\Desktop\\PDFGenerico";
+
 		 
 		Documento doc = documentoRepository.findByIdTablaAndExtension(id, "xml");
-		Comprobante comprobante = xmlService.xmlToObject(Paths.get("C:\\Users\\aadministrador\\PortalProveedores\\Facturas\\PortalProveedores\\WHI020314BE4\\2020\\10\\AAA010101AAA\\AAA010101AAA_D5E4F_134.xml"));
+		Comprobante comprobante = xmlService.xmlToObject(Paths.get(doc.getRuta()));
 		try {
 
 			//Open report.			
@@ -126,17 +130,17 @@ public class CrystalReportService {
 			
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "folio", comprobante.getFolio());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "serie", "HOLA");
 			
 			//Incluir Parametros
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "rfcEmisor", comprobante.getEmisorRfc());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "nombreEmisor", comprobante.getEmisorNombre());
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "folio", comprobante.getFolio());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "rfcReceptor", comprobante.getReceptorRfc());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "nombreReceptor", comprobante.getReceptorNombre());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "usoCFDI", comprobante.getReceptorUsoCFDI());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "uuid", comprobante.getUuidTfd());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "csd", comprobante.getSelloCfdTfd());
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "serie", comprobante.getSerie());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "emision", comprobante.getFecha());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "tipo", comprobante.getTipoDeComprobante());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "regimen", comprobante.getEmisorRegimenFiscal());
@@ -153,7 +157,7 @@ public class CrystalReportService {
 			
 			
 			//save QR
-			String pathQR = "C:\\Users\\aadministrador\\Desktop\\CurrentQR.png";
+			String pathQR = "C:\\Users\\alex2\\Desktop\\CurrentQR.png";
 			String urlSAT = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+comprobante.getUuidTfd()+
 					"&re="+comprobante.getEmisorRfc()+"&rr="+comprobante.getReceptorRfc()+"&tt="+comprobante.getTotal()+"&fe="+ultimosDig;
 			try {

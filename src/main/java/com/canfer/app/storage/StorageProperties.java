@@ -19,6 +19,7 @@ public class StorageProperties {
 	private Path errorLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Error");
 	private Path okLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "OK");
 	private Path downloadLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Descargas");
+	private Path logoLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "logos");
 	
 	public Path getFacturasLocation() {
 		return facturasLocation;
@@ -50,6 +51,13 @@ public class StorageProperties {
 	public void setDownloadLocation(Path downloadLocation) {
 		this.downloadLocation = downloadLocation;
 	}
+	public Path getLogoLocation() {
+		return logoLocation;
+	}
+	public void setLogoLocation(Path logoLocation) {
+		this.logoLocation = logoLocation;
+	}
+	
 	
 	
 	

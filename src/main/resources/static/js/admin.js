@@ -157,14 +157,15 @@ $(document).ready(function() {
 		$("#inputCorreo").val(jsonData.correo);
 		$("#inputCalle").val(jsonData.calle);
 		$("#inputExterior").val(jsonData.numExt);
-		$("#inputExterior").val(jsonData.numInt);
-		$("#inputEstado").val(jsonData.estado);
-		$("#inputMunicipio").val(jsonData.municipio);
+		$("#inputInterior").val(jsonData.numInt);
 		$("#inputLocalidad").val(jsonData.localidad);
 		$("#inputReferencia").val(jsonData.referencia);
 		$("#inputMoneda").val(jsonData.moneda);
 		$("#inputPaginaWeb").val(jsonData.paginaWeb);
 		$("#checkActivo").prop('checked', jsonData.bitActivo);
+		$("#dropdownEmpresas").val(jsonData.empresasId);
+		$("#inputTelefono").val(jsonData.telefono);
+		$("#inputContacto").val(jsonData.contacto);
 		
 
 
@@ -205,12 +206,11 @@ $(document).ready(function() {
 			$("#inputCalle").val(empresa.calle);
 			$("#inputExterior").val(empresa.numExt);
 			$("#inputColonia").val(empresa.colonia);
-			$("#inputEstado").val(empresa.estado);
-			$("#inputMunicipio").val(empresa.municipio);
 			$("#inputLocalidad").val(empresa.localidad);
 			$("#inputReferencia").val(empresa.referencia);
 			$("#inputCp").val(empresa.cp);
 			$("#inputPaginaWeb").val(empresa.paginaWeb);
+			
 			
 		})
 
@@ -219,6 +219,8 @@ $(document).ready(function() {
 		$('#editModal').modal('show');
 
 	});
+	
+	
 
 
 
