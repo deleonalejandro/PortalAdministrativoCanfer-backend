@@ -56,7 +56,7 @@ public class FNCRestController {
                 @Spec(path="folio", params={"sequenceAfter","sequenceBefore"}, spec=Between.class),
 				@Spec(path="total", params= {"totalAfter", "totalBefore"}, spec = Between.class),
 				@Spec(path="uuid", params= "uuid", spec = Like.class),
-				@Spec(path="idNumSap", params= "idNumSap", spec = Like.class),
+				@Spec(path="idNumSap", params= "idNumSap", spec = Equal.class),
 				@Spec(path="estatusPago", params= "estatusPago", spec = EqualIgnoreCase.class),
 				@Spec(path="versionCfd", params= "versionCfd", spec = Like.class),
 				@Spec(path="serie", params= "serie", spec = Like.class),

@@ -177,13 +177,13 @@
 				id="navbarDropdownUserImage" href="javascript:void(0);"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false" ><img class="img-fluid"
-					th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}"/></a>
+					th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"/></a>
 				<div
 					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
 					aria-labelledby="navbarDropdownUserImage">
 					<h6 class="dropdown-header d-flex align-items-center">
 						<img class="dropdown-user-img"
-							th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}" />
+							th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" />
 						<div class="dropdown-user-details">
 							<div class="dropdown-user-details-name"><span sec:authentication="name"></div>
 							<div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Pagina Principal de Contaduria Nacional" />
+        <meta name="author" content="Alejandro y Yasmin" />
+        <title>Configuración</title>
+        
+        <!-- SCRIPTS AND LINKS -->
+        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
+		<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css"/>
+		
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    
+    <!-- TOP NAV BAR -->
+    <body class="nav-fixed">
+        <nav class="topnav navbar navbar-expand shadow navbar-light bg-white" id="sidenavAccordion">
+          
+           <!-- LOGO DE LA EMPRESA -->
+            <a class="navbar-brand" href="#">
+            	<img src="assets/img/logosEmpresas/canfer.gif" class="pl-3 img-fluid mr-0" alt="Logo Canfer" style= "height: 55px"/> 
+            </a>
+            
+            
+            
+            
+            <!-- ICONOS DE TOP NAV BAR -->
+            <ul class="navbar-nav align-items-center ml-auto">
+            
+            	<li class="nav-item dropdown no-caret mr-3 d-md-inline">
+                    <a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
+                </li>
+                
+                 <li class="nav-item dropdown no-caret mr-3 d-md-inline">
+                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownModulo" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="grid"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbarDropdownModulo">
+	                    <h6 class="dropdown-header dropdown-notifications-header">
+	                        <i class="mr-2" data-feather="grid"></i>
+	                            Centro de Módulos
+	                    </h6>
+	                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro" target="_blank">
+	                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
+	                            <div>
+	                                <div class="small text-gray-500">Módulo</div>
+	                                Contaduría Nacional
+	                            </div>
+	                        </a>
+	                        <div class="dropdown-divider m-0"></div>
+	                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro/components" target="_blank">
+	                            <div class="icon-stack bg-indigo-soft text-indigo mr-4"><i data-feather="layers"></i></div>
+	                            <div>
+	                                <div class="small text-gray-500">Módulo</div>
+	                                Caja Chica
+	                            </div>
+	                        </a>
+	                        <div class="dropdown-divider m-0"></div>
+	                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro/changelog" target="_blank">
+	                            <div class="icon-stack bg-teal-soft text-teal mr-4"><i data-feather="layers"></i></div>
+	                            <div>
+	                                <div class="small text-gray-500">Módulo</div>
+	                                Reposición de Gastos
+	                            </div>
+	                        </a>
+	                        <div class="dropdown-divider m-0"></div>
+	                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro/changelog" target="_blank">
+	                            <div class="icon-stack bg-yellow-soft text-yellow mr-4"><i data-feather="layers"></i></div>
+	                            <div>
+	                                <div class="small text-gray-500">Módulo</div>
+	                                Comercio Exterior
+	                            </div>
+	                        </a>
+	                        <div class="dropdown-divider m-0"></div>
+	                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro/changelog" target="_blank">
+	                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
+	                            <div>
+	                                <div class="small text-gray-500">Módulo</div>
+	                                Documentos Extranjeros
+	                            </div>
+	                        </a>
+                    </div>
+                </li>
+             
+                
+                
+                <!-- CONFIGURACIONES -->
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+	                <li class="nav-item dropdown no-caret mr-3 d-md-inline">
+	                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a>
+	                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownMessages">
+	                        <h6 class="dropdown-header dropdown-notifications-header">
+	                            <i class="mr-2" data-feather="settings"></i>
+	                            Configuraciones
+	                        </h6>
+	                       <a class="dropdown-item dropdown-notifications-item" href="#!">
+	                            <div class="dropdown-notifications-item-content">
+	                                <div class="dropdown-notifications-item-content-text">Catálogos</div>
+	                            </div>
+	                        </a>
+	                        <a class="dropdown-item dropdown-notifications-item" href="#!">
+	                            <div class="dropdown-notifications-item-content">
+	                                <div class="dropdown-notifications-item-content-text">Preferencias</div>
+	                            </div>
+	                        </a>
+	                    </div>
+	                </li>
+				</div>
+				
+                <li class="nav-item dropdown no-caret mr-2 dropdown-user">
+                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  /></a>
+                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
+                        <h6 class="dropdown-header d-flex align-items-center">
+                            <img class="dropdown-user-img" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  />
+                            <div class="dropdown-user-details">
+                                <div class="dropdown-user-details-name"><span sec:authentication="name"></span></div>
+                                <div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
+                            </div>
+                        </h6>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">
+                            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                            Cerrar Sesión
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        
+                <main>
+                    <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                        <div class="container">
+                            <div class="page-header-content pt-5">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-auto mt-5">
+                                        <h1 class="page-header-title">
+                                            <div class="page-header-icon"><i data-feather="settings"></i></div>
+                                            Panel de Control
+                                        </h1>
+                                        <div class="page-header-subtitle">Administración del sistema</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <!-- Main page content-->
+                    <div class="container mt-n10">
+                        <div class="row">
+                            <div class="col-xxl-4 col-xl-6 mb-4">
+                                <!-- Dashboard example card 3-->
+                                <a class="card lift h-100" href="#!">
+                                    <div class="card-body d-flex justify-content-center flex-column">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="mr-3">
+                                                <i class="feather-xl text-green mb-3" data-feather="book-open"></i>
+                                                <h5>Catálogos</h5>
+                                                <div class="text-muted">Administra los usuarios, empresas y proveedores registrados en el sistema.</div>
+                                            </div>
+                                            <img class="card-img-top" src="assets/img/freepik/windows-pana.svg" alt="..." style="width: 10rem;" />
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-8">
+                                <!-- Tabbed dashboard card example-->
+                                <div class="card mb-4">
+                                    <div class="card-header border-bottom">
+                                        <!-- Dashboard card navigation-->
+                                        <ul class="nav nav-tabs card-header-tabs" id="dashboardNav" role="tablist">
+                                            <li class="nav-item mr-1"><a class="nav-link active" id="overview-pill" href="#overview" data-toggle="tab" role="tab" aria-controls="overview" aria-selected="true">Overview</a></li>
+                                            <li class="nav-item"><a class="nav-link" id="activities-pill" href="#activities" data-toggle="tab" role="tab" aria-controls="activities" aria-selected="false">Activities</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="dashboardNavContent">
+                                            <!-- Dashboard Tab Pane 1-->
+                                            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-pill">
+                                                <div class="chart-area mb-4 mb-lg-0" style="height: 20rem;"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
+                                            </div>
+                                            <!-- Dashboard Tab Pane 2-->
+                                            <div class="tab-pane fade" id="activities" role="tabpanel" aria-labelledby="activities-pill">
+                                                <div class="datatable table-responsive">
+                                                    <table class="table table-bordered table-hover" id="dataTableActivity" width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Event</th>
+                                                                <th>Time</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Event</th>
+                                                                <th>Time</th>
+                                                            </tr>
+                                                        </tfoot>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>01/13/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-green" data-feather="zap"></i>
+                                                                    Server online
+                                                                </td>
+                                                                <td>1:21 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/13/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-red" data-feather="zap-off"></i>
+                                                                    Server restarted
+                                                                </td>
+                                                                <td>1:00 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/12/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-purple" data-feather="shopping-cart"></i>
+                                                                    New order placed! Order #
+                                                                    <a href="javascript:void(0);">1126550</a>
+                                                                </td>
+                                                                <td>5:45 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/12/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-blue" data-feather="user"></i>
+                                                                    Valerie Luna submitted
+                                                                    <a href="javascript:void(0);">quarter four report</a>
+                                                                </td>
+                                                                <td>4:23 PM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/12/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-yellow" data-feather="database"></i>
+                                                                    Database backup created
+                                                                </td>
+                                                                <td>3:51 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/12/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-purple" data-feather="shopping-cart"></i>
+                                                                    New order placed! Order #
+                                                                    <a href="javascript:void(0);">1126549</a>
+                                                                </td>
+                                                                <td>1:22 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/11/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-blue" data-feather="user-plus"></i>
+                                                                    New user created:
+                                                                    <a href="javascript:void(0);">Sam Malone</a>
+                                                                </td>
+                                                                <td>4:18 PM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/11/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-purple" data-feather="shopping-cart"></i>
+                                                                    New order placed! Order #
+                                                                    <a href="javascript:void(0);">1126548</a>
+                                                                </td>
+                                                                <td>4:02 PM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/11/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-purple" data-feather="shopping-cart"></i>
+                                                                    New order placed! Order #
+                                                                    <a href="javascript:void(0);">1126547</a>
+                                                                </td>
+                                                                <td>3:47 PM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/11/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-green" data-feather="zap"></i>
+                                                                    Server online
+                                                                </td>
+                                                                <td>1:19 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/11/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-red" data-feather="zap-off"></i>
+                                                                    Server restarted
+                                                                </td>
+                                                                <td>1:00 AM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/10/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-purple" data-feather="shopping-cart"></i>
+                                                                    New order placed! Order #
+                                                                    <a href="javascript:void(0);">1126547</a>
+                                                                </td>
+                                                                <td>5:31 PM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/10/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-purple" data-feather="shopping-cart"></i>
+                                                                    New order placed! Order #
+                                                                    <a href="javascript:void(0);">1126546</a>
+                                                                </td>
+                                                                <td>12:13 PM</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>01/10/20</td>
+                                                                <td>
+                                                                    <i class="mr-2 text-blue" data-feather="user"></i>
+                                                                    Diane Chambers submitted
+                                                                    <a href="javascript:void(0);">quarter four report</a>
+                                                                </td>
+                                                                <td>10:56 AM</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Illustration dashboard card example-->
+                                <div class="card mb-4">
+                                    <div class="card-body py-5">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <img class="img-fluid mb-4" src="assets/img/freepik/data-report-pana.svg" alt="" style="height: 10rem;" />
+                                            <div class="text-center px-0 px-lg-5">
+                                                <h5>New reports are here! Generate custom reports now!</h5>
+                                                <p class="mb-4">Our new report generation system is now online. You can start creating custom reporting for any documents available on your account.</p>
+                                                <a class="btn btn-sm btn-primary p-3 line-height-normal" href="#!">Get Started</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xxl-6 mb-4">
+                                        <!-- Dashboard activity timeline example-->
+                                        <div class="card card-header-actions h-100">
+                                            <div class="card-header">
+                                                Recent Activity
+                                                <div class="dropdown no-caret">
+                                                    <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="text-gray-500" data-feather="more-vertical"></i></button>
+                                                    <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownMenuButton">
+                                                        <h6 class="dropdown-header">Filter Activity:</h6>
+                                                        <a class="dropdown-item" href="#!"><span class="badge badge-green-soft text-green my-1">Commerce</span></a>
+                                                        <a class="dropdown-item" href="#!"><span class="badge badge-blue-soft text-blue my-1">Reporting</span></a>
+                                                        <a class="dropdown-item" href="#!"><span class="badge badge-yellow-soft text-yellow my-1">Server</span></a>
+                                                        <a class="dropdown-item" href="#!"><span class="badge badge-purple-soft text-purple my-1">Users</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="timeline timeline-xs">
+                                                    <!-- Timeline Item 1-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">27 min</div>
+                                                            <div class="timeline-item-marker-indicator bg-green"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            New order placed!
+                                                            <a class="font-weight-bold text-dark" href="#!">Order #2912</a>
+                                                            has been successfully placed.
+                                                        </div>
+                                                    </div>
+                                                    <!-- Timeline Item 2-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">58 min</div>
+                                                            <div class="timeline-item-marker-indicator bg-blue"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            Your
+                                                            <a class="font-weight-bold text-dark" href="#!">weekly report</a>
+                                                            has been generated and is ready to view.
+                                                        </div>
+                                                    </div>
+                                                    <!-- Timeline Item 3-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">2 hrs</div>
+                                                            <div class="timeline-item-marker-indicator bg-purple"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            New user
+                                                            <a class="font-weight-bold text-dark" href="#!">Valerie Luna</a>
+                                                            has registered
+                                                        </div>
+                                                    </div>
+                                                    <!-- Timeline Item 4-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">1 day</div>
+                                                            <div class="timeline-item-marker-indicator bg-yellow"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">Server activity monitor alert</div>
+                                                    </div>
+                                                    <!-- Timeline Item 5-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">1 day</div>
+                                                            <div class="timeline-item-marker-indicator bg-green"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            New order placed!
+                                                            <a class="font-weight-bold text-dark" href="#!">Order #2911</a>
+                                                            has been successfully placed.
+                                                        </div>
+                                                    </div>
+                                                    <!-- Timeline Item 6-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">1 day</div>
+                                                            <div class="timeline-item-marker-indicator bg-purple"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            Details for
+                                                            <a class="font-weight-bold text-dark" href="#!">Marketing and Planning Meeting</a>
+                                                            have been updated.
+                                                        </div>
+                                                    </div>
+                                                    <!-- Timeline Item 7-->
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">2 days</div>
+                                                            <div class="timeline-item-marker-indicator bg-green"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            New order placed!
+                                                            <a class="font-weight-bold text-dark" href="#!">Order #2910</a>
+                                                            has been successfully placed.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-6 mb-4">
+                                        <!-- Pie chart with legend example-->
+                                        <div class="card h-100">
+                                            <div class="card-header">Traffic Sources</div>
+                                            <div class="card-body">
+                                                <div class="chart-pie mb-4"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
+                                                <div class="list-group list-group-flush">
+                                                    <div class="list-group-item d-flex align-items-center justify-content-between small px-0 py-2">
+                                                        <div class="mr-3">
+                                                            <i class="fas fa-circle fa-sm mr-1 text-blue"></i>
+                                                            Direct
+                                                        </div>
+                                                        <div class="font-weight-500 text-dark">55%</div>
+                                                    </div>
+                                                    <div class="list-group-item d-flex align-items-center justify-content-between small px-0 py-2">
+                                                        <div class="mr-3">
+                                                            <i class="fas fa-circle fa-sm mr-1 text-purple"></i>
+                                                            Social
+                                                        </div>
+                                                        <div class="font-weight-500 text-dark">15%</div>
+                                                    </div>
+                                                    <div class="list-group-item d-flex align-items-center justify-content-between small px-0 py-2">
+                                                        <div class="mr-3">
+                                                            <i class="fas fa-circle fa-sm mr-1 text-green"></i>
+                                                            Referral
+                                                        </div>
+                                                        <div class="font-weight-500 text-dark">30%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-4">
+                                <!-- Team members / people dashboard card example-->
+                                <div class="card mb-4">
+                                    <div class="card-header">People</div>
+                                    <div class="card-body">
+                                        <!-- Item 1-->
+                                        <div class="d-flex align-items-center justify-content-between mb-4">
+                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
+                                                <div class="avatar avatar-xl mr-3 bg-gray-200"><img class="avatar-img img-fluid" src="assets/img/freepik/profiles/profile-1.png" alt="" /></div>
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="#!">Sid Rooney</a>
+                                                    <div class="small text-muted line-height-normal">Position</div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown no-caret">
+                                                <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownPeople1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownPeople1">
+                                                    <a class="dropdown-item" href="#!">Action</a>
+                                                    <a class="dropdown-item" href="#!">Another action</a>
+                                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Item 2-->
+                                        <div class="d-flex align-items-center justify-content-between mb-4">
+                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
+                                                <div class="avatar avatar-xl mr-3 bg-gray-200"><img class="avatar-img img-fluid" src="assets/img/freepik/profiles/profile-2.png" alt="" /></div>
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="#!">Keelan Garza</a>
+                                                    <div class="small text-muted line-height-normal">Position</div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown no-caret">
+                                                <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownPeople2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownPeople2">
+                                                    <a class="dropdown-item" href="#!">Action</a>
+                                                    <a class="dropdown-item" href="#!">Another action</a>
+                                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Item 3-->
+                                        <div class="d-flex align-items-center justify-content-between mb-4">
+                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
+                                                <div class="avatar avatar-xl mr-3 bg-gray-200"><img class="avatar-img img-fluid" src="assets/img/freepik/profiles/profile-3.png" alt="" /></div>
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="#!">Kaia Smyth</a>
+                                                    <div class="small text-muted line-height-normal">Position</div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown no-caret">
+                                                <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownPeople3" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownPeople3">
+                                                    <a class="dropdown-item" href="#!">Action</a>
+                                                    <a class="dropdown-item" href="#!">Another action</a>
+                                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Item 4-->
+                                        <div class="d-flex align-items-center justify-content-between mb-4">
+                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
+                                                <div class="avatar avatar-xl mr-3 bg-gray-200"><img class="avatar-img img-fluid" src="assets/img/freepik/profiles/profile-4.png" alt="" /></div>
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="#!">Kerri Kearney</a>
+                                                    <div class="small text-muted line-height-normal">Position</div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown no-caret">
+                                                <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownPeople4" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownPeople4">
+                                                    <a class="dropdown-item" href="#!">Action</a>
+                                                    <a class="dropdown-item" href="#!">Another action</a>
+                                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Item 5-->
+                                        <div class="d-flex align-items-center justify-content-between mb-4">
+                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
+                                                <div class="avatar avatar-xl mr-3 bg-gray-200"><img class="avatar-img img-fluid" src="assets/img/freepik/profiles/profile-5.png" alt="" /></div>
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="#!">Georgina Findlay</a>
+                                                    <div class="small text-muted line-height-normal">Position</div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown no-caret">
+                                                <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownPeople5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownPeople5">
+                                                    <a class="dropdown-item" href="#!">Action</a>
+                                                    <a class="dropdown-item" href="#!">Another action</a>
+                                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Item 6-->
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
+                                                <div class="avatar avatar-xl mr-3 bg-gray-200"><img class="avatar-img img-fluid" src="assets/img/freepik/profiles/profile-6.png" alt="" /></div>
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="#!">Wilf Ingram</a>
+                                                    <div class="small text-muted line-height-normal">Position</div>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown no-caret">
+                                                <button class="btn btn-transparent-dark btn-icon dropdown-toggle" id="dropdownPeople6" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="more-vertical"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right animated--fade-in-up" aria-labelledby="dropdownPeople6">
+                                                    <a class="dropdown-item" href="#!">Action</a>
+                                                    <a class="dropdown-item" href="#!">Another action</a>
+                                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Project tracker card example-->
+                                <div class="card card-header-actions mb-4">
+                                    <div class="card-header">
+                                        Projects
+                                        <a class="small text-arrow-icon" href="#!">
+                                            Create New
+                                            <i data-feather="arrow-right"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Progress item 1-->
+                                        <div class="d-flex align-items-center justify-content-between small mb-1">
+                                            <div class="font-weight-bold">Server Setup</div>
+                                            <div class="small">25%</div>
+                                        </div>
+                                        <div class="progress mb-3"><div class="progress-bar bg-danger" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <!-- Progress item 2-->
+                                        <div class="d-flex align-items-center justify-content-between small mb-1">
+                                            <div class="font-weight-bold">Database Migration</div>
+                                            <div class="small">50%</div>
+                                        </div>
+                                        <div class="progress mb-3"><div class="progress-bar bg-warning" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <!-- Progress item 3-->
+                                        <div class="d-flex align-items-center justify-content-between small mb-1">
+                                            <div class="font-weight-bold">Version Release</div>
+                                            <div class="small">75%</div>
+                                        </div>
+                                        <div class="progress mb-3"><div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                        <!-- Progress item 4-->
+                                        <div class="d-flex align-items-center justify-content-between small mb-1">
+                                            <div class="font-weight-bold">Product Listings</div>
+                                            <div class="small">100%</div>
+                                        </div>
+                                        <div class="progress"><div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>
+                                    </div>
+                                </div>
+                                <!-- Illustration dashboard card example-->
+                                <div class="card">
+                                    <div class="card-body text-center p-5">
+                                        <img class="img-fluid mb-4" src="assets/img/freepik/team-spirit-pana.svg" alt="" style="max-width: 16.25rem;" />
+                                        <h5>Team Access</h5>
+                                        <p class="mb-4">Upgrade your plan to get access to team collaboration tools.</p>
+                                        <a class="btn btn-sm btn-primary p-3 line-height-normal" href="#!">Upgrade</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="footer mt-auto footer-light">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6 small">Copyright &copy; Your Website 2020</div>
+                            <div class="col-md-6 text-md-right small">
+                                <a href="#!">Privacy Policy</a>
+                                &middot;
+                                <a href="#!">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            
+
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-pie-demo.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/datatables-demo.js"></script>
+    </body>
+</html>

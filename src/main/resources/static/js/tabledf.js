@@ -193,8 +193,8 @@
 							+ uuid + "&"
 							+ numSap + "&"
 							+ estatus + "&"
-							+ rs + "&";
-							
+							+ rs;
+				alert(link.valueOf);	
 				table.ajax.url(link).load();
 			
 			});

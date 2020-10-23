@@ -27,7 +27,7 @@
           
            <!-- LOGO DE LA EMPRESA -->
             <a class="navbar-brand" href="#">
-            	<img src="assets/img/logosEmpresas/canfer.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style= "height: 55px"/> 
+            	<img src="assets/img/logosEmpresas/canfer.gif" class="pl-3 img-fluid mr-0" alt="Logo Canfer" style= "height: 55px"/> 
             </a>
             
             
@@ -115,10 +115,10 @@
 				</div>
 				
                 <li class="nav-item dropdown no-caret mr-2 dropdown-user">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}"  /></a>
+                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  /></a>
                     <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                         <h6 class="dropdown-header d-flex align-items-center">
-                            <img class="dropdown-user-img" th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}"  />
+                            <img class="dropdown-user-img" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  />
                             <div class="dropdown-user-details">
                                 <div class="dropdown-user-details-name"><span sec:authentication="name"></span></div>
                                 <div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
@@ -133,13 +133,12 @@
                 </li>
             </ul>
         </nav>
-        <div class="overflow:hidden">
         <main>
                 <header class="page-header page-header-dark bg-gradient-canfer pb-10">
                         <div class="container">
                             <div class="page-header-content pt-5">
                                 <div class="row align-items-center justify-content-between">
-                                    <div class="col-auto mt-4">
+                                    <div class="col-auto mt-5">
                                         <h1 class="page-header-title">
                                             <div class="page-header-icon"><i data-feather="layout"></i></div>
                                             Dashboard
