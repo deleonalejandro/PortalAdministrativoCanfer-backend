@@ -14,7 +14,7 @@
 	             '<tr>' +
 	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
 					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.complemento.getIdComprobanteFiscal()+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/complemento/'+d.complemento.getIdComprobanteFiscal()+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
 	             '</tr>' +
 	         '</table>';
 	         
@@ -27,7 +27,7 @@
 			var xhttp = new XMLHttpRequest();
 		         var table = $('#facturas').DataTable({
 					ajax: {
-		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").val(),
+		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").text(),
 					dataSrc:""
 		        	},
 					scrollX:true,
@@ -127,7 +127,7 @@
 		 //Tabla de Avisos
 		  var table2 = $('#avisosDePago').DataTable({
 					ajax: {
-		            url: "/documentosFiscalesApi/avisos",
+		            url: "/documentosFiscalesApi/avisos/"+$("#selectedCompany").text(),
 					dataSrc:""
 		        	},
 					scrollX:true,
@@ -143,7 +143,7 @@
 		                     "data": null,
 		                     "defaultContent": '',
 		                     "render": function (data) {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/documentosFiscalesClient/preview/aviso/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/documentosFiscalesClient/preview/avisoPago/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
 							 },
 		                 },
 
@@ -247,6 +247,7 @@
 					$('.detailsForm #total').val(jsonData.total)
 					$('.detailsForm #tipoDocumento').val(jsonData.tipoDocumento)
 					$('.detailsForm #estatusPago').val(jsonData.estatusPago)
+					$('.detailsForm #newSuppliers').val(jsonData.proveedor.claveProv)
 					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT)
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
 					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
@@ -256,17 +257,35 @@
 			        $('.detailsForm #bitRS').prop("checked", jsonData.bitRS);
 					$('.detailsForm #bitValidoSAT').prop("checked", jsonData.bitValidoSAT);
 					$('.detailsForm #bitRSusuarioText').val(jsonData.bitRSusuario);
-					
+					$('.detailsForm').attr('action',"documentosFiscalesClient/update?rfc="+ $("#selectedCompany").text());
 					$('.detailsForm #facturaNotaComplemento').val(jsonData.facturaNotaComplemento)
 					$('.detailsForm .pdfBtn').attr('href','/documentosFiscalesClient/download/pdf/'+jsonData.idComprobanteFiscal)
 					$('.detailsForm .xmlBtn').attr('href','/documentosFiscalesClient/download/xml/'+jsonData.idComprobanteFiscal)
 					if (jsonData.comprobante != null){
-						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/pago/"+jsonData.comprobante.idComprobanteFiscal)
+						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/complemento/"+jsonData.comprobante.idComprobanteFiscal)
 						document.getElementById("sinpago").hidden = true
 					}else {
 						document.getElementById("conpago").hidden = true
 					}
 					
+					document.getElementById("newSuppliers").hidden = true;
+					
+					$.get( "/catalogsAPI/getProveedores/"+jsonData.rfcProveedor+"/"+jsonData.rfcEmpresa, function( data ) {
+						$('#newSuppliers').empty()
+						data.forEach(function(value) { 
+						     $('#newSuppliers')
+						         .append($("<option></option>")
+						         .attr("value",value.idProveedor)
+						         .text(value.claveProv)); 
+						});
+							if(jsonData.proveedor.nombre =='PROVEEDOR GENÉRICO') {
+								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedor.idProveedor).text(jsonData.proveedor.claveProv));
+							}
+							
+							$('#newSuppliers').val(jsonData.proveedor.idProveedor);
+						});
+						
+						
 					$(' .detailsForm #detailsModal').modal('show');
 					
 					$('.detailsForm .refreshBtn').on('click', function(event){
@@ -288,16 +307,7 @@
   
 					$('.detailsForm .refreshProv').on('click', function(event){
 					
-						$.get( "/catalogsAPI/getProveedores/"+jsonData.rfcProveedor+"/"+jsonData.rfcEmpresa, function( data ) {
-							var list = []
-						for (var s of data) 
-						  {
-						   list.push(s.claveProv);
-						  }
-						});
-						
-						
-						
+						document.getElementById("newSuppliers").hidden = false;
 					});
 					
 					 $('.detailsForm #bitRSusuario').on('click', function() {
@@ -322,7 +332,7 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
-					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal+"?rfc=" + $("#selectedCompany").val())
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal+"?rfc=" + $("#selectedCompany").text())
 					$('#deleteModal').modal('show');
 				});
 				
@@ -517,7 +527,9 @@
 				$("#pestañaAvisos").addClass("active")
 				$("#pestañaFacturas, #pestañaNotas, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				document.getElementById("divFacturas").hidden = true;
+				table2.columns.adjust();
 				document.getElementById("divAvisos").hidden = false;
+				table2.columns.adjust();
 				
 				
 			});

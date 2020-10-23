@@ -17,6 +17,10 @@ public interface DocumentoRepository extends DocumentoBaseRepository<Documento> 
 	Documento findByConceptoAndExtension(String concepto, String extension);
 	
 	Documento findByConceptoAndIdTabla(String concepto, Long idTabla);
+
+	List<Documento> findAllByConcepto(String concepto);
+
+	List<Documento> findAllByConceptoAndExtension(String concepto, String extension);
 	
 
 }
