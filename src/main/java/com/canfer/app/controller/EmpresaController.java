@@ -21,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.EmpresaDTO;
+import com.canfer.app.model.Consecutivo;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
+import com.canfer.app.repository.ConsecutivoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.EstadoRepository;
 import com.canfer.app.repository.MunicipioRepository;
@@ -48,6 +50,8 @@ public class EmpresaController {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private LogoStorageService logoService;
+	@Autowired
+	private ConsecutivoRepository consecutivoRepository;
 	
 	public EmpresaController() {
 	}
@@ -71,22 +75,39 @@ public class EmpresaController {
 	@PostMapping(value = "/addCompany")
 	public String addCompany(@ModelAttribute("company") EmpresaDTO empresa, MultipartFile logo, RedirectAttributes ra) {
 		try {
+			
+			Empresa saveEmpresa;
+			
+			// add the picture name to the dto for saving into db
 			empresa.setProfilePictureName(logo.getOriginalFilename());
-			empresaService.save(empresa);
+			
+			saveEmpresa = empresaService.save(empresa);
+			
+			// creating the sequence for the company
+			Consecutivo consecutivo = new Consecutivo(saveEmpresa, null, "Documentos Fiscales", 0L, 9999999L, 0L);
+			consecutivoRepository.save(consecutivo);
+			
 		} catch (EntityExistsException e) {
+			
 			Log.falla("Error al añadir la empresa: " + e.getMessage());
 			ra.addFlashAttribute("companyExistsError", e.getMessage());
 			return "redirect:/admin/addCompany";
+			
 		} catch (NullArgumentException e) {
+			
 			Log.falla("Error al añadir la empresa: " + e.getMessage());
 			ra.addFlashAttribute("nullValuesError", e.getMessage());
 			return "redirect:/admin/addCompany";
+			
 		} catch (UnknownError e) {
+			
 			Log.falla("Error al añadir la empresa: " + e.getMessage());
 			ra.addFlashAttribute("error", e.getMessage());
 			return "redirect:/admin/addCompany";
 		}
+		
 		try {
+			
 			logoService.init();
 			logoService.store(logo);
 			
@@ -106,13 +127,53 @@ public class EmpresaController {
 	}
 	
 	@PostMapping(value = "/company/save")
-	public String saveCompany(EmpresaDTO company, RedirectAttributes redirectAttributes) {
+	public String saveCompany(EmpresaDTO company, MultipartFile logo, RedirectAttributes redirectAttributes) {
+		Path file = null;
+		
+		// check if new logo is present
+		if (logo != null) {
+			
+			//delete actual logo 
+			try {
+				Empresa empresa = empresaService.findById(company.getIdEmpresa());
+				file = logoService.load(empresa.getProfilePictureName());
+				if (file.toFile().exists()) {
+					
+					// delete file if exists
+					Files.delete(file);
+					
+				}
+				
+			} catch (IOException e) {
+				Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".");
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute("logoError", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
+			}
+			
+			//save new logo
+			try {
+				
+				logoService.init();
+				logoService.store(logo);
+				
+			} catch (StorageException e) {
+				Log.falla("Error al añadir la empresa: " + e.getMessage());
+				redirectAttributes.addFlashAttribute("logoError", e.getMessage());
+				return "redirect:/admin/addCompany";
+			}
+			
+			company.setProfilePictureName(logo.getOriginalFilename());
+		}
+		
 		try {
+
 			empresaService.save(company);
+
 		} catch (EntityExistsException e) {
 			Log.falla("Error al actualizar la información: " + e.getMessage());
 			redirectAttributes.addFlashAttribute("updateError", e.getMessage());
 		}
+		
 		return "redirect:/admin/companies";
 	}
 	

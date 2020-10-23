@@ -8,7 +8,7 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title>Registrar Empresa</title>
-<link href="/css/styles.css" rel="stylesheet" />
+<link href="/css/styles-admin.css" rel="stylesheet" />
 <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
 <script data-search-pseudo-elements defer
 	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
@@ -19,7 +19,7 @@
 </head>
 
 
-<body class="bg-primary">
+<body class="bg-canfer">
 	<div id="layoutAuthentication">
 		<div id="layoutAuthentication_content">
 			<main>
@@ -117,7 +117,7 @@
 											<div class="form-group col-md-6">
 												<label class="text-gray-600 small" for="inputEstado">Estado</label>
 												<select id="inputEstado" class="form-control" name="idEstado">
-													<option selected value=null>--Selecciona--</option>
+													<option selected value=0>--Selecciona--</option>
 													<option th:each="state : ${estados}" th:text="${state.nombre}" th:value="${state.getidEstado()}">
 												</select>
 											</div>
@@ -125,7 +125,7 @@
 											<div class="form-group col-md-6">
 												<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
 												<select id="inputMunicipio" class="form-control" name="idMunicipio">
-													<option selected value=null>--Selecciona--</option>
+													<option selected value=0>--Selecciona--</option>
 													
 												</select>
 											</div>
@@ -163,7 +163,7 @@
 											<div class="input-group mb-2"> 
 												<div class="input-group-prepend">
 													<div class="input-group-text">
-														<i class="text-primary" data-feather="image"></i>
+														<i style="color: #dfac12" data-feather="image"></i>
 													</div>
 												</div>
 												<input class="form-control" id="inputLogo"
@@ -180,6 +180,7 @@
 										<!-- Save changes button-->
 										<br />
 										<button class="btn btn-primary" type="submit">Guardar</button>
+										<a class="btn btn-primary" href="companies" role="button">Cancelar</a>
 									</form>
 								</div>
 								<hr class="my-0" />
