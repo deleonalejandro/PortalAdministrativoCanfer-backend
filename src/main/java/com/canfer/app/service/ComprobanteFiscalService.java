@@ -9,11 +9,15 @@
 
 package com.canfer.app.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
 
 import org.apache.commons.io.FileExistsException;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,9 @@ import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Consecutivo;
+import com.canfer.app.model.Documento;
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -31,6 +37,7 @@ import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 import com.canfer.app.repository.ComplementoPagoRepository;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.ConsecutivoRepository;
+import com.canfer.app.repository.DocumentoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.NotaDeCreditoRepository;
@@ -57,6 +64,8 @@ public class ComprobanteFiscalService {
 	private ConsecutivoRepository consecutivoRepository;
 	@Autowired
 	private EmailSenderService emailSender; 
+	@Autowired
+	private DocumentoRepository docRepository; 
 
 	private static final String DOCUMENT_NOT_FOUND = "El comprobante fiscal no existe en la base de datos.";
 
@@ -120,9 +129,9 @@ public class ComprobanteFiscalService {
 		
 		ComprobanteFiscal comprobanteUpdate = findByUUID(comprobanteDTO.getUuid());
 		//Checar que la clave del proveedor del comprobante sea consistente 
-		
+		System.out.println(comprobanteDTO.getIdProveedor());
 		if(comprobanteDTO.getIdProveedor() != null) {
-			
+
 			Optional<Proveedor> proveedor = proveedorRepository.findById(comprobanteDTO.getIdProveedor());
 			if (proveedor.isPresent()) {
 				comprobanteUpdate.setProveedor(proveedor.get());
@@ -132,6 +141,29 @@ public class ComprobanteFiscalService {
 		
 		comprobanteUpdate.setEstatusPago(comprobanteDTO.getEstatus());
 		comprobanteUpdate.setComentario(comprobanteDTO.getComentario());
+		
+		if(comprobanteDTO.getPdf() != null) {
+			Documento docPdf = docRepository.findByIdTablaAndExtension(comprobanteUpdate.getIdComprobanteFiscal(), "pdf"); 
+			if (docPdf != null) {
+				File oldPdf = new File(docPdf.getRuta());
+				InputStream newPdf = null;
+				try {
+					newPdf = comprobanteDTO.getPdf().getInputStream();
+				} catch (IOException e) {
+					Log.activity(comprobanteUpdate.getEmpresa().getNombre(),"Hubo un error al cargar el PDF al documento Fiscal: "+comprobanteUpdate.getUuid());
+				}
+				try {
+					FileUtils.copyToFile(newPdf, oldPdf);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				
+				
+			}
+			
+		}
 		
 		return comprobanteFiscalRepository.save(comprobanteUpdate);
 	}

@@ -555,7 +555,7 @@
 
 
 							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
-							<form class="detailsForm" th:action="@{documentosFiscalesClient/update}" method="post" >
+							<form class="detailsForm" method="post" >
 								<div class="modal fade" id="detailsModal" tabindex="-1"
 									role="dialog" aria-labelledby="myLargeModalLabel"
 									aria-hidden="true">
@@ -752,6 +752,11 @@
 																	</span>
 																</div>
 														</div>
+														<div class="col-3"></div>
+														<div class="col-9 input-group align-self-end" >
+															<select class="form-control form-control-sm bg-white" hidden="true" name="idProveedor" style="height: 30px; font-size: 14px" id="newSuppliers">
+													        </select>
+														</div>
 													</div>
 													<div class="row pt-1">
 														<div class="col-3">
@@ -926,7 +931,7 @@
 																				</div>
 																			</div>
 																			<input class="form-control" id="InputGroupPDF"
-																				type="file" accept=".pdf" name="files" />
+																				type="file" accept=".pdf" name="pdf" />
 																		</div>
 												</div>
 											</div>
@@ -1035,7 +1040,7 @@
 						<div class="row">
 							<div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
 							<div class="col-md-6 text-md-right small">
-								<a href="#!"> Políticas de Privacidad</a> &middot; <a href="#!">Términos
+								<a > Políticas de Privacidad</a> &middot; <a >Términos
 									&amp; Condiciones</a>
 							</div>
 						</div>

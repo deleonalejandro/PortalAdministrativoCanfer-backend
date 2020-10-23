@@ -92,7 +92,7 @@ public class CrystalReportService {
 			//Guardamos el Crystal
 			String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
 					
- 			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de pago", 
+ 			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de Pago", 
 					"pdf", path);
 			documentoRepository.save(doc);
 			

@@ -107,9 +107,9 @@ public class FNCRestController {
 		
 	}
       
-    @GetMapping("/avisos")
-  	public List<Pago> findAvisosBy(){
-    	return avisosRepo.findByBitProcesado(true);
+    @GetMapping("/avisos/{rfc}")
+  	public List<Pago> findAvisosBy(@PathVariable String rfc){
+    	return avisosRepo.findByBitProcesadoAndRfcEmpresa(true, rfc);
     }
   			
 }
