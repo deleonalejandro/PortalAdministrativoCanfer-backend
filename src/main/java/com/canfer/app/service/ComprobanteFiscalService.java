@@ -12,10 +12,11 @@ package com.canfer.app.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import com.canfer.app.model.Consecutivo;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
+import com.canfer.app.model.Pago;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -228,5 +230,7 @@ public class ComprobanteFiscalService {
 	private boolean exist(String uuid) {
 		return (comprobanteFiscalRepository.findByUuid(uuid) != null);
 	}
+	
+	
 
 }

@@ -1,10 +1,12 @@
 $(function () {
 	
-    var start = moment().subtract(7, "days");
+    var start = moment();
     var end = moment();
 
     function cb(start, end) {
         $("#reportrangeCarga span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+		$("#uploadAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+		$("#uploadBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 		
     }
 
@@ -73,17 +75,13 @@ $(function () {
 
 $(function () {
 	
-    var start = moment().subtract(7, "days");
-    var end = moment();
+    var start = moment().startOf("day");
+    var end = moment().endOf("day");
 
-    function cb(start, end) {
-        $("#reportrangeEmision span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-		
-    }
-
-    $("#reportrangeEmision").daterangepicker(
-        {
-			"locale": {
+    $("#reportrangeEmision").daterangepicker({
+	
+			autoUpdateInput: false,
+			"locale": {	
 		        "format": "DD/MM/YYYY",
 		        "separator": " - ",
 		        "applyLabel": "Aplicar",
@@ -136,9 +134,9 @@ $(function () {
                     moment().subtract(1, "month").endOf("month"),
                 ],
             },
-        },
-        cb
-    );
-
-    cb(start, end);
+        }, function (start, end) {
+        $("#reportrangeEmision span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+		$("#registeredAfter").text(start.format('YYYY-MM-DD'));
+		$("#registeredBefore").text(end.format('YYYY-MM-DD'));
+    });
 });

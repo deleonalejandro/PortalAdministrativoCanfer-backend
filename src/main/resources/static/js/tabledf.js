@@ -21,13 +21,33 @@
 	         }
 	    };
 	    
+		// this function creates the url with parameters to initialize the table
+		function getInitUrl() {
+			
+			var getUrl = window.location;
+			var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+			var myUrlWithParams;
+			var start = moment().startOf("day");
+    		var end = moment().endOf("day");
+			
+		  	myUrlWithParams = new URL("/documentosFiscalesApi", baseUrl);
+	
+			myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
+			myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+			myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+			
+			alert(myUrlWithParams.href);
+			
+			return myUrlWithParams.href;
+
+		}
         //Tabla en si
 		
 		$(document).ready(function () {
 			var xhttp = new XMLHttpRequest();
 		         var table = $('#facturas').DataTable({
 					ajax: {
-		            url: "/documentosFiscalesApi?empresa=" + $("#selectedCompany").text(),
+		            url: getInitUrl(),
 					dataSrc:""
 		        	},
 					scrollX:true,
@@ -170,33 +190,80 @@
 					
 		 });
  			
-			// IMPROVE METHODS
-			$('#reloadTableBtn').on('click', function() {
-				var proveedor = "proveedor=" + $("#inputFiltroProveedor").val();
-				var empresa = "empresa=" + $("#selectedCompany").text();
-				var fechaInicial = "registeredBefore=" + $("#inputFiltroProveedor").text();
-				var fechaFinal = "registeredAfter=" + $("#inputFiltroProveedor").text();
-				var folioInicial = "sequenceAfter=" + $("#inputFiltroFolioInicial").val();
-				var folioFinal = "sequenceBefore=" + $("#inputFiltroFolioFinal").val();
-				var importeInicial = "totalAfter=" + $("#inputFiltroImporteDesde").val();
-				var importeFinal = "totalBefore=" + $("#inputFiltroImporteHasta").val();
-				var uuid = "uuid=" + $("#inputFiltroUUID").val();
-				var numSap = "idNumSap=" + $("#inputFiltroIdSap").val();
-				var estatus = "estatusPago=" + $("#inputFiltroEstatus").val();
-				var rs = "checkSap=" + $("#checkRS").val();
-				if($("#checkGenerico").val() == true){
-					var generico = "generico" 
+			// Filters
+			$('#reloadTableBtn').on('click', function() { 
+				
+
+				var getUrl = window.location;
+				var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+				var myUrlWithParams;
+				
+				if($("#checkComplemento").is(":checked")){
+					
+					myUrlWithParams = new URL("/documentosFiscalesApi/facturas", baseUrl);
+					
+				} else {
+					
+					myUrlWithParams = new URL("/documentosFiscalesApi", baseUrl);
 				}
-				var link = "/documentosFiscalesApi?"
-							+ empresa + "&"
-							+ proveedor + "&"
-							+ uuid + "&"
-							+ numSap + "&"
-							+ estatus + "&"
-							+ rs;
-				alert(link.valueOf);	
-				table.ajax.url(link).load();
+
+				myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
+				myUrlWithParams.searchParams.append("proveedor", $("#inputFiltroProveedor").val());
+				myUrlWithParams.searchParams.append("idNumSap", $("#inputFiltroIdSap").val());
+				myUrlWithParams.searchParams.append("uuid", $("#inputFiltroUUID").val());
+				myUrlWithParams.searchParams.append("estatusPago", $("#inputFiltroEstatus").val());
+				myUrlWithParams.searchParams.append("uploadAfter", $("#uploadAfter").text());
+				myUrlWithParams.searchParams.append("uploadBefore", $("#uploadBefore").text());
+				myUrlWithParams.searchParams.append("registeredAfter", $("#registeredAfter").text());
+				myUrlWithParams.searchParams.append("registeredBefore", $("#registeredBefore").text());
+				myUrlWithParams.searchParams.append("sequenceAfter", $("#inputFiltroFolioInicial").val());
+				myUrlWithParams.searchParams.append("sequenceBefore", $("#inputFiltroFolioFinal").val());
+				myUrlWithParams.searchParams.append("totalAfter", $("#inputFiltroImporteDesde").val());
+				myUrlWithParams.searchParams.append("totalBefore", $("#inputFiltroImporteHasta").val());
+				
+				if($("#checkGenerico").is(":checked")){
+					myUrlWithParams.searchParams.append("generico", "PROVEEDOR GENÉRICO"); 
+				}
+				if($("#checkRS").is(":checked")){
+					myUrlWithParams.searchParams.append("checkSap", true); 
+				}
+				if($("#checkComplemento").is(":checked")){
+					myUrlWithParams.searchParams.append("hasComplemento", true);  
+					table.ajax.url(myUrlWithParams.href).load();
+				}else {
+					table.ajax.url(myUrlWithParams.href).load();
+				}
+				
+				 
+				alert(myUrlWithParams.href);
+		
+			});
 			
+			// Clear filters
+			$('#clearFilters').on('click', function() { 
+				
+				var start = moment();
+    			var end = moment();
+
+				$("#inputFiltroProveedor").val('');
+				$("#inputFiltroIdSap").val('');
+				$("#inputFiltroUUID").val('');
+				$("#inputFiltroEstatus").val(""); 
+				$("#registeredAfter").text("");
+				$("#registeredBefore").text("");
+				$("#inputFiltroFolioInicial").val('');
+				$("#inputFiltroFolioFinal").val('');
+				$("#inputFiltroImporteDesde").val('');
+				$("#inputFiltroImporteHasta").val('');
+				$("#checkGenerico").prop("checked", false);
+				$("#checkRS").prop("checked", false);
+				$("#checkComplemento").prop("checked", false); 
+				$("#reportrangeEmision span").text("");
+				$("#reportrangeCarga span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+				$("#uploadAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				$("#uploadBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				
+		
 			});
 			
 			

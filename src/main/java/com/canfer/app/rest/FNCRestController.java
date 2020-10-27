@@ -53,6 +53,7 @@ public class FNCRestController {
     		@And({
     			@Spec(path="e.rfc", params= "empresa", spec = Equal.class),
                 @Spec(path="fechaEmision", params={"registeredAfter","registeredBefore"}, config = "YYYY-MM-dd", spec=Between.class),
+                @Spec(path="fechaCarga", params={"uploadAfter","uploadBefore"}, spec=Between.class),
                 @Spec(path="folio", params={"sequenceAfter","sequenceBefore"}, spec=Between.class),
 				@Spec(path="total", params= {"totalAfter", "totalBefore"}, spec = Between.class),
 				@Spec(path="uuid", params= "uuid", spec = Like.class),
@@ -61,6 +62,7 @@ public class FNCRestController {
 				@Spec(path="versionCfd", params= "versionCfd", spec = Like.class),
 				@Spec(path="serie", params= "serie", spec = Like.class),
 				@Spec(path="moneda", params= "moneda", spec = Like.class),
+				@Spec(path="p.nombre", params= "generico", spec = Equal.class),
 				@Spec(path="bitRS", params= "checkSap", spec = Equal.class)}) Specification<ComprobanteFiscal> comprobanteSpec) {
 
         return comprobanteFiscalRepo.findAll(comprobanteSpec);
@@ -70,24 +72,29 @@ public class FNCRestController {
 	public List<Factura> findFacturaBy(
 			
 			@Join(path = "proveedor", alias = "p")
+			@Join(path = "empresa", alias = "e")
 			@Or({
 				@Spec(path="p.nombre", params="proveedor", spec=Like.class), 
-				@Spec(path="p.rfc", params="proveedor", spec=Like.class) 
+				@Spec(path="p.rfc", params="proveedor", spec=Like.class), 
+				@Spec(path="rfcProveedor", params="proveedor", spec=Like.class) 
 			})
     		@And({
+    			@Spec(path="e.rfc", params= "empresa", spec = Equal.class),
                 @Spec(path="fechaEmision", params={"registeredAfter","registeredBefore"}, config = "YYYY-MM-dd", spec=Between.class),
+                @Spec(path="fechaCarga", params={"uploadAfter","uploadBefore"}, config = "YYYY-MM-dd", spec=Between.class),
                 @Spec(path="folio", params={"sequenceAfter","sequenceBefore"}, spec=Between.class),
 				@Spec(path="total", params= {"totalAfter", "totalBefore"}, spec = Between.class),
 				@Spec(path="uuid", params= "uuid", spec = Like.class),
-				@Spec(path="idNumSap", params= "idNumSap", spec = Like.class),
+				@Spec(path="idNumSap", params= "idNumSap", spec = Equal.class),
 				@Spec(path="estatusPago", params= "estatusPago", spec = EqualIgnoreCase.class),
 				@Spec(path="versionCfd", params= "versionCfd", spec = Like.class),
 				@Spec(path="serie", params= "serie", spec = Like.class),
 				@Spec(path="moneda", params= "moneda", spec = Like.class),
+				@Spec(path="p.nombre", params= "generico", spec = Equal.class),
 				@Spec(path="complemento", params= "hasComplemento", spec = NotNull.class),
-				@Spec(path="bitRS", params= "checkSap", spec = Equal.class)}) Specification<Factura> facturaSpec) {
+				@Spec(path="bitRS", params= "checkSap", spec = Equal.class)}) Specification<Factura> facturaSpecification) {
 
-        return facturaRepo.findAll(facturaSpec);
+        return facturaRepo.findAll(facturaSpecification);
     }
   
     @PostMapping(value = "/getVigencia/{id}")

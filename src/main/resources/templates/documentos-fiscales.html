@@ -335,7 +335,7 @@
 										<div class="card shadow-none mb-3">
 										  <div class="card-header">
 										  	<i class="mr-2 text-primary" data-feather="search"></i>
-										    Filtros de Busqueda
+										    Filtros de Búsqueda
 										    
 										  </div>
 										  <div class="card-body">
@@ -367,6 +367,8 @@
 													<button class="btn btn-light btn-sm line-height-normal p-2 " id="reportrangeCarga">
 													    <i class="mr-2 text-primary" data-feather="calendar"></i>
 													    <span></span>
+													    <div id="uploadBefore" hidden></div>
+													    <div id="uploadAfter" hidden></div>
 													    <i class="ml-1" data-feather="chevron-down"></i>
 													</button>
 												</div>
@@ -399,6 +401,7 @@
 												<div class="col">
 												  	<!-- INPUT IMPORTE ESTATUS -->
 													<select class="form-control form-control-solid"  style="height: 30px; font-size: 14px" id="inputFiltroEstatus">
+											            <option value="">--Seleccionar--</option>
 											            <option>EN PROCESO</option>
 											            <option>PAGADO</option>
 											            <option>CANCELADO</option>
@@ -408,13 +411,12 @@
 													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
 													    <input class="custom-control-input" id="checkRS" type="checkbox">
 													    <label class="custom-control-label" for="checkRS">RS</label>
-													    
 													</div>
 													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
-													    <input class="custom-control-input" id="checkGenerico" type="checkbox">
+													    <input class="custom-control-input" id="checkGenerico"  type="checkbox">
 													    <label class="custom-control-label" for="checkGenerico">Genérico</label>
 													</div>
-													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+													<div class="d-inline custom-control custom-checkbox custom-control-solid">
 													    <input class="custom-control-input" id="checkComplemento" name="checkComplemento" type="checkbox">
 													    <label class="custom-control-label" for="checkComplemento">Complemento</label>
 													</div>
@@ -447,6 +449,8 @@
 													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
 													    <i class="mr-2 text-primary" data-feather="calendar"></i>
 													    <span></span>
+													    <div id="registeredBefore" hidden></div>
+													    <div id="registeredAfter" hidden></div>
 													    <i class="ml-1" data-feather="chevron-down"></i>
 													</button>
 												</div>
@@ -464,7 +468,7 @@
 												</div>
 												<div class="col">
 												  	<!-- INPUT ID SAP -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroIdSap" type="text" placeholder="#ID">
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroIdSap" type="text" placeholder="ID">
 												</div>
 												<div class="col">
 													
@@ -473,10 +477,10 @@
 											</div>
 											<div class="row justify-content-end">
 												<div class="col">
-													<button class="btn btn-blue float-right" type="button" id="reloadTableBtn"
-													>
+													<button class="btn btn-blue float-right" type="button" id="reloadTableBtn">
 												     Buscar<i class="ml-2" data-feather="search"></i>
 													</button>
+													<button class="btn btn-blue float-right mr-2" type="button" id="clearFilters"> Limpiar </button>
 												</div>
 											</div>
 											
@@ -820,6 +824,7 @@
 														<div class="col-9">
 														  	<!-- INPUT IMPORTE ESTATUS -->
 															<select class="form-control form-control-sm bg-white"  name="estatus" style="height: 30px; font-size: 14px" id="estatusPago">
+													            <option value="">--Selecciona--</option>
 													            <option value="PAGADO">PAGADO</option>
 													            <option value="CANCELADO">CANCELADO</option>
 													            <option value="EN PROCESO">EN PROCESO</option>
