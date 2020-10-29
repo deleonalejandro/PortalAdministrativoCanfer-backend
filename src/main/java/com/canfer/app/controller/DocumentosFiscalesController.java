@@ -3,6 +3,8 @@ package com.canfer.app.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,17 +43,23 @@ import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
+import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.FacturaRepository;
+import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.PagoRepository;
+import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.opencsv.CSVWriter;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvException;
 
 import javassist.NotFoundException;
 
@@ -61,6 +69,10 @@ public class DocumentosFiscalesController {
 	
 	@Autowired
 	private XmlService xmlService;
+	@Autowired
+	private EmpresaRepository empresaRepository; 
+	@Autowired
+	private ProveedorRepository proveedorRepository; 
 	@Autowired
 	private ComprobanteFiscalService comprobanteService;
 	@Autowired
@@ -515,40 +527,72 @@ public class DocumentosFiscalesController {
 	@GetMapping(value = "/csv")
 	public void exportCSV(HttpServletResponse response, @RequestParam List<Long> ids) throws Exception {
 
-        //set file name and content type
-        String filename = "CFDIs.csv";
+		try {
+			
+			List<ComprobanteFiscal> list = new ArrayList<>();
+			
+			for(Long id : ids) {
+				list.add(comprobanteFiscalRepository.findById(id).get());
+			}
+			
+			//set file name and content type
+		        String filename = "CFDIs.csv";
 
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
+		        response.setContentType("text/csv");
+		        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+		                "attachment; filename=\"" + filename + "\"");
+		        
+		        Writer writer = new PrintWriter(response.getWriter());
+		        StatefulBeanToCsv<ComprobanteFiscal> beanToCsv = new 
+		                                      StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
+		        beanToCsv.write(list);
+		        writer.close();
 
-        //create a csv writer
-        StatefulBeanToCsv<ComprobanteFiscal> writer = new StatefulBeanToCsvBuilder<ComprobanteFiscal>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
+	        } catch (CsvException ex) {
 
-        //List<ComprobanteFiscal> list = new ArrayList<>();
-        List<ComprobanteFiscal> list = comprobanteFiscalRepository.findAll().subList(2, 20);
-        
-		//for(Long id : ids) {list.add(comprobanteFiscalRepository.findById(id).get());}
-        //write all users to csv file
-        writer.write(list);
+	            Log.falla("Error al exportar Rerprote CSV para ");
+	        }
                 
     }
 	
-	private void clearComplemento(ComplementoPago complementoPago) {
-		
-		List<Factura> facturas = facturaRepository.findAllByComplemento(complementoPago);
-		
-		if (!facturas.isEmpty()) {
-			
-			facturas.forEach(factura -> factura.removeComplemento());
-			facturaRepository.saveAll(facturas);
-		}
-		
-	}
-	
+	@GetMapping(value = "/csvProveedor")
+	public void exportAllCSV(HttpServletResponse response, @RequestParam String rfc, @RequestParam String clave) throws Exception {
+		 try {
+			 
+			//set file name and content type
+		        String filename = "CFDIs.csv";
+
+		        response.setContentType("text/csv");
+		        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+		                "attachment; filename=\"" + filename + "\"");
+		        
+		        Writer writer = new PrintWriter(response.getWriter());
+		        StatefulBeanToCsv<ComprobanteFiscal> beanToCsv = new 
+		                                      StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
+		       Proveedor proveedor =  proveedorRepository.findByEmpresasAndClaveProv(empresaRepository.findByRfc(rfc), clave).get();
+		        beanToCsv.write(comprobanteFiscalRepository.findAllByRfcEmpresaAndProveedor(rfc,proveedor));
+		        writer.close();
+
+
+	        } catch (CsvException ex) {
+
+	            Log.falla("Error al exportar Rerprote CSV para ");
+	        }
+        
+        
+    }
+  
+  private void clearComplemento(ComplementoPago complementoPago) {
+    
+    List<Factura> facturas = facturaRepository.findAllByComplemento(complementoPago);
+
+    if (!facturas.isEmpty()) {
+
+      facturas.forEach(factura -> factura.removeComplemento());
+      facturaRepository.saveAll(facturas);
+    }
+
+  }
+
 	
 }
