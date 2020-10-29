@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description"
+	content="Pagina Principal de Contaduria Nacional" />
+<meta name="author" content="Alejandro y Yasmin" />
+<title>Contaduria Nacional - Página Principal</title>
+
+<!-- SCRIPTS AND LINKS -->
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js"
+	crossorigin="anonymous"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-html5-1.6.5/datatables.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<link href="css/stylesprov.css" rel="stylesheet" />
+</head>
+
+<!-- TOP NAV BAR -->
+<body class="nav-fixed">
+	<nav class="topnav navbar navbar-expand shadow navbar-light bg-white"
+		id="sidenavAccordion">
+
+		<!-- LOGO DE LA EMPRESA -->
+		<a class="navbar-brand" href="#"> 
+			<!-- PRINT THE CORRESPONDING LOGO 
+			<div th:if="${selectedCompany} == PAE920709D75">
+				<img src="assets/img/logosEmpresas/PAE.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 30px" />
+			</div>
+			<div th:if="${selectedCompany} == NME801205JE7">
+				<img src="assets/img/logosEmpresas/newland.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == PFL830127PP3">
+				<img src="assets/img/logosEmpresas/PFL.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == WHI020314BE4">
+				<img src="assets/img/logosEmpresas/WHIS_head_logo.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == CSO080325968">
+				<img src="assets/img/logosEmpresas/logo_excelcuts.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 35px" />
+			</div>
+			<div th:if="${selectedCompany} == SPE880430485">
+				<img src="assets/img/logosEmpresas/SDP.jpg" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>
+			<div th:if="${selectedCompany} == PRO070511ST2">
+				<img src="assets/img/logosEmpresas/PROFLUX.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
+			</div>-->
+		</a>
+
+
+		<!-- ICONOS DE TOP NAV BAR -->
+		<ul class="navbar-nav align-items-center ml-auto">
+			
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline">
+            	<a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
+            </li>
+			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownUserImage" href="javascript:void(0);"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false" ><img class="img-fluid"
+					th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}"/></a>
+				<div
+					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
+					aria-labelledby="navbarDropdownUserImage">
+					<h6 class="dropdown-header d-flex align-items-center">
+						<img class="dropdown-user-img"
+							th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}" />
+						<div class="dropdown-user-details">
+							<div class="dropdown-user-details-name"><span sec:authentication="name"></div>
+							<div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
+						</div>
+					</h6>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/logout">
+                        <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                        Cerrar Sesión
+                    </a>
+				</div>
+			</li>
+		</ul>
+	</nav>
+	<div class="overflow:hidden">
+
+		<!-- MAIN CONTADURIA NACIONAL -->
+		<main>
+			<header
+				class="page-header page-header-compact page-header-gradient border-bottom fixed-top my-5">
+				<div class="container">
+					<div class="page-header-content pt-4">
+						<div class="row align-items-center justify-content-between">
+							<div class="col-12 pb-3">
+								<h1 class="page-header-title text-white">Documentos
+									Fiscales</h1>
+								<h1 class="page-header-subtitle text-gray-300 mb-0 text-right">
+									Portal de Proveedores</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<!-- Main page content-->
+			<div class="container-fluid" style="padding-top: 150px">
+				<div class="row">
+					<div class="col-2">
+
+						<!-- Buttons SideNav -->
+						<nav class="nav nav-borders flex-column" style="position: fixed">
+							<a class="nav-link active" id="pestañaInicio" href="#!">Inicio</a> 
+							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a> 
+							<a class="nav-link" id="pestañaPerfil" href="#!">Perfil</a>
+							<a class="nav-link" id="pestañaAyuda" href="#!">Ayuda</a>
+							
+							<img src="assets/img/logosEmpresas/canfer.gif"
+								class=" pl-5 pb-5"
+								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
+								alt="Logo CANFER" />
+							
+						</nav>
+					</div>
+					<div class="col-10">
+
+						<!-- Main Content Tables  facturas-->
+						<div class="card mb-0"  id="divFacturas">
+							<div id="selectedCompany" >PAE920709D75</div>
+							<div id="selectedClave" >PAE</div>
+							<div class="card-body">
+								<div class="datatable">
+
+									<div class="row">
+										<!-- BOTON NUEVA FACTURA -->
+										<div class="col-6 pb-3 pl-3">
+											<button type="button" id="btn-add"
+												class="btn btn-outline-danger mr-2" data-toggle="modal"
+												data-target="#nuevoModal">Nuevo</button>
+											<a type="button" id="btn-csv"
+												class="btn btn-outline-danger mr-2" th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave)}" >CSV</a>
+											<button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+											    <i class="" style="color:white" data-feather="search"></i>
+											</button>
+										</div>
+									</div>
+
+
+									<!-- MODAL PARA NUEVA FACTURA -->
+									<div class="detailsForm">
+										<div class="modal fade bd-example-modal" id="nuevoModal"
+											tabindex="-1" role="dialog"
+											aria-labelledby="myLargeModalLabel" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">Nuevo Documento Fiscal</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="form-group">
+															<div>
+																<form method="post" enctype="multipart/form-data"
+																	action="#"
+																	th:action="@{/documentosFiscalesClient/uploadFactura}">
+																	<table>
+																		<div>Cargar un XML:</div>
+																		<div class="input-group mb-2">
+																			<div class="input-group-prepend">
+																				<div class="input-group-text">
+																					<i class="far fa-file-code float-left fa-lg"
+																						style="color: green"></i>
+																				</div>
+																			</div>
+																			<input class="form-control" id="inputGroupXML"
+																				accept=".xml" type="file" name="files" />
+																		</div>
+																		<div>Cargar un PDF:</div>
+																		<div class="input-group mb-2">
+																			<div class="input-group-prepend">
+																				<div class="input-group-text">
+																					<i class="far fa-file-pdf float-left fa-lg"
+																						style="color: red"></i>
+																				</div>
+																			</div>
+																			<input class="form-control" id="InputGroupPDF"
+																				type="file" accept=".pdf" name="files" />
+																		</div>
+																		<tr>
+																			<td></td>
+																			<td><input class="btn btn-danger" type="submit"
+																				value="Cargar" /></td>
+																		</tr>
+																	</table>
+																</form>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<!-- FILTROS DE BUSQUEDA -->
+									
+									<div class="collapse" id="collapseExample">
+										<div class="card shadow-none mb-3">
+										  <div class="card-header" style="color:red">
+										  	<i class="mr-2 text-red" data-feather="search"></i>
+										    Filtros de Busqueda
+										    
+										  </div>
+										  <div class="card-body">
+   
+											<div class="row pb-1">
+												<div class="col">
+													<label class="form-check-label" for="reportrangeCarga">Fecha de Carga:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroImporteDesde">Importe:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroImporteHasta">Importe:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
+												</div>
+												<div class="col">
+													
+												</div>
+												
+											</div>
+											<div class="row pb-1">
+												<div class="col">
+												  	<!-- Date Range Picker CARGA-->
+													<button class="btn btn-light btn-sm line-height-normal" id="reportrangeCarga">
+													    <i class="mr-2 text-danger" data-feather="calendar"></i>
+													    <span></span>
+													    <i class="ml-1" data-feather="chevron-down"></i>
+													</button>
+												</div>
+												<div class="col">
+												  	<!-- INPUT IMPORTE DESDE -->
+												  	<div class="input-group input-group-joined input-group-solid">
+														<div class="input-group-append">
+													        <span class="input-group-text" >
+													            <i class="text-danger" data-feather="dollar-sign"></i>
+													        </span>
+													    </div>
+														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteDesde" type="text" placeholder="Desde">
+												  	</div>
+												</div>
+												<div class="col">
+												  	<!-- INPUT IMPORTE HASTA -->
+													<div class="input-group input-group-joined input-group-solid">
+														<div class="input-group-append">
+													        <span class="input-group-text pl-3" >
+													            <i class="text-danger" data-feather="dollar-sign"></i>
+													        </span>
+													    </div>
+														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteHasta" type="text" placeholder="Hasta">
+												  	</div>
+												</div> 
+												<div class="col">
+												  	<!-- INPUT IMPORTE ESTATUS -->
+													<select class="form-control form-control-solid"  style="height: 30px; font-size: 14px" id="inputFiltroEstatus">
+											            <option>EN PROCESO</option>
+											            <option>PAGADO</option>
+											            <option>CANCELADO</option>
+											            <option>RECHAZADO</option>
+											        </select>
+												</div>
+											</div>
+											<div class="row pb-1">
+												<div class="col">
+													<label class="form-check-label" for="reportrangeEmision">Fecha de Emisión:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroUUID">UUID:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroFolioInicial">Folio:</label>
+												</div>
+												<div class="col">
+													<label class="form-check-label" for="inputFiltroFolioFinal">Folio:</label>
+												</div>
+												<div class="col">
+													
+												</div>
+												
+											</div>
+											<div class="row pb-1">
+												<div class="col">
+												  	<!-- Date Range Picker EMISION-->
+													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
+													    <i class="mr-2 text-danger" data-feather="calendar"></i>
+													    <span></span>
+													    <i class="ml-1" data-feather="chevron-down"></i>
+													</button>
+												</div>
+												<div class="col">
+												  	<!-- INPUT UUID -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroUUID" type="text" placeholder="UUID">
+												</div>
+												<div class="col">
+												  	<!-- INPUT FOLIO INICIAL -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioInicial" type="text" placeholder="Inicial">
+												</div>
+												<div class="col">
+												  	<!-- INPUT FOLIO FINAL -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioFinal" type="text" placeholder="Final">
+												</div>
+												
+												<div class="col">
+													
+												</div>
+												
+											</div>
+											<div class="row justify-content-end">
+												<div class="col">
+													<button class="btn btn-red float-right" type="button" id="reloadTableBtn"
+													>
+												     Buscar<i class="ml-2" data-feather="search"></i>
+													</button>
+												</div>
+											</div>
+											
+										</div>
+										</div>
+									</div>
+
+									<!-- TABLA -->
+									<table class="compact table-hover" id="facturas"
+										style="text-align: center; width: 100%">
+										<thead>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th>Serie</th>
+												<th>Folio</th>
+												<th>Total</th>
+												<th>Monto Pago</th>
+												<th>Fecha Pago</th>
+												<th>Folio Pago</th>
+												<th>Fecha de Emisión</th>
+												<th>Fecha de Carga</th>
+												<th>Tipo de Comprobante</th>
+												<th>Estatus</th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th>Serie</th>
+												<th>Folio</th>
+												<th>Total</th>
+												<th>Monto Pago</th>
+												<th>Fecha Pago</th>
+												<th>Folio Pago</th>
+												<th>Fecha de Emisión</th>
+												<th>Fecha de Carga</th>
+												<th>Tipo de Comprobante</th>
+												<th>Estatus</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+
+							
+
+							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
+							<div class="modal" id="detailsModal" tabindex="-1" role="dialog">
+							  <div class="modal-dialog modal-lg" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="headerValue"> </h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							       <!-- Card inside modal -->
+									<div class="card p-0 m-0">
+									    <div class="card-header border-bottom">
+									        <ul class="nav nav-tabs card-header-tabs" id="cardTab" role="tablist">
+									            <li class="nav-item">
+									                <a class="nav-link" id="detallesFacturaTab" href="#detallesFactura" data-toggle="tab" role="tab" aria-controls="overview" >Detalles</a>
+									            </li>
+									            <li class="nav-item">
+									                <a class="nav-link" id="pagoFacturaTab" href="#pagoFactura" data-toggle="tab" role="tab">Pago</a>
+									            </li>
+									            <li class="nav-item">
+									                <a class="nav-link" id="comentarioFacturaTab" href="#comentarioFactura"  data-toggle="tab" role="tab" tabindex="-1" >Comentario</a>
+									            </li>
+									        </ul>
+									    </div>
+									    <div class="card-body">
+									        <div class="tab-content" id="cardTabContent">
+									            <div class="tab-pane fade " id="detallesFactura" role="tabpanel">
+									                <h5 class="card-title">Detalles</h5>
+									                <div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>UUID: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white" name="uuid" id="uuid"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Razón Social: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="empresa"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>RFC Emisor: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="rfcProveedor"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Emisión: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="fechaEmision"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Serie: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="serie"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Folio: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="folio"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Timbre: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="timbre"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Tipo de Documento: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="tipoDocumento"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Estatus: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="estatusPago"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Fecha Carga: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="fechaCarga"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Remitente: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="remitente"
+																value="" />
+														</div>
+													</div>
+													<div class="row pt-1">
+														<div class="col-3">
+															<label for="respuestaValidacion"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Validación: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="text-danger form-control form-control-sm bg-white"
+																id="respuestaValidacion" value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="errorValidacion"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Error Validación: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="text-danger form-control form-control-sm bg-white"
+																id="errorValidacion" value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Vigencia: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="estatusSAT"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-6"></div>
+														<div class="col-6">
+															<label for="total"
+																class="form-control-label mb-0 pull-right font-weight-bold">
+																<small>Total: </small>
+															</label>
+															<div class="input-group">
+																<div class="input-group-prepend ">
+																	<div class="input-group-text" style="height: 20px">
+																		<i data-feather="dollar-sign" style="color: green"></i>
+																	</div>
+																</div>
+																<input type="text" style="height: 20px; width: 90px"
+																	readonly
+																	class="form-control form-control-sm bg-white text-success"
+																	id="total" value="" /> <input type="text"
+																	style="height: 20px; width: 50px" readonly
+																	class="form-control form-control-sm bg-white text-green"
+																	id="moneda" value="" />
+															</div>
+														</div>
+													</div>
+									            </div>
+									            <div class="tab-pane fade " id="pagoFactura" role="tabpanel">
+									             <div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Aviso de Pago: </small>
+															</label>
+														</div>
+														<div class="col-9">
+									           				 <a class="btn btn-datatable btn-icon btn-transparent-dark m-0" id="pdfDetails"><i class="far fa-file-pdf float-left fa-lg"
+																						style="color: red"></i></a>
+														</div>
+													</div>
+									               <div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Número Pago: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="numPago"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Fecha: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="fechaPago"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Total Parcialidad: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="parcialidad"
+																value="" />
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Total Factura: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="totalFactura"
+																value="" />
+														</div>
+													</div>
+									            </div>
+									            <div class="tab-pane fade " id="comentarioFactura" role="tabpanel">
+									               <div class="row">
+														<div class="col-3">
+															<label for="uuid"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Comentario: </small>
+															</label>
+														</div>
+														<div class="col-9">
+															<input type="text" style="height: 20px" readonly
+																class="form-control form-control-sm bg-white"  id="comentario"
+																value="" />
+														</div>
+													</div>
+									            </div>
+									        </div>
+									    </div>
+									</div>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							
+							
+
+
+						</div>
+					
+						<!-- Main Content Table avisos de Pago -->
+						<div class="card mb-0" hidden="true" id="divAvisos">
+							<div class="card-body">
+								<div class="datatable">
+								<!-- TABLA -->
+									<table class="compact table-hover" id="avisosDePago"
+										style="text-align: center; width: 100%">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Folio Pago</th>
+												<th>Fecha Pago</th>
+												<th>Monto Pago</th>
+												<th>Total de Factura</th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<th></th>
+												<th>Folio Pago</th>
+												<th>Fecha Pago</th>
+												<th>Monto Pago</th>
+												<th>Total de Factura</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+					
+						<!-- Main Content Perfil -->
+						<div class="card mb-0" hidden="true" id="divPerfil">
+						</div>
+						
+						<!-- Main Content Ayuda -->
+						<div class="card mb-0" hidden="true" id="divAyuda">
+						</div>
+					</div>
+				</div>
+			</div>
+			
+							
+		</main>
+		<footer class="footer mt-auto footer-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 offset-md-2">
+						<div class="row">
+							<div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
+							<div class="col-md-6 text-md-right small">
+								<a > Políticas de Privacidad</a> &middot; <a >Términos
+									&amp; Condiciones</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		crossorigin="anonymous"></script>
+	<script src="js/scripts.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-html5-1.6.5/datatables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+	<script src="js/tableprov.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/buttons/1.6.3/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/buttons/1.6.3/js/buttons.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/buttons/1.6.3/js/buttons.flash.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/scroller/2.0.2/js/dataTables.scroller.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/searchpanes/1.1.1/js/dataTables.searchPanes.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/searchpanes/1.1.1/js/searchPanes.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script src="assets/demo/date-range-picker-demo.js"></script>
+
+
+
+</body>
+</html>

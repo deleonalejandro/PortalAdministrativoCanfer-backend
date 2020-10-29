@@ -1,5 +1,6 @@
 package com.canfer.app.model;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,13 +18,18 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.model.ComprobanteFiscal.Factura;
+import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.opencsv.bean.CsvBindByName;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -35,12 +41,15 @@ public abstract class ComprobanteFiscal {
 	private Long idComprobanteFiscal;
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Fecha de Carga")
 	@CreationTimestamp
 	private LocalDateTime fechaCarga;
 	
+	@CsvBindByName(column = "UUID")
 	@Column(nullable = false)
 	private String uuid; 
 	
+	@CsvBindByName(column = "No. SAP")
 	@Column(nullable = false)
 	private Long idNumSap;
 	
@@ -53,21 +62,27 @@ public abstract class ComprobanteFiscal {
     private Proveedor proveedor;
 	 	
 	@Column
+	@CsvBindByName(column = "Serie")
 	private String serie; 
 
 	@Column
+	@CsvBindByName(column = "Folio")
 	private String folio; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "RFC Empresa")
 	private String rfcEmpresa; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "RFC Proveedor")
 	private String rfcProveedor; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Fecha Emisión")
 	private String fechaEmision; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Timbre")
 	private String fechaTimbre; 
 	
 	@Column(nullable = false)
@@ -83,24 +98,31 @@ public abstract class ComprobanteFiscal {
 	private String versionTimbre; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Moneda")
 	private String moneda; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Total")
 	private String total; 
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Tipo de Documento")
 	private String tipoDocumento; 
 	
 	@Column
+	@CsvBindByName(column = "Válido SAT")
 	private Boolean bitValidoSAT; 
 	
 	@Column
+	@CsvBindByName(column = "Validación SAT")
 	private String respuestaValidacion; 
 	
 	@Column
+	@CsvBindByName(column = "Vigencia")
 	private String estatusSAT;
 	
 	@Column(nullable = false)
+	@CsvBindByName(column = "Estatus de Pago")
 	private String estatusPago; 
 	 
 	@Column(nullable = false)
@@ -110,13 +132,19 @@ public abstract class ComprobanteFiscal {
 	private Boolean bitRSusuario;
 	
 	@Column
+	@CsvBindByName(column = "Documentos Relacionados")
 	private String uuidRelacionados;
 	
 	@Column
 	private String tipoRelacionUuidRelacionados;
 	
 	@Column
+	@CsvBindByName(column = "Comentario")
 	private String comentario;
+	
+	@JoinColumn(name = "idPago")
+    @OneToOne(targetEntity = Pago.class, fetch = FetchType.EAGER)
+    private Pago pago;
 	
 	public ComprobanteFiscal() {
 		// Default constructor
@@ -241,6 +269,14 @@ public abstract class ComprobanteFiscal {
 
 	public void setRfcProveedor(String rfcProveedor) {
 		this.rfcProveedor = rfcProveedor;
+	}
+	
+	public Pago getPago() {
+		return pago;
+	}
+
+	public void setPago(Pago pago) {
+		this.pago = pago;
 	}
 
 	public String getFechaEmision() {
@@ -421,11 +457,12 @@ public abstract class ComprobanteFiscal {
 	
 	@Entity
 	@DiscriminatorValue("FACTURA")
-	public static class Factura extends ComprobanteFiscal {
+	public static class Factura extends ComprobanteFiscal{
 		
 		@JoinColumn(name = "uuidComplemento", nullable= true)
 	    @ManyToOne(fetch = FetchType.LAZY)
 	    private ComplementoPago complemento;
+		
 		
 		public Factura() {
 			// Default constructor
@@ -441,7 +478,6 @@ public abstract class ComprobanteFiscal {
 		public void setComplemento(ComplementoPago complemento) {
 			this.complemento = complemento;
 		}
-		
 		
 	}
 	

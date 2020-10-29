@@ -4,9 +4,14 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import com.canfer.app.model.ComprobanteFiscal.Factura;
 
 
 
@@ -22,7 +27,7 @@ public class Pago {
 	private Integer idNumPago;
 	
 	@Column
-	private Integer idNumSap;
+	private Long idNumSap;
 	
 	@Column
 	private String rfcEmpresa; 
@@ -85,13 +90,15 @@ public class Pago {
 		this.idNumPago = idNumPago;
 	}
 
-	public Integer getIdNumSap() {
+	public Long getIdNumSap() {
 		return idNumSap;
 	}
 
-	public void setIdNumSap(Integer idNumSap) {
+	public void setIdNumSap(Long idNumSap) {
 		this.idNumSap = idNumSap;
 	}
+	
+
 
 	public String getRfcEmpresa() {
 		return rfcEmpresa;

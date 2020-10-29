@@ -134,5 +134,10 @@ public class MainController {
 	    return authentication.isAuthenticated();
 	}
 	
+	@GetMapping(value = "/proveedoresClient")
+	public String getModuloProveedores() {
+		
+		return "proveedores";
+	}
 
 }

@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.mail.EmailSenderService;
+import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Pago;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.PagoRepository;
 
 @Service
@@ -23,6 +25,8 @@ public class DbObserver {
 	CrystalReportService crService; 
 	@Autowired
 	EmpresaRepository empresaRepository; 
+	@Autowired
+	FacturaRepository facturaRepository; 
 	
 	public void checkPago() {
 
@@ -47,6 +51,10 @@ public class DbObserver {
 			pago.setBitProcesado(true);
 			pagoRepository.save(pago);
 			
+			Factura factura = facturaRepository.findByRfcEmpresaAndRfcProveedorAndIdNumSap(pago.getRfcEmpresa(), pago.getRfcProveedor(), pago.getIdNumSap());
+			factura.setPago(pago);
+			facturaRepository.save(factura);
+			
 			Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 			String nombre = "NA"; 
 			if(empresa == null) {
@@ -55,6 +63,7 @@ public class DbObserver {
 			else {
 				 nombre = empresa.getNombre();
 			}
+			
 			Log.activity("Se ha agregado el Aviso de Pago Número " + pago.getIdNumPago(), nombre);
 			};
 	}
