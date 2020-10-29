@@ -12,7 +12,6 @@ package com.canfer.app.service;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -56,7 +55,10 @@ public class ComprobanteFiscalService {
 	@Autowired
 	private ConsecutivoRepository consecutivoRepository;
 	@Autowired
+	private DocumentoRepository docRepository; 
+	@Autowired
 	private EmailSenderService emailSender; 
+
 
 	private static final String DOCUMENT_NOT_FOUND = "El comprobante fiscal no existe en la base de datos.";
 
@@ -107,7 +109,8 @@ public class ComprobanteFiscalService {
 
 		} else if (comprobante.getTipoDeComprobante().equalsIgnoreCase("P")) {
 			ComplementoPago complemento = new ComplementoPago(comprobante, receptor, emisor, idNumSap);
-			complementoPagoRepository.save(complemento);
+			complemento = complementoPagoRepository.saveAndFlush(complemento);
+			matchFacturaWithComplemento(comprobante, complemento);
 			return complemento;
 		} else {
 			// throw error since no document type was found
@@ -146,7 +149,7 @@ public class ComprobanteFiscalService {
 		comprobante.setRespuestaValidacion(respuestas.get(1));
 		comprobante.setEstatusSAT(respuestas.get(2));
 
-		emailSender.sendEmailNewDoc(comprobante, respuestas.get(1),respuestas.get(2));
+		
 		return comprobanteFiscalRepository.save(comprobante);
 	}
 
@@ -199,5 +202,31 @@ public class ComprobanteFiscalService {
 	private boolean exist(String uuid) {
 		return (comprobanteFiscalRepository.findByUuid(uuid) != null);
 	}
+	
+	private void matchFacturaWithComplemento (Comprobante comprobante, ComplementoPago complementoPago) {
+		
+		Factura factura;
+		
+		try {
+			
+			// the related document is identified by a string variable containing the UUID for a particular invoice.
+			for (String docRelacionado : comprobante.getComplementoRelatedDocsList()) {
+				
+				factura = facturaRepository.findByUuid(docRelacionado);
+				
+				if (factura != null) {
+					factura.setComplemento(complementoPago);
+					facturaRepository.save(factura);
+				}
+			}
+			
+		} catch (NullPointerException e) {
+			Log.falla(e.getMessage());
+		}
+		
+		
+	}
+	
+	
 
 }

@@ -193,6 +193,29 @@ public class Comprobante {
 	public String getTipoRelacionUuidRelacionados() {
 		return this.cfdiRelacionados.tipoRelacion;
 	}
+	
+	public List<String> getComplementoRelatedDocsList(){
+		
+		List<String> uuidList = new ArrayList<>();
+		try {
+			
+			if (this.complemento.pagos == null) {
+				return new ArrayList<>();
+			} else {
+				
+				for (Pago pago : this.complemento.pagos.pagoList) {
+					for (DoctoRelacionado doc : pago.doctoRelacionados) {
+						uuidList.add(doc.idDocumento);
+					}
+				}
+				
+				return uuidList;
+			}
+			
+		} catch (Exception e) {
+			throw new NullPointerException("No existen pagos para este complemento.");
+		}
+	}
 
 	@XmlElement(name = "CfdiRelacionados")
 	public void setCfdiRelacionados(CfdiRelacionados cfdiRelacionados) {
@@ -404,6 +427,7 @@ public class Comprobante {
 	private static class Complemento {
 
 		private TimbreFiscalDigital timbreFiscalDigital;
+		private Pagos pagos;
 
 		public Complemento() {
 			// default constructor
@@ -416,6 +440,15 @@ public class Comprobante {
 		@XmlElement(namespace = "http://www.sat.gob.mx/TimbreFiscalDigital", name = "TimbreFiscalDigital")
 		public TimbreFiscalDigital getTimbreFiscalDigital() {
 			return timbreFiscalDigital;
+		}
+
+		@XmlElement(namespace = "http://www.sat.gob.mx/Pagos", name = "Pagos")
+		public Pagos getPagos() {
+			return pagos;
+		}
+
+		public void setPagos(Pagos pagos) {
+			this.pagos = pagos;
 		}
 
 		@Override
@@ -682,6 +715,241 @@ public class Comprobante {
 			this.uuid = uuid;
 		}
 
+	}
+	
+	@XmlRootElement(name = "Pagos")
+	private static class Pagos {
+		
+		private String version;
+		private List<Pago> pagoList;
+		
+		public Pagos() {
+			// default constructor
+		}
+
+		public String getVersion() {
+			return version;
+		}
+
+		@XmlAttribute(name = "Version")
+		public void setVersion(String version) {
+			this.version = version;
+		}
+		
+		@XmlElement(namespace = "http://www.sat.gob.mx/Pagos", name = "Pago")
+		public List<Pago> getPagoList() {
+			return pagoList;
+		}
+
+		public void setPagoList(List<Pago> pagoList) {
+			this.pagoList = pagoList;
+		}
+			
+		
+	}
+	
+	private static class Pago {
+		
+		//attibutos
+		private String fechaPago;
+		private String formaDePagoP;
+		private String monedaP;
+		private String monto;
+		private String numOperacion;
+		private String rfcEmisorCtaOrd;
+		private String ctaOrdenante;
+		private String rfcEmisorCtaBen;
+		private String ctaBeneficiario;
+		
+		//elementos
+		private List<DoctoRelacionado> doctoRelacionados;
+		
+		public Pago() {
+			// default constructor
+		}
+
+		public String getFechaPago() {
+			return fechaPago;
+		}
+
+		@XmlAttribute(name = "FechaPago")
+		public void setFechaPago(String fechaPago) {
+			this.fechaPago = fechaPago;
+		}
+
+		public String getFormaDePagoP() {
+			return formaDePagoP;
+		}
+
+		@XmlAttribute(name = "FormaDePagoP")
+		public void setFormaDePagoP(String formaDePagoP) {
+			this.formaDePagoP = formaDePagoP;
+		}
+
+		public String getMonedaP() {
+			return monedaP;
+		}
+
+		@XmlAttribute(name = "MonedaP")
+		public void setMonedaP(String monedaP) {
+			this.monedaP = monedaP;
+		}
+
+		public String getMonto() {
+			return monto;
+		}
+
+		@XmlAttribute(name = "Monto")
+		public void setMonto(String monto) {
+			this.monto = monto;
+		}
+
+		public String getNumOperacion() {
+			return numOperacion;
+		}
+
+		@XmlAttribute(name = "NumOperacion")
+		public void setNumOperacion(String numOperacion) {
+			this.numOperacion = numOperacion;
+		}
+
+		public String getRfcEmisorCtaOrd() {
+			return rfcEmisorCtaOrd;
+		}
+
+		@XmlAttribute(name = "RfcEmisorCtaOrd")
+		public void setRfcEmisorCtaOrd(String rfcEmisorCtaOrd) {
+			this.rfcEmisorCtaOrd = rfcEmisorCtaOrd;
+		}
+
+		public String getCtaOrdenante() {
+			return ctaOrdenante;
+		}
+
+		@XmlAttribute(name = "CtaOrdenante")
+		public void setCtaOrdenante(String ctaOrdenante) {
+			this.ctaOrdenante = ctaOrdenante;
+		}
+
+		public String getRfcEmisorCtaBen() {
+			return rfcEmisorCtaBen;
+		}
+
+		@XmlAttribute(name = "RfcEmisorCtaBen") 
+		public void setRfcEmisorCtaBen(String rfcEmisorCtaBen) {
+			this.rfcEmisorCtaBen = rfcEmisorCtaBen;
+		}
+
+		public String getCtaBeneficiario() {
+			return ctaBeneficiario;
+		}
+
+		@XmlAttribute(name = "CtaBeneficiario")
+		public void setCtaBeneficiario(String ctaBeneficiario) {
+			this.ctaBeneficiario = ctaBeneficiario;
+		}
+
+		@XmlElement(namespace = "http://www.sat.gob.mx/Pagos", name = "DoctoRelacionado")
+		public List<DoctoRelacionado> getDoctoRelacionados() {
+			return doctoRelacionados;
+		}
+
+		public void setDoctoRelacionados(List<DoctoRelacionado> doctoRelacionados) {
+			this.doctoRelacionados = doctoRelacionados;
+		}
+		
+		
+	}
+	
+	private static class DoctoRelacionado {
+		
+		//attributes
+		private String idDocumento;
+		private String folio;
+		private String monedaDR;
+		private String metodoDePagoDR;
+		private String numParcialidad;
+		private String impSaldoAnt;
+		private String impPagado;
+		private String impSaldoInsoluto;
+		
+		public DoctoRelacionado() {
+			// default constructor
+		}
+
+		public String getIdDocumento() {
+			return idDocumento;
+		}
+
+		@XmlAttribute(name = "IdDocumento")
+		public void setIdDocumento(String idDocumento) {
+			this.idDocumento = idDocumento;
+		}
+
+		public String getFolio() {
+			return folio;
+		}
+
+		@XmlAttribute(name = "Folio")
+		public void setFolio(String folio) {
+			this.folio = folio;
+		}
+
+		public String getMonedaDR() {
+			return monedaDR;
+		}
+
+		@XmlAttribute(name = "MonedaDR")
+		public void setMonedaDR(String monedaDR) {
+			this.monedaDR = monedaDR;
+		}
+
+		public String getMetodoDePagoDR() {
+			return metodoDePagoDR;
+		}
+
+		@XmlAttribute(name = "MetodoDePagoDR")
+		public void setMetodoDePagoDR(String metodoDePagoDR) {
+			this.metodoDePagoDR = metodoDePagoDR;
+		}
+
+		public String getNumParcialidad() {
+			return numParcialidad;
+		}
+
+		@XmlAttribute(name = "NumParcialidad")
+		public void setNumParcialidad(String numParcialidad) {
+			this.numParcialidad = numParcialidad;
+		}
+
+		public String getImpSaldoAnt() {
+			return impSaldoAnt;
+		}
+
+		@XmlAttribute(name = "ImpSaldoAnt")
+		public void setImpSaldoAnt(String impSaldoAnt) {
+			this.impSaldoAnt = impSaldoAnt;
+		}
+
+		public String getImpPagado() {
+			return impPagado;
+		}
+
+		@XmlAttribute(name = "ImpPagado")
+		public void setImpPagado(String impPagado) {
+			this.impPagado = impPagado;
+		}
+
+		public String getImpSaldoInsoluto() {
+			return impSaldoInsoluto;
+		}
+
+		@XmlAttribute(name = "ImpSaldoInsoluto")
+		public void setImpSaldoInsoluto(String impSaldoInsoluto) {
+			this.impSaldoInsoluto = impSaldoInsoluto;
+		}
+		
+		
 	}
 
 }

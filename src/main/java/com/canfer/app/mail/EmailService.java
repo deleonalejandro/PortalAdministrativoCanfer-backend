@@ -55,6 +55,8 @@ public class EmailService {
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
 	private ValidationService validationService;
+	@Autowired
+	private EmailSenderService emailSender; 
 
 	public EmailService() {
 		// Constructor vacio
@@ -180,7 +182,8 @@ public class EmailService {
 
 		Comprobante comprobante = null;
 		ComprobanteFiscal comprobanteFiscal;
-		String ruta;
+		String ruta; 
+		List<String> validationResponse;
 
 		try {
 			// Read the information from the XML.
@@ -194,9 +197,9 @@ public class EmailService {
 			 */
 
 			// Initialize folders and get the route.
-			comprobanteStorageService.init(comprobanteFiscal);
+			comprobanteStorageService.init(comprobante);
 			// Store the XML in the server.
-			ruta = comprobanteStorageService.store(files.get(0), comprobanteFiscal);
+			ruta = comprobanteStorageService.store(files.get(0), comprobante, comprobanteFiscal.getIdNumSap());
 			// Save document object.
 			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
 
@@ -206,7 +209,7 @@ public class EmailService {
 
 			if (files.size() > 1) {
 				// Take the route.
-				ruta = comprobanteStorageService.store(files.get(1), comprobanteFiscal);
+				ruta = comprobanteStorageService.store(files.get(1), comprobante, comprobanteFiscal.getIdNumSap());
 				// Save document object.
 				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
 			}
@@ -215,7 +218,13 @@ public class EmailService {
 			 * Use InvoiceOne web service to validate and set responses.
 			 *
 			 */
-			comprobanteFiscalService.setValidation(comprobanteFiscal, validationService.validaVerifica(files.get(0)));
+			
+			validationResponse = validationService.validaVerifica(files.get(0));
+			
+			comprobanteFiscalService.setValidation(comprobanteFiscal, validationResponse);
+			
+			// send email to the supplier, invoice received
+			emailSender.sendEmailNewDoc(comprobanteFiscal, validationResponse.get(1), validationResponse.get(2));
 
 
 		} catch (FileExistsException e) {
