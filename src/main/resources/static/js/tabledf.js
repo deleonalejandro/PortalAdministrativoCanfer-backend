@@ -286,7 +286,7 @@
 				});
 				
 				
-				// Funcion para modal
+				// Funcion para modal COMPROBANTE FISCAL
 					
 		         $('#facturas tbody').on('click', 'td.modal-control', function () {
 					var tr = $(this).closest('tr');
@@ -325,7 +325,7 @@
 					$('.detailsForm #bitValidoSAT').prop("checked", jsonData.bitValidoSAT);
 					$('.detailsForm #bitRSusuarioText').val(jsonData.bitRSusuario);
 					$('.detailsForm').attr('action',"documentosFiscalesClient/update?rfc="+ $("#selectedCompany").text());
-					$('.detailsForm #facturaNotaComplemento').val(jsonData.facturaNotaComplemento)
+					$('.detailsForm #docsRelacionados').val(jsonData.uuidRelacionados)
 					$('.detailsForm .pdfBtn').attr('href','/documentosFiscalesClient/download/pdf/'+jsonData.idComprobanteFiscal)
 					$('.detailsForm .xmlBtn').attr('href','/documentosFiscalesClient/download/xml/'+jsonData.idComprobanteFiscal)
 					if (jsonData.comprobante != null){

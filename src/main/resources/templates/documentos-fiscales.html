@@ -42,28 +42,8 @@
 
 		<!-- LOGO DE LA EMPRESA -->
 		<a class="navbar-brand" href="#"> 
-			<!-- PRINT THE CORRESPONDING LOGO -->
-			<div th:if="${selectedCompany} == PAE920709D75">
-				<img src="assets/img/logosEmpresas/PAE.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 30px" />
-			</div>
-			<div th:if="${selectedCompany} == NME801205JE7">
-				<img src="assets/img/logosEmpresas/newland.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == PFL830127PP3">
-				<img src="assets/img/logosEmpresas/PFL.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == WHI020314BE4">
-				<img src="assets/img/logosEmpresas/WHIS_head_logo.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == CSO080325968">
-				<img src="assets/img/logosEmpresas/logo_excelcuts.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 35px" />
-			</div>
-			<div th:if="${selectedCompany} == SPE880430485">
-				<img src="assets/img/logosEmpresas/SDP.jpg" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == PRO070511ST2">
-				<img src="assets/img/logosEmpresas/PROFLUX.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
+			<!-- PRINT THE CORRESPONDING LOGO --> 
+			<img th:src="@{'company/profile/' + ${companyProfile}}" class="pl-3 img-fluid mr-0" alt="logo" style="height: 38px" /> 
 		</a>
 
 
@@ -880,7 +860,7 @@
 													</div>
 													<div class="row pt-1">
 														<div class="col-3">
-															<label for="facturaNotaComplemento"
+															<label for="docsRelacionados"
 																class="form-control-label mb-0 font-weight-bold">
 																<small>Documento Relacionado: </small>
 															</label>
@@ -888,7 +868,7 @@
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
 																class="form-control form-control-sm bg-white"
-																id="facturaNotaComplemento" value="" />
+																id="docsRelacionados" value="" />
 														</div>
 													</div>
 													<div class="row mt-0 pt-0">

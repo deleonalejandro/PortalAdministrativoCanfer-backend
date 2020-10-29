@@ -40,6 +40,11 @@ public class CatalogoRestController {
 		return proveedorRepository.findAll();
 	}
 	
+	@GetMapping(value = "/getCompanies")
+	public List<Empresa> getAllCompanies() {
+		return empresaRepository.findAll();
+	}
+	
 	@GetMapping(value="/getProveedores/{rfcProveedor}/{rfcEmpresa}")
 	public List<Proveedor> getPossibleSuppliers(@PathVariable String rfcProveedor, @PathVariable String rfcEmpresa){
 		Empresa empresa = empresaRepository.findByRfc(rfcEmpresa);

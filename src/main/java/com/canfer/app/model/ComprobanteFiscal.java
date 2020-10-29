@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
@@ -45,11 +46,11 @@ public abstract class ComprobanteFiscal {
 	private Long idNumSap;
 	
 	@JoinColumn(name = "idEmpresa")
-    @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.LAZY)
     private Empresa empresa;
 	
 	@JoinColumn(name = "idProveedor")
-    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor proveedor;
 	 	
 	@Column
@@ -195,6 +196,7 @@ public abstract class ComprobanteFiscal {
 		this.idNumSap = idNumSap;
 	}
 
+	@JsonIgnore
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -203,6 +205,7 @@ public abstract class ComprobanteFiscal {
 		this.empresa = empresa;
 	}
 
+	@JsonIgnore
 	public Proveedor getProveedor() {
 		return proveedor;
 	}
@@ -405,18 +408,48 @@ public abstract class ComprobanteFiscal {
 	
 	public String verificaSat() {
 		try {
-		ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
-		SatVerificacionService service = new SatVerificacionService(clientconfigurationSAT);
-		String msg = "re=" + this.proveedor.getRfc() + "&" +
-					 "rr=" + this.empresa.getRfc() + "&" +
-					 "tt=" + this.total + "&" +
-					 "id=" + this.uuid;
-		return service.validaVerifica(msg);
-	}catch(Exception e) {
-		Log.general(e.getLocalizedMessage());;
-		return "Error al Procesar";
+			
+			ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
+			SatVerificacionService service = new SatVerificacionService(clientconfigurationSAT);
+			String msg = "re=" + this.proveedor.getRfc() + "&" +
+						 "rr=" + this.empresa.getRfc() + "&" +
+						 "tt=" + this.total + "&" +
+						 "id=" + this.uuid;
+			return service.validaVerifica(msg);
+			
+		} catch(Exception e) {
+			
+			Log.general(e.getLocalizedMessage());;
+			return "Error al Procesar";
+		}
 	}
+	
+	// additional methods to avoid eager fetching
+	public String getProveedorClaveProv() {
+		return this.proveedor.getClaveProv();
 	}
+	
+	public String getProveedorNombre() {
+		return this.proveedor.getNombre();
+	}
+	
+	public Long getProveedorIdProveedor() {
+		return this.proveedor.getIdProveedor();
+	}
+	
+	public String getEmpresaNombre() {
+		return this.empresa.getNombre();
+	}
+	
+	public String getEmpresaCorreo() {
+		return this.empresa.getCorreo();
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	@Entity
@@ -435,6 +468,7 @@ public abstract class ComprobanteFiscal {
 			super(comprobante, empresa, proveedor, consecutivo);
 		}
 		
+		@JsonIgnore
 		public ComplementoPago getComplemento() {
 			return complemento;
 		}
@@ -445,6 +479,18 @@ public abstract class ComprobanteFiscal {
 		
 		public void removeComplemento() {
 			this.complemento = null;
+		}
+		
+		public Long getComplementoId() {
+			if (this.complemento != null) {
+				return this.complemento.getIdComprobanteFiscal(); 
+			} else {
+				return null;
+			}
+		}
+		
+		public boolean getHasComplemento() {
+			return this.complemento != null;
 		}
 		
 		
