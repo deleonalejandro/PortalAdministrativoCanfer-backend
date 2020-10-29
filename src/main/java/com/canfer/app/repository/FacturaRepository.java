@@ -1,6 +1,8 @@
 
 package com.canfer.app.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,7 +16,7 @@ import com.canfer.app.model.ComprobanteFiscal.Factura;
 public interface FacturaRepository extends ComprobanteFiscalBaseRepository<Factura>, JpaSpecificationExecutor<Factura> {
 
 	Factura findByRfcEmpresaAndRfcProveedorAndIdNumSap(String rfcEmpresa, String rfcProveedor, Long IdNumSap);
-  List<Factura> findAllByComplemento(ComplementoPago complemento);
+	List<Factura> findAllByComplemento(ComplementoPago complemento);
   
 }
 

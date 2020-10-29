@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
-import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Consecutivo;
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -54,10 +54,7 @@ public class ComprobanteFiscalService {
 	private ProveedorRepository proveedorRepository;
 	@Autowired
 	private ConsecutivoRepository consecutivoRepository;
-	@Autowired
-	private DocumentoRepository docRepository; 
-	@Autowired
-	private EmailSenderService emailSender; 
+
 
 
 	private static final String DOCUMENT_NOT_FOUND = "El comprobante fiscal no existe en la base de datos.";

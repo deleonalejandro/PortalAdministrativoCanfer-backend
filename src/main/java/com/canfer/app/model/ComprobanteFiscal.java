@@ -18,16 +18,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.canfer.app.cfd.Comprobante;
-import com.canfer.app.model.ComprobanteFiscal.Factura;
-import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -145,8 +140,8 @@ public abstract class ComprobanteFiscal {
 	private String comentario;
 	
 	@JoinColumn(name = "idPago")
-  @ManyToOne(targetEntity = Pago.class, fetch = FetchType.EAGER)
-  private Pago pago;
+	@ManyToOne(targetEntity = Pago.class, fetch = FetchType.LAZY)
+	private Pago pago;
 	
 	public ComprobanteFiscal() {
 		// Default constructor
@@ -275,6 +270,7 @@ public abstract class ComprobanteFiscal {
 		this.rfcProveedor = rfcProveedor;
 	}
 	
+	@JsonIgnore
 	public Pago getPago() {
 		return pago;
 	}
@@ -461,7 +457,7 @@ public abstract class ComprobanteFiscal {
 		}
 	}
 	
-	// additional methods to avoid eager fetching
+	// additional methods to access company and supplier
 	public String getProveedorClaveProv() {
 		return this.proveedor.getClaveProv();
 	}
@@ -482,10 +478,48 @@ public abstract class ComprobanteFiscal {
 		return this.empresa.getCorreo();
 	}
 	
+	// additional methods to access payment   
+	public Float getPagoTotalParcialidad() {
+		if (this.pago != null) { 
+			return this.pago.getTotalParcialidad();
+		}
+		return null;
+	}
 	
+	public Float getPagoTotalPago() {
+		if (this.pago != null) {
+			return this.pago.getTotalPago(); 
+		}
+		return null;
+	}
 	
+	public Date getPagoFecmvto() {
+		if (this.pago != null) {
+			return this.pago.getFecMvto(); 	
+		}
+		return null;
+	}
 	
+	public Integer getPagoIdNumPago() {
+		if (this.pago != null) {
+			return this.pago.getIdNumPago(); 
+		}
+		return null;
+	}
 	
+	public Long getPagoIdPago() {
+		if (this.pago != null) {
+			return this.pago.getIdPago(); 
+		}
+		return null;
+	}
+	
+	public Float getPagoTotalFactura() {
+		if (this.pago != null) {
+			return this.pago.getTotalFactura(); 
+		}
+		return null;
+	}
 	
 	
 	
