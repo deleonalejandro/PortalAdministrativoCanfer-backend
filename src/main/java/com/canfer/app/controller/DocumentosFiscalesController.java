@@ -37,13 +37,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.repository.ProveedorRepository;
@@ -59,7 +62,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvException;
 
 import javassist.NotFoundException;
-//TODO CONSIDERAR QUE SI NO EXISTE PDF O XML HANDLEAR EL ERROR! PDF GENERICO!!!!!!!!
+
 @Controller
 @RequestMapping("/documentosFiscalesClient")
 public class DocumentosFiscalesController {
@@ -84,6 +87,10 @@ public class DocumentosFiscalesController {
 	private ComprobanteFiscalRespository comprobanteFiscalRepository;
 	@Autowired
 	private CrystalReportService crystalReportService; 
+	@Autowired
+	private FacturaRepository facturaRepository;
+	@Autowired
+	private EmailSenderService emailSender; 
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -95,6 +102,7 @@ public class DocumentosFiscalesController {
 		Comprobante comprobante = null;
 		ComprobanteFiscal comprobanteFiscal;
 		String ruta;
+		List<String> validationResponse;
 		
 		try {
 			//Read the information from the XML.
@@ -108,9 +116,9 @@ public class DocumentosFiscalesController {
 			 */ 
 			
 			//Initialize folders and get the route.
-			comprobanteStorageService.init(comprobanteFiscal);
+			comprobanteStorageService.init(comprobante);
 			//Store the XML in the server.
-			ruta = comprobanteStorageService.store(files[0], comprobanteFiscal);
+			ruta = comprobanteStorageService.store(files[0], comprobante, comprobanteFiscal.getIdNumSap());
 			//Save document object.
 			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
 			
@@ -120,7 +128,7 @@ public class DocumentosFiscalesController {
 			
 			if (!files[1].getOriginalFilename().isEmpty()) {
 				//Take the route.
-				ruta = comprobanteStorageService.store(files[1], comprobanteFiscal);
+				ruta = comprobanteStorageService.store(files[1], comprobante, comprobanteFiscal.getIdNumSap());
 				//Save document object.
 				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
 			}
@@ -130,7 +138,12 @@ public class DocumentosFiscalesController {
 			 * Use InvoiceOne web service to validate and set responses.
 			 *
 			 */ 
-			comprobanteService.setValidation(comprobanteFiscal, validationService.validaVerifica(files[0]));
+			validationResponse = validationService.validaVerifica(files[0]);
+			
+			comprobanteService.setValidation(comprobanteFiscal, validationResponse);
+			
+			// send email to the supplier, invoice received
+			emailSender.sendEmailNewDoc(comprobanteFiscal, validationResponse.get(1), validationResponse.get(2));
 				
 			
 		} catch (FileExistsException e) {
@@ -186,6 +199,11 @@ public class DocumentosFiscalesController {
 				// finally delete documents
 				documentoService.deleteFacturaDocuments(concepto);
 				
+				// remove complemento relationship with other facturas before deleting
+				if (factura.get().getTipoDocumento().equalsIgnoreCase("P")) {
+					clearComplemento((ComplementoPago)factura.get());
+				}
+				
 				// delete the object using the id
 				comprobanteService.delete(id);
 			}
@@ -222,6 +240,11 @@ public class DocumentosFiscalesController {
 			
 			// finally delete documents
 			documentoService.deleteFacturaDocuments(concepto);
+			
+			// remove complemento relationship with other facturas before deleting 
+			if (factura.get().getTipoDocumento().equalsIgnoreCase("P")) {
+				clearComplemento((ComplementoPago)factura.get());
+			}
 			
 			// delete the object using the id
 			comprobanteService.delete(id);
@@ -500,7 +523,7 @@ public class DocumentosFiscalesController {
 
 	}
 
-	
+	//TODO THIS METHOD IS PARTIALLY WORKING (problems with the first 2 entities)
 	@GetMapping(value = "/csv")
 	public void exportCSV(HttpServletResponse response, @RequestParam List<Long> ids) throws Exception {
 
@@ -524,7 +547,6 @@ public class DocumentosFiscalesController {
 		                                      StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
 		        beanToCsv.write(list);
 		        writer.close();
-
 
 	        } catch (CsvException ex) {
 
@@ -559,5 +581,18 @@ public class DocumentosFiscalesController {
         
         
     }
+  
+  private void clearComplemento(ComplementoPago complementoPago) {
+    
+    List<Factura> facturas = facturaRepository.findAllByComplemento(complementoPago);
+
+    if (!facturas.isEmpty()) {
+
+      facturas.forEach(factura -> factura.removeComplemento());
+      facturaRepository.saveAll(facturas);
+    }
+
+  }
+
 	
 }

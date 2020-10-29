@@ -19,25 +19,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.service.EmpresaService;
 import com.canfer.app.storage.LogoStorageService;
-import com.canfer.app.webservice.sat.SatVerificacionService;
-import com.canfer.app.mail.EmailSenderService;
-import com.canfer.app.pdfExport.CrystalReportService;
+
+import com.canfer.app.model.Empresa;
+import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 
 @Controller
 public class MainController {
-	
-	@Autowired
-    private CrystalReportService crService;
-	@Autowired
-	private EmailSenderService eSenderService; 
+
 	@Autowired
 	private EmpresaService empresaService;
 	@Autowired
-	private AuthenticationFacade authenticationFacade;
+	private EmpresaRepository empresaRepo;
 	@Autowired
-	private SatVerificacionService satserv;
+	private AuthenticationFacade authenticationFacade;
 	@Autowired
 	private LogoStorageService logoStorageService;
 
@@ -79,10 +75,12 @@ public class MainController {
 		
 		// getting the authenticated user
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
+		Empresa company = empresaRepo.findByRfc(rfc);
 		
 		// check if the user is an admin
 		if (loggedPrincipal.isAdmin()) {
 			model.addAttribute("selectedCompany", rfc);
+			model.addAttribute("companyProfile", company.getProfilePictureName());
 			return "documentos-fiscales";
 		}
 		
@@ -90,6 +88,7 @@ public class MainController {
 		for (String userRfc : loggedPrincipal.getEmpresasRfc()) {
 			if (userRfc.equalsIgnoreCase(rfc)) {
 				model.addAttribute("selectedCompany", rfc);
+				model.addAttribute("companyProfile", company.getProfilePictureName());
 				return "documentos-fiscales";
 			}
 		}
@@ -129,6 +128,7 @@ public class MainController {
 	}
 	
 
+
 	private boolean isAuthenticated() {
 		Authentication authentication = authenticationFacade.getAuthentication();
 		if (authentication == null || AnonymousAuthenticationToken.class.
@@ -137,11 +137,12 @@ public class MainController {
 			    }
 	    return authentication.isAuthenticated();
 	}
-	
+
 	@GetMapping(value = "/proveedoresClient")
 	public String getModuloProveedores() {
 		
 		return "proveedores";
 	}
+
 
 }

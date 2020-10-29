@@ -42,28 +42,8 @@
 
 		<!-- LOGO DE LA EMPRESA -->
 		<a class="navbar-brand" href="#"> 
-			<!-- PRINT THE CORRESPONDING LOGO -->
-			<div th:if="${selectedCompany} == PAE920709D75">
-				<img src="assets/img/logosEmpresas/PAE.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 30px" />
-			</div>
-			<div th:if="${selectedCompany} == NME801205JE7">
-				<img src="assets/img/logosEmpresas/newland.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == PFL830127PP3">
-				<img src="assets/img/logosEmpresas/PFL.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == WHI020314BE4">
-				<img src="assets/img/logosEmpresas/WHIS_head_logo.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == CSO080325968">
-				<img src="assets/img/logosEmpresas/logo_excelcuts.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 35px" />
-			</div>
-			<div th:if="${selectedCompany} == SPE880430485">
-				<img src="assets/img/logosEmpresas/SDP.jpg" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == PRO070511ST2">
-				<img src="assets/img/logosEmpresas/PROFLUX.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
+			<!-- PRINT THE CORRESPONDING LOGO --> 
+			<img th:src="@{'company/profile/' + ${companyProfile}}" class="pl-3 img-fluid mr-0" alt="logo" style="height: 38px" /> 
 		</a>
 
 
@@ -290,7 +270,7 @@
 															<div>
 																<form method="post" enctype="multipart/form-data"
 																	action="#"
-																	th:action="@{/documentosFiscalesClient/uploadFactura}">
+																	th:action="@{/documentosFiscalesClient/uploadFactura(rfc=${selectedCompany})}">
 																	<table>
 																		<div>Cargar un XML:</div>
 																		<div class="input-group mb-2">
@@ -335,7 +315,7 @@
 										<div class="card shadow-none mb-3">
 										  <div class="card-header">
 										  	<i class="mr-2 text-primary" data-feather="search"></i>
-										    Filtros de Busqueda
+										    Filtros de Búsqueda
 										    
 										  </div>
 										  <div class="card-body">
@@ -367,6 +347,8 @@
 													<button class="btn btn-light btn-sm line-height-normal p-2 " id="reportrangeCarga">
 													    <i class="mr-2 text-primary" data-feather="calendar"></i>
 													    <span></span>
+													    <div id="uploadBefore" hidden></div>
+													    <div id="uploadAfter" hidden></div>
 													    <i class="ml-1" data-feather="chevron-down"></i>
 													</button>
 												</div>
@@ -399,6 +381,7 @@
 												<div class="col">
 												  	<!-- INPUT IMPORTE ESTATUS -->
 													<select class="form-control form-control-solid"  style="height: 30px; font-size: 14px" id="inputFiltroEstatus">
+											            <option value="">--Seleccionar--</option>
 											            <option>EN PROCESO</option>
 											            <option>PAGADO</option>
 											            <option>CANCELADO</option>
@@ -408,13 +391,12 @@
 													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
 													    <input class="custom-control-input" id="checkRS" type="checkbox">
 													    <label class="custom-control-label" for="checkRS">RS</label>
-													    
 													</div>
 													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
-													    <input class="custom-control-input" id="checkGenerico" type="checkbox">
+													    <input class="custom-control-input" id="checkGenerico"  type="checkbox">
 													    <label class="custom-control-label" for="checkGenerico">Genérico</label>
 													</div>
-													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+													<div class="d-inline custom-control custom-checkbox custom-control-solid">
 													    <input class="custom-control-input" id="checkComplemento" name="checkComplemento" type="checkbox">
 													    <label class="custom-control-label" for="checkComplemento">Complemento</label>
 													</div>
@@ -447,6 +429,8 @@
 													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
 													    <i class="mr-2 text-primary" data-feather="calendar"></i>
 													    <span></span>
+													    <div id="registeredBefore" hidden></div>
+													    <div id="registeredAfter" hidden></div>
 													    <i class="ml-1" data-feather="chevron-down"></i>
 													</button>
 												</div>
@@ -464,7 +448,7 @@
 												</div>
 												<div class="col">
 												  	<!-- INPUT ID SAP -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroIdSap" type="text" placeholder="#ID">
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroIdSap" type="text" placeholder="ID">
 												</div>
 												<div class="col">
 													
@@ -473,10 +457,10 @@
 											</div>
 											<div class="row justify-content-end">
 												<div class="col">
-													<button class="btn btn-blue float-right" type="button" id="reloadTableBtn"
-													>
+													<button class="btn btn-blue float-right" type="button" id="reloadTableBtn">
 												     Buscar<i class="ml-2" data-feather="search"></i>
 													</button>
+													<button class="btn btn-blue float-right mr-2" type="button" id="clearFilters"> Limpiar </button>
 												</div>
 											</div>
 											
@@ -820,6 +804,7 @@
 														<div class="col-9">
 														  	<!-- INPUT IMPORTE ESTATUS -->
 															<select class="form-control form-control-sm bg-white"  name="estatus" style="height: 30px; font-size: 14px" id="estatusPago">
+													            <option value="">--Selecciona--</option>
 													            <option value="PAGADO">PAGADO</option>
 													            <option value="CANCELADO">CANCELADO</option>
 													            <option value="EN PROCESO">EN PROCESO</option>
@@ -875,7 +860,7 @@
 													</div>
 													<div class="row pt-1">
 														<div class="col-3">
-															<label for="facturaNotaComplemento"
+															<label for="docsRelacionados"
 																class="form-control-label mb-0 font-weight-bold">
 																<small>Documento Relacionado: </small>
 															</label>
@@ -883,7 +868,7 @@
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
 																class="form-control form-control-sm bg-white"
-																id="facturaNotaComplemento" value="" />
+																id="docsRelacionados" value="" />
 														</div>
 													</div>
 													<div class="row mt-0 pt-0">
