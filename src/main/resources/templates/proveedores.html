@@ -143,7 +143,7 @@
 						<!-- Main Content Tables  facturas-->
 						<div class="card mb-0"  id="divFacturas">
 							<div id="selectedCompany" >PAE920709D75</div>
-							<div id="selectedClave" >PAE</div>
+							<div id="selectedClave" >A-0080</div>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -154,7 +154,7 @@
 												class="btn btn-outline-danger mr-2" data-toggle="modal"
 												data-target="#nuevoModal">Nuevo</button>
 											<a type="button" id="btn-csv"
-												class="btn btn-outline-danger mr-2" th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave)}" >CSV</a>
+												class="btn btn-outline-danger mr-2" th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}" >CSV</a>
 											<button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 											    <i class="" style="color:white" data-feather="search"></i>
 											</button>
@@ -756,12 +756,67 @@
 					
 						<!-- Main Content Perfil -->
 						<div class="card mb-0" hidden="true" id="divPerfil">
+							 <div class="card-header" style="color:red">Detalles del perfil</div>
+                                    <div class="card-body">
+                                            <!-- Form Row-->
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="claveProvPerfil">Clave de Proveedor</label>
+                                                    <input style="height: 30px;" class="form-control" id="claveProvPerfil" type="text" readonly />
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="rfcProveedorPerfil">RFC</label>
+                                                    <input style="height: 30px;" class="form-control" id="rfcProveedor" type="text" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="nombrePerfil">Nombre</label>
+                                                    <input style="height: 30px;" class="form-control" id="nombrePerfil" type="text" readonly />
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="contactoPerfil">Contacto</label>
+                                                    <input  style="height: 30px;" class="form-control" id="contactoPerfil" type="text" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="callePerfil">Calle</label>
+                                                    <input style="height: 30px;" class="form-control" id="callePerfil" type="text" readonly />
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="municipioPerfil">Municipio</label>
+                                                    <input style="height: 30px;" class="form-control" id="municipioPerfil" type="text" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="estadoPerfil">Estado</label>
+                                                    <input style="height: 30px;" class="form-control" id="estadoPerfil" type="text" readonly />
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="cpPerfil">CP</label>
+                                                    <input style="height: 30px;" class="form-control" id="cpPeril" type="text" readonly />
+                                                </div>
+                                            </div>
+                                           <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="telefonoPerfil">Teléfono</label>
+                                                    <input style="height: 30px" class="form-control" id="telefonoPerfil" type="text" readonly />
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="small mb-1" for="monedaPerfil">Moneda</label>
+                                                    <input style="height: 30px;" class="form-control" id="monedaPerfil" type="text" readonly />
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
 						</div>
 						
 						<!-- Main Content Ayuda -->
 						<div class="card mb-0" hidden="true" id="divAyuda">
+						
 						</div>
-					</div>
 				</div>
 			</div>
 			

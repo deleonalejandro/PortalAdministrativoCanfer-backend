@@ -3,7 +3,7 @@
 		$(document).ready(function () {
 		         var table = $('#facturas').DataTable({
 					ajax: {
-		            url: "/proveedorApi?empresa=" + $("#selectedCompany").text()+"?clave=" + $("#selectedClave").text(),
+		            url: "/proveedorApi?empresa=" + $("#selectedCompany").text()+"&clave=" + $("#selectedClave").text(),
 					dataSrc:""
 		        	},
 					scrollX:true,

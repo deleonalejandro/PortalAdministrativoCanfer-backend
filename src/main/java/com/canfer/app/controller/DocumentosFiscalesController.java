@@ -548,7 +548,7 @@ public class DocumentosFiscalesController {
 		        StatefulBeanToCsv<ComprobanteFiscal> beanToCsv = new 
 		                                      StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
 		       Proveedor proveedor =  proveedorRepository.findByEmpresasAndClaveProv(empresaRepository.findByRfc(rfc), clave).get();
-		        beanToCsv.write(comprobanteFiscalRepository.findAllByRfcEmpresaAndIdProveedor(rfc,proveedor.getIdProveedor() ));
+		        beanToCsv.write(comprobanteFiscalRepository.findAllByRfcEmpresaAndProveedor(rfc,proveedor));
 		        writer.close();
 
 

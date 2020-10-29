@@ -143,7 +143,7 @@ public abstract class ComprobanteFiscal {
 	private String comentario;
 	
 	@JoinColumn(name = "idPago")
-    @OneToOne(targetEntity = Pago.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Pago.class, fetch = FetchType.EAGER)
     private Pago pago;
 	
 	public ComprobanteFiscal() {
