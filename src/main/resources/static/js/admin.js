@@ -210,6 +210,7 @@ $(document).ready(function() {
 			$("#inputReferencia").val(empresa.referencia);
 			$("#inputCp").val(empresa.cp);
 			$("#inputPaginaWeb").val(empresa.paginaWeb);
+			$("#inputColor").val(empresa.color);
 			
 			
 		})

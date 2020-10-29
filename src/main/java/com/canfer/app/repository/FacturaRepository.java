@@ -11,5 +11,6 @@ import com.canfer.app.model.ComprobanteFiscal.Factura;
 @Repository
 public interface FacturaRepository extends ComprobanteFiscalBaseRepository<Factura>, JpaSpecificationExecutor<Factura> {
 
+	Factura findByRfcEmpresaAndRfcProveedorAndIdNumSap(String rfcEmpresa, String rfcProveedor, Long IdNumSap);
 }
 

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.service.EmpresaService;
@@ -23,7 +22,6 @@ import com.canfer.app.storage.LogoStorageService;
 import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.pdfExport.CrystalReportService;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 
@@ -31,17 +29,17 @@ import com.canfer.app.security.UserPrincipal;
 public class MainController {
 	
 	@Autowired
-    CrystalReportService crService;
+    private CrystalReportService crService;
 	@Autowired
-	EmailSenderService eSenderService; 
+	private EmailSenderService eSenderService; 
 	@Autowired
 	private EmpresaService empresaService;
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
 	@Autowired
-	SatVerificacionService satserv;
+	private SatVerificacionService satserv;
 	@Autowired
-	LogoStorageService logoStorageService;
+	private LogoStorageService logoStorageService;
 
 	public MainController() {
 		// Constructor
@@ -49,7 +47,7 @@ public class MainController {
 
 	@GetMapping(value = "/")
 	public String home() {
-		return "index";
+		return "redirect:/login";
 	}
 
 	// Login form
@@ -124,6 +122,12 @@ public class MainController {
 				.body(resource);
 	}
 	
+	@GetMapping(value = "/cpanel")
+	public String getCPanel() {
+		
+		return "admin-panel";
+	}
+	
 
 	private boolean isAuthenticated() {
 		Authentication authentication = authenticationFacade.getAuthentication();
@@ -134,5 +138,10 @@ public class MainController {
 	    return authentication.isAuthenticated();
 	}
 	
+	@GetMapping(value = "/proveedoresClient")
+	public String getModuloProveedores() {
+		
+		return "proveedores";
+	}
 
 }

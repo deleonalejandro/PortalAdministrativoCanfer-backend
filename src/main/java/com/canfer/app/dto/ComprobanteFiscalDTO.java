@@ -3,6 +3,8 @@ package com.canfer.app.dto;
 
 
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Proveedor;
 
@@ -14,6 +16,7 @@ public class ComprobanteFiscalDTO {
 	private Long idNumSap;
 	private Empresa empresa;
 	private Proveedor proveedor;
+	private Long idProveedor;
 	private String serie;
 	private String folio;
 	private String rfcEmpresa;
@@ -36,6 +39,7 @@ public class ComprobanteFiscalDTO {
 	private Boolean bitRS;
 	private Boolean bitRSusuario;
 	private String comentario;
+	private MultipartFile pdf; 
 	
 	//Constructor
 	public ComprobanteFiscalDTO() {
@@ -43,7 +47,26 @@ public class ComprobanteFiscalDTO {
 	}
 
 	
-	
+	public MultipartFile getPdf() {
+		return pdf;
+	}
+
+
+	public void setPdf(MultipartFile pdf) {
+		this.pdf = pdf;
+	}
+
+
+	public Long getIdProveedor() {
+		return idProveedor;
+	}
+
+
+
+	public void setIdProveedor(Long idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+
 	public Long getIdComprobanteFiscal() {
 		return idComprobanteFiscal;
 	}

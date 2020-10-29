@@ -3,11 +3,14 @@ package com.canfer.app.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -28,10 +31,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
@@ -40,17 +41,22 @@ import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
+import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.PagoRepository;
+import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.opencsv.CSVWriter;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvException;
 
 import javassist.NotFoundException;
 //TODO CONSIDERAR QUE SI NO EXISTE PDF O XML HANDLEAR EL ERROR! PDF GENERICO!!!!!!!!
@@ -60,6 +66,10 @@ public class DocumentosFiscalesController {
 	
 	@Autowired
 	private XmlService xmlService;
+	@Autowired
+	private EmpresaRepository empresaRepository; 
+	@Autowired
+	private ProveedorRepository proveedorRepository; 
 	@Autowired
 	private ComprobanteFiscalService comprobanteService;
 	@Autowired
@@ -150,9 +160,10 @@ public class DocumentosFiscalesController {
 		try {
 			
 			for(Long id : ids) {
-				
+				Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
+				String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
 				// delete files first, since we use document info to get route
-				List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
+				List<Documento> facturaDocuments = documentoService.findAllByConcepto(concepto);
 				
 				// delete all files 
 				facturaDocuments.forEach(document -> {
@@ -173,7 +184,7 @@ public class DocumentosFiscalesController {
 				
 				
 				// finally delete documents
-				documentoService.deleteFacturaDocuments(id);
+				documentoService.deleteFacturaDocuments(concepto);
 				
 				// delete the object using the id
 				comprobanteService.delete(id);
@@ -188,9 +199,10 @@ public class DocumentosFiscalesController {
 	@GetMapping(value = "/delete/{id}")
 	public String deleteFactura(@PathVariable Long id, Model model, @RequestParam String rfc) {
 		try {
-			
+			Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
+			String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
 			// delete files first, since we use document info to get route
-			List<Documento> facturaDocuments = documentoService.findAllByIdTabla(id);
+			List<Documento> facturaDocuments = documentoService.findAllByConcepto(concepto);
 			
 			// delete all files 
 			facturaDocuments.forEach(document -> {
@@ -209,7 +221,7 @@ public class DocumentosFiscalesController {
 			});
 			
 			// finally delete documents
-			documentoService.deleteFacturaDocuments(id);
+			documentoService.deleteFacturaDocuments(concepto);
 			
 			// delete the object using the id
 			comprobanteService.delete(id);
@@ -223,35 +235,64 @@ public class DocumentosFiscalesController {
 	
 	//TODO configurar updateError using alert
 	@PostMapping(value = "/update")
-	public String update(ComprobanteFiscalDTO documento, RedirectAttributes ra, @RequestParam String rfc) {
+	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc) {
 	
 		try {
 			comprobanteFiscalService.updateInfo(documento);
 		} catch (Exception e) {
 			Log.falla("Error al actualizar CFDI: " + e.getMessage());
-			ra.addFlashAttribute("updateError", e.getMessage());
 		}
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 	}
 	
-	@GetMapping("/download/{extension:.+}/{id}/{uuid}")
-	public ResponseEntity<Resource> downloadLocalFile(@PathVariable String uuid, @PathVariable Long id, @PathVariable String extension) {
+	@GetMapping("/download/{extension:.+}/{id}")
+	public ResponseEntity<Resource> downloadLocalFile(@PathVariable Long id, @PathVariable String extension) {
 		String contentType = "application/octet-stream";
-		Documento doc = documentoService.findByConceptoAndExtension(uuid, extension);
+		
+		Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
+		String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
+		
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, extension);
 		Path path = null; 
 		Resource resource = null;
 		
 		if (doc == null) {
-			
-			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
-			path = Paths.get(crystalReportService.exportGenerico(id,  cfdi.getUuid()));
-			doc = documentoService.findByIdTablaAndExtension(id, extension);
+			path = Paths.get(crystalReportService.exportGenerico(id,  factura.get().getUuid()));
+			doc = documentoService.findByConceptoAndExtension(concepto, extension);
 			
 		} else {
 		path = Paths.get(doc.getRuta());
 		}
 		
+		try {
+			// try to load resource
+			resource = comprobanteStorageService.loadAsResource(path);
+		} catch (StorageFileNotFoundException e) {
+			Log.activity("Error durante la descarga: " + e.getMessage(), doc.getEmpresa().getNombre());
+			e.printStackTrace();
+			return ResponseEntity.badRequest()
+					.body(resource);
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
+	
+	@GetMapping("/download/complemento/{id}")
+	public ResponseEntity<Resource> downloadComplemento(@PathVariable Long id) {
+		String contentType = "application/xml";
+		
+		Factura comprobante = (Factura) comprobanteFiscalRepository.findById(id).get();
+		ComprobanteFiscal complemento = comprobanteFiscalRepository.findByUuid(comprobante.getComplemento().getUuid());
+		String concepto = complemento.getTipoDocumento()+"_"+complemento.getUuid();
+		
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
+		
+		Resource resource = null;
+		
+		Path path = Paths.get(doc.getRuta());
 		try {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
@@ -277,7 +318,10 @@ public class DocumentosFiscalesController {
 		
 		for (Long id : ids) {
 			
-			docs = documentoService.findAllByIdTablaAndExtension(id, extension);
+			Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
+			String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
+			
+			docs = documentoService.findAllByConceptoAndExtension(concepto, extension);
 			
 			for (Documento doc : docs) {
 				
@@ -324,11 +368,14 @@ public class DocumentosFiscalesController {
 			contentType = "text/xml";
 		}
 		Path path = null; 
-		Documento doc = documentoService.findByIdTablaAndExtension(id, extension);
+		Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
+		String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
+		
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, extension);
 		if (doc == null) {
 			ComprobanteFiscal cfdi = comprobanteFiscalRepository.findById(id).get();
 			 path = Paths.get(crystalReportService.exportGenerico(id, cfdi.getUuid()));
-			 doc = documentoService.findByIdTablaAndExtension(id, extension);
+			 doc = documentoService.findByConceptoAndExtension(concepto, extension);
 			
 		} else {
 		 path = Paths.get(doc.getRuta());
@@ -350,12 +397,15 @@ public class DocumentosFiscalesController {
 				.body(resource);
 	}
 	
-	@GetMapping("/preview/comprobante/{id}")
+	@GetMapping("/preview/complemento/{id}")
 	public ResponseEntity<Resource> previewLocalFile(@PathVariable Long id) {
 		String contentType = "application/xml";
 		
 		Factura comprobante = (Factura) comprobanteFiscalRepository.findById(id).get();
-		Documento doc = documentoService.findByIdTablaAndExtension(comprobante.getComplemento().getIdComprobanteFiscal(), "xml");
+		ComprobanteFiscal complemento = comprobanteFiscalRepository.findByUuid(comprobante.getComplemento().getUuid());
+		String concepto = complemento.getTipoDocumento()+"_"+complemento.getUuid();
+		
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
 		Path path = Paths.get(doc.getRuta());
 		Resource resource = null;
 		try {
@@ -374,6 +424,28 @@ public class DocumentosFiscalesController {
 				.body(resource);
 	}
 	
+	@GetMapping("/preview/avisoPago/{id}")
+	public ResponseEntity<Resource> previeAviso(@PathVariable Long id) {
+		String contentType = "application/pdf";
+		
+		Documento doc = documentoService.findByConceptoAndIdTabla("Aviso de Pago", id);
+		Path path = Paths.get(doc.getRuta());
+		Resource resource = null;
+		try {
+			// try to load resource
+			resource = comprobanteStorageService.loadAsResource(path);
+		} catch (StorageFileNotFoundException e) {
+			Log.activity("Error al previsualizar el documento: " + e.getMessage(), doc.getEmpresa().getNombre());
+			e.printStackTrace();
+			return ResponseEntity.badRequest()
+					.body(resource);
+		} 
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
 	
 	@GetMapping(value = "/zip-download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<byte[]> zipDownload(@RequestParam List<Long> cfdId) {
@@ -385,7 +457,10 @@ public class DocumentosFiscalesController {
 		
 		for (Long id : cfdId) {
 			
-			docs = documentoService.findAllByIdTabla(id);
+			Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
+			String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
+			
+			docs = documentoService.findAllByConcepto(concepto);
 			
 			for (Documento doc : docs) {
 				
@@ -429,27 +504,60 @@ public class DocumentosFiscalesController {
 	@GetMapping(value = "/csv")
 	public void exportCSV(HttpServletResponse response, @RequestParam List<Long> ids) throws Exception {
 
-        //set file name and content type
-        String filename = "CFDIs.csv";
+		try {
+			
+			List<ComprobanteFiscal> list = new ArrayList<>();
+			
+			for(Long id : ids) {
+				list.add(comprobanteFiscalRepository.findById(id).get());
+			}
+			
+			//set file name and content type
+		        String filename = "CFDIs.csv";
 
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
+		        response.setContentType("text/csv");
+		        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+		                "attachment; filename=\"" + filename + "\"");
+		        
+		        Writer writer = new PrintWriter(response.getWriter());
+		        StatefulBeanToCsv<ComprobanteFiscal> beanToCsv = new 
+		                                      StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
+		        beanToCsv.write(list);
+		        writer.close();
 
-        //create a csv writer
-        StatefulBeanToCsv<ComprobanteFiscal> writer = new StatefulBeanToCsvBuilder<ComprobanteFiscal>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
 
-        List<ComprobanteFiscal> list = new ArrayList<>();
+	        } catch (CsvException ex) {
 
-		for(Long id : ids) {list.add(comprobanteFiscalRepository.findById(id).get());}
-        //write all users to csv file
-        writer.write(list);
+	            Log.falla("Error al exportar Rerprote CSV para ");
+	        }
                 
     }
 	
+	@GetMapping(value = "/csvProveedor")
+	public void exportAllCSV(HttpServletResponse response, @RequestParam String rfc, @RequestParam String clave) throws Exception {
+		 try {
+			 
+			//set file name and content type
+		        String filename = "CFDIs.csv";
+
+		        response.setContentType("text/csv");
+		        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+		                "attachment; filename=\"" + filename + "\"");
+		        
+		        Writer writer = new PrintWriter(response.getWriter());
+		        StatefulBeanToCsv<ComprobanteFiscal> beanToCsv = new 
+		                                      StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
+		       Proveedor proveedor =  proveedorRepository.findByEmpresasAndClaveProv(empresaRepository.findByRfc(rfc), clave).get();
+		        beanToCsv.write(comprobanteFiscalRepository.findAllByRfcEmpresaAndProveedor(rfc,proveedor));
+		        writer.close();
+
+
+	        } catch (CsvException ex) {
+
+	            Log.falla("Error al exportar Rerprote CSV para ");
+	        }
+        
+        
+    }
 	
 }

@@ -12,11 +12,14 @@ import java.nio.file.Paths;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
+import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Documento.DocumentoPDF;
 import com.canfer.app.model.Log;
+import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.DocumentoRepository;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.service.DocumentoService;
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
 import com.crystaldecisions.sdk.occa.report.lib.*;
@@ -40,6 +43,10 @@ public class CrystalReportService {
 	private DocumentoRepository documentoRepository; 
 	@Autowired
 	private XmlService xmlService; 
+	@Autowired
+	private DocumentoService documentoService; 
+	@Autowired
+	private ComprobanteFiscalRespository comprobanteFiscalRepository; 
 	
 	public String exportPDF(String empresa, Integer pago, String user, String password, String rfc, Long idTabla) {
 
@@ -74,7 +81,9 @@ public class CrystalReportService {
 			byte byteArray[] = new byte[byteArrayInputStream.available()];
 
 			//Create a new file that will contain the exported result.
-			File file = new File(EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf");
+			String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
+			
+			File file = new File(path);
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(byteArrayInputStream.available());
@@ -90,9 +99,8 @@ public class CrystalReportService {
 			
 			//TODO rutas del crystal 
 			//Guardamos el Crystal
-			String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
 					
- 			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de pago", 
+ 			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de Pago", 
 					"pdf", path);
 			documentoRepository.save(doc);
 			
@@ -122,6 +130,7 @@ public class CrystalReportService {
 		 
 		Documento doc = documentoRepository.findByIdTablaAndExtension(id, "xml");
 		Comprobante comprobante = xmlService.xmlToObject(Paths.get(doc.getRuta()));
+		ComprobanteFiscal factura = comprobanteFiscalRepository.findById(doc.getIdTabla()).get();
 		try {
 
 			//Open report.			
@@ -200,8 +209,7 @@ public class CrystalReportService {
 			fileOutputStream.close();
 			
 			//Guardamos el PDF Generico
-			DocumentoPDF documento = new DocumentoPDF(id, empresaRepository.findByRfc(comprobante.getReceptorRfc()),"Documentos Fiscales", uuid, 
-					"pdf", path);
+			Documento documento = documentoService.save(factura, "pdf", doc.getModulo(), path);
 			documentoRepository.save(documento);
 			
 			return path;			

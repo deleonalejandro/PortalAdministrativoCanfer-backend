@@ -28,6 +28,7 @@ public class EmpresaService {
 	private IAuthenticationFacade authenticationFacade;
 	@Autowired
 	private MunicipioRepository municipioRepository;
+
 	
 	public List<Empresa> findAll() {
 		return empresaRepository.findAll();
@@ -57,10 +58,15 @@ public class EmpresaService {
 		Empresa checkEmpresa = empresaRepository.findByRfc(empresa.getRfc());
 		
 		if(checkEmpresa != null && empresa.getIdEmpresa() == 0L) {
+			
 			throw new EntityExistsException("La empresa que desea registrar ya existe.");
+			
 		} else if (checkEmpresa != null && empresa.getIdEmpresa() != 0L) {
-			saveEmpresa = checkEmpresa;			
+			
+			saveEmpresa = checkEmpresa;		
+			
 		} else {
+			
 			saveEmpresa = new Empresa();
 		}
 		
@@ -72,6 +78,7 @@ public class EmpresaService {
 			
 			//Get user principal to fill the user creation field.
 			UserPrincipal userDetails = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
+			
 			//Transfer the information form the DTO object.
 			saveEmpresa.setCalle(empresa.getCalle());
 			saveEmpresa.setColonia(empresa.getColonia());
@@ -90,16 +97,20 @@ public class EmpresaService {
 			saveEmpresa.setProfilePictureName(empresa.getProfilePictureName());
 			saveEmpresa.setColor(empresa.getColor());
 			
-			Optional<Municipio> mun = municipioRepository.findById(empresa.getIdMunicipio());
-			if (mun.isPresent()) {
-				saveEmpresa.setMunicipio(mun.get().getNombre());
+			if (empresa.getIdMunicipio() != null) {
+				
+				Optional<Municipio> mun = municipioRepository.findById(empresa.getIdMunicipio());
+				
+				if (mun.isPresent()) {
+					saveEmpresa.setMunicipio(mun.get().getNombre());
+				}
 			}
 			
 		} catch (Exception e) {
 			throw new UnknownError("Ocurrio un error inesperado");
 		}
 		
-		return empresaRepository.save(saveEmpresa);
+		return empresaRepository.saveAndFlush(saveEmpresa);
 		
 	}
 	

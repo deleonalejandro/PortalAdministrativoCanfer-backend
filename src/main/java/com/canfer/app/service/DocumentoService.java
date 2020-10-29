@@ -48,9 +48,9 @@ public class DocumentoService {
 
 	}
 	
-	public void deleteFacturaDocuments(Long id) {
+	public void deleteFacturaDocuments(String concepto) {
 		// delete all the document objects related to the particular idTable
-		documentoRepository.deleteAll(documentoRepository.findAllByIdTabla(id));
+		documentoRepository.deleteAll(documentoRepository.findAllByConcepto(concepto));
 	}
 	
 	public List<Documento> findAllByIdTabla(Long id) {
@@ -73,6 +73,16 @@ public class DocumentoService {
 	public List<Documento> findAllByIdTablaAndExtension(Long id, String extension) {
 		
 		return documentoRepository.findAllByIdTablaAndExtension(id, extension);
+	}
+
+	public List<Documento> findAllByConcepto(String concepto) {
+		// TODO Auto-generated method stub
+		return documentoRepository.findAllByConcepto(concepto);
+	}
+
+	public List<Documento> findAllByConceptoAndExtension(String concepto, String extension) {
+		// TODO Auto-generated method stub
+		return documentoRepository.findAllByConceptoAndExtension(concepto, extension);
 	}
 	
 }
