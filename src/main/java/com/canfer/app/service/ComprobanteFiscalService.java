@@ -12,11 +12,9 @@ package com.canfer.app.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,6 @@ import com.canfer.app.model.Consecutivo;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
-import com.canfer.app.model.Pago;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -64,8 +61,6 @@ public class ComprobanteFiscalService {
 	private ProveedorRepository proveedorRepository;
 	@Autowired
 	private ConsecutivoRepository consecutivoRepository;
-	@Autowired
-	private EmailSenderService emailSender; 
 	@Autowired
 	private DocumentoRepository docRepository; 
 
@@ -118,7 +113,8 @@ public class ComprobanteFiscalService {
 
 		} else if (comprobante.getTipoDeComprobante().equalsIgnoreCase("P")) {
 			ComplementoPago complemento = new ComplementoPago(comprobante, receptor, emisor, idNumSap);
-			complementoPagoRepository.save(complemento);
+			complemento = complementoPagoRepository.saveAndFlush(complemento);
+			matchFacturaWithComplemento(comprobante, complemento);
 			return complemento;
 		} else {
 			// throw error since no document type was found
@@ -177,7 +173,7 @@ public class ComprobanteFiscalService {
 		comprobante.setRespuestaValidacion(respuestas.get(1));
 		comprobante.setEstatusSAT(respuestas.get(2));
 
-		emailSender.sendEmailNewDoc(comprobante, respuestas.get(1),respuestas.get(2));
+		
 		return comprobanteFiscalRepository.save(comprobante);
 	}
 
@@ -229,6 +225,30 @@ public class ComprobanteFiscalService {
 	
 	private boolean exist(String uuid) {
 		return (comprobanteFiscalRepository.findByUuid(uuid) != null);
+	}
+	
+	private void matchFacturaWithComplemento (Comprobante comprobante, ComplementoPago complementoPago) {
+		
+		Factura factura;
+		
+		try {
+			
+			// the related document is identified by a string variable containing the UUID for a particular invoice.
+			for (String docRelacionado : comprobante.getComplementoRelatedDocsList()) {
+				
+				factura = facturaRepository.findByUuid(docRelacionado);
+				
+				if (factura != null) {
+					factura.setComplemento(complementoPago);
+					facturaRepository.save(factura);
+				}
+			}
+			
+		} catch (NullPointerException e) {
+			Log.falla(e.getMessage());
+		}
+		
+		
 	}
 	
 	

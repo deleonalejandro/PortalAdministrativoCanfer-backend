@@ -438,8 +438,13 @@ public abstract class ComprobanteFiscal {
 		public ComplementoPago getComplemento() {
 			return complemento;
 		}
+		
 		public void setComplemento(ComplementoPago complemento) {
 			this.complemento = complemento;
+		}
+		
+		public void removeComplemento() {
+			this.complemento = null;
 		}
 		
 		

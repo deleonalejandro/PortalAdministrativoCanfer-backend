@@ -290,7 +290,7 @@
 															<div>
 																<form method="post" enctype="multipart/form-data"
 																	action="#"
-																	th:action="@{/documentosFiscalesClient/uploadFactura}">
+																	th:action="@{/documentosFiscalesClient/uploadFactura(rfc=${selectedCompany})}">
 																	<table>
 																		<div>Cargar un XML:</div>
 																		<div class="input-group mb-2">
