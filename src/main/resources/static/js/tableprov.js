@@ -218,11 +218,12 @@
 					$('#fechaCarga').val(jsonData.fechaCarga)
 					$('#remitente').val(jsonData.empresaCorreo)
 					
-					if(jsonData.pago != null){
+					
 						$('#numPago').val(jsonData.pagoIdNumPago)
 						$('#fechaPago').val(jsonData.pagoFecmvto)
 						$('#totalPago').val(jsonData.pagoTotalPago)
 						$('#totalFactura').val(jsonData.pagoTotalFactura)
+					if(jsonData.pagoIdPago != null){
 						$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
 					
 					}
@@ -242,7 +243,7 @@
 					$("#comentarioFacturaTab, #pagoFacturaTab").removeClass("active");
 					$("#comentarioFactura, #pagoFactura").removeClass("active");
 					
-					if(jsonData.pago == null){
+					if(jsonData.pagoIdPago == null){
 						$('#pagoFacturaTab').addClass("disabled");
 					} else{
 						$('#pagoFacturaTab').removeClass("disabled");
@@ -264,9 +265,9 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
-					if (jsonData.pago != null){
+					if (jsonData.pagoIdPago != null){
 					
-						$(' #uuid').val(jsonData.uuid)
+					$(' #uuid').val(jsonData.uuid)
 					$('#empresa').val(jsonData.empresaNombre)
 					$('#serie').val(jsonData.serie)
 					$('#folio').val(jsonData.folio)
@@ -284,7 +285,7 @@
 					$('#fechaCarga').val(jsonData.fechaCarga)
 					$('#remitente').val(jsonData.empresaCorreo)
 						
-						if(jsonData.pago != null){
+						if(jsonData.pagoidPago != null){
 							$('#numPago').val(jsonData.pagoIdNumPago)
 							$('#fechaPago').val(jsonData.pagoFecmvto)
 							$('#totalPago').val(jsonData.pagoTotalPago)
@@ -309,7 +310,7 @@
 						$("#comentarioFacturaTab, #detallesFacturaTab").removeClass("active");
 						$("#comentarioFactura, #detallesFactura").removeClass("active");
 						
-						if(jsonData.pago == null){
+						if(jsonData.pagoIdPago == null){
 						$('#pagoFacturaTab').addClass("disabled");
 						} else{
 							$('#pagoFacturaTab').removeClass("disabled");
@@ -351,7 +352,7 @@
 					$('#fechaCarga').val(jsonData.fechaCarga)
 					$('#remitente').val(jsonData.empresaCorreo)
 						
-						if(jsonData.pago != null){
+						if(jsonData.pagoIdPago != null){
 							$('#numPago').val(jsonData.pagoIdNumPago)
 							$('#fechaPago').val(jsonData.pagoFecmvto)
 							$('#parcialidad').val(jsonData.pagoTotalParcialidad)
@@ -376,7 +377,7 @@
 						$('#detallesFactura, #pagoFactura').removeClass("show");
 						$("#detallesFacturaTab, #pagoFacturaTab").removeClass("active");
 						
-						if(jsonData.pago == null){
+						if(jsonData.pagoIdPago == null){
 						$('#pagoFacturaTab').addClass("disabled");
 						} else{
 							$('#pagoFacturaTab').removeClass("disabled");
