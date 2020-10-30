@@ -553,7 +553,7 @@ public abstract class ComprobanteFiscal {
 			this.complemento = null;
 		}
 		
-		public Long getComplementoId() {
+		public Long getIdComplemento() {
 			if (this.complemento != null) {
 				return this.complemento.getIdComprobanteFiscal(); 
 			} else {

@@ -14,7 +14,7 @@
 	             '<tr>' +
 	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
 					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/complemento/'+d.complementoId+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/complemento/'+d.idComplemento+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
 	             '</tr>' +
 	         '</table>';
 	         
@@ -352,7 +352,7 @@
 						         .attr("value",value.idProveedor)
 						         .text(value.claveProv)); 
 						});
-							if(jsonData.proveedor.nombre =='PROVEEDOR GENÉRICO') {
+							if(jsonData.proveedorNombre =='PROVEEDOR GENÉRICO') {
 								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text(jsonData.proveedorClaveProv));
 							}
 							

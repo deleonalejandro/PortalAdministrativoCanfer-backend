@@ -100,7 +100,7 @@ public class ComprobanteStorageService implements StorageService {
 		return this.rootLocation.resolve(filename).toString();
 	}
 	
-	public String storeNewPdf(Documento doc) {
+	public String storeNewPdf(MultipartFile pdfFile, Documento doc) {
 		
 		Path ruta = Paths.get(doc.getRuta());
 		String filename = ruta.getFileName().toString();
@@ -110,20 +110,14 @@ public class ComprobanteStorageService implements StorageService {
 		
 		try {
 			
-			//Make a file from the given path
-			File file = new File(ruta.getParent().toString());
-			InputStream is = new FileInputStream(file);
-			
-			Files.copy(is, this.rootLocation.resolve(filename),
+			Files.copy(pdfFile.getInputStream(), ruta.getParent().resolve(filename),
 					StandardCopyOption.REPLACE_EXISTING);
-			// closing the input stream 
-			is.close();
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to store file " + filename, e);
 		}
 		
-		return this.rootLocation.resolve(filename).toString();
+		return ruta.getParent().resolve(filename).toString();
 	}
 	
 	

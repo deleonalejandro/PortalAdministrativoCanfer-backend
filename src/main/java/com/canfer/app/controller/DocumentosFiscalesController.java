@@ -45,6 +45,7 @@ import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
+import com.canfer.app.repository.ComplementoPagoRepository;
 import com.canfer.app.repository.ComprobanteFiscalRespository; 
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.EmpresaRepository;
@@ -87,6 +88,8 @@ public class DocumentosFiscalesController {
 	private CrystalReportService crystalReportService; 
 	@Autowired
 	private FacturaRepository facturaRepository;
+	@Autowired
+	private ComplementoPagoRepository complementoRepository;
 	@Autowired
 	private EmailSenderService emailSender;  
 	
@@ -255,7 +258,7 @@ public class DocumentosFiscalesController {
 	}
 	
 	@PostMapping(value = "/update")
-	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, MultipartFile pdf) {
+	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, @RequestParam("pdf") MultipartFile pdf) {
 		
 		ComprobanteFiscal comprobanteUpdate = comprobanteFiscalService.findByUUID(documento.getUuid());
 		
@@ -269,7 +272,7 @@ public class DocumentosFiscalesController {
 			try {
 				
 				//just replace the actual pdf document
-				ruta = comprobanteStorageService.storeNewPdf(facturaDocuments.get(0)); 
+				ruta = comprobanteStorageService.storeNewPdf(pdf, facturaDocuments.get(0)); 
 				
 				if (facturaDocuments.size() == 1) {
 					//create a object record for the new document if it does not exist.
@@ -330,25 +333,26 @@ public class DocumentosFiscalesController {
 	@GetMapping("/download/complemento/{id}")
 	public ResponseEntity<Resource> downloadComplemento(@PathVariable Long id) {
 		String contentType = "application/xml";
-		
-		Factura comprobante = (Factura) comprobanteFiscalRepository.findById(id).get();
-		ComprobanteFiscal complemento = comprobanteFiscalRepository.findByUuid(comprobante.getComplemento().getUuid());
-		String concepto = complemento.getTipoDocumento()+"_"+complemento.getUuid();
-		
-		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
-		
 		Resource resource = null;
 		
+		ComplementoPago comprobante = complementoRepository.findById(id).get();
+		String concepto = comprobante.getTipoDocumento() + "_" + comprobante.getUuid();
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
+		 
 		Path path = Paths.get(doc.getRuta());
+		
 		try {
+			
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
+			
 		} catch (StorageFileNotFoundException e) {
 			Log.activity("Error durante la descarga: " + e.getMessage(), doc.getEmpresa().getNombre());
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
 		}
+		
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
@@ -445,19 +449,21 @@ public class DocumentosFiscalesController {
 	}
 	
 	@GetMapping("/preview/complemento/{id}")
-	public ResponseEntity<Resource> previewLocalFile(@PathVariable Long id) {
+	public ResponseEntity<Resource> previewComplemento(@PathVariable Long id) {
 		String contentType = "application/xml";
-		
-		Factura comprobante = (Factura) comprobanteFiscalRepository.findById(id).get();
-		ComprobanteFiscal complemento = comprobanteFiscalRepository.findByUuid(comprobante.getComplemento().getUuid());
-		String concepto = complemento.getTipoDocumento()+"_"+complemento.getUuid();
-		
-		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
-		Path path = Paths.get(doc.getRuta());
 		Resource resource = null;
+		
+		ComplementoPago comprobante = complementoRepository.findById(id).get();
+		String concepto = comprobante.getTipoDocumento() + "_" + comprobante.getUuid();
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
+		 
+		Path path = Paths.get(doc.getRuta());
+
 		try {
+			
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
+			
 		} catch (StorageFileNotFoundException e) {
 			Log.activity("Error al previsualizar el documento: " + e.getMessage(), doc.getEmpresa().getNombre());
 			e.printStackTrace();

@@ -39,21 +39,10 @@ public class ComprobanteFiscalDTO {
 	private Boolean bitRS;
 	private Boolean bitRSusuario;
 	private String comentario;
-	private MultipartFile pdf; 
 	
 	//Constructor
 	public ComprobanteFiscalDTO() {
 		// Empty constructor, no parameters. 
-	}
-
-	
-	public MultipartFile getPdf() {
-		return pdf;
-	}
-
-
-	public void setPdf(MultipartFile pdf) {
-		this.pdf = pdf;
 	}
 
 
