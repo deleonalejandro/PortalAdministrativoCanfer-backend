@@ -233,53 +233,25 @@
    
 											<div class="row pb-1">
 												<div class="col">
-													<label class="form-check-label" for="reportrangeCarga">Fecha de Carga:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroImporteDesde">Importe:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroImporteHasta">Importe:</label>
+													<label class="form-check-label" for="reportrangeEmision">Fecha de Emisión:</label>
 												</div>
 												<div class="col">
 													<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
 												</div>
-												<div class="col">
-													
-												</div>
-												
+												<div class="col"></div>
+												<div class="col"></div>
 											</div>
 											<div class="row pb-1">
 												<div class="col">
-												  	<!-- Date Range Picker CARGA-->
-													<button class="btn btn-light btn-sm line-height-normal" id="reportrangeCarga">
-													    <i class="mr-2 text-danger" data-feather="calendar"></i>
+												  	<!-- Date Range Picker EMISION-->
+													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
+													    <i class="mr-2 text-red" data-feather="calendar"></i>
 													    <span></span>
+													    <div id="registeredBefore" hidden></div>
+													    <div id="registeredAfter" hidden></div>
 													    <i class="ml-1" data-feather="chevron-down"></i>
 													</button>
 												</div>
-												<div class="col">
-												  	<!-- INPUT IMPORTE DESDE -->
-												  	<div class="input-group input-group-joined input-group-solid">
-														<div class="input-group-append">
-													        <span class="input-group-text" >
-													            <i class="text-danger" data-feather="dollar-sign"></i>
-													        </span>
-													    </div>
-														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteDesde" type="text" placeholder="Desde">
-												  	</div>
-												</div>
-												<div class="col">
-												  	<!-- INPUT IMPORTE HASTA -->
-													<div class="input-group input-group-joined input-group-solid">
-														<div class="input-group-append">
-													        <span class="input-group-text pl-3" >
-													            <i class="text-danger" data-feather="dollar-sign"></i>
-													        </span>
-													    </div>
-														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteHasta" type="text" placeholder="Hasta">
-												  	</div>
-												</div> 
 												<div class="col">
 												  	<!-- INPUT IMPORTE ESTATUS -->
 													<select class="form-control form-control-solid"  style="height: 30px; font-size: 14px" id="inputFiltroEstatus">
@@ -289,13 +261,12 @@
 											            <option>RECHAZADO</option>
 											        </select>
 												</div>
+												<div class="col"></div>
+												<div class="col"></div>
 											</div>
 											<div class="row pb-1">
 												<div class="col">
-													<label class="form-check-label" for="reportrangeEmision">Fecha de Emisión:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroUUID">UUID:</label>
+													<label class="form-check-label" for="inputFiltroSerie">Serie:</label>
 												</div>
 												<div class="col">
 													<label class="form-check-label" for="inputFiltroFolioInicial">Folio:</label>
@@ -304,22 +275,15 @@
 													<label class="form-check-label" for="inputFiltroFolioFinal">Folio:</label>
 												</div>
 												<div class="col">
-													
 												</div>
-												
+												<div class="col">
+													<button class="btn btn-red float-right mr-2" type="button" id="clearFilters"> Limpiar </button>
+												</div>
 											</div>
 											<div class="row pb-1">
 												<div class="col">
-												  	<!-- Date Range Picker EMISION-->
-													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
-													    <i class="mr-2 text-danger" data-feather="calendar"></i>
-													    <span></span>
-													    <i class="ml-1" data-feather="chevron-down"></i>
-													</button>
-												</div>
-												<div class="col">
-												  	<!-- INPUT UUID -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroUUID" type="text" placeholder="UUID">
+												  	<!-- INPUT SERIE -->
+													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroSerie" type="text" placeholder="Serie">
 												</div>
 												<div class="col">
 												  	<!-- INPUT FOLIO INICIAL -->
@@ -329,16 +293,9 @@
 												  	<!-- INPUT FOLIO FINAL -->
 													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioFinal" type="text" placeholder="Final">
 												</div>
-												
+												<div class="col"></div>
 												<div class="col">
-													
-												</div>
-												
-											</div>
-											<div class="row justify-content-end">
-												<div class="col">
-													<button class="btn btn-red float-right" type="button" id="reloadTableBtn"
-													>
+													<button class="btn btn-red float-right mr-2" type="button" id="reloadTableBtn">
 												     Buscar<i class="ml-2" data-feather="search"></i>
 													</button>
 												</div>
@@ -809,13 +766,71 @@
                                                     <input style="height: 30px;" class="form-control" id="monedaPerfil" type="text" readonly />
                                                 </div>
                                             </div>
-                                    </div>
+                                  	  </div>
                                 </div>
-						</div>
+						
 						
 						<!-- Main Content Ayuda -->
 						<div class="card mb-0" hidden="true" id="divAyuda">
-						
+							<div class="row">
+								<div class="col-6 m-3">
+									<div class="card">
+										 <div class="card-header" style="color:red">Datos de Contacto</div>
+			                             <div class="card-body">
+			                                    Para cualquier duda o aclaración favor de ponerse en contacto.
+			                                    <div class="form-group">
+                                                    <label class="small mb-1" for="nombreContacto">Nombre</label>
+                                                     <div class="input-group input-group-joined">
+													    <div class="input-group-prepend">
+													        <span class="input-group-text mr-4 text-red">
+													            <i data-feather="user"></i>
+													        </span>
+													    </div>
+                                                    	<input style="height: 30px" class="form-control" id="nombreContacto" type="text" readonly th:value="${@environment.getProperty('contacto.nombre')}"/>
+                                               		</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="correoContacto">Correo</label>
+                                                    <div class="input-group input-group-joined">
+													    <div class="input-group-prepend">
+													        <span class="input-group-text mr-4 text-red">
+													            <i data-feather="mail"></i>
+													        </span>
+													    </div>
+                                                    	<input style="height: 30px;" class="form-control" id="telefonoContacto" type="text" readonly th:value="${@environment.getProperty('contacto.correo')}"/>
+                                               		</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="telefonoContacto">Teléfono</label>
+                                                   	<div class="input-group input-group-joined">
+													    <div class="input-group-prepend">
+													        <span class="input-group-text mr-4 text-red">
+													            <i data-feather="phone"></i>
+													        </span>
+													    </div>
+                                                   		 <input style="height: 30px;" class="form-control" id="correoContacto" type="text" readonly th:value="${@environment.getProperty('contacto.telefono')}" />
+                                               		</div>
+                                                </div>
+			                             </div>
+									</div>
+								  </div>
+								<div class="col m-3">	
+									<div class="card">
+										 <div class="card-header" style="color:red">Datos de Contacto</div>
+			                             <div class="card-body">
+			                                    Para cualquier duda o aclaración favor de ponerse en contacto.
+			                                    <div class="form-group">
+                                                    <label class="small mb-1" for="antiguedad">Antiüedad</label>
+                                                    <input style="height: 30px" class="form-control" id="antiguedad" type="text" readonly/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="version">Versión de la Aplicación</label>
+                                                    <input style="height: 30px;" class="form-control" id="version" type="text" readonly th:value="${@environment.getProperty('app.version')}"/>
+                                                </div>
+			                             </div>
+									</div>
+								</div>	
+							</div>
 						</div>
 				</div>
 			</div>
