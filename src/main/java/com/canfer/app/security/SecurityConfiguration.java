@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserPrincipalDetailsService userPrincipalDetailsService;
-	
+	@Autowired
 	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 	
 	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
