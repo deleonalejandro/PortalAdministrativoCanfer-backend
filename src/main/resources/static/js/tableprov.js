@@ -1,9 +1,35 @@
+// this function creates the url with parameters to initialize the table
+		function getInitUrl() {
+			
+			var getUrl = window.location;
+			var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+			var myUrlWithParams;
+			var start = moment().subtract(3, "month").startOf("month");
+    		var end = moment().endOf("day");
+			
+		  	myUrlWithParams = new URL("/proveedorApi", baseUrl);
+	
+			myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
+			myUrlWithParams.searchParams.append("proveedor", $("#selectedClave").text());
+			myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+			myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+			
+			alert(myUrlWithParams.href);
+			
+			return myUrlWithParams.href;
+
+		}
+		  
         //Tabla en si
 		
 		$(document).ready(function () {
+				
+				//Initial Values
+				$('#antiguedad').val(moment().subtract(3, "month").startOf("month"))
+				
 		         var table = $('#facturas').DataTable({
 					ajax: {
-		            url: "/proveedorApi?empresa=" + $("#selectedCompany").text()+"&clave=" + $("#selectedClave").text(),
+		            url: getInitUrl(),
 					dataSrc:""
 		        	},
 					scrollX:true,
@@ -51,33 +77,9 @@
 		                { data : "serie" },
 						{ data : "folio" },
 						{ data : "total" },
-						{ data : "pago",
-							"render": function(data) {
-		                        if(data != null) {
-		                            return data.totalPago;
-		                        } else{
-		                        	return "";
-		                        }
-		                       }
-		                    },
-						{ data : "pago",
-							"render": function(data) {
-		                        if(data != null) {
-		                            return data.fecMvto;
-		                        } else{
-		                        	return "";
-		                        }
-		                       }
-		                    },
-						{ data : "pago",
-							"render": function(data) {
-		                        if(data != null) {
-		                            return data.idNumPago;
-		                        } else{
-		                        	return "";
-		                        }
-		                       }
-		                    },
+						{ data : "pagoTotalPago"},
+						{ data : "pagoFecmvto"},
+						{ data : "pagoIdNumPago"},
 						{ data : "fechaCarga" },
 						{ data : "fechaEmision" },
 						{ data : "tipoDocumento",
@@ -143,7 +145,50 @@
 					
 		 });
  			
+			// Filters
+			$('#reloadTableBtn').on('click', function() { 
+				
+
+				var getUrl = window.location;
+				var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+				var myUrlWithParams;
+				
+				var start = moment().subtract(3, "month").startOf("month");
+    			var end = moment().endOf("day");
+    			
+				myUrlWithParams = new URL("/proveedorApi", baseUrl);
+				myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
+				myUrlWithParams.searchParams.append("proveedor", $("#selectedClave").text());
+				myUrlWithParams.searchParams.append("estatusPago", $("#inputFiltroEstatus").val());
+				myUrlWithParams.searchParams.append("registeredAfter", $("#registeredAfter").text());
+				myUrlWithParams.searchParams.append("registeredBefore", $("#registeredBefore").text());
+				myUrlWithParams.searchParams.append("sequenceAfter", $("#inputFiltroFolioInicial").val());
+				myUrlWithParams.searchParams.append("sequenceBefore", $("#inputFiltroFolioFinal").val());
+				myUrlWithParams.searchParams.append("serie", $("#inputFiltroSerie").val());
+				  
+				table.ajax.url(myUrlWithParams.href).load();
+				
+				 
+				alert(myUrlWithParams.href);
+		
+			});
 			
+			// Clear filters
+			$('#clearFilters').on('click', function() { 
+				
+				var start = moment();
+    			var end = moment();
+
+				$("#inputFiltroEstatus").val(""); 
+				$("#inputFiltroFolioInicial").val('');
+				$("#inputFiltroFolioFinal").val('');
+				$("#inputFiltroSerie").val(''); 
+				$("#reportrangeEmision span").text("");
+				
+		
+			});
 			
 			
 				// Funcion para modal detalles
@@ -156,7 +201,7 @@
 					
 					
 					$(' #uuid').val(jsonData.uuid)
-					$('#empresa').val(jsonData.empresa.nombre)
+					$('#empresa').val(jsonData.empresaNombre)
 					$('#serie').val(jsonData.serie)
 					$('#folio').val(jsonData.folio)
 					$('#rfcProveedor').val(jsonData.rfcProveedor)
@@ -171,14 +216,15 @@
 					$('#errorValidacion').val(jsonData.errorValidacion)
 					$('#comentario').val(jsonData.comentario)
 					$('#fechaCarga').val(jsonData.fechaCarga)
-					$('#remitente').val(jsonData.empresa.correo)
+					$('#remitente').val(jsonData.empresaCorreo)
 					
-					if(jsonData.pago != null){
-						$('#numPago').val(jsonData.pago.idNumPago)
-						$('#fechaPago').val(jsonData.pago.fecMvto)
-						$('#totalPago').val(jsonData.pago.totalPago)
-						$('#totalFactura').val(jsonData.pago.totalFactura)
-						$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pago.idPago)
+					
+						$('#numPago').val(jsonData.pagoIdNumPago)
+						$('#fechaPago').val(jsonData.pagoFecmvto)
+						$('#totalPago').val(jsonData.pagoTotalPago)
+						$('#totalFactura').val(jsonData.pagoTotalFactura)
+					if(jsonData.pagoIdPago != null){
+						$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
 					
 					}
 					
@@ -197,7 +243,7 @@
 					$("#comentarioFacturaTab, #pagoFacturaTab").removeClass("active");
 					$("#comentarioFactura, #pagoFactura").removeClass("active");
 					
-					if(jsonData.pago == null){
+					if(jsonData.pagoIdPago == null){
 						$('#pagoFacturaTab').addClass("disabled");
 					} else{
 						$('#pagoFacturaTab').removeClass("disabled");
@@ -219,10 +265,10 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
-					if (jsonData.pago != null){
+					if (jsonData.pagoIdPago != null){
 					
-						$(' #uuid').val(jsonData.uuid)
-					$('#empresa').val(jsonData.empresa.nombre)
+					$(' #uuid').val(jsonData.uuid)
+					$('#empresa').val(jsonData.empresaNombre)
 					$('#serie').val(jsonData.serie)
 					$('#folio').val(jsonData.folio)
 					$('#rfcProveedor').val(jsonData.rfcProveedor)
@@ -237,14 +283,14 @@
 					$('#errorValidacion').val(jsonData.errorValidacion)
 					$('#comentario').val(jsonData.comentario)
 					$('#fechaCarga').val(jsonData.fechaCarga)
-					$('#remitente').val(jsonData.empresa.correo)
+					$('#remitente').val(jsonData.empresaCorreo)
 						
-						if(jsonData.pago != null){
-							$('#numPago').val(jsonData.pago.idNumPago)
-							$('#fechaPago').val(jsonData.pago.fecMvto)
-							$('#totalPago').val(jsonData.pago.totalPago)
-							$('#totalFactura').val(jsonData.pago.totalFactura)
-							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pago.idPago)
+						if(jsonData.pagoidPago != null){
+							$('#numPago').val(jsonData.pagoIdNumPago)
+							$('#fechaPago').val(jsonData.pagoFecmvto)
+							$('#totalPago').val(jsonData.pagoTotalPago)
+							$('#totalFactura').val(jsonData.pagoTotalFactura)
+							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
 						
 						}
 						
@@ -264,7 +310,7 @@
 						$("#comentarioFacturaTab, #detallesFacturaTab").removeClass("active");
 						$("#comentarioFactura, #detallesFactura").removeClass("active");
 						
-						if(jsonData.pago == null){
+						if(jsonData.pagoIdPago == null){
 						$('#pagoFacturaTab').addClass("disabled");
 						} else{
 							$('#pagoFacturaTab').removeClass("disabled");
@@ -289,7 +335,7 @@
 					
 					if(jsonData.comentario != ""){
 						$(' #uuid').val(jsonData.uuid)
-					$('#empresa').val(jsonData.empresa.nombre)
+					$('#empresa').val(jsonData.empresaNombre)
 					$('#serie').val(jsonData.serie)
 					$('#folio').val(jsonData.folio)
 					$('#rfcProveedor').val(jsonData.rfcProveedor)
@@ -304,14 +350,14 @@
 					$('#errorValidacion').val(jsonData.errorValidacion)
 					$('#comentario').val(jsonData.comentario)
 					$('#fechaCarga').val(jsonData.fechaCarga)
-					$('#remitente').val(jsonData.empresa.correo)
+					$('#remitente').val(jsonData.empresaCorreo)
 						
-						if(jsonData.pago != null){
-							$('#numPago').val(jsonData.pago.idNumPago)
-							$('#fechaPago').val(jsonData.pago.fecMvto)
-							$('#parcialidad').val(jsonData.pago.totalParcialidad)
-							$('#totalFactura').val(jsonData.pago.totalFactura)
-							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pago.idPago)
+						if(jsonData.pagoIdPago != null){
+							$('#numPago').val(jsonData.pagoIdNumPago)
+							$('#fechaPago').val(jsonData.pagoFecmvto)
+							$('#parcialidad').val(jsonData.pagoTotalParcialidad)
+							$('#totalFactura').val(jsonData.pagoTotalFactura)
+							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
 						
 						}
 						
@@ -331,7 +377,7 @@
 						$('#detallesFactura, #pagoFactura').removeClass("show");
 						$("#detallesFacturaTab, #pagoFacturaTab").removeClass("active");
 						
-						if(jsonData.pago == null){
+						if(jsonData.pagoIdPago == null){
 						$('#pagoFacturaTab').addClass("disabled");
 						} else{
 							$('#pagoFacturaTab').removeClass("disabled");

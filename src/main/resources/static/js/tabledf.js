@@ -1,6 +1,6 @@
 	//Formato para rows tipo child	  
   function format(d){
-	        if (d.complemento == null) {
+	        if (!d.hasComplemento) {
 	         // `d` is the original data object for the row
 	         return '<table class="" style="text-align: left">' +
 	             '<tr>' +
@@ -14,7 +14,7 @@
 	             '<tr>' +
 	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
 					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/complemento/'+d.complemento.getIdComprobanteFiscal()+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/complemento/'+d.complementoId+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
 	             '</tr>' +
 	         '</table>';
 	         
@@ -106,8 +106,8 @@
 							}
 						 },
 		                { data : "folio" },
-						{ data : "proveedor.claveProv"},
-						{ data : "proveedor.nombre" },
+						{ data : "proveedorClaveProv"},
+						{ data : "proveedorNombre" },
 						{ data : "rfcProveedor" },
 						{ data : "tipoDocumento",
 		                    "render": function(data) {
@@ -294,11 +294,18 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
+					if(jsonData.serie != null && jsonData.folio != null){
+						$('#headerValue').text('Factura ' + jsonData.serie + jsonData.folio)
+					} else if(jsonData.serie == null){
+						$(' #headerValue').text('Factura ' + jsonData.folio)
+					} else if(jsonData.folio == null){
+						$('#headerValue').text('Factura ' + jsonData.serie)
+					};
 					
 					$('.detailsForm #uuid').val(jsonData.uuid)
 					$('.detailsForm #idNumSap').val(jsonData.idNumSap)
-					$('.detailsForm #empresa').val(jsonData.empresa.nombre)
-					$('.detailsForm #proveedor').val(jsonData.proveedor.nombre)
+					$('.detailsForm #empresa').val(jsonData.empresaNombre)
+					$('.detailsForm #proveedor').val(jsonData.proveedorNombre)
 					$('.detailsForm #serie').val(jsonData.serie)
 					$('.detailsForm #folio').val(jsonData.folio)
 					
@@ -314,7 +321,7 @@
 					$('.detailsForm #total').val(jsonData.total)
 					$('.detailsForm #tipoDocumento').val(jsonData.tipoDocumento)
 					$('.detailsForm #estatusPago').val(jsonData.estatusPago)
-					$('.detailsForm #newSuppliers').val(jsonData.proveedor.claveProv)
+					$('.detailsForm #newSuppliers').val(jsonData.proveedorClaveProv)
 					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT)
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
 					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
@@ -328,8 +335,8 @@
 					$('.detailsForm #docsRelacionados').val(jsonData.uuidRelacionados)
 					$('.detailsForm .pdfBtn').attr('href','/documentosFiscalesClient/download/pdf/'+jsonData.idComprobanteFiscal)
 					$('.detailsForm .xmlBtn').attr('href','/documentosFiscalesClient/download/xml/'+jsonData.idComprobanteFiscal)
-					if (jsonData.comprobante != null){
-						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/complemento/"+jsonData.comprobante.idComprobanteFiscal)
+					if (jsonData.hasComplemento){
+						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/complemento/"+jsonData.idComplemento)
 						document.getElementById("sinpago").hidden = true
 					}else {
 						document.getElementById("conpago").hidden = true
@@ -346,10 +353,10 @@
 						         .text(value.claveProv)); 
 						});
 							if(jsonData.proveedor.nombre =='PROVEEDOR GENÉRICO') {
-								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedor.idProveedor).text(jsonData.proveedor.claveProv));
+								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text(jsonData.proveedorClaveProv));
 							}
 							
-							$('#newSuppliers').val(jsonData.proveedor.idProveedor);
+							$('#newSuppliers').val(jsonData.proveedorIdProveedor);
 						});
 						
 						

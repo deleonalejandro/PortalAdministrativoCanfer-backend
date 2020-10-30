@@ -47,6 +47,8 @@ public class ProveedorRestController {
     		@And({
     			@Spec(path="e.rfc", params= "empresa", spec = Equal.class),
     			@Spec(path="p.claveProv", params= "proveedor", spec = Equal.class),
+    			 @Spec(path="fechaEmision", params={"registeredAfter","registeredBefore"}, config = "YYYY-MM-dd", spec=Between.class),
+                 @Spec(path="fechaCarga", params={"uploadAfter","uploadBefore"}, spec=Between.class),
                 @Spec(path="fechaEmision", params={"registeredAfter","registeredBefore"}, config = "YYYY-MM-dd", spec=Between.class),
                 @Spec(path="folio", params={"sequenceAfter","sequenceBefore"}, spec=Between.class),
 				@Spec(path="estatusPago", params= "estatusPago", spec = EqualIgnoreCase.class),
