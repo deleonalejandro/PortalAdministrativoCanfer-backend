@@ -78,7 +78,7 @@
 						{ data : "folio" },
 						{ data : "total" },
 						{ data : "pagoTotalPago"},
-						{ data : "pagoFecMvto"},
+						{ data : "pagoFecmvto"},
 						{ data : "pagoIdNumPago"},
 						{ data : "fechaCarga" },
 						{ data : "fechaEmision" },
@@ -220,7 +220,7 @@
 					
 					if(jsonData.pago != null){
 						$('#numPago').val(jsonData.pagoIdNumPago)
-						$('#fechaPago').val(jsonData.pagoFecMvto)
+						$('#fechaPago').val(jsonData.pagoFecmvto)
 						$('#totalPago').val(jsonData.pagoTotalPago)
 						$('#totalFactura').val(jsonData.pagoTotalFactura)
 						$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
@@ -286,7 +286,7 @@
 						
 						if(jsonData.pago != null){
 							$('#numPago').val(jsonData.pagoIdNumPago)
-							$('#fechaPago').val(jsonData.pagoFecMvto)
+							$('#fechaPago').val(jsonData.pagoFecmvto)
 							$('#totalPago').val(jsonData.pagoTotalPago)
 							$('#totalFactura').val(jsonData.pagoTotalFactura)
 							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
@@ -353,7 +353,7 @@
 						
 						if(jsonData.pago != null){
 							$('#numPago').val(jsonData.pagoIdNumPago)
-							$('#fechaPago').val(jsonData.pagoFecMvto)
+							$('#fechaPago').val(jsonData.pagoFecmvto)
 							$('#parcialidad').val(jsonData.pagoTotalParcialidad)
 							$('#totalFactura').val(jsonData.pagoTotalFactura)
 							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
