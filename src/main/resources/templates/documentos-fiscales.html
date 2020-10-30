@@ -210,6 +210,7 @@
 							<a class="nav-link" id="pestañaNotas" href="#!">Notas de Crédito</a> 
 							<a class="nav-link" id="pestañaCompl" href="#!">Complementos de Pago</a> 
 							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a>
+							<a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
 							
 							<img src="assets/img/logosEmpresas/canfer.gif"
 								class=" pl-5 pb-5"
@@ -259,7 +260,7 @@
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													 <div class="modal-header">
-												        <h5 class="modal-title" id="headerValue"> </h5>
+												        <h5 class="modal-title" > Nuevo Documento Fiscal </h5>
 												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												          <span aria-hidden="true">&times;</span>
 												        </button>
@@ -544,19 +545,12 @@
 									aria-hidden="true">
 									<div class="modal-dialog modal-dialog-scrollable" role="document">
 										<div class="modal-content">
-											<div class="modal-header">
-												<div class="col-11">
-													<input type="text" style="height: 20px" readonly
-														class="form-control-plaintext font-weight-bold font-weight-bold"
-														id="uuid" value="" />
-												</div>
-												<div class="col-1">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-											</div>
+											 <div class="modal-header">
+												        <h5 class="modal-title" id="headerValue"> </h5>
+												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true">&times;</span>
+												        </button>
+												      </div>
 											<div class="modal-body">
 												<div class="form-group">
 
@@ -996,6 +990,34 @@
 												<th>Fecha de Pago</th>
 												<th>Clave Proveedor</th>
 												<th>RFC Proveedor</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Tabla para Log de movimientos -->
+						<div class="card mb-0" hidden="true" id="divLog">
+							<div class="card-body">
+								<div class="datatable">
+								<!-- TABLA -->
+									<table class="compact table-hover" id="logMov"
+										style="text-align: center; width: 100%">
+										<thead>
+											<tr>
+												<th>Fecha</th>
+												<th>Empresa</th>
+												<th>Mensaje</th>
+												<th>Hora</th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<th>Fecha</th>
+												<th>Empresa</th>
+												<th>Mensaje</th>
+												<th>Hora</th>
 											</tr>
 										</tfoot>
 									</table>

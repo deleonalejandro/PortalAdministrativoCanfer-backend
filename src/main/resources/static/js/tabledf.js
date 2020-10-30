@@ -186,8 +186,78 @@
 						{ data : "fecMvto" },
 						{ data : "claveProveedor" },
 						{ data : "rfcProveedor" }
-		             ]
-					
+		             ],
+					 "order": [[5, 'desc']],
+		 });
+		 
+		  //Tabla de Log
+		  var table3 = $('#logMov').DataTable({
+					ajax: {
+		            url: "/catalogsAPI/log",
+					dataSrc:""
+		        	},
+					scrollX:true,
+					"language": {
+			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			        },
+			        "columns": [
+			          { data: "fecha",
+		                    "render": function(data) {
+		                       var string = data.split(' ')
+		                       return string[0]
+						     }
+						},
+		                { data : "empresa",
+		                "render": function(data) {
+		                      if(data=="[WIRE HARNESSES INTEGRATING SOLUTION SA DE CV]"){
+		                      
+		                       return '<span class="text-yellow">WIRE HARNESSES INTEGRATING SOLUTION SA DE CV</span>';
+		                      
+		                      } if (data == "[PROVEEDORA DE AISLANTES ELECTRICOS SA DE CV]"){
+		                      
+		                       return '<span class="text-red">PROVEEDORA DE AISLANTES ELECTRICOS SA DE CV</span>';
+		                      
+		                      } else if (data == "[SURTIDORA DE PELICULAS SA DE CV]"){
+		                      
+		                       return '<span class="text-purple">SURTIDORA DE PELICULAS SA DE CV</span>';
+		                      
+		                      } else if (data == "[EXCELCUTS, S DE R.L.DE C.V.]"){
+		                      
+		                       return '<span class="text-green">EXCELCUTS, S DE R.L.DE C.V.</span>';
+		                      
+		                      } else if (data == "[Proflux SA de CV]"){
+		                      
+		                       return '<span class="text-green">Proflux SA de CV</span>';
+		                      
+		                      } else if (data == "[NEWLAND DE MEXICO S.A.]"){
+		                      
+		                       return '<span class="text-green">NEWLAND DE MEXICO S.A.</span>';
+		                      
+		                      } else if (data == "[PROVEEDORA FLEXOGRAFICA, S.A DE C.V.]"){
+		                      
+		                       return '<span class="text-purple">PROVEEDORA FLEXOGRAFICA, S.A DE C.V.</span>';
+		                      
+		                      } else if (data == "[NA]"){
+		                      
+		                       return '<span class="text-red">NA</span>';
+		                      
+		                      } else {
+		                      
+		                       return '<span class="text-orange">CANFER</span>';
+		                      
+		                      }
+		                      
+						     } 
+					 },
+		                { data : "mensaje" },
+		                 { data: "fecha",
+		                    "render": function(data) {
+		                       var string = data.split(' ')
+		                       return string[1]
+						     }
+						}
+		             ],
+					 "order": [[0, 'desc']],
 		 });
  			
 			// Filters
@@ -352,7 +422,7 @@
 						         .attr("value",value.idProveedor)
 						         .text(value.claveProv)); 
 						});
-							if(jsonData.proveedor.nombre =='PROVEEDOR GENÉRICO') {
+							if(jsonData.proveedorNombre =='PROVEEDOR GENÉRICO') {
 								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text(jsonData.proveedorClaveProv));
 							}
 							
@@ -548,7 +618,8 @@
 				$("#pestañaFacturas").addClass("active")
 				document.getElementById("divFacturas").hidden = false;
 				document.getElementById("divAvisos").hidden = true;
-				$("#pestañaInicio, #pestañaAvisos, #pestañaNotas, #pestañaCompl").removeClass("active") 
+				document.getElementById("divLog").hidden = true;
+				$("#pestañaInicio, #pestañaAvisos, #pestañaLog, #pestañaNotas, #pestañaCompl").removeClass("active") 
 				table
 					table
 					    .columns( 10 )
@@ -562,7 +633,8 @@
 				$("#pestañaInicio").addClass("active")
 				document.getElementById("divFacturas").hidden = false;
 				document.getElementById("divAvisos").hidden = true;
-				$("#pestañaFacturas, #pestañaAvisos, #pestañaNotas, #pestañaCompl").removeClass("active") 
+				document.getElementById("divLog").hidden = true;
+				$("#pestañaFacturas, #pestañaAvisos, #pestañaLog, #pestañaNotas, #pestañaCompl").removeClass("active") 
 				table
 					table
 					    .columns( 10 )
@@ -575,7 +647,8 @@
 				$("#pestañaCompl").addClass("active")
 				document.getElementById("divFacturas").hidden = false;
 				document.getElementById("divAvisos").hidden = true;
-				$("#pestañaInicio, #pestañaAvisos, #pestañaNotas, #pestañaFacturas").removeClass("active") 
+				document.getElementById("divLog").hidden = true;
+				$("#pestañaInicio, #pestañaAvisos, #pestañaLog, #pestañaNotas, #pestañaFacturas").removeClass("active") 
 				table
 					table
 					    .columns( 10 )
@@ -588,7 +661,8 @@
 				$("#pestañaNotas").addClass("active")
 				document.getElementById("divFacturas").hidden = false;
 				document.getElementById("divAvisos").hidden = true;
-				$("#pestañaFacturas, #pestañaAvisos, #pestañaInicio, #pestañaCompl").removeClass("active") 
+				document.getElementById("divLog").hidden = true;
+				$("#pestañaFacturas, #pestañaAvisos, #pestañaLog, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				table
 					table
 					    .columns( 10 )
@@ -599,11 +673,25 @@
 			 $("#pestañaAvisos").on( "click", function() {
 				table.rows().every(function(){($(this.node()).removeClass('selected'))});
 				$("#pestañaAvisos").addClass("active")
-				$("#pestañaFacturas, #pestañaNotas, #pestañaInicio, #pestañaCompl").removeClass("active") 
+				$("#pestañaFacturas, #pestañaNotas, #pestañaLog, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				document.getElementById("divFacturas").hidden = true;
+				document.getElementById("divLog").hidden = true;
 				table2.columns.adjust();
 				document.getElementById("divAvisos").hidden = false;
 				table2.columns.adjust();
+				
+				
+			});
+			
+			 $("#pestañaLog").on( "click", function() {
+				table.rows().every(function(){($(this.node()).removeClass('selected'))});
+				$("#pestañaLog").addClass("active")
+				$("#pestañaFacturas, #pestañaAvisos, #pestañaNotas, #pestañaInicio, #pestañaCompl").removeClass("active") 
+				document.getElementById("divFacturas").hidden = true;
+				document.getElementById("divAvisos").hidden = true;
+				table3.columns.adjust();
+				document.getElementById("divLog").hidden = false;
+				table3.columns.adjust();
 				
 				
 			});
