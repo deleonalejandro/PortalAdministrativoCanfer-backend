@@ -19,8 +19,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserPrincipalDetailsService userPrincipalDetailsService;
 	
-	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService) {
+	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	
+	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
 		this.userPrincipalDetailsService = userPrincipalDetailsService;
+		this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
 	}
 
 	
@@ -36,6 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http	
 				.formLogin()
 				.loginPage("/login")
+				.successHandler(customAuthenticationSuccessHandler)
 				.loginProcessingUrl("/login")
 				.defaultSuccessUrl("/dashboard")
 				.failureUrl("/login-error")
