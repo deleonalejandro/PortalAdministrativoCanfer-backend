@@ -1,6 +1,7 @@
 package com.canfer.app.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -13,6 +14,8 @@ public interface DocumentoBaseRepository<T extends Documento> extends JpaReposit
 	T findByIdTablaAndExtension(Long idTabla, String extension);
 	
 	List<T> findAllByIdTabla(Long idTabla);
+	
+	Optional<T> findByConcepto(String concepto);
 	
 
 	

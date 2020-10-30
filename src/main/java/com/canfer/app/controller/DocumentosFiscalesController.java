@@ -40,23 +40,21 @@ import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
-import com.canfer.app.model.ComprobanteFiscal.Factura;
+import com.canfer.app.model.ComprobanteFiscal.Factura; 
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.ComprobanteFiscalRespository; 
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.EmpresaRepository;
-import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.webservice.invoiceone.ValidationService;
-import com.opencsv.CSVWriter;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvException;
@@ -90,7 +88,7 @@ public class DocumentosFiscalesController {
 	@Autowired
 	private FacturaRepository facturaRepository;
 	@Autowired
-	private EmailSenderService emailSender; 
+	private EmailSenderService emailSender;  
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -116,9 +114,9 @@ public class DocumentosFiscalesController {
 			 */ 
 			
 			//Initialize folders and get the route.
-			comprobanteStorageService.init(comprobante);
+			comprobanteStorageService.init(comprobanteFiscal);
 			//Store the XML in the server.
-			ruta = comprobanteStorageService.store(files[0], comprobante, comprobanteFiscal.getIdNumSap());
+			ruta = comprobanteStorageService.store(files[0], comprobanteFiscal);
 			//Save document object.
 			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
 			
@@ -128,7 +126,7 @@ public class DocumentosFiscalesController {
 			
 			if (!files[1].getOriginalFilename().isEmpty()) {
 				//Take the route.
-				ruta = comprobanteStorageService.store(files[1], comprobante, comprobanteFiscal.getIdNumSap());
+				ruta = comprobanteStorageService.store(files[1], comprobanteFiscal);
 				//Save document object.
 				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
 			}
@@ -256,14 +254,40 @@ public class DocumentosFiscalesController {
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;	
 	}
 	
-	//TODO configurar updateError using alert
 	@PostMapping(value = "/update")
-	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc) {
-	
+	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, MultipartFile pdf) {
+		
+		ComprobanteFiscal comprobanteUpdate = comprobanteFiscalService.findByUUID(documento.getUuid());
+		
+		if (pdf != null) { 
+			
+			String ruta = null;
+			String concepto = comprobanteUpdate.getTipoDocumento()+"_"+comprobanteUpdate.getUuid();
+			//find the previous pdf
+			List<Documento> facturaDocuments = documentoService.findAllByConcepto(concepto);
+			
+			try {
+				
+				//just replace the actual pdf document
+				ruta = comprobanteStorageService.storeNewPdf(facturaDocuments.get(0)); 
+				
+				if (facturaDocuments.size() == 1) {
+					//create a object record for the new document if it does not exist.
+					documentoService.save(comprobanteUpdate, "pdf", "Documentos Fiscales", ruta);
+				}
+				
+			} catch (StorageException e) {
+				Log.activity(e.getMessage(), comprobanteUpdate.getEmpresaNombre());
+			}
+		}
+
+		// update object information normally 
 		try {
+			
 			comprobanteFiscalService.updateInfo(documento);
+			
 		} catch (Exception e) {
-			Log.falla("Error al actualizar CFDI: " + e.getMessage());
+			Log.activity("Error al actualizar CFDI: " + e.getMessage(), comprobanteUpdate.getEmpresaNombre());
 		}
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
@@ -523,7 +547,6 @@ public class DocumentosFiscalesController {
 
 	}
 
-	//TODO THIS METHOD IS PARTIALLY WORKING (problems with the first 2 entities)
 	@GetMapping(value = "/csv")
 	public void exportCSV(HttpServletResponse response, @RequestParam List<Long> ids) throws Exception {
 
