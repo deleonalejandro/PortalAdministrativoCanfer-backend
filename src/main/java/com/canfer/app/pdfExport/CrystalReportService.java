@@ -108,12 +108,12 @@ public class CrystalReportService {
 		}
 		catch(ReportSDKException ex) {
 		
-			Log.falla("No se pudo generar el Crystal Report para el Pago: " + pago );
+			Log.activity("No se pudo generar el Crystal Report para el Pago: " + pago,empresa, "ERROR_FILE" );
 			return null; 
 		}
 		catch(Exception ex) {
 			
-			Log.falla("Ocurrió un error al exportar el reporte.");
+			Log.activity("Ocurrió un error al exportar el aviso de Pago: "+ pago+".", empresa, "ERROR");
 			ex.printStackTrace();
 			return null; 	
 		}
@@ -166,16 +166,15 @@ public class CrystalReportService {
 			
 			
 			//save QR
-			String pathQR = "C:\\Users\\alex2\\Desktop\\CurrentQR.png";
+			String pathQR = "C:\\Users\\aadministrador\\Desktop\\CurrentQR.png";
 			String urlSAT = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+comprobante.getUuidTfd()+
 					"&re="+comprobante.getEmisorRfc()+"&rr="+comprobante.getReceptorRfc()+"&tt="+comprobante.getTotal()+"&fe="+ultimosDig;
 			try {
 	            generateQRCodeImage(urlSAT, 350, 350, pathQR);
 	        } catch (WriterException e) {
-	        	
-	            System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
+	            Log.activity("No se pudo generar un QR para el PDF genérico "+comprobante.getUuidTfd()+".", comprobante.getReceptorNombre(), "ERROR");
 	        } catch (IOException e) {
-	            System.out.println("Could not generate QR Code, IOException :: " + e.getMessage());
+	        	 Log.activity("No se pudo generar un QR para el PDF genérico "+comprobante.getUuidTfd()+".", comprobante.getReceptorNombre(), "ERROR_FILE");
 	        }
 			
 			
@@ -216,12 +215,12 @@ public class CrystalReportService {
 		}
 		catch(ReportSDKException ex) {
 		
-			Log.falla("No se pudo generar el PDF Generico para: " + uuid );
+			Log.activity("No se pudo generar el PDF Generico para: " + uuid+".", comprobante.getReceptorNombre(), "ERROR_FILE");
 			return null; 
 		}
 		catch(Exception ex) {
 			
-			Log.falla("Ocurrió un error al exportar el reporte.");
+			Log.activity("Ocurrió un error al exportar un PDF genérico para "+uuid+".", comprobante.getReceptorNombre(), "ERROR");
 			ex.printStackTrace();
 			return null; 	
 		}

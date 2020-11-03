@@ -3,6 +3,8 @@ package com.canfer.app.pdfExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.canfer.app.model.Log;
+
 
 @Component
 public class DBThread implements Runnable {
@@ -38,7 +40,7 @@ public class DBThread implements Runnable {
 				System.out.println("DB Thread running... ya me fui a dormir");
                 Thread.sleep(60L * 1000L);
             } catch (InterruptedException e) {
-            	System.out.println("Se interrumpio el thread DB");
+            	Log.falla("Se interrumpio el thread que monitorea la base de datos.", "ERROR_CONNECTION");
                 e.printStackTrace();
                 // Restore interrupted state...
                 Thread.currentThread().interrupt();

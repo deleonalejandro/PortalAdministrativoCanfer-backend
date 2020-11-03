@@ -11,10 +11,11 @@ public class Log {
 		throw new IllegalStateException("Utility class");
 	}
 
-	public static void activity(String message, String empresa) {
+	public static void activity(String message, String empresa, String concepto) {
 
 		final Level activity = Level.forName("ACTIVIDAD", 150);
 		ThreadContext.put("empresa", empresa);
+		ThreadContext.put("concepto", concepto);
 
 		final Logger logger = LogManager.getLogger();
 
@@ -25,10 +26,11 @@ public class Log {
 
 	}
 
-	public static void falla(String message) {
+	public static void falla(String message, String concepto) {
 
 		final Level activity = Level.forName("FALLA", 140);
 		ThreadContext.put("empresa", "NA");
+		ThreadContext.put("concepto", concepto);
 
 		final Logger logger = LogManager.getLogger();
 

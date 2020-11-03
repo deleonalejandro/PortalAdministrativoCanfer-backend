@@ -67,13 +67,14 @@ public class UserController {
 			}
 		
 			usuarioService.save(user);
-			
+		
 		} catch (UsernameNotFoundException | EmptyResultDataAccessException e) {
-			Log.falla("Error al crear usuario: " + e.getMessage());
+			Log.falla("Error al crear usuario: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("errorMessage", e.getMessage());
 			return USER_SIGNUP;
 		} catch (NotFoundException e) {
 			// company not identified
+			Log.falla("Error al crear usuario: "+user.getUsername(), "ERROR_DB");
 			e.printStackTrace();
 		}
 				
@@ -92,8 +93,9 @@ public class UserController {
 	public String saveUser(UserDTO user, RedirectAttributes ra) {
 		try {
 			usuarioService.update(user);
+			
 		} catch (UsernameNotFoundException e) {
-			Log.falla("Error al actualizar usuario: " + e.getMessage());
+			Log.falla("Error al actualizar usuario: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("updateError", e.getMessage());
 		}
 		return "redirect:/admin/users";
@@ -102,9 +104,11 @@ public class UserController {
 	@GetMapping(value = "/delete/{id}")
 	public String deleteUser(@PathVariable Long id, RedirectAttributes ra) {
 		try {
+			
 			usuarioService.delete(id);
+			
 		} catch (UsernameNotFoundException e) {
-			Log.falla("Error al actualizar usuario: " + e.getMessage());
+			Log.falla("Error al actualizar usuario: " + e.getMessage(),"ERROR_DB");
 			ra.addFlashAttribute("UserNotFoundMessage", e.getMessage());
 		}
 		return "redirect:/admin/users";

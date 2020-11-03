@@ -207,50 +207,60 @@
 		                       return string[0]
 						     }
 						},
-		                { data : "empresa",
+						{ data : "empresa" },
+		                { data : "concepto",
 		                "render": function(data) {
-		                      if(data=="[WIRE HARNESSES INTEGRATING SOLUTION SA DE CV]"){
+		                      if(data=="ERROR"){
 		                      
-		                       return '<span class="text-yellow">WIRE HARNESSES INTEGRATING SOLUTION SA DE CV</span>';
+		                       return '<i style="color:red" data-feather="x-circle"></i><script> feather.replace()</script>';
 		                      
-		                      } if (data == "[PROVEEDORA DE AISLANTES ELECTRICOS SA DE CV]"){
+		                      } if (data == "UPDATE"){
 		                      
-		                       return '<span class="text-red">PROVEEDORA DE AISLANTES ELECTRICOS SA DE CV</span>';
+		                       return '<i style="color:purple" data-feather="edit"></i><script> feather.replace()</script>';
 		                      
-		                      } else if (data == "[SURTIDORA DE PELICULAS SA DE CV]"){
+		                      } else if (data == "PAYMENT"){
 		                      
-		                       return '<span class="text-purple">SURTIDORA DE PELICULAS SA DE CV</span>';
+		                       return '<i style="color:green" data-feather="dollar-sign"></i><script> feather.replace()</script>';
 		                      
-		                      } else if (data == "[EXCELCUTS, S DE R.L.DE C.V.]"){
+		                      } else if (data == "NEW_DOC"){
 		                      
-		                       return '<span class="text-green">EXCELCUTS, S DE R.L.DE C.V.</span>';
+		                       return '<i style="color:green" data-feather="file-plus"></i><script> feather.replace()</script>';
 		                      
-		                      } else if (data == "[Proflux SA de CV]"){
+		                      } else if (data == "ERROR_CONNECTION"){
 		                      
-		                       return '<span class="text-green">Proflux SA de CV</span>';
+		                       return '<i style="color:orange" data-feather="zap-off"></i><script> feather.replace()</script>';
 		                      
-		                      } else if (data == "[NEWLAND DE MEXICO S.A.]"){
+		                      } else if (data == "NEW_USER"){
 		                      
-		                       return '<span class="text-green">NEWLAND DE MEXICO S.A.</span>';
+		                       return '<i style="color:purple" data-feather="user-plus"></i><script> feather.replace()</script>';
 		                      
-		                      } else if (data == "[PROVEEDORA FLEXOGRAFICA, S.A DE C.V.]"){
+		                      } else if (data == "ERROR_STORAGE"){
 		                      
-		                       return '<span class="text-purple">PROVEEDORA FLEXOGRAFICA, S.A DE C.V.</span>';
+		                       return '<i style="color:red" data-feather="folder-minus"></i><script> feather.replace()</script>';
 		                      
-		                      } else if (data == "[NA]"){
+		                      } else if (data == "ERROR_DB"){
 		                      
-		                       return '<span class="text-red">NA</span>';
+		                       return '<i style="color:red" data-feather="database"></i><script> feather.replace()</script>';
+		                      
+		                      } else if (data == "ERROR_FILE"){
+		                      
+		                       return '<i style="color:red" data-feather="file-minus"></i><script> feather.replace()</script>';
+		                      
+		                      } else if (data == "DELETE"){
+		                      
+		                       return '<i style="color:black" data-feather="trash-2"></i><script> feather.replace()</script>';
 		                      
 		                      } else {
 		                      
-		                       return '<span class="text-orange">CANFER</span>';
+		                       return '<i style="color:blue" data-feather="activity"></i><script> feather.replace()</script>';
 		                      
 		                      }
 		                      
 						     } 
 					 },
+		                
 		                { data : "mensaje" },
-		                 { data: "fecha",
+		                { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 		                       return string[1]
@@ -689,7 +699,7 @@
 				$("#pestañaFacturas, #pestañaAvisos, #pestañaNotas, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				document.getElementById("divFacturas").hidden = true;
 				document.getElementById("divAvisos").hidden = true;
-				table3.columns.adjust();
+				table3.draw();
 				document.getElementById("divLog").hidden = false;
 				table3.columns.adjust();
 				

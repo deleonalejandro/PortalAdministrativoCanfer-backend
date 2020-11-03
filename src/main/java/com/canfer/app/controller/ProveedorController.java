@@ -1,5 +1,6 @@
 package com.canfer.app.controller;
 
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
@@ -32,7 +33,7 @@ public class ProveedorController {
 	@Autowired
 	private EmpresaService empresaService;
 	@Autowired
-	private EstadoRepository estadoRepository;
+	private EstadoRepository estadoRepository; 
 	
 	public ProveedorController() {
 	}
@@ -78,13 +79,13 @@ public class ProveedorController {
 		try {
 			proveedorService.save(proveedor);
 		} catch (EntityExistsException e) {
-			Log.falla("Error añadir proveedor: " + e.getMessage());
+			Log.falla("Error añadir proveedor: " + e.getMessage(), "ERROR_DB");
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 		} catch (UnknownError e) {
-			Log.falla("Error añadir proveedor: " + e.getMessage());
+			Log.falla("Error añadir proveedor: " + e.getMessage(), "ERROR");
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 		} catch (NullArgumentException e) {
-			Log.falla("Error añadir proveedor: " + e.getMessage());
+			Log.falla("Error añadir proveedor: " + e.getMessage(), "ERROR_STORAGE");
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 		}
 		return "redirect:/admin/suppliers";
@@ -94,11 +95,12 @@ public class ProveedorController {
 	public String updateSupplier(ProveedorDTO proveedor, RedirectAttributes redirectAttributes) {
 		try {
 			proveedorService.updateProveedor(proveedor);
+		
 		} catch (EntityNotFoundException e) {
-			Log.falla("Error al actualizar la información: " + e.getMessage());
+			Log.falla("Error al actualizar la información: " + e.getMessage(), "ERROR_DB");
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 		} catch (UnknownError e) {
-			Log.falla("Error al actualizar la información: " + e.getMessage());
+			Log.falla("Error al actualizar la información: " + e.getMessage(), "ERROR");
 			redirectAttributes.addFlashAttribute("error", e.getMessage());
 		} 
 		return "redirect:/admin/suppliers";
@@ -108,6 +110,7 @@ public class ProveedorController {
 	public String deleteSupplier(@PathVariable Long id, RedirectAttributes ra) {
 		try {
 			proveedorService.delete(id);
+				
 		} catch (NotFoundException e) {
 			ra.addFlashAttribute("supplierNotFound", e.getMessage());
 			return "redirect:/admin/suppliers";

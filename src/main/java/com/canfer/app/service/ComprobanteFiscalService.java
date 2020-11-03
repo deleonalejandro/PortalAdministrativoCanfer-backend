@@ -97,17 +97,25 @@ public class ComprobanteFiscalService {
 		if (comprobante.getTipoDeComprobante().equalsIgnoreCase("I")) {
 			Factura factura = new Factura(comprobante, receptor, emisor, idNumSap);
 			facturaRepository.save(factura);
+			Log.activity("Se agregó la factura:  " + factura.getUuid() + ".", factura.getEmpresaNombre(),"NEW_DOC");
+			
 			return factura;
 
 		} else if (comprobante.getTipoDeComprobante().equalsIgnoreCase("E")) {
 			NotaDeCredito nota = new NotaDeCredito(comprobante, receptor, emisor, idNumSap);
 			notaDeCreditoRepository.save(nota);
+			Log.activity("Se agregó la nota de céedicto:  " + nota.getUuid() + ".", nota.getEmpresaNombre(),"NEW_DOC");
+			
+			
 			return nota;
 
 		} else if (comprobante.getTipoDeComprobante().equalsIgnoreCase("P")) {
 			ComplementoPago complemento = new ComplementoPago(comprobante, receptor, emisor, idNumSap);
 			complemento = complementoPagoRepository.saveAndFlush(complemento);
 			matchFacturaWithComplemento(comprobante, complemento);
+			Log.activity("Se agregó el complemento de pago:  " + complemento.getUuid() + ".", complemento.getEmpresaNombre(),"NEW_DOC");
+			
+			
 			return complemento;
 		} else {
 			// throw error since no document type was found
@@ -135,6 +143,7 @@ public class ComprobanteFiscalService {
 		
 			
 		
+		Log.activity("Se actualizó el documento fiscal " + comprobanteUpdate.getUuid() + ".", comprobanteUpdate.getEmpresa().getNombre(),"UPDATE");
 		
 		return comprobanteFiscalRepository.save(comprobanteUpdate);
 	}
@@ -170,7 +179,11 @@ public class ComprobanteFiscalService {
 	}
 
 	public void delete(Long id) {
+		Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
 		comprobanteFiscalRepository.deleteById(id);
+		
+		Log.activity("Se eliminó el comprobante:  " + factura.get().getUuid() + ".", factura.get().getEmpresaNombre(),"DELETE");
+		
 	}
 
 	public ComprobanteFiscal findByUUID(String uuid) {
@@ -193,6 +206,8 @@ public class ComprobanteFiscalService {
 			throw new DataAccessResourceFailureException(DOCUMENT_NOT_FOUND);
 		}
 
+		Log.activity("Se eliminó el comprobante:  " + fncDocumento.getUuid() + ".", fncDocumento.getEmpresaNombre(),"DELETE");
+		
 		comprobanteFiscalRepository.delete(fncDocumento);
 	}
 	
@@ -218,7 +233,7 @@ public class ComprobanteFiscalService {
 			}
 			
 		} catch (NullPointerException e) {
-			Log.falla(e.getMessage());
+			Log.falla(e.getMessage(), "ERROR");
 		}
 		
 		
