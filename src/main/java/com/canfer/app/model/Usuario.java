@@ -20,6 +20,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
+
+import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -217,9 +221,14 @@ public abstract class Usuario {
 	@DiscriminatorValue("USUARIO_PROVEEDOR")
 	public static class UsuarioProveedor extends Usuario {
 		
-		@JoinColumn(name = "idProveedor")
-		@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-		private Proveedor proveedor;
+		@JoinTable( 
+		        name = "usuario_proveedor",
+		        joinColumns = @JoinColumn(name = "id_usuario_proveedor", nullable = false),
+		        inverseJoinColumns = @JoinColumn(name="id_proveedor", nullable = false)
+			    )
+		@ManyToMany(fetch = FetchType.LAZY)
+		private List<Proveedor> proveedores;
+		
 		
 		public UsuarioProveedor(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
 			super(username, password, nombre, apellido, correo, rol, permisos);
@@ -229,13 +238,15 @@ public abstract class Usuario {
 			// default constructor
 		}
 
-		public Proveedor getProveedor() {
-			return proveedor;
+
+		public List<Proveedor> getProveedores() {
+			return proveedores;
 		}
 
-		public void setProveedor(Proveedor proveedor) {
-			this.proveedor = proveedor;
+		public void setProveedores(List<Proveedor> proveedores) {
+			this.proveedores = proveedores;
 		}
+		
 		
 		
 	}

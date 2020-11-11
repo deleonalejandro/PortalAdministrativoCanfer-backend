@@ -197,9 +197,9 @@ public class EmailService {
 			 */
 
 			// Initialize folders and get the route.
-			comprobanteStorageService.init(comprobante);
+			comprobanteStorageService.init(comprobanteFiscal);
 			// Store the XML in the server.
-			ruta = comprobanteStorageService.store(files.get(0), comprobante, comprobanteFiscal.getIdNumSap());
+			ruta = comprobanteStorageService.store(files.get(0), comprobanteFiscal);
 			// Save document object.
 			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
 
@@ -209,7 +209,7 @@ public class EmailService {
 
 			if (files.size() > 1) {
 				// Take the route.
-				ruta = comprobanteStorageService.store(files.get(1), comprobante, comprobanteFiscal.getIdNumSap());
+				ruta = comprobanteStorageService.store(files.get(1), comprobanteFiscal);
 				// Save document object.
 				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
 			}

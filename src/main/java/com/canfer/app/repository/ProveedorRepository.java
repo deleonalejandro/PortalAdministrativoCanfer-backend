@@ -14,6 +14,8 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
 	
 	List<Proveedor> findAllByRfc(String rfc);
 
+	List<Proveedor> findAllByRfcAndBitActivo(String rfc, boolean activo);
+	
 	Proveedor findByEmpresasAndRfc(Empresa empresa, String rfc);
 	
 	Optional<Proveedor> findByEmpresasAndClaveProv(Empresa empresa, String claveProv);

@@ -42,28 +42,8 @@
 
 		<!-- LOGO DE LA EMPRESA -->
 		<a class="navbar-brand" href="#"> 
-			<!-- PRINT THE CORRESPONDING LOGO 
-			<div th:if="${selectedCompany} == PAE920709D75">
-				<img src="assets/img/logosEmpresas/PAE.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 30px" />
-			</div>
-			<div th:if="${selectedCompany} == NME801205JE7">
-				<img src="assets/img/logosEmpresas/newland.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == PFL830127PP3">
-				<img src="assets/img/logosEmpresas/PFL.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == WHI020314BE4">
-				<img src="assets/img/logosEmpresas/WHIS_head_logo.gif" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == CSO080325968">
-				<img src="assets/img/logosEmpresas/logo_excelcuts.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 35px" />
-			</div>
-			<div th:if="${selectedCompany} == SPE880430485">
-				<img src="assets/img/logosEmpresas/SDP.jpg" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>
-			<div th:if="${selectedCompany} == PRO070511ST2">
-				<img src="assets/img/logosEmpresas/PROFLUX.png" class="pl-3 img-fluid mr-0" alt="Logo PAE" style="height: 50px" />
-			</div>-->
+			<!-- PRINT THE CORRESPONDING LOGO --> 
+			<img th:src="@{'company/profile/' + ${companyProfile}}" class="pl-3 img-fluid mr-0" alt="logo" style="height: 38px" /> 
 		</a>
 
 
@@ -71,20 +51,18 @@
 		<ul class="navbar-nav align-items-center ml-auto">
 			
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline">
-            	<a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
+            	<a class="btn btn-icon btn-transparent-dark" href="/dashboardSupplier" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
             </li>
 			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownUserImage" href="javascript:void(0);"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false" ><img class="img-fluid"
-					th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}"/></a>
+				aria-expanded="false" ><img class="img-fluid" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  /></a>
 				<div
 					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
 					aria-labelledby="navbarDropdownUserImage">
 					<h6 class="dropdown-header d-flex align-items-center">
-						<img class="dropdown-user-img"
-							th:src="${'https://ui-avatars.com/api/?background=random&name=' + #authentication.principal.name}" />
+						<img class="dropdown-user-img" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  />
 						<div class="dropdown-user-details">
 							<div class="dropdown-user-details-name"><span sec:authentication="name"></div>
 							<div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
@@ -142,11 +120,11 @@
 
 						<!-- Main Content Tables  facturas-->
 						<div class="card mb-0"  id="divFacturas">
-							<div id="selectedCompany" >PAE920709D75</div>
-							<div id="selectedClave" >A-0080</div>
+							<div th:text="${selectedCompany}" id="selectedCompany" hidden></div>
+							<div th:text="${selectedClave}" id="selectedClave" hidden></div>
 							<div class="card-body">
-								<div class="datatable">
-
+								<div class="datatable"> 
+								
 									<div class="row">
 										<!-- BOTON NUEVA FACTURA -->
 										<div class="col-6 pb-3 pl-3">

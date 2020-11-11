@@ -40,19 +40,21 @@ import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
-import com.canfer.app.model.ComprobanteFiscal.Factura;
+import com.canfer.app.model.ComprobanteFiscal.Factura; 
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.ComplementoPagoRepository;
+import com.canfer.app.repository.ComprobanteFiscalRespository; 
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -88,7 +90,9 @@ public class DocumentosFiscalesController {
 	@Autowired
 	private FacturaRepository facturaRepository;
 	@Autowired
-	private EmailSenderService emailSender; 
+	private ComplementoPagoRepository complementoRepository;
+	@Autowired
+	private EmailSenderService emailSender;  
 	
 	public DocumentosFiscalesController() {
 		// Constructor empty
@@ -114,9 +118,9 @@ public class DocumentosFiscalesController {
 			 */ 
 			
 			//Initialize folders and get the route.
-			comprobanteStorageService.init(comprobante);
+			comprobanteStorageService.init(comprobanteFiscal);
 			//Store the XML in the server.
-			ruta = comprobanteStorageService.store(files[0], comprobante, comprobanteFiscal.getIdNumSap());
+			ruta = comprobanteStorageService.store(files[0], comprobanteFiscal);
 			//Save document object.
 			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
 			
@@ -126,7 +130,7 @@ public class DocumentosFiscalesController {
 			
 			if (!files[1].getOriginalFilename().isEmpty()) {
 				//Take the route.
-				ruta = comprobanteStorageService.store(files[1], comprobante, comprobanteFiscal.getIdNumSap());
+				ruta = comprobanteStorageService.store(files[1], comprobanteFiscal);
 				//Save document object.
 				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
 			}
@@ -254,15 +258,40 @@ public class DocumentosFiscalesController {
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;	
 	}
 	
-	//TODO configurar updateError using alert
 	@PostMapping(value = "/update")
-	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc) {
-		Empresa empresa = empresaRepository.findByRfc(rfc);
+	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, @RequestParam("pdf") MultipartFile pdf) {
+		
+		ComprobanteFiscal comprobanteUpdate = comprobanteFiscalService.findByUUID(documento.getUuid());
+		
+		if (pdf != null) { 
+			
+			String ruta = null;
+			String concepto = comprobanteUpdate.getTipoDocumento()+"_"+comprobanteUpdate.getUuid();
+			//find the previous pdf
+			List<Documento> facturaDocuments = documentoService.findAllByConcepto(concepto);
+			
+			try {
+				
+				//just replace the actual pdf document
+				ruta = comprobanteStorageService.storeNewPdf(pdf, facturaDocuments.get(0)); 
+				
+				if (facturaDocuments.size() == 1) {
+					//create a object record for the new document if it does not exist.
+					documentoService.save(comprobanteUpdate, "pdf", "Documentos Fiscales", ruta);
+				}
+				
+			} catch (StorageException e) {
+				Log.activity(e.getMessage(), comprobanteUpdate.getEmpresaNombre());
+			}
+		}
+
+		// update object information normally 
 		try {
+			
 			comprobanteFiscalService.updateInfo(documento);
 			
 		} catch (Exception e) {
-			Log.activity("Error al actualizar CFDI: " +documento.getUuid(),empresa.getNombre(), "ERROR");
+			Log.activity("Error al actualizar CFDI: " +documento.getUuid(),comproanteUpdate.getEmpresaNombre(), "ERROR");
 		}
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
@@ -305,25 +334,26 @@ public class DocumentosFiscalesController {
 	@GetMapping("/download/complemento/{id}")
 	public ResponseEntity<Resource> downloadComplemento(@PathVariable Long id) {
 		String contentType = "application/xml";
-		
-		Factura comprobante = (Factura) comprobanteFiscalRepository.findById(id).get();
-		ComprobanteFiscal complemento = comprobanteFiscalRepository.findByUuid(comprobante.getComplemento().getUuid());
-		String concepto = complemento.getTipoDocumento()+"_"+complemento.getUuid();
-		
-		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
-		
 		Resource resource = null;
 		
+		ComplementoPago comprobante = complementoRepository.findById(id).get();
+		String concepto = comprobante.getTipoDocumento() + "_" + comprobante.getUuid();
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
+		 
 		Path path = Paths.get(doc.getRuta());
+		
 		try {
+			
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
+			
 		} catch (StorageFileNotFoundException e) {
 			Log.activity("Error durante la descarga del complemento " +   concepto , doc.getEmpresa().getNombre(),"ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
 		}
+		
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
@@ -419,19 +449,21 @@ public class DocumentosFiscalesController {
 	}
 	
 	@GetMapping("/preview/complemento/{id}")
-	public ResponseEntity<Resource> previewLocalFile(@PathVariable Long id) {
+	public ResponseEntity<Resource> previewComplemento(@PathVariable Long id) {
 		String contentType = "application/xml";
-		
-		Factura comprobante = (Factura) comprobanteFiscalRepository.findById(id).get();
-		ComprobanteFiscal complemento = comprobanteFiscalRepository.findByUuid(comprobante.getComplemento().getUuid());
-		String concepto = complemento.getTipoDocumento()+"_"+complemento.getUuid();
-		
-		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
-		Path path = Paths.get(doc.getRuta());
 		Resource resource = null;
+		
+		ComplementoPago comprobante = complementoRepository.findById(id).get();
+		String concepto = comprobante.getTipoDocumento() + "_" + comprobante.getUuid();
+		Documento doc = documentoService.findByConceptoAndExtension(concepto, "xml");
+		 
+		Path path = Paths.get(doc.getRuta());
+
 		try {
+			
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
+			
 		} catch (StorageFileNotFoundException e) {
 			Log.activity("Error al previsualizar el documento: " + concepto, doc.getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
@@ -520,7 +552,6 @@ public class DocumentosFiscalesController {
 
 	}
 
-	//TODO THIS METHOD IS PARTIALLY WORKING (problems with the first 2 entities)
 	@GetMapping(value = "/csv")
 	public void exportCSV(HttpServletResponse response, @RequestParam List<Long> ids) throws Exception {
 

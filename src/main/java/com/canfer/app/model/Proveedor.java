@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "Proveedor")
@@ -32,6 +33,9 @@ public class Proveedor {
 			)
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Empresa> empresas;
+	
+	@ManyToMany(mappedBy = "proveedores")
+	private List<UsuarioProveedor> usuariosProveedor;
 
 	@Column(nullable = false)
 	private String claveProv;
@@ -286,6 +290,14 @@ public class Proveedor {
 			ids.add(company.getidEmpresa());
 		}
 		return ids;
+	}
+	
+	public List<String> getEmpresasRfc() {
+		List<String> rfc = new ArrayList<>();
+		for (Empresa company : this.empresas) {
+			rfc.add(company.getRfc());
+		}
+		return rfc;
 	}
 	
 	

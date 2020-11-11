@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Documento;
+import com.canfer.app.model.Documento.DocumentoPDF;
 
 
 @Service
@@ -76,26 +78,7 @@ public class ComprobanteStorageService implements StorageService {
 		return this.rootLocation.resolve(filename).toString();
 	}
 	
-	public String store(MultipartFile file, Comprobante comprobante, Long numSap) {
-		
-		Path filename = getFilename(comprobante, FilenameUtils.getExtension(file.getOriginalFilename()), numSap);
-		try {
-			if (filename.toString().contains("..")) {
-				// This is a security check
-				throw new StorageException(
-						"No es posible guardar un archivo con una ruta relativa fuera del directorio " + filename);
-			}
-			
-			Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
-					StandardCopyOption.REPLACE_EXISTING);
-		}
-		catch (IOException e) {
-			throw new StorageException("Error al guardar el archivo " + filename, e);
-		}
-		
-		return this.rootLocation.resolve(filename).toString();
-	}
-	
+
 	public String store(Path path, ComprobanteFiscal comprobante) {
 		
 		Path filename = getFilename(comprobante, FilenameUtils.getExtension(path.getFileName().toString()));
@@ -117,26 +100,26 @@ public class ComprobanteStorageService implements StorageService {
 		return this.rootLocation.resolve(filename).toString();
 	}
 	
-	public String store(Path path, Comprobante comprobante, Long numSap) {
+	public String storeNewPdf(MultipartFile pdfFile, Documento doc) {
 		
-		Path filename = getFilename(comprobante, FilenameUtils.getExtension(path.getFileName().toString()), numSap);
+		Path ruta = Paths.get(doc.getRuta());
+		String filename = ruta.getFileName().toString();
+		
+		// we use the same route and name from the XML, but change the extension to PDF.
+		filename = FilenameUtils.removeExtension(filename) + ".pdf";
+		
 		try {
 			
-			//Make a file from the given path
-			File file = new File(path.toString());
-			InputStream is = new FileInputStream(file);
-			
-			Files.copy(is, this.rootLocation.resolve(filename),
+			Files.copy(pdfFile.getInputStream(), ruta.getParent().resolve(filename),
 					StandardCopyOption.REPLACE_EXISTING);
-			// closing the input stream 
-			is.close();
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to store file " + filename, e);
 		}
 		
-		return this.rootLocation.resolve(filename).toString();
+		return ruta.getParent().resolve(filename).toString();
 	}
+	
 	
 	@Override
 	public Stream<Path> loadAll() {
@@ -208,10 +191,10 @@ public class ComprobanteStorageService implements StorageService {
 	public void init(ComprobanteFiscal comprobante) {
 		LocalDateTime today = LocalDateTime.now();
 		this.rootLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores", 
-				comprobante.getEmpresa().getRfc(), 
+				comprobante.getRfcEmpresa(), 
 				String.valueOf(today.getYear()),
 				String.valueOf(today.getMonthValue()), 
-				comprobante.getProveedor().getRfc());
+				comprobante.getRfcProveedor());
 		try {
 			Files.createDirectories(rootLocation);
 		}
@@ -246,31 +229,13 @@ public class ComprobanteStorageService implements StorageService {
 		}
 		
 		if (comprobante.getSerie() == null) {
-			return Paths.get(comprobante.getProveedor().getRfc() + "_" + folioFinal + "."
+			return Paths.get(comprobante.getRfcProveedor() + "_" + folioFinal + "."
 					+ extension);
 		} else {
-			return Paths.get(comprobante.getProveedor().getRfc() + "_" + comprobante.getSerie() + "_" + folioFinal + "."
+			return Paths.get(comprobante.getRfcProveedor() + "_" + comprobante.getSerie() + "_" + folioFinal + "."
 					+ extension);
 		}
 	}
 	
-	private Path getFilename(Comprobante comprobante, String extension, Long numSap) {
-		
-		String folioFinal;
-		
-		if (comprobante.getFolio() == null) {
-			folioFinal = String.valueOf(numSap);
-		} else {
-			folioFinal = comprobante.getFolio();
-		}
-		
-		if (comprobante.getSerie() == null) {
-			return Paths.get(comprobante.getEmisorRfc() + "_" + folioFinal + "."
-					+ extension);
-		} else {
-			return Paths.get(comprobante.getEmisorRfc() + "_" + comprobante.getSerie() + "_" + folioFinal + "."
-					+ extension);
-		}
-	}
 	
 }
