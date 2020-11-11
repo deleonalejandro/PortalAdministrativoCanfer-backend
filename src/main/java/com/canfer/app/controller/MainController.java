@@ -143,6 +143,12 @@ public class MainController {
 		
 		return "proveedores";
 	}
+	
+	@GetMapping(value = "/cajaChicaClient")
+	public String getModuloCajaChica() {
+		
+		return "caja-chica";
+	}
 
 
 }

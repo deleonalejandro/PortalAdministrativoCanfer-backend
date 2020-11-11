@@ -32,7 +32,7 @@
 	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-<link href="css/stylesprov.css" rel="stylesheet" />
+<link href="css/stylescc.css" rel="stylesheet" />
 </head>
 
 <!-- TOP NAV BAR -->
@@ -109,10 +109,9 @@
 					<div class="page-header-content pt-4">
 						<div class="row align-items-center justify-content-between">
 							<div class="col-12 pb-3">
-								<h1 class="page-header-title text-white">Documentos
-									Fiscales</h1>
+								<h1 class="page-header-title text-white">Control de Efectivo</h1>
 								<h1 class="page-header-subtitle text-gray-300 mb-0 text-right">
-									Portal de Proveedores</h1>
+									Portal Administrativo</h1>
 							</div>
 						</div>
 					</div>
@@ -126,10 +125,8 @@
 
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column" style="position: fixed">
-							<a class="nav-link active" id="pestañaInicio" href="#!">Inicio</a> 
-							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a> 
-							<a class="nav-link" id="pestañaPerfil" href="#!">Perfil</a>
-							<a class="nav-link" id="pestañaAyuda" href="#!">Ayuda</a>
+							<a class="nav-link active" id="pestañaFormulario" href="#!">Formularios</a> 
+							<a class="nav-link" id="pestañaEntradas" href="#!">Entradas</a> 
 							
 							<img src="assets/img/logosEmpresas/canfer.gif"
 								class=" pl-5 pb-5"
@@ -140,8 +137,8 @@
 					</div>
 					<div class="col-10">
 
-						<!-- Main Content Tables  facturas-->
-						<div class="card mb-0"  id="divFacturas">
+						<!-- Main Content Entradas Caja Chica-->
+						<div class="card mb-0"  hidden="true" id="divEntradas">
 							<div id="selectedCompany" >PAE920709D75</div>
 							<div id="selectedClave" >A-0080</div>
 							<div class="card-body">
@@ -151,11 +148,11 @@
 										<!-- BOTON NUEVA FACTURA -->
 										<div class="col-6 pb-3 pl-3">
 											<button type="button" id="btn-add"
-												class="btn btn-outline-danger mr-2" data-toggle="modal"
+												class="btn btn-outline-secondary mr-2" data-toggle="modal"
 												data-target="#nuevoModal">Nuevo</button>
 											<a type="button" id="btn-csv"
-												class="btn btn-outline-danger mr-2" th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}" >CSV</a>
-											<button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+												class="btn btn-outline-secondary mr-2" th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}" >CSV</a>
+											<button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 											    <i class="" style="color:white" data-feather="search"></i>
 											</button>
 										</div>
@@ -199,7 +196,7 @@
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
 																					<i class="far fa-file-pdf float-left fa-lg"
-																						style="color: red"></i>
+																						style="color: purple"></i>
 																				</div>
 																			</div>
 																			<input class="form-control" id="InputGroupPDF"
@@ -207,7 +204,7 @@
 																		</div>
 																		<tr>
 																			<td></td>
-																			<td><input class="btn btn-danger" type="submit"
+																			<td><input class="btn btn-secondary" type="submit"
 																				value="Cargar" /></td>
 																		</tr>
 																	</table>
@@ -224,9 +221,9 @@
 									
 									<div class="collapse" id="collapseExample">
 										<div class="card shadow-none mb-3">
-										  <div class="card-header" style="color:red">
-										  	<i class="mr-2 text-red" data-feather="search"></i>
-										    Filtros de Búsqueda
+										  <div class="card-header" style="color:purple">
+										  	<i class="mr-2 text-purple" data-feather="search"></i>
+										    Filtros de Busqueda
 										    
 										  </div>
 										  <div class="card-body">
@@ -245,7 +242,7 @@
 												<div class="col">
 												  	<!-- Date Range Picker EMISION-->
 													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
-													    <i class="mr-2 text-red" data-feather="calendar"></i>
+													    <i class="mr-2 text-purple" data-feather="calendar"></i>
 													    <span></span>
 													    <div id="registeredBefore" hidden></div>
 													    <div id="registeredAfter" hidden></div>
@@ -277,7 +274,7 @@
 												<div class="col">
 												</div>
 												<div class="col">
-													<button class="btn btn-red float-right mr-2" type="button" id="clearFilters"> Limpiar </button>
+													<button class="btn btn-purple float-right mr-2" type="button" id="clearFilters"> Limpiar </button>
 												</div>
 											</div>
 											<div class="row pb-1">
@@ -295,7 +292,7 @@
 												</div>
 												<div class="col"></div>
 												<div class="col">
-													<button class="btn btn-red float-right mr-2" type="button" id="reloadTableBtn">
+													<button class="btn btn-purple float-right mr-2" type="button" id="reloadTableBtn">
 												     Buscar<i class="ml-2" data-feather="search"></i>
 													</button>
 												</div>
@@ -530,7 +527,7 @@
 														</div>
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
-																class="text-danger form-control form-control-sm bg-white"
+																class="text-secondary form-control form-control-sm bg-white"
 																id="respuestaValidacion" value="" />
 														</div>
 													</div>
@@ -543,7 +540,7 @@
 														</div>
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
-																class="text-danger form-control form-control-sm bg-white"
+																class="text-secondary form-control form-control-sm bg-white"
 																id="errorValidacion" value="" />
 														</div>
 													</div>
@@ -594,7 +591,7 @@
 														</div>
 														<div class="col-9">
 									           				 <a class="btn btn-datatable btn-icon btn-transparent-dark m-0" id="pdfDetails"><i class="far fa-file-pdf float-left fa-lg"
-																						style="color: red"></i></a>
+																						style="color: purple"></i></a>
 														</div>
 													</div>
 									               <div class="row">
@@ -670,7 +667,7 @@
 									</div>
 							      </div>
 							      <div class="modal-footer">
-							        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 							      </div>
 							    </div>
 							  </div>
@@ -681,156 +678,39 @@
 
 						</div>
 					
-						<!-- Main Content Table avisos de Pago -->
-						<div class="card mb-0" hidden="true" id="divAvisos">
+						<!-- Main Content Formulario -->
+						<div class="card mb-0" id="divFormulario">
 							<div class="card-body">
-								<div class="datatable">
-								<!-- TABLA -->
-									<table class="compact table-hover" id="avisosDePago"
-										style="text-align: center; width: 100%">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Folio Pago</th>
-												<th>Fecha Pago</th>
-												<th>Monto Pago</th>
-												<th>Total de Factura</th>
-											</tr>
-										</thead>
-										<tfoot>
-											<tr>
-												<th></th>
-												<th>Folio Pago</th>
-												<th>Fecha Pago</th>
-												<th>Monto Pago</th>
-												<th>Total de Factura</th>
-											</tr>
-										</tfoot>
-									</table>
+								<div class="card-header">
+									<div class="row">
+										<div class="col-9 font-weight-bold">
+											CAJA CHICA
+										</div>
+										<div class="col-2 font-weight-bold">
+										FORMULARIO# 
+										</div>
+										<div class="col-1 font-weight-bold">
+										72486689 
+										</div>
+									</div>
+									<div cass="row">
+										<div class="float-right">
+											<div class="col">
+												  	<!-- INPUT IMPORTE ESTATUS -->
+													<select class="form-control form-control-solid"  style="font-size: 14px" id="inputFiltroEstatus">
+											            <option value="">--Seleccionar--</option>
+											            <option value="CERRADO">CERRADO</option>
+											            <option value="ABIERTO">ABIERTO</option>
+											        </select>
+												</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					
-						<!-- Main Content Perfil -->
-						<div class="card mb-0" hidden="true" id="divPerfil">
-							 <div class="card-header" style="color:red">Detalles del perfil</div>
-                                    <div class="card-body">
-                                            <!-- Form Row-->
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="claveProvPerfil">Clave de Proveedor</label>
-                                                    <input style="height: 30px;" class="form-control" id="claveProvPerfil" type="text" readonly />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="rfcProveedorPerfil">RFC</label>
-                                                    <input style="height: 30px;" class="form-control" id="rfcProveedor" type="text" readonly />
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="nombrePerfil">Nombre</label>
-                                                    <input style="height: 30px;" class="form-control" id="nombrePerfil" type="text" readonly />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="contactoPerfil">Contacto</label>
-                                                    <input  style="height: 30px;" class="form-control" id="contactoPerfil" type="text" readonly />
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="callePerfil">Calle</label>
-                                                    <input style="height: 30px;" class="form-control" id="callePerfil" type="text" readonly />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="municipioPerfil">Municipio</label>
-                                                    <input style="height: 30px;" class="form-control" id="municipioPerfil" type="text" readonly />
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="estadoPerfil">Estado</label>
-                                                    <input style="height: 30px;" class="form-control" id="estadoPerfil" type="text" readonly />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="cpPerfil">CP</label>
-                                                    <input style="height: 30px;" class="form-control" id="cpPeril" type="text" readonly />
-                                                </div>
-                                            </div>
-                                           <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="telefonoPerfil">Teléfono</label>
-                                                    <input style="height: 30px" class="form-control" id="telefonoPerfil" type="text" readonly />
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label class="small mb-1" for="monedaPerfil">Moneda</label>
-                                                    <input style="height: 30px;" class="form-control" id="monedaPerfil" type="text" readonly />
-                                                </div>
-                                            </div>
-                                  	  </div>
-                                </div>
 						
-						
-						<!-- Main Content Ayuda -->
-						<div class="card mb-0" hidden="true" id="divAyuda">
-							<div class="row">
-								<div class="col-6 m-3">
-									<div class="card">
-										 <div class="card-header" style="color:red">Datos de Contacto</div>
-			                             <div class="card-body">
-			                                    Para cualquier duda o aclaración favor de ponerse en contacto.
-			                                    <div class="form-group">
-                                                    <label class="small mb-1" for="nombreContacto">Nombre</label>
-                                                     <div class="input-group input-group-joined">
-													    <div class="input-group-prepend">
-													        <span class="input-group-text mr-4 text-red">
-													            <i data-feather="user"></i>
-													        </span>
-													    </div>
-                                                    	<input style="height: 30px" class="form-control" id="nombreContacto" type="text" readonly th:value="${@environment.getProperty('contacto.nombre')}"/>
-                                               		</div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="small mb-1" for="correoContacto">Correo</label>
-                                                    <div class="input-group input-group-joined">
-													    <div class="input-group-prepend">
-													        <span class="input-group-text mr-4 text-red">
-													            <i data-feather="mail"></i>
-													        </span>
-													    </div>
-                                                    	<input style="height: 30px;" class="form-control" id="telefonoContacto" type="text" readonly th:value="${@environment.getProperty('contacto.correo')}"/>
-                                               		</div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="small mb-1" for="telefonoContacto">Teléfono</label>
-                                                   	<div class="input-group input-group-joined">
-													    <div class="input-group-prepend">
-													        <span class="input-group-text mr-4 text-red">
-													            <i data-feather="phone"></i>
-													        </span>
-													    </div>
-                                                   		 <input style="height: 30px;" class="form-control" id="correoContacto" type="text" readonly th:value="${@environment.getProperty('contacto.telefono')}" />
-                                               		</div>
-                                                </div>
-			                             </div>
-									</div>
-								  </div>
-								<div class="col m-3">	
-									<div class="card">
-										 <div class="card-header" style="color:red">Datos de Contacto</div>
-			                             <div class="card-body">
-			                             		<div class="form-group">
-                                                    <label class="small mb-1" for="antiguedad">Antiüedad</label>
-                                                    <input style="height: 30px" class="form-control" id="antiguedad" type="text" readonly/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="small mb-1" for="version">Versión de la Aplicación</label>
-                                                    <input style="height: 30px;" class="form-control" id="version" type="text" readonly th:value="${@environment.getProperty('app.version')}"/>
-                                                </div>
-			                             </div>
-									</div>
-								</div>	
-							</div>
-						</div>
+					
 				</div>
 			</div>
 			
