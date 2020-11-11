@@ -8,11 +8,11 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.lang.NullArgumentException;
-import org.jaxen.function.IdFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.dto.ProveedorDTO;
@@ -129,6 +129,10 @@ public class ProveedorService {
 			throw new UnknownError("Ocurrio un error inesperado.");
 		}
 		
+		List<String> nombres = new ArrayList<>(); 
+		for (Empresa company: empresas) {nombres.add(company.getNombre());}
+		Log.activity("Se agregó un nuevo proveedor: " + proveedor.getClaveProv(), nombres.toString(), "NEW_USER");
+		
 		return proveedorRepository.save(saveProveedor);
 		
 	}
@@ -185,6 +189,9 @@ public class ProveedorService {
 			throw new UnknownError("Ocurrio un error inesperado.");
 		}
 
+		List<String> nombres = new ArrayList<>(); 
+		for (Empresa company: empresas) {nombres.add(company.getNombre());}
+		Log.activity("Se actualizó un proveedor: " + proveedor.getClaveProv(), nombres.toString(), "UPDATE");
 		return proveedorRepository.save(saveProveedor);
 
 	}
@@ -194,7 +201,13 @@ public class ProveedorService {
 		if (!exist(id)) {
 			throw new NotFoundException("El proveedor que desea eliminar no existe.");	
 		}
+		
+		Proveedor proveedor = proveedorRepository.findById(id).get();
+		String clave = proveedor.getClaveProv();
+		
 		proveedorRepository.deleteById(id);
+		
+		Log.falla("Se eliminó un proveedor: " + clave, "DELETE");
 	}
 	
 

@@ -31,7 +31,7 @@ public class SatVerificacionService {
         return response.getConsultaResult().getValue().getEstado().getValue();
         
 		}catch(Exception e) {
-			Log.general(e.getLocalizedMessage());
+			Log.falla("No se pudo conectar con el Web Service del SAT.", "ERROR_CONNECTION");
 			return "Error al Procesar";
 		}
 		

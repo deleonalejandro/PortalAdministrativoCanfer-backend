@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
 import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.repository.EmpresaRepository;
@@ -119,7 +120,10 @@ public class EmpresaService {
 		if (!exist(id)) {
 			throw new NotFoundException("La empresa que desea eliminar no existe.");	
 		}
+		Empresa empresa = findById(id);
 		empresaRepository.deleteById(id);
+		
+		Log.activity("Se eliminó una empresa." , empresa.getNombre(), "DELETE");
 	}
 	
 

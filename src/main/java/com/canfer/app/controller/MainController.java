@@ -81,6 +81,11 @@ public class MainController {
 	}
 
 
+	@GetMapping(value = "/cajaChicaClient")
+	public String getModuloCajaChica() {
+		
+		return "caja-chica";
+	}
 
 
 }

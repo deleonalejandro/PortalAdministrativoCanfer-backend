@@ -40,7 +40,7 @@ public class DbObserver {
 			//TODO poner la contraseña en un lugar seguro
 			String exportedFile = crService.exportPDF(pago.getRepBaseDatos(),pago.getIdNumPago(), "sa", "q2y72-m9t9q",pago.getRfcEmpresa(),pago.getIdPago());
 			if (exportedFile == null) {
-				Log.falla("No se pudo exportar el pago "+ pago.getIdNumPago()+ " a PDF.");
+				Log.falla("No se pudo exportar el pago "+ pago.getIdNumPago()+ " a PDF.", "ERROR");
 				continue; 
 			}
 			if(pago.getBitEnviarCorreo()) {
@@ -64,7 +64,7 @@ public class DbObserver {
 				 nombre = empresa.getNombre();
 			}
 			
-			Log.activity("Se ha agregado el Aviso de Pago Número " + pago.getIdNumPago(), nombre);
+			Log.activity("Se ha agregado el Aviso de Pago Número " + pago.getIdNumPago(), nombre, "PAYMENT");
 			};
 	}
 }

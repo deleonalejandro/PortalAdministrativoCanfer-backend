@@ -3,6 +3,7 @@ package com.canfer.app.webservice.invoiceone;
 import java.util.Collections;
 import java.util.List;
 
+import org.hibernate.internal.util.xml.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.canfer.app.cfd.XmlService;
+import com.canfer.app.model.Log;
 import com.canfer.app.wsdl.invoiceone.ObtenerEstatusCuentaResponse;
 import com.canfer.app.wsdl.invoiceone.ValidayVerificaXMLResponse;
 
@@ -63,9 +65,13 @@ public class ValidationService {
 			return validationAnswer.getValidation(utf8EncodedString);
 			
 		} catch (SoapFaultClientException e) {
-			e.printStackTrace();
+			Log.falla("No se pudo conectar con el Web Service de INVOICE ONE.", "ERROR_CONNECTION");;
 			return Collections.emptyList();          
+		} catch (XmlInfrastructureException e) {
+			Log.falla("Ocurrió un error con el XML: "+e.getMessage(), "ERROR_FILE");
+			return Arrays.asList("0", "Este documento no fue procesado por el Web Service", "No encontrado");          
 		}
+		
 
 	}
 	
@@ -88,7 +94,11 @@ public class ValidationService {
 			return validationAnswer.getValidation(utf8EncodedString);
 			
 		} catch (SoapFaultClientException e) {
-			e.printStackTrace();
+			Log.falla("No se pudo conectar con el Servidor Web de INVOICE ONE. ", "ERROR_CONNECTION");
+			return Arrays.asList("0", "Este documento no fue procesado por el Web Service", "No encontrado");          
+
+		} catch (XmlInfrastructureException e) {
+			Log.falla("Ocurrió un error con el XML: "+e.getMessage(), "ERROR_FILE");
 			return Arrays.asList("0", "Este documento no fue procesado por el Web Service", "No encontrado");          
 		}
 
