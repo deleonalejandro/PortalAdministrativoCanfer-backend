@@ -113,6 +113,9 @@
 			});
 		});
 	})
+	
+	//Initialize toast login
+	$('#successToast').toast('show')
 
 
 })(jQuery);

@@ -7,12 +7,12 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Portal Administrativo Canfer - Inicio de Sesión</title>
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
         <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
     </head>
-    <body class="bg-white">
+    <body th:style="'background-color:'+${companyColor}">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
@@ -29,13 +29,24 @@
                                     <div class="card-body p-5">
                                     <!-- Alerta de error al iniciar sesion -->
                                     <div class="alert alert-danger" role="alert" th:if="${loginError}"> El usuario o contraseña son incorrectos. </div>
-                                    <div class="alert alert-success" role="alert" th:if="${success}"> Ha cerrado sesión exitosamente. </div>
-                                    
+                                    <div class="alert alert-success" role="alert" th:if="${success}"> Ha cerrado sesión exitosamente. </div> 
+                                    <div th:if="${registerSuccess}" class="alert alert-success alert-icon" role="alert">
+									    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+									        <span aria-hidden="true">×</span>
+									    </button>
+									    <div class="alert-icon-aside">
+									        <i data-feather="check-circle"></i>
+									    </div>
+									    <div class="alert-icon-content">
+									        <h6 class="alert-heading">Registro exitoso</h6>
+									        Hemos enviado las credenciales a tu dirección de correo electrónico.
+									    </div>
+									</div>
                                         <!-- Login form-->
                                         <form th:action="@{/check_login}" method="post">
                                             <!-- Form Group (email address)-->
                                             <div class="form-group">
-                                                <label class="text-gray-600 small" for="emailExample">Usuario</label>
+                                                <label class="text-gray-600 small" for="emailExample">RFC</label>
                                                 <input class="form-control form-control-solid py-4" type="text" id="username" name="username" placeholder="" aria-label="Email Address" aria-describedby="username" />
                                             </div>
                                             <!-- Form Group (password)-->
@@ -82,33 +93,20 @@
                                     <hr class="my-0" />
                                     <div class="card-body px-5 py-4">
                                         <div class="small text-center">
-                                            New user?
-                                            <a href="auth-register-social.html">Create an account!</a>
+                                            ¿No cuentas con tus credenciales para el Portal de Proveedores?
+                                            <a href="/registerSupplier">Registrate al Portal</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </main>
             </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="footer mt-auto footer-dark">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
-                            <div class="col-md-6 text-md-right small">
-                                <a href="#!">Privacy Policy</a>
-                                &middot;
-                                <a href="#!">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
+        <script src="/js/scripts.js"></script>
     </body>
 </html>

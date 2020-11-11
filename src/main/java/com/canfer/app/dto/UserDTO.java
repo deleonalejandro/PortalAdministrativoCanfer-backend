@@ -19,6 +19,7 @@ public class UserDTO {
 	private List<Long> empresaIdsList = new ArrayList<>();
 	//El usuario es un proveedor
 	private String rfc;
+	private String proveedor;
 	private Long empresaCreadoraId;
 	
 	//We make a default constructor
@@ -138,6 +139,15 @@ public class UserDTO {
 	public void setRfc(String rfc) {
 		this.rfc = rfc;
 	}
+
+	public String getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+	
 	
 	
 	

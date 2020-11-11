@@ -3,6 +3,7 @@ package com.canfer.app.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
+@Order(1)
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
@@ -40,17 +42,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.formLogin()
 				.loginPage("/login")
 				.successHandler(customAuthenticationSuccessHandler)
-				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/dashboard")
+				.loginProcessingUrl("/check_login")
 				.failureUrl("/login-error")
 				.and()
 				.logout()
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/logoutSuccess")
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID")
 				.and()
 				.authorizeRequests()
 				.antMatchers("/dashboard").authenticated()
 				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/documentosFiscalesClient/**").hasAnyRole("ADMIN", "USER_CONTADOR")
 				
 				.and()
 				.httpBasic()

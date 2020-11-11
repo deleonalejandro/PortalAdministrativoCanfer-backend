@@ -2,13 +2,18 @@ package com.canfer.app.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Usuario.UsuarioProveedor;
 
 
 
@@ -90,6 +95,7 @@ public class UserPrincipal implements UserDetails {
 	public List<String> getEmpresasRfc() {
 		return this.usuario.getEmpresasRfc();
 	}
+	
 	
 	public String getName() {
 		return this.usuario.getNombre() + "+" +this.usuario.getApellido();

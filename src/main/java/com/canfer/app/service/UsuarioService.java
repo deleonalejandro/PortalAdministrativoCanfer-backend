@@ -1,7 +1,12 @@
 package com.canfer.app.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +20,7 @@ import com.canfer.app.dto.UserDTO;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
+import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.UsuarioCanferRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
@@ -33,6 +39,8 @@ public class UsuarioService {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private EmpresaService empresaService;
+	@Autowired
+	private EmpresaRepository empresaRepository;
 	@Autowired
 	private UsuarioCanferRepository usuarioCanferRepository;
 	@Autowired
@@ -56,11 +64,9 @@ public class UsuarioService {
 	public Usuario save(UserDTO user) throws NotFoundException {
 		
 		Usuario testUsuario;
-		Proveedor testProveedor;
 		String ePassword;
 		List<Empresa> empresas = empresaService.findAllById(user.getEmpresaIdsList());
-		//TODO finish first with the CANFER modules
-		Empresa empresaCreadora = empresaService.findById(1L);
+
 		
 		// we  check if the user already exists.
 		testUsuario = usuarioRepository.findByUsername(user.getUsername());
@@ -69,40 +75,73 @@ public class UsuarioService {
 		}
 		
 		// first check if we want to create a company user or provider user.
-		if (user.getRfc() == null) {		
+				
 			
-			if (user.getRol().isEmpty()) {
-				throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
-			}
-			
-			ePassword = passwordEncoder.encode(user.getPassword());
-			
-			UsuarioCanfer usuario = new UsuarioCanfer(user.getUsername(), ePassword,
-					user.getNombre(), user.getApellido(), user.getCorreo(), user.getRol(), user.getPermisosToString());
-			
-			// assign the companies that the user will manage
-			usuario.setEmpresas(empresas);
-			
-			return usuarioCanferRepository.save(usuario);
-			
-		} else {
-			
-			testProveedor = proveedorRepository.findByEmpresasAndRfc(empresaCreadora, user.getRfc());
-			if (testProveedor == null) {
-				throw new UsernameNotFoundException("El proveedor no es valido. Verifique el RFC");
-			}
-			
-			ePassword = passwordEncoder.encode(user.getPassword());
-			
-			UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword,
-					user.getNombre(), user.getApellido(), user.getCorreo(), "USUARIO_PROVEEDOR", user.getPermisosToString());
-			
-			usuario.setProveedor(testProveedor);
-			
-			return usuarioProveedorRepository.save(usuario);
-
+		if (user.getRol().isEmpty()) {
+			throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
 		}
 		
+		ePassword = passwordEncoder.encode(user.getPassword());
+		
+		UsuarioCanfer usuario = new UsuarioCanfer(user.getUsername(), ePassword,
+				user.getNombre(), user.getApellido(), user.getCorreo(), user.getRol(), user.getPermisosToString());
+		
+		// assign the companies that the user will manage
+		usuario.setEmpresas(empresas);
+		
+		return usuarioCanferRepository.save(usuario);
+		
+		
+	}
+	
+	public Usuario saveUsuarioProveedor(UserDTO user) throws NotFoundException {
+		
+		Usuario testProveedor;
+		String ePassword;
+		String password;
+		List<Proveedor> proveedoresList;
+		List<Empresa> empresas = new ArrayList<>();
+
+		testProveedor = usuarioProveedorRepository.findByUsername(user.getUsername());
+		proveedoresList = proveedorRepository.findAllByRfcAndBitActivo(user.getRfc(), true);
+		
+		if (proveedoresList.isEmpty()) {
+			throw new NotFoundException("El RFC para registrar la cuenta no es valido.");
+		}
+		
+		password = generatePassword(user.getRfc());
+		
+		/* TODO EMAIL THE USER WITH THE GENERATED CREDENTIALS */
+		System.out.println(user.getRfc() + " " + password);
+		ePassword = passwordEncoder.encode(password);
+		
+		UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword,
+				user.getNombre(), user.getApellido(), user.getCorreo(), "USER_PROVEEDOR", "");
+
+		// assign the suppliers to the users
+		usuario.setProveedores(proveedoresList);
+		
+		// lets get which companies this user is related to
+		for (Proveedor proveedor : proveedoresList) {
+			empresas.addAll(proveedor.getEmpresas());
+		}
+		
+		usuario.setEmpresas(empresas);
+		
+		return usuarioProveedorRepository.save(usuario);
+
+	}
+	
+	public Usuario updateUserSuppliers(UsuarioProveedor user) {
+		
+		List<Proveedor> proveedoresList;
+		
+		proveedoresList = proveedorRepository.findAllByRfcAndBitActivo(user.getUsername(), true);
+		
+		// assign the suppliers to the users
+		user.setProveedores(proveedoresList);
+		
+		return usuarioProveedorRepository.save(user);
 	}
 	
 	// TODO add more try catch to handle unexpected errors
@@ -137,6 +176,15 @@ public class UsuarioService {
 		usuarioRepository.delete(deleteUsuario.get());
 	}
 	
+	private String generatePassword(String rfc) {
+		
+		LocalDateTime todayDateTime = LocalDateTime.now();
+		String pwd;
+		
+		pwd = rfc.substring(0,4) + String.valueOf(todayDateTime.getHour()) + String.valueOf(todayDateTime.getMinute());
+		
+		return pwd;
+	}
 	
 
 }
