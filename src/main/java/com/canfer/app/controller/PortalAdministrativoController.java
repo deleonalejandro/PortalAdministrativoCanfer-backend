@@ -32,7 +32,7 @@ import javassist.NotFoundException;
 
 
 @Controller
-public class PortalAdminController {
+public class PortalAdministrativoController {
 	
 	@Autowired
 	private EmpresaService empresaService;

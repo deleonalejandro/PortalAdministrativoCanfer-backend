@@ -12,5 +12,5 @@ public interface PagoRepository extends JpaRepository<Pago, Long>{
 	List<Pago> findByBitProcesado(Boolean bitProcesado);
 	List<Pago> findByBitProcesadoAndRfcEmpresa(boolean b, String rfcEmpresa);
 	Pago findByRfcEmpresaAndRfcProveedorAndIdNumSap(String rfcEmpresa, String rfcProveedor, Long idNumSap);
-	List<Pago> findByBitProcesadoAndRfcProveedorAndClaveProveedor(boolean b, String rfc, String clave);
+	List<Pago> findAllByBitProcesadoAndRfcEmpresaAndClaveProveedor(boolean b, String rfc, String clave);
 }

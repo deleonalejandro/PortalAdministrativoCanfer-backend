@@ -59,7 +59,7 @@ public class ProveedorRestController {
     
     @GetMapping("/avisos/{rfc}/{clave}")
   	public List<Pago> findAvisosBy(@PathVariable String rfc, @PathVariable String clave){
-    	return avisosRepo.findByBitProcesadoAndRfcProveedorAndClaveProveedor(true, rfc, clave);
+    	return avisosRepo.findAllByBitProcesadoAndRfcEmpresaAndClaveProveedor(true, rfc, clave);
     }
   
    

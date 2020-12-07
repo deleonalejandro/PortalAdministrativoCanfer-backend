@@ -3,7 +3,6 @@ package com.canfer.app.dto;
 
 
 
-import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Proveedor;
