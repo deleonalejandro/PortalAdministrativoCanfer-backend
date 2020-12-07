@@ -16,6 +16,8 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.canfer.app.model.Log;
+
 @Service
 public class ResponseWebService {
 
@@ -45,10 +47,13 @@ public class ResponseWebService {
 			}
 
 		} catch (ParserConfigurationException e) {
+			Log.falla("No se pudo leer el documento XML.", "ERROR_FILE");
 			e.printStackTrace();
 		} catch (SAXException e) {
+			Log.falla("No se pudo leer el documento XML.", "ERROR_FILE");
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.falla("No se pudo leer el documento XML.", "ERROR_FILE");
 			e.printStackTrace();
 		}
 

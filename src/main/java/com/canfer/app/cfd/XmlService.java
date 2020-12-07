@@ -81,7 +81,7 @@ public class XmlService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			throw new XmlInfrastructureException("No fue posible leer el documento: " + file.getName());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class XmlService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			throw new XmlInfrastructureException("No fue posible leer el documento: " + file.getName());
 		}
 
 	}

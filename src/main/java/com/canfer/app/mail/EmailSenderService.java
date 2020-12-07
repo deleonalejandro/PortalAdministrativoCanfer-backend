@@ -89,7 +89,7 @@ public class EmailSenderService {
 	        javaMailSender.send(message);
 	    } catch (MessagingException e) {
 
-	        Log.falla("No se pudo enviar correo a " + to + " con el aviso de Pago.");;
+	        Log.falla("No se pudo enviar correo a " + to + " con el aviso de Pago.", "ERROR_CONNECTION");;
 	    }
 	}
 
@@ -128,7 +128,7 @@ public class EmailSenderService {
 	        javaMailSender.send(mimeMessage);
 	    } catch (MessagingException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.");;
+	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");;
 	    }
 	}
 		

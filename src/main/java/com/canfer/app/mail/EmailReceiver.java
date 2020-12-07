@@ -75,15 +75,15 @@ public class EmailReceiver {
             
 
 		} catch (NoSuchProviderException ex) {
-			Log.falla("No hay proveedor de correo para el protocolo: " + protocol);
+			Log.falla("No hay proveedor de correo para el protocolo: " + protocol, "ERROR_CONNECTION");
 			ex.printStackTrace();
 
 		} catch (MessagingException ex) {
-			Log.falla("No se pudo conectar al servicio de mensajeria");
+			Log.falla("No se pudo conectar al servicio de mensajeria", "ERROR_CONNECTION");
 			ex.printStackTrace();
 
 		} catch (NoResultException e) {
-			Log.general("Los bandeja fue procesada: " + e.getMessage());
+			Log.general("La bandeja fue procesada: " + e.getMessage());
 		}
 	}
 	

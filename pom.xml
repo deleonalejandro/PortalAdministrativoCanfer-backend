@@ -82,7 +82,12 @@
 		    <artifactId>opencsv</artifactId>
 		    <version>4.5</version>
 		</dependency>
-		
+		<!--json read -->
+		<dependency>
+		    <groupId>com.googlecode.json-simple</groupId>
+		    <artifactId>json-simple</artifactId>
+		    <version>1.1.1</version>
+		</dependency>
 		<!-- qr generator -->
 	    <dependency>
 	        <groupId>com.google.zxing</groupId>

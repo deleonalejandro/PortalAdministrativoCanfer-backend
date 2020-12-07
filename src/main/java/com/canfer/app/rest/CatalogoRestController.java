@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.JsonReader;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.EmpresaRepository;
@@ -25,6 +26,8 @@ public class CatalogoRestController {
 	private ProveedorRepository proveedorRepository;
 	@Autowired
 	private EmpresaRepository empresaRepository;
+	@Autowired
+	private JsonReader jsonReader;
 	
 	public CatalogoRestController() {
 		// Este es el constructor vacio del controlador
@@ -49,6 +52,11 @@ public class CatalogoRestController {
 	public List<Proveedor> getPossibleSuppliers(@PathVariable String rfcProveedor, @PathVariable String rfcEmpresa){
 		Empresa empresa = empresaRepository.findByRfc(rfcEmpresa);
 		return proveedorRepository.findAllByEmpresasAndRfc(empresa, rfcProveedor);
+	}
+	
+	@GetMapping(value="/log")
+	public String getMovimientos(){
+		return jsonReader.readLog();
 	}
 	
 }

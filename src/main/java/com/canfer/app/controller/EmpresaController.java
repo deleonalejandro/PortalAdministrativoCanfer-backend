@@ -87,21 +87,22 @@ public class EmpresaController {
 			Consecutivo consecutivo = new Consecutivo(saveEmpresa, null, "Documentos Fiscales", 0L, 9999999L, 0L);
 			consecutivoRepository.save(consecutivo);
 			
+			Log.activity("Se creó una nueva empresa." , empresa.getNombre(), "NEW_USER");
 		} catch (EntityExistsException e) {
 			
-			Log.falla("Error al añadir la empresa: " + e.getMessage());
+			Log.falla("Error al añadir la empresa: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("companyExistsError", e.getMessage());
 			return "redirect:/admin/addCompany";
 			
 		} catch (NullArgumentException e) {
 			
-			Log.falla("Error al añadir la empresa: " + e.getMessage());
+			Log.falla("Error al añadir la empresa: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("nullValuesError", e.getMessage());
 			return "redirect:/admin/addCompany";
 			
 		} catch (UnknownError e) {
 			
-			Log.falla("Error al añadir la empresa: " + e.getMessage());
+			Log.falla("Error al añadir la empresa: " + e.getMessage(), "ERROR");
 			ra.addFlashAttribute("error", e.getMessage());
 			return "redirect:/admin/addCompany";
 		}
@@ -112,7 +113,7 @@ public class EmpresaController {
 			logoService.store(logo);
 			
 		} catch (StorageException e) {
-			Log.falla("Error al añadir la empresa: " + e.getMessage());
+			Log.falla("Error al añadir la empresa: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("logoError", e.getMessage());
 			return "redirect:/admin/addCompany";
 		}
@@ -145,7 +146,7 @@ public class EmpresaController {
 				}
 				
 			} catch (IOException e) {
-				Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".");
+				Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".", "ERROR_STORAGE");
 			} catch (Exception e) {
 				redirectAttributes.addFlashAttribute("logoError", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
 			}
@@ -157,7 +158,7 @@ public class EmpresaController {
 				logoService.store(logo);
 				
 			} catch (StorageException e) {
-				Log.falla("Error al añadir la empresa: " + e.getMessage());
+				Log.falla("Error al añadir la empresa: " + e.getMessage(), "ERROR_DB");
 				redirectAttributes.addFlashAttribute("logoError", e.getMessage());
 				return "redirect:/admin/addCompany";
 			}
@@ -168,9 +169,10 @@ public class EmpresaController {
 		try {
 
 			empresaService.save(company);
+			Log.activity("Se actualizó la información de la empresa.", company.getNombre(), "UPDATE");
 
 		} catch (EntityExistsException e) {
-			Log.falla("Error al actualizar la información: " + e.getMessage());
+			Log.falla("Error al actualizar la información: " + e.getMessage(), "ERROR_DB");
 			redirectAttributes.addFlashAttribute("updateError", e.getMessage());
 		}
 		
@@ -185,6 +187,8 @@ public class EmpresaController {
 		try {
 			company = empresaService.findById(id);
 			empresaService.delete(id);
+			
+			
 		} catch (NotFoundException e) {
 			ra.addFlashAttribute("CompanyNotFoundMsg", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
 		}
@@ -200,7 +204,7 @@ public class EmpresaController {
 			}
 			
 		} catch (IOException e) {
-			Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".");
+			Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".", "ERROR_STORAGE");
 		} catch (Exception e) {
 			ra.addFlashAttribute("logoError", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
 		}

@@ -42,6 +42,7 @@ import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura; 
 import com.canfer.app.model.Documento;
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.pdfExport.CrystalReportService;
@@ -145,22 +146,22 @@ public class DocumentosFiscalesController {
 			
 			// send email to the supplier, invoice received
 			emailSender.sendEmailNewDoc(comprobanteFiscal, validationResponse.get(1), validationResponse.get(2));
-				
 			
+		
 		} catch (FileExistsException e) {
 			// handle exception for a duplicated invoice
-			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
+			Log.activity("Error al intentar guardar factura: "+comprobante.getUuidTfd()+ " el archivo ya existe.", comprobante.getReceptorNombre(), "ERROR_DB");
 			e.printStackTrace();
 		} catch (NotFoundException e) {
 			// La empresa o el proveedor no se encuentran en el catalogo
-			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
+			Log.activity("Error al intentar guardar factura: " + comprobante.getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", comprobante.getReceptorNombre(), "ERROR_DB");
 			e.printStackTrace();
 		} catch (XmlInfrastructureException e) {
-			Log.falla("Error al leer el CFD: " + e.getMessage());
+			Log.falla("Error al leer el CFD: " + e.getMessage(), "ERROR_FILE");
 			e.printStackTrace();
 		} catch (Exception e) {
 			// Error inesperado
-			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado", comprobante.getReceptorNombre());
+			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado.", comprobante.getReceptorNombre(), "ERROR");
 			e.printStackTrace();
 		} 
 		
@@ -190,7 +191,7 @@ public class DocumentosFiscalesController {
 							Files.delete(file);
 							
 						} catch (IOException e) {
-							Log.activity("No se logró eliminar el archivo " + file.getFileName() + ".", document.getEmpresa().getNombre());
+							Log.activity("No se logró eliminar el archivo " + file.getFileName() + ".", document.getEmpresa().getNombre(),"ERROR_STORAGE");
 							e.printStackTrace();
 						}
 					}
@@ -207,10 +208,10 @@ public class DocumentosFiscalesController {
 				
 				// delete the object using the id
 				comprobanteService.delete(id);
-			}
+		}
 				
 		} catch (Exception e) {
-			Log.falla("Ocurrio un error al borrar multiples facturas. " + e.getCause());
+			Log.falla("Ocurrio un error al borrar multiples facturas: " +ids, "ERROR_DB" );
 		}
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;	
 	}
@@ -233,7 +234,7 @@ public class DocumentosFiscalesController {
 						Files.delete(file);
 						
 					} catch (IOException e) {
-						Log.activity("No se logró eliminar el archivo " + file.getFileName() + ".", document.getEmpresa().getNombre());
+						Log.activity("No se logró eliminar el archivo " + file.getFileName() + ".", document.getEmpresa().getNombre(), "ERROR_STORAGE");
 						e.printStackTrace();
 					}
 				}
@@ -251,7 +252,7 @@ public class DocumentosFiscalesController {
 			comprobanteService.delete(id);
 				
 		} catch (Exception e) {
-			Log.falla("Ocurrio un error al borrar la factura." + e.getCause());
+			Log.falla("Ocurrio un error al borrar la factura:" +id, "ERROR" );
 			model.addAttribute("DeleteFacturaError", e.getMessage());
 		}
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;	
@@ -290,7 +291,7 @@ public class DocumentosFiscalesController {
 			comprobanteFiscalService.updateInfo(documento);
 			
 		} catch (Exception e) {
-			Log.activity("Error al actualizar CFDI: " + e.getMessage(), comprobanteUpdate.getEmpresaNombre());
+			Log.activity("Error al actualizar CFDI: " +documento.getUuid(),comproanteUpdate.getEmpresaNombre(), "ERROR");
 		}
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
@@ -319,7 +320,7 @@ public class DocumentosFiscalesController {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
 		} catch (StorageFileNotFoundException e) {
-			Log.activity("Error durante la descarga: " + e.getMessage(), doc.getEmpresa().getNombre());
+			Log.activity("Error durante la descarga del " + extension+" de "+concepto, doc.getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
@@ -347,7 +348,7 @@ public class DocumentosFiscalesController {
 			resource = comprobanteStorageService.loadAsResource(path);
 			
 		} catch (StorageFileNotFoundException e) {
-			Log.activity("Error durante la descarga: " + e.getMessage(), doc.getEmpresa().getNombre());
+			Log.activity("Error durante la descarga del complemento " +   concepto , doc.getEmpresa().getNombre(),"ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
@@ -388,8 +389,7 @@ public class DocumentosFiscalesController {
 					zipOut.closeEntry();
 					
 				} catch (IOException e) {
-					Log.activity("Error al comprimir archivo: "
-							+ path.getFileName() + ".", doc.getEmpresa().getNombre());
+					Log.activity("Error al comprimir archivo: "+ path.getFileName() + ".", doc.getEmpresa().getNombre(), "ERROR_FILE");
 					e.printStackTrace();
 				}
 			}
@@ -399,7 +399,7 @@ public class DocumentosFiscalesController {
 			zipOut.finish();
 			zipOut.close();
 		} catch (IOException e) {
-			Log.activity("Error durante la descarga: No fué posible comprimir los documentos.", docs.get(0).getEmpresa().getNombre());
+			Log.activity("Error durante la descarga: No fué posible comprimir los documentos.", docs.get(0).getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(bos.toByteArray());
@@ -436,7 +436,7 @@ public class DocumentosFiscalesController {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
 		} catch (StorageFileNotFoundException e) {
-			Log.activity("Error al previsualizar el documento: " + e.getMessage(), doc.getEmpresa().getNombre());
+			Log.activity("Error al previsualizar el documento: " + concepto, doc.getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
@@ -465,7 +465,7 @@ public class DocumentosFiscalesController {
 			resource = comprobanteStorageService.loadAsResource(path);
 			
 		} catch (StorageFileNotFoundException e) {
-			Log.activity("Error al previsualizar el documento: " + e.getMessage(), doc.getEmpresa().getNombre());
+			Log.activity("Error al previsualizar el documento: " + concepto, doc.getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
@@ -488,7 +488,7 @@ public class DocumentosFiscalesController {
 			// try to load resource
 			resource = comprobanteStorageService.loadAsResource(path);
 		} catch (StorageFileNotFoundException e) {
-			Log.activity("Error al previsualizar el documento: " + e.getMessage(), doc.getEmpresa().getNombre());
+			Log.activity("Error al previsualizar el Aviso de Pago: " +  id, doc.getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(resource);
@@ -529,8 +529,7 @@ public class DocumentosFiscalesController {
 					zipOut.closeEntry();
 					
 				} catch (IOException e) {
-					Log.activity("Error al comprimir archivo: "
-							+ path.getFileName() + ".", doc.getEmpresa().getNombre());
+					Log.activity("Error al comprimir archivo: "+ path.getFileName() + ".", doc.getEmpresa().getNombre(), "ERROR_FILE");
 					e.printStackTrace();
 				}
 			}
@@ -540,7 +539,7 @@ public class DocumentosFiscalesController {
 			zipOut.finish();
 			zipOut.close();
 		} catch (IOException e) {
-			Log.activity("Error durante la descarga: No fué posible comprimir los documentos.", docs.get(0).getEmpresa().getNombre());
+			Log.activity("Error durante la descarga: No fué posible comprimir los documentos.", docs.get(0).getEmpresa().getNombre(), "ERROR_STORAGE");
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
 					.body(bos.toByteArray());
@@ -579,7 +578,7 @@ public class DocumentosFiscalesController {
 
 	        } catch (CsvException ex) {
 
-	            Log.falla("Error al exportar Rerprote CSV para ");
+	            Log.falla("Error al exportar Rerpote CSV para "+ ids, "ERROR_FILE");
 	        }
                 
     }
@@ -605,7 +604,7 @@ public class DocumentosFiscalesController {
 
 	        } catch (CsvException ex) {
 
-	            Log.falla("Error al exportar Rerprote CSV para ");
+	            Log.falla("Error al exportar Rerpote CSV para proveedor.", "ERROR_FILE");
 	        }
         
         

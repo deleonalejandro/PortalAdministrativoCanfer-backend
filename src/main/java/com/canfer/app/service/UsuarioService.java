@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.dto.UserDTO;
 import com.canfer.app.model.Usuario;
@@ -73,10 +74,7 @@ public class UsuarioService {
 		if (testUsuario != null) {
 			throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
 		}
-		
-		// first check if we want to create a company user or provider user.
-				
-			
+
 		if (user.getRol().isEmpty()) {
 			throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
 		}
@@ -88,9 +86,10 @@ public class UsuarioService {
 		
 		// assign the companies that the user will manage
 		usuario.setEmpresas(empresas);
+    
+    Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
 		
 		return usuarioCanferRepository.save(usuario);
-		
 		
 	}
 	
@@ -101,14 +100,14 @@ public class UsuarioService {
 		String password;
 		List<Proveedor> proveedoresList;
 		List<Empresa> empresas = new ArrayList<>();
-
+			
 		testProveedor = usuarioProveedorRepository.findByUsername(user.getUsername());
 		proveedoresList = proveedorRepository.findAllByRfcAndBitActivo(user.getRfc(), true);
 		
 		if (proveedoresList.isEmpty()) {
 			throw new NotFoundException("El RFC para registrar la cuenta no es valido.");
 		}
-		
+	
 		password = generatePassword(user.getRfc());
 		
 		/* TODO EMAIL THE USER WITH THE GENERATED CREDENTIALS */
@@ -127,6 +126,8 @@ public class UsuarioService {
 		}
 		
 		usuario.setEmpresas(empresas);
+    
+    Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
 		
 		return usuarioProveedorRepository.save(usuario);
 
@@ -163,6 +164,8 @@ public class UsuarioService {
 		updateUsuario.setPermisos(user.getPermisosToString());
 		updateUsuario.setRol(user.getRol());
 		
+		Log.activity("Se actualizó el usuario "+user.getUsername()+".", checkUsuario.get().getEmpresasNombre().toString(), "NEW_USER");
+		
 		return usuarioRepository.save(updateUsuario);
 	}
 	
@@ -174,6 +177,8 @@ public class UsuarioService {
 		}
 		
 		usuarioRepository.delete(deleteUsuario.get());
+
+		Log.activity("Se eliminó al usuario "+ deleteUsuario.get().getUsername()+".", deleteUsuario.get().getEmpresasNombre().toString(), "DELETE");
 	}
 	
 	private String generatePassword(String rfc) {

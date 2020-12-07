@@ -99,7 +99,7 @@ public class EmailService {
 				}
 
 			} catch (StorageException | MessagingException e) {
-				Log.falla("Error al procesar correo: No fue posible recibir el archivo adjunto. " + e.getMessage());
+				Log.falla("Error al procesar correo: No fue posible recibir el archivo adjunto. " + e.getMessage(), "ERROR_FILE");
 			}
 
 		}
@@ -122,7 +122,7 @@ public class EmailService {
 					.collect(Collectors.toList());
 			
 		} catch (StorageException e2) {
-			Log.falla("Error al procesar documentos descargados: " + e2.getMessage());
+			Log.falla("Error al procesar documentos descargados: " + e2.getMessage(), "ERROR_FILE");
 		}
 
 		for (Path path : filePaths) {
@@ -138,7 +138,7 @@ public class EmailService {
 						.collect(Collectors.toList());
 
 			} catch (Exception e2) {
-				Log.falla("Error al procesar documentos descargados: " + e2.getMessage());
+				Log.falla("Error al procesar documentos descargados: " + e2.getMessage(), "ERROR_FILE");
 			}
 
 			// Move files to corresponding official directories
@@ -152,7 +152,7 @@ public class EmailService {
 						Files.delete(file);
 
 					} catch (IOException e) {
-						Log.falla("Error al procesar documentos descargados: No fue posible eliminar el archivo del directorio de descargas." + e.getMessage());
+						Log.falla("Error al procesar documentos descargados: No fue posible eliminar el archivo del directorio de descargas." + e.getMessage(), "ERROR_STORAGE");
 						e.printStackTrace();
 					}
 				}
@@ -171,7 +171,7 @@ public class EmailService {
 			}
 			
 		} catch (StorageException e2) {
-			Log.falla("Error al procesar documentos descargados: " + e2.getMessage());
+			Log.falla("Error al procesar documentos descargados: " + e2.getMessage(), "ERROR_FILE");
 		}
 
 
@@ -230,21 +230,21 @@ public class EmailService {
 		} catch (FileExistsException e) {
 			// La factura ya existe
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
+			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre(), "ERROR_DB");
 			e.printStackTrace();
 		} catch (NotFoundException e) {
 			// La empresa o el proveedor no se encuentran en el catalogo
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre());
+			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre(), "ERROR_DB");
 			e.printStackTrace();
 		} catch (XmlInfrastructureException e) {
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.falla("Error al leer el CFD: " + e.getMessage());
+			Log.falla("Error al leer el CFD: " + e.getMessage(), "ERROR_FILE");
 			e.printStackTrace();
 		} catch (Exception e) {
 			// Error inesperado
 			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado", comprobante.getReceptorNombre());
+			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado", comprobante.getReceptorNombre(), "ERROR");
 			e.printStackTrace();
 		}
 	}
@@ -282,7 +282,7 @@ public class EmailService {
 			zis.close();
 
 		} catch (IOException | MessagingException e) {
-			Log.falla("Error al procesar el archivo comprimido ZIP: " + e.getMessage());
+			Log.falla("Error al procesar el archivo comprimido ZIP: " + e.getMessage(), "ERROR_STORAGE");
 			e.printStackTrace();
 		}
 
@@ -330,10 +330,10 @@ public class EmailService {
 				}
 
 			} catch (MessagingException e) {
-				Log.falla("Ocurrió un error durante la lectura del mensaje de correo.");
+				Log.falla("Ocurrió un error durante la lectura del mensaje de correo.", "ERROR_FILE");
 				e.printStackTrace();
 			} catch (IOException e) {
-				Log.falla("No fué posible extraer el contenido del mensaje de correo.");
+				Log.falla("No fué posible extraer el contenido del mensaje de correo.", "ERROR_FILE");
 			}
 		}
 

@@ -3,6 +3,8 @@ package com.canfer.app.mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.canfer.app.model.Log;
+
 @Component
 public class EmailThread implements Runnable {
 	
@@ -39,6 +41,7 @@ public class EmailThread implements Runnable {
             } catch (InterruptedException e) {
             	System.out.println("Se interrumpio el thread");
                 e.printStackTrace();
+                Log.falla("Se interrumpió el thread del EMail", "ERROR_CoNNECTION");
                 // Restore interrupted state...
                 Thread.currentThread().interrupt();
             }
