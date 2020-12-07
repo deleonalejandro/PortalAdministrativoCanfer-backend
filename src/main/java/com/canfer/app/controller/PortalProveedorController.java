@@ -123,7 +123,7 @@ public class PortalProveedorController {
 			
 			
 		} catch (EntityExistsException | NotFoundException e) {
-			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage());
+			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("errorMessage", e.getMessage());
 			return "redirect:/registerSupplier";
 		} 

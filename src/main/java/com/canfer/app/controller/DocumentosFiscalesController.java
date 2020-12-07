@@ -281,7 +281,7 @@ public class DocumentosFiscalesController {
 				}
 				
 			} catch (StorageException e) {
-				Log.activity(e.getMessage(), comprobanteUpdate.getEmpresaNombre());
+				Log.activity(e.getMessage(), comprobanteUpdate.getEmpresaNombre(), "UPDATE");
 			}
 		}
 
@@ -291,7 +291,7 @@ public class DocumentosFiscalesController {
 			comprobanteFiscalService.updateInfo(documento);
 			
 		} catch (Exception e) {
-			Log.activity("Error al actualizar CFDI: " +documento.getUuid(),comproanteUpdate.getEmpresaNombre(), "ERROR");
+			Log.activity("Error al actualizar CFDI: " +documento.getUuid(),comprobanteUpdate.getEmpresaNombre(), "ERROR");
 		}
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
