@@ -1,5 +1,8 @@
 package com.canfer.app.model;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,10 +10,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,13 +33,15 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 
+
+import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
-import com.canfer.app.storage.StorageFileNotFoundException;
 
 import javassist.NotFoundException;
+
 
 @Entity(name = "Archivo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -56,7 +57,7 @@ public class Archivo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idArchivo; 
+	private Long idArchivo; 
 	
 	@Column
 	private String ruta;
@@ -75,7 +76,9 @@ public class Archivo {
 	private LocalDateTime fechaMod;
 	
 	public Resource loadAsResource() {
+		
 		try {
+			
 			Path file = Paths.get(this.ruta);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
@@ -83,13 +86,16 @@ public class Archivo {
 			}
 			else {
 				throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
+
 			}
 		}
+		
 		catch (MalformedURLException e) {
 			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
 		}
+		
 	}
-	public void actualizar() {}
+	
  	public void deleteFile() {}
  	public void createName() {}
  	
