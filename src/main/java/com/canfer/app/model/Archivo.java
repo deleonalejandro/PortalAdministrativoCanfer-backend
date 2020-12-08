@@ -92,9 +92,20 @@ public class Archivo {
 	public void actualizar() {}
  	public void deleteFile() {}
  	public void createName() {}
- 	public void move() {}
- 	public void accept() {}
- 	public void discard() {}
+ 	
+ 	public void move(String newRuta) {
+ 		
+ 	}
+ 	
+ 	public void accept() {
+ 		
+ 		this.move(extension);
+ 	}
+ 	
+ 	public void discard() {
+ 		
+ 		this.move(extension);
+ 	}
  	
  	
 	
@@ -198,33 +209,26 @@ public class Archivo {
 
 		}
 		
-		public void businessValidation() throws NotFoundException, FileExistsException {
+		public Boolean businessValidation() throws NotFoundException, FileExistsException {
 			
 			Comprobante comprobante = this.toCfdi();
+			Empresa receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
 			
+			//check if uuid is in DB
 			if (exist(comprobante.getUuidTfd())) {
 				throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
 						+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
 			}
 			
-			Empresa receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
-			List<Proveedor> proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
+			
 			// check if the company or the provider exist on the data base.
 			if (receptor == null) {
 				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
 						+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
 			}
-			// get the proper provider
-			if (proveedores.size() > 1 || proveedores.isEmpty()) {
-				// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO instead.
-				Proveedor emisor = proveedorRepository.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
-			} else {
-				Proveedor emisor = proveedores.get(0);
-			}
-		}
-		
-		private boolean exist(String uuid) {
-			return (comprobanteFiscalRepository.findByUuid(uuid) != null);
+			
+			return true; 
+			
 		}
 		
 
@@ -244,6 +248,9 @@ public class Archivo {
 			this.tipoComprobante = tipoComprobante;
 		}
 		
+		private boolean exist(String uuid) {
+			return (comprobanteFiscalRepository.findByUuid(uuid) != null);
+		}
 		
 		
 	}
