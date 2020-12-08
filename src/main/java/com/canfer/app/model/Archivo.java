@@ -1,6 +1,8 @@
 package com.canfer.app.model;
 
-import java.sql.Date;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -14,15 +16,19 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
-@Entity(name = "Documento")
+import com.canfer.app.storage.StorageFileNotFoundException;
+
+@Entity(name = "Archivo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Archivo")
 public class Archivo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idArchivo; 
+	private Long idArchivo; 
 	
 	@Column
 	private String ruta;
@@ -40,9 +46,31 @@ public class Archivo {
 	@Column
 	private LocalDateTime fechaMod;
 	
-	public void loadAsResource() {}
-	public void actualizar() {}
- 	public void deleteFile() {}
+	public Resource loadAsResource() {
+		
+		try {
+			
+			Path file = Paths.get(this.ruta);
+			Resource resource = new UrlResource(file.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return resource;
+			}
+			else {
+				throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
+
+			}
+		}
+		
+		catch (MalformedURLException e) {
+			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
+		}
+		
+	}
+	
+ 	public void deleteFile() {
+ 		
+ 		
+ 	}
  	public void createName() {}
  	public void move() {}
  	public void accept() {}
