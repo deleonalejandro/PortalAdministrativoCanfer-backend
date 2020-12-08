@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -82,15 +81,19 @@ public class Archivo {
 			Path file = Paths.get(this.ruta);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
+				
 				return resource;
 			}
+			
 			else {
+				
 				throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
 
 			}
 		}
 		
 		catch (MalformedURLException e) {
+			
 			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
 		}
 		
@@ -178,12 +181,15 @@ public class Archivo {
 			BOMInputStream bis;
 
 			try (InputStream in = new FileInputStream(file)) {
+				
 				bis = new BOMInputStream(in);
 				context = JAXBContext.newInstance(Comprobante.class);
+				
 				return (Comprobante) context.createUnmarshaller()
 						.unmarshal(new InputStreamReader(new BufferedInputStream(bis)));
+				
 			} catch (JAXBException | IOException e) {
-				e.printStackTrace();
+				
 				throw new XmlInfrastructureException("No fue posible leer el comprobante fiscal digital: " + this.getNombre());
 			} 
 		} 
@@ -201,6 +207,7 @@ public class Archivo {
 
 				StringBuilder sb = new StringBuilder();
 				String line = br.readLine();
+				
 				while (line != null) {
 					sb.append(line).append("\n");
 					line = br.readLine();
@@ -222,6 +229,7 @@ public class Archivo {
 			
 			//check if uuid is in DB
 			if (exist(comprobante.getUuidTfd())) {
+				
 				throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
 						+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
 			}
@@ -229,6 +237,7 @@ public class Archivo {
 			
 			// check if the company or the provider exist on the data base.
 			if (receptor == null) {
+				
 				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
 						+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
 			}

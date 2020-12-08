@@ -1,8 +1,10 @@
 package com.canfer.app.model;
 
 
+import java.io.IOException;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -15,6 +17,7 @@ import javax.persistence.InheritanceType;
 
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.core.io.Resource;
 
 	
 @Entity(name = "Documento")
@@ -114,8 +117,46 @@ public class Documento {
 	
 	//TODO 
 	public void save() {}
-	public void delete() {}
-	public void download() {}
+	
+	public void delete() {
+		
+		//delete archivos
+		this.archivoPDF.deleteFile();
+		this.archivoXML.deleteFile();
+		
+		
+	}
+	public List<Resource> download() throws IOException {
+		
+		List<Resource> resources = new ArrayList<>();
+		
+		if (this.archivoPDF != null) {
+			
+			Resource resourcePDF = this.archivoPDF.loadAsResource();
+			
+			if (resourcePDF!= null) {
+				
+				resources.add(this.archivoPDF.loadAsResource());
+				
+			}
+		}
+			
+		if (this.archivoXML != null) {
+			
+			Resource resourceXML = this.archivoPDF.loadAsResource();
+			
+			if (resourceXML!= null) {
+				
+				resources.add(this.archivoXML.loadAsResource());
+				
+			}
+			
+		}
+
+		
+		return resources; 
+		
+	}
 	
 	
 	
