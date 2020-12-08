@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -24,20 +25,34 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.input.BOMInputStream;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.storage.StorageFileNotFoundException;
+
+import javassist.NotFoundException;
 
 @Entity(name = "Archivo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Archivo")
 public class Archivo {
+	
+	@Autowired
+	ComprobanteFiscalRespository comprobanteFiscalRepository;
+	@Autowired
+	EmpresaRepository empresaRepository;
+	@Autowired
+	ProveedorRepository proveedorRepository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -183,7 +198,7 @@ public class Archivo {
 
 		}
 		
-		public void businessValidation() {
+		public void businessValidation() throws NotFoundException, FileExistsException {
 			
 			Comprobante comprobante = this.toCfdi();
 			
@@ -192,8 +207,8 @@ public class Archivo {
 						+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
 			}
 			
-			receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
-			proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
+			Empresa receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
+			List<Proveedor> proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
 			// check if the company or the provider exist on the data base.
 			if (receptor == null) {
 				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
@@ -202,11 +217,16 @@ public class Archivo {
 			// get the proper provider
 			if (proveedores.size() > 1 || proveedores.isEmpty()) {
 				// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO instead.
-				emisor = proveedorRepository.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+				Proveedor emisor = proveedorRepository.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
 			} else {
-				emisor = proveedores.get(0);
+				Proveedor emisor = proveedores.get(0);
 			}
 		}
+		
+		private boolean exist(String uuid) {
+			return (comprobanteFiscalRepository.findByUuid(uuid) != null);
+		}
+		
 
 		public String getUuid() {
 			return uuid;
