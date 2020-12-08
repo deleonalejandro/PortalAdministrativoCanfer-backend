@@ -24,7 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
-import com.canfer.app.model.Documento.DocumentoPDF;
+
+import net.bytebuddy.asm.Advice.This;
 
 
 @Service
@@ -188,22 +189,23 @@ public class ComprobanteStorageService implements StorageService {
 		}
 	}
 	
-	public void init(ComprobanteFiscal comprobante) {
-		LocalDateTime today = LocalDateTime.now();
-		this.rootLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores", 
-				comprobante.getRfcEmpresa(), 
-				String.valueOf(today.getYear()),
-				String.valueOf(today.getMonthValue()), 
-				comprobante.getRfcProveedor());
+	public String init(Path ruta) {
+		
 		try {
-			Files.createDirectories(rootLocation);
+			
+			Files.createDirectories(this.rootLocation.resolve(ruta));
+			
 		}
 		catch (IOException e) {
+			
 			throw new StorageException("No fué posible inicializar los directorios.", e);
+			
 		}
+		
+		return String.valueOf(this.rootLocation.resolve(ruta));
 	}
 	
-	public void init(Comprobante comprobante) {
+	public String init(Comprobante comprobante) {
 		LocalDateTime today = LocalDateTime.now();
 		this.rootLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores", 
 				comprobante.getReceptorRfc(), 
@@ -211,11 +213,14 @@ public class ComprobanteStorageService implements StorageService {
 				String.valueOf(today.getMonthValue()), 
 				comprobante.getEmisorRfc());
 		try {
+			
 			Files.createDirectories(rootLocation);
 		}
 		catch (IOException e) {
 			throw new StorageException("No fué posible inicializar los directorios.", e);
 		}
+		
+		return String.valueOf(this.rootLocation);
 	}
 	
 	private Path getFilename(ComprobanteFiscal comprobante, String extension) {

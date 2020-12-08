@@ -1,8 +1,10 @@
 package com.canfer.app.model;
 
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,14 +29,16 @@ import javax.xml.bind.JAXBException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.UrlResource; 
+import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.input.BOMInputStream;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 
-
+import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
+import com.canfer.app.storage.StorageProperties;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EmpresaRepository;
@@ -46,97 +50,168 @@ import javassist.NotFoundException;
 @Entity(name = "Archivo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Archivo")
-public class Archivo {
+public abstract class Archivo {
 	
 	@Autowired
-	ComprobanteFiscalRespository comprobanteFiscalRepository;
+	protected ComprobanteFiscalRespository comprobanteFiscalRepository;
 	@Autowired
-	EmpresaRepository empresaRepository;
+	protected EmpresaRepository empresaRepository;
 	@Autowired
-	ProveedorRepository proveedorRepository;
+	protected ProveedorRepository proveedorRepository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idArchivo; 
+	protected Long idArchivo; 
 	
 	@Column
-	private String ruta;
+	protected String ruta;
 	
 	@Column
-	private String extension;
+	protected String extension;
 	
 	@Column
-	private String nombre;
+	protected String nombre;
 	
 	@Column
 	@CreationTimestamp
-	private LocalDateTime fechaCarga;
+	protected LocalDateTime fechaCarga;
 	
 	@Column
-	private LocalDateTime fechaMod;
+	protected LocalDateTime fechaMod;
 	
+
 	public Resource loadAsResource() {
 		
 		try {
 			
 			Path file = Paths.get(this.ruta);
 			Resource resource = new UrlResource(file.toUri());
+			
 			if (resource.exists() || resource.isReadable()) {
+				
 				return resource;
+				
 			}
 			else {
+				
 				throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
 
 			}
 		}
 		
 		catch (MalformedURLException e) {
+			
 			throw new StorageFileNotFoundException("No se pudo leer el archivo: " + nombre);
+			
 		}
 		
 	}
 	
- 	public void deleteFile() {}
- 	public void createName() {}
- 	public void move() {}
- 	public void accept() {}
- 	public void discard() {}
+ 	public void deleteFile() {
+ 		
+ 		Path file = Paths.get(this.ruta);
+ 		
+		if (file.toFile().exists()) {
+			
+			try {
+				
+				// delete file if exists
+				Files.delete(file);
+				
+			} catch (IOException e) {
+				
+				Log.falla("No se logró eliminar el archivo " + this.nombre + ".", "ERROR_STORAGE");
+				
+			}
+		}
+ 		
+ 	}
+ 			
+ 	public void move(String newRuta) {
+
+		Path temp = null;
+		
+		try {
+			
+			temp = Files.move(Paths.get(this.ruta), Paths.get(newRuta));
+			
+		} catch (IOException e) {
+			
+			Log.falla("No se logró mover el archivo " + this.nombre + ".", "ERROR_STORAGE");
+			
+		}
+		
+
+		if (temp != null) {
+			
+			this.ruta = newRuta;
+			
+		} else {
+			
+			Log.falla("No se logró mover el archivo " + this.nombre + ".", "ERROR_STORAGE");
+			
+		}
+		
+
+ 	}
  	
+ 	public void accept(String nombre, String ruta) {
+ 		
+ 		this.nombre = nombre + '.' + this.extension;
+ 		
+ 		String targetRuta = String.valueOf(Paths.get(ruta, this.nombre));
+ 		
+ 		move(targetRuta);
+ 		
+ 	}
+ 	
+ 	public abstract void discard();
  	
 	
 	public long getIdArchivo() {
 		return idArchivo;
 	}
+	
 	public void setIdArchivo(long idArchivo) {
 		this.idArchivo = idArchivo;
 	}
+	
 	public String getRuta() {
 		return ruta;
 	}
+	
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
+	
 	public String getExtension() {
 		return extension;
 	}
+	
 	public void setExtension(String extension) {
 		this.extension = extension;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
 	public LocalDateTime getFechaCarga() {
 		return fechaCarga;
 	}
+	
 	public void setFechaCarga(LocalDateTime fechaCarga) {
 		this.fechaCarga = fechaCarga;
 	}
+	
 	public LocalDateTime getFechaMod() {
 		return fechaMod;
 	}
+	
 	public void setFechaMod(LocalDateTime fechaMod) {
 		this.fechaMod = fechaMod;
 	}
@@ -153,8 +228,12 @@ public class Archivo {
 		@Column
 		private String tipoComprobante;
 		
-		public ArchivoXML() {
-			// Default constructor
+		private final Path errorLocation; 
+		
+		public ArchivoXML(StorageProperties storageProperties) {
+				
+			 this.errorLocation = storageProperties.getErrorLocation();
+				
 		}
 		
 		public Comprobante toCfdi() {
@@ -209,14 +288,18 @@ public class Archivo {
 			Comprobante comprobante = this.toCfdi();
 			
 			if (exist(comprobante.getUuidTfd())) {
+				
 				throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
 						+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
+				
 			}
 			
 			Empresa receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
+			
 			List<Proveedor> proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
 			// check if the company or the provider exist on the data base.
 			if (receptor == null) {
+				
 				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
 						+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
 			}
@@ -249,15 +332,55 @@ public class Archivo {
 		public void setTipoComprobante(String tipoComprobante) {
 			this.tipoComprobante = tipoComprobante;
 		}
+
+		@Override
+		public void discard() {
+			
+			move(String.valueOf(errorLocation));
+			
+		}
 		
 		
 		
 	}
+	
 	@Entity
 	@DiscriminatorValue("ARCHIVO_PDF")
 	public static class ArchivoPDF extends Archivo {
-		public ArchivoPDF() {
-			// Default constructor
+		
+		private final Path errorLocation;
+		
+		public ArchivoPDF(StorageProperties storageProperties) {
+			
+			this.errorLocation = storageProperties.getErrorLocation();
+		}
+		
+		public void actualizar(MultipartFile newFile) {
+			
+			try {
+				if (newFile.isEmpty()) {
+					
+					throw new StorageException("Error al guardar un archivo vacío. " + newFile.getOriginalFilename());
+					
+				}
+				
+				try (InputStream inputStream = newFile.getInputStream()) {
+					
+					Files.copy(inputStream, Paths.get(this.ruta), StandardCopyOption.REPLACE_EXISTING);
+				}
+			}
+			catch (IOException e) {
+				
+				throw new StorageException("Error al guardar el archivo " + newFile.getOriginalFilename(), e);
+			}
+			
+		}
+
+		@Override
+		public void discard() {
+
+			move(String.valueOf(errorLocation));
+			
 		}
 	}
 }

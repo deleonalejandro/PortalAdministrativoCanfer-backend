@@ -1,11 +1,14 @@
 package com.canfer.app.model;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -18,20 +21,27 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByName;
 
+import net.bytebuddy.asm.Advice.This;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Comprobante")
 public abstract class ComprobanteFiscal {
+	
+	@Autowired
+	private ComprobanteStorageService comprobanteStorageService;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -143,6 +153,9 @@ public abstract class ComprobanteFiscal {
 	@ManyToOne(targetEntity = Pago.class, fetch = FetchType.LAZY)
 	private Pago pago;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Documento documento;
+	
 	public ComprobanteFiscal() {
 		// Default constructor
 	}
@@ -187,6 +200,13 @@ public abstract class ComprobanteFiscal {
 		
 	}
 	
+	public void accept() {
+		
+		// creamos los nombres y las rutas donde se guardaran los archivos
+		
+		this.documento.accept(createName(), createRoute());
+			
+	}
 
 	public Long getIdComprobanteFiscal() {
 		return idComprobanteFiscal;
@@ -520,6 +540,54 @@ public abstract class ComprobanteFiscal {
 		}
 		return null;
 	}
+
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
+	}
+
+	private String createName() {
+
+		String folioFinal;
+
+		if (this.folio == null) {
+
+			folioFinal = String.valueOf(this.idNumSap);
+
+		} else {
+
+			folioFinal = this.folio;
+
+		}
+
+		if (this.serie == null) {
+
+			return this.rfcProveedor + "_" + folioFinal;
+
+		} else {
+
+			return this.rfcProveedor + "_" + this.serie + "_" + folioFinal;
+
+		}
+
+	}
+
+	private String createRoute() {
+		
+		LocalDateTime today = LocalDateTime.now();
+		
+		Path route = Paths.get(this.rfcEmpresa, 
+				String.valueOf(today.getYear()),
+				String.valueOf(today.getMonthValue()), 
+				this.rfcProveedor);
+
+		return comprobanteStorageService.init(route);
+		
+	}
+	
 	
 	
 	

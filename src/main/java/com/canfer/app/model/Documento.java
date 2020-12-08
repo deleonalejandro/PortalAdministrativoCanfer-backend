@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.junit.validator.PublicClassValidator;
 
 	
 @Entity(name = "Documento")
@@ -114,6 +115,13 @@ public class Documento {
 	
 	//TODO 
 	public void save() {}
+	public void accept(String nombre, String ruta) {
+		
+		this.archivoXML.accept(nombre, ruta);
+		
+		this.archivoPDF.accept(nombre, ruta);
+		
+	}
 	public void delete() {}
 	public void download() {}
 	
