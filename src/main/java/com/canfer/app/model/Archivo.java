@@ -3,7 +3,15 @@ package com.canfer.app.model;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -14,17 +22,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.apache.commons.io.FileExistsException;
+import org.apache.commons.io.input.BOMInputStream;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
+
 
 import com.canfer.app.storage.StorageFileNotFoundException;
+import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.ProveedorRepository;
+
+import javassist.NotFoundException;
+
 
 @Entity(name = "Archivo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Archivo")
 public class Archivo {
+	
+	@Autowired
+	ComprobanteFiscalRespository comprobanteFiscalRepository;
+	@Autowired
+	EmpresaRepository empresaRepository;
+	@Autowired
+	ProveedorRepository proveedorRepository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,15 +96,53 @@ public class Archivo {
 		
 	}
 	
- 	public void deleteFile() {
- 		
- 		
- 	}
+ 	public void deleteFile() {}
  	public void createName() {}
  	public void move() {}
  	public void accept() {}
  	public void discard() {}
+ 	
+ 	
 	
+	public long getIdArchivo() {
+		return idArchivo;
+	}
+	public void setIdArchivo(long idArchivo) {
+		this.idArchivo = idArchivo;
+	}
+	public String getRuta() {
+		return ruta;
+	}
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
+	}
+	public String getExtension() {
+		return extension;
+	}
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public LocalDateTime getFechaCarga() {
+		return fechaCarga;
+	}
+	public void setFechaCarga(LocalDateTime fechaCarga) {
+		this.fechaCarga = fechaCarga;
+	}
+	public LocalDateTime getFechaMod() {
+		return fechaMod;
+	}
+	public void setFechaMod(LocalDateTime fechaMod) {
+		this.fechaMod = fechaMod;
+	}
+
+
+
 	@Entity
 	@DiscriminatorValue("ARCHIVO_XML")
 	public static class ArchivoXML extends Archivo {
@@ -90,15 +157,101 @@ public class Archivo {
 			// Default constructor
 		}
 		
-		public ComprobanteFiscal toCfdi() {
-			return null;
+		public Comprobante toCfdi() {
+			
+			//Get ruta to path, get file from path
+			Path path = Paths.get(this.getRuta()); 
+			File file = path.toAbsolutePath().toFile();
+			
+			JAXBContext context;
+			BOMInputStream bis;
+
+			try (InputStream in = new FileInputStream(file)) {
+				bis = new BOMInputStream(in);
+				context = JAXBContext.newInstance(Comprobante.class);
+				return (Comprobante) context.createUnmarshaller()
+						.unmarshal(new InputStreamReader(new BufferedInputStream(bis)));
+			} catch (JAXBException | IOException e) {
+				e.printStackTrace();
+				throw new XmlInfrastructureException("No fue posible leer el comprobante fiscal digital: " + this.getNombre());
 			} 
+		} 
 		
 		public String  toString() {
-			return null;
+			
+			// Get the file from the path and return string
+			
+			//Get ruta to path, get file from path
+			Path path = Paths.get(this.getRuta()); 
+			File file = path.toAbsolutePath().toFile();
+
+			try (InputStream is = new FileInputStream(file);
+					BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+
+				StringBuilder sb = new StringBuilder();
+				String line = br.readLine();
+				while (line != null) {
+					sb.append(line).append("\n");
+					line = br.readLine();
+				}
+
+				return sb.toString();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new XmlInfrastructureException("No fue posible leer el documento: " + this.getNombre());
 			}
+
+		}
 		
-		public void businessValidation() {}
+		public void businessValidation() throws NotFoundException, FileExistsException {
+			
+			Comprobante comprobante = this.toCfdi();
+			
+			if (exist(comprobante.getUuidTfd())) {
+				throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
+						+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
+			}
+			
+			Empresa receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
+			List<Proveedor> proveedores = proveedorRepository.findAllByEmpresasAndRfc(receptor, comprobante.getEmisorRfc());
+			// check if the company or the provider exist on the data base.
+			if (receptor == null) {
+				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
+						+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
+			}
+			// get the proper provider
+			if (proveedores.size() > 1 || proveedores.isEmpty()) {
+				// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO instead.
+				Proveedor emisor = proveedorRepository.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+			} else {
+				Proveedor emisor = proveedores.get(0);
+			}
+		}
+		
+		private boolean exist(String uuid) {
+			return (comprobanteFiscalRepository.findByUuid(uuid) != null);
+		}
+		
+
+		public String getUuid() {
+			return uuid;
+		}
+
+		public void setUuid(String uuid) {
+			this.uuid = uuid;
+		}
+
+		public String getTipoComprobante() {
+			return tipoComprobante;
+		}
+
+		public void setTipoComprobante(String tipoComprobante) {
+			this.tipoComprobante = tipoComprobante;
+		}
+		
+		
+		
 	}
 	@Entity
 	@DiscriminatorValue("ARCHIVO_PDF")
