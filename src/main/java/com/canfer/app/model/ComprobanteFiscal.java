@@ -30,12 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByName;
 
-import net.bytebuddy.asm.Advice.This;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -49,6 +49,16 @@ public abstract class ComprobanteFiscal {
 	@Transient
 	@Autowired
 	private ComprobanteFiscalRespository comprobanteRepo;
+	
+	@Transient
+	@Autowired
+	private ValidationService validationService; 
+	
+	@Transient
+	@Autowired
+	private SatVerificacionService verificationService; 
+	
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -474,7 +484,7 @@ public abstract class ComprobanteFiscal {
 		return Arrays.asList(this.uuidRelacionados.split(",")); 
 	}
 	
-	public String verificaSat() {
+	public Boolean verificaSat() {
 		try {
 			
 			ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
@@ -483,14 +493,38 @@ public abstract class ComprobanteFiscal {
 						 "rr=" + this.empresa.getRfc() + "&" +
 						 "tt=" + this.total + "&" +
 						 "id=" + this.uuid;
-			return service.validaVerifica(msg);
+			
+			String respuestaSat =  service.validaVerifica(msg);
+			this.setEstatusSAT(respuestaSat);
+			comprobanteRepo.save(this);
+			
+			return true; 
 			
 		} catch(Exception e) {
 			
 			Log.general(e.getLocalizedMessage());;
-			return "Error al Procesar";
+			return false;
 		}
+		
+		
 	}
+	
+	public Boolean validateInvoiceOne() {
+			
+			List<String> respuestas = validationService.validaVerifica(this.getDocumento().getArchivoXML()); 
+			
+			// Update information with the responses from validation service.
+			this.setBitValidoSAT(Boolean.valueOf(respuestas.get(0)));
+			this.setRespuestaValidacion(respuestas.get(1));
+			this.setEstatusSAT(respuestas.get(2));
+
+			comprobanteRepo.save(this);
+			
+			return true; 
+		
+		
+	}
+	
 	
 	// additional methods to access company and supplier
 	public String getProveedorClaveProv() {
@@ -602,7 +636,6 @@ public abstract class ComprobanteFiscal {
 		return comprobanteStorageService.init(route);
 		
 	}
-	
 	
 	
 	
