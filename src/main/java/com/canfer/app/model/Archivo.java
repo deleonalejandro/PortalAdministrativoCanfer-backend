@@ -69,6 +69,13 @@ public abstract class Archivo {
 	@Autowired
 	protected ArchivoRepository archivoRepo;
 	
+	@Transient
+	@Autowired
+	protected StorageProperties st;
+
+	@Transient
+	protected final Path errorLocation = st.getErrorLocation();
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long idArchivo; 
@@ -88,6 +95,14 @@ public abstract class Archivo {
 	
 	@Column
 	protected LocalDateTime fechaMod;
+	
+	public  Archivo(String ruta, String extension, String nombre) {
+		
+		this.ruta = ruta; 
+		this.extension = extension; 
+		this.nombre = nombre; 
+		
+	}
 	
 	public void save() {
 		
@@ -240,12 +255,9 @@ public abstract class Archivo {
 	@DiscriminatorValue("ARCHIVO_XML")
 	public static class ArchivoXML extends Archivo {
 		
-		@Transient
-		private final Path errorLocation; 
 		
-		public ArchivoXML(StorageProperties storageProperties) {
-			this.errorLocation = storageProperties.getErrorLocation();
-				
+		public ArchivoXML(String ruta, String extension, String nombre) { 
+			super(ruta, extension, nombre); 
 		}
 		
 		public Comprobante toCfdi() {
@@ -342,12 +354,9 @@ public abstract class Archivo {
 	@DiscriminatorValue("ARCHIVO_PDF")
 	public static class ArchivoPDF extends Archivo {
 		
-		@Transient
-		private final Path errorLocation;
-		
-		public ArchivoPDF(StorageProperties storageProperties) {
+		public ArchivoPDF(String ruta, String extension, String nombre) {
 			
-			this.errorLocation = storageProperties.getErrorLocation();
+			super(ruta, extension, nombre); 
 		}
 		
 		public void actualizar(MultipartFile newFile) {

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
 import com.canfer.app.repository.DocumentoRepository;
+import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 
 
@@ -57,13 +58,21 @@ public class Documento {
 	
 
 	//Constructor
-	public Documento() {
-		
-	}
-	
 	public Documento(Archivo archivoXML, Archivo archivoPDF) {
 		this.archivoXML = archivoXML;
 		this.archivoPDF = archivoPDF;
+	}
+	
+	public Documento(ArchivoXML archivoXML) {
+		
+		this.archivoXML = archivoXML;
+		
+	}
+	
+	public Documento(ArchivoPDF archivoPDF) {
+		
+		this.archivoPDF = archivoPDF;
+		
 	}
 
 
