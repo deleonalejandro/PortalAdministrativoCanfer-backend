@@ -23,6 +23,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
@@ -51,10 +52,15 @@ import javassist.NotFoundException;
 @DiscriminatorColumn(name = "Tipo_Archivo")
 public abstract class Archivo {
 	
+	@Transient
 	@Autowired
 	protected ComprobanteFiscalRespository comprobanteFiscalRepository;
+	
+	@Transient
 	@Autowired
 	protected EmpresaRepository empresaRepository;
+	
+	@Transient
 	@Autowired
 	protected ProveedorRepository proveedorRepository;
 	
@@ -222,12 +228,7 @@ public abstract class Archivo {
 	@DiscriminatorValue("ARCHIVO_XML")
 	public static class ArchivoXML extends Archivo {
 		
-		@Column
-		private String uuid;
-		
-		@Column
-		private String tipoComprobante;
-		
+		@Transient
 		private final Path errorLocation; 
 		
 		public ArchivoXML(StorageProperties storageProperties) {
@@ -312,22 +313,6 @@ public abstract class Archivo {
 		}
 		
 
-		public String getUuid() {
-			return uuid;
-		}
-
-		public void setUuid(String uuid) {
-			this.uuid = uuid;
-		}
-
-		public String getTipoComprobante() {
-			return tipoComprobante;
-		}
-
-		public void setTipoComprobante(String tipoComprobante) {
-			this.tipoComprobante = tipoComprobante;
-		}
-
 		@Override
 		public void discard() {
 			
@@ -346,6 +331,7 @@ public abstract class Archivo {
 	@DiscriminatorValue("ARCHIVO_PDF")
 	public static class ArchivoPDF extends Archivo {
 		
+		@Transient
 		private final Path errorLocation;
 		
 		public ArchivoPDF(StorageProperties storageProperties) {

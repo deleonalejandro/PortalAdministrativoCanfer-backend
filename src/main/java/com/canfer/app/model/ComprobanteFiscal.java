@@ -22,11 +22,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
@@ -40,8 +42,13 @@ import net.bytebuddy.asm.Advice.This;
 @DiscriminatorColumn(name = "Tipo_Comprobante")
 public abstract class ComprobanteFiscal {
 	
+	@Transient
 	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
+	
+	@Transient
+	@Autowired
+	private ComprobanteFiscalRespository comprobanteRepo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -153,6 +160,7 @@ public abstract class ComprobanteFiscal {
 	@ManyToOne(targetEntity = Pago.class, fetch = FetchType.LAZY)
 	private Pago pago;
 	
+	@JoinColumn(name = "idDocumento")
 	@OneToOne(cascade = CascadeType.ALL)
 	private Documento documento;
 	
@@ -206,6 +214,13 @@ public abstract class ComprobanteFiscal {
 		
 		this.documento.accept(createName(), createRoute());
 			
+	}
+	
+	public void delete() {
+		
+		this.documento.delete();
+		comprobanteRepo.delete(this);
+		
 	}
 
 	public Long getIdComprobanteFiscal() {
@@ -595,7 +610,7 @@ public abstract class ComprobanteFiscal {
 	@DiscriminatorValue("FACTURA")
 	public static class Factura extends ComprobanteFiscal{
 		
-		@JoinColumn(name = "uuidComplemento", nullable= true)
+		@JoinColumn(name = "idComplemento", nullable= true)
 	    @ManyToOne(fetch = FetchType.LAZY)
 	    private ComplementoPago complemento;
 		

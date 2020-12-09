@@ -6,15 +6,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,16 +21,18 @@ import org.springframework.core.io.Resource;
 
 	
 @Entity(name = "Documento")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "Tipo_Documento")
 public class Documento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDocumento;
 	
+	@JoinColumn(name = "id_xml")
+	@OneToOne(cascade = CascadeType.ALL)
 	private Archivo archivoXML;
 	
+	@JoinColumn(name = "id_pdf")
+	@OneToOne(cascade = CascadeType.ALL)
 	private Archivo archivoPDF;
 	
 	@Column(nullable = false)
@@ -53,6 +54,7 @@ public class Documento {
 	}
 	
 	public Documento(Archivo archivoXML, Archivo archivoPDF) {
+		
 		this.archivoXML = archivoXML;
 		this.archivoPDF = archivoPDF;
 			
