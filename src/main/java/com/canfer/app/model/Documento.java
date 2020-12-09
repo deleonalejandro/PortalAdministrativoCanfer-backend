@@ -14,14 +14,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+
+import com.canfer.app.repository.DocumentoRepository;
 
 	
 @Entity(name = "Documento")
 public class Documento {
+	
+	@Transient
+	@Autowired
+	private DocumentoRepository docRepo;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,7 +126,16 @@ public class Documento {
 	}
 	
 	//TODO 
-	public void save() {}
+	public void save() {
+		
+		this.archivoXML.save();
+		this.archivoPDF.save();
+		
+		docRepo.save(this);
+		
+		
+	}
+	
 	public void accept(String nombre, String ruta) {
 		
 		this.archivoXML.accept(nombre, ruta);

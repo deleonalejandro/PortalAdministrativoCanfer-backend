@@ -40,6 +40,7 @@ import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.storage.StorageProperties;
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.repository.ArchivoRepository;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
@@ -64,6 +65,10 @@ public abstract class Archivo {
 	@Autowired
 	protected ProveedorRepository proveedorRepository;
 	
+	@Transient
+	@Autowired
+	protected ArchivoRepository archivoRepo;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long idArchivo; 
@@ -83,6 +88,13 @@ public abstract class Archivo {
 	
 	@Column
 	protected LocalDateTime fechaMod;
+	
+	public void save() {
+		
+		this.archivoRepo.save(this);
+		
+		
+	}
 	
 
 	public Resource loadAsResource() {

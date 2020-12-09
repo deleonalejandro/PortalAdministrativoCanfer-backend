@@ -35,7 +35,6 @@ import com.canfer.app.webservice.sat.SatVerificacionService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByName;
 
-import net.bytebuddy.asm.Advice.This;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -211,7 +210,6 @@ public abstract class ComprobanteFiscal {
 	public void accept() {
 		
 		// creamos los nombres y las rutas donde se guardaran los archivos
-		
 		this.documento.accept(createName(), createRoute());
 			
 	}
@@ -220,6 +218,13 @@ public abstract class ComprobanteFiscal {
 		
 		this.documento.delete();
 		comprobanteRepo.delete(this);
+		
+	}
+	
+	public void save() {
+		
+		this.documento.save();
+		comprobanteRepo.save(this);
 		
 	}
 
