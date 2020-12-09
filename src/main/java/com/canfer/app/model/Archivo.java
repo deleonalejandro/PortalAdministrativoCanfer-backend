@@ -244,8 +244,7 @@ public abstract class Archivo {
 		private final Path errorLocation; 
 		
 		public ArchivoXML(StorageProperties storageProperties) {
-				
-			 this.errorLocation = storageProperties.getErrorLocation();
+			this.errorLocation = storageProperties.getErrorLocation();
 				
 		}
 		

@@ -57,16 +57,13 @@ public class Documento {
 	
 
 	//Constructor
-	
 	public Documento() {
 		
 	}
 	
 	public Documento(Archivo archivoXML, Archivo archivoPDF) {
-		
 		this.archivoXML = archivoXML;
 		this.archivoPDF = archivoPDF;
-			
 	}
 
 

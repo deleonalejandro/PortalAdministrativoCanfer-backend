@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.ConsecutivoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -67,6 +68,10 @@ public abstract class ComprobanteFiscal {
 	@Transient
 	@Autowired
 	private ProveedorRepository proveedorRepo;
+	
+	@Transient
+	@Autowired
+	private ConsecutivoRepository consecutivoRepo;
 	
 	
 	
@@ -184,17 +189,14 @@ public abstract class ComprobanteFiscal {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Documento documento;
 	
-	public ComprobanteFiscal(Documento documento, Long consecutivo) {
+	public ComprobanteFiscal(Documento documento) {
 		
 		this.estatusPago = "EN PROCESO";
 		this.bitRS = false;
 		this.bitRSusuario = false;
 		this.comentario = "";
-		
-		//Set SAP ID
-		this.idNumSap = consecutivo;
-
 		this.documento = documento;
+		
 	}
 
 	// Concrete Constructor 
@@ -263,6 +265,7 @@ public abstract class ComprobanteFiscal {
 		Comprobante model = this.documento.getArchivoXML().toCfdi();
 		Empresa receptor;
 		Proveedor emisor;
+		Consecutivo consecutivo;
 		List<Proveedor> proveedores;
 		
 		receptor = empresaRepo.findByRfc(model.getReceptorRfc());
@@ -278,14 +281,14 @@ public abstract class ComprobanteFiscal {
 		}
 
 		// use the proper sequence for the company and module
-		consecutivo = consecutivoRepository.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
-		idNumSap = consecutivo.getNext();
-		consecutivoRepository.save(consecutivo);
+		consecutivo = consecutivoRepo.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
+		this.idNumSap = consecutivo.getNext();
+		consecutivoRepo.save(consecutivo);
 				
 				
 		//Set the object fields
-		this.empresa = empresa;
-		this.proveedor = proveedor;
+		this.empresa = receptor;
+		this.proveedor = emisor;
 		
 		
 		//Use the information from the XML to fill the information
