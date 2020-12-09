@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
@@ -57,6 +59,14 @@ public abstract class ComprobanteFiscal {
 	@Transient
 	@Autowired
 	private SatVerificacionService verificationService; 
+	
+	@Transient
+	@Autowired
+	private EmpresaRepository empresaRepo;
+	
+	@Transient
+	@Autowired
+	private ProveedorRepository proveedorRepo;
 	
 	
 	
@@ -174,8 +184,17 @@ public abstract class ComprobanteFiscal {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Documento documento;
 	
-	public ComprobanteFiscal() {
-		// Default constructor
+	public ComprobanteFiscal(Documento documento, Long consecutivo) {
+		
+		this.estatusPago = "EN PROCESO";
+		this.bitRS = false;
+		this.bitRSusuario = false;
+		this.comentario = "";
+		
+		//Set SAP ID
+		this.idNumSap = consecutivo;
+
+		this.documento = documento;
 	}
 
 	// Concrete Constructor 
@@ -236,6 +255,60 @@ public abstract class ComprobanteFiscal {
 		
 		this.documento.save();
 		comprobanteRepo.save(this);
+		
+	}
+	
+	public void fill() {
+		
+		Comprobante model = this.documento.getArchivoXML().toCfdi();
+		Empresa receptor;
+		Proveedor emisor;
+		List<Proveedor> proveedores;
+		
+		receptor = empresaRepo.findByRfc(model.getReceptorRfc());
+		proveedores = proveedorRepo.findAllByEmpresasAndRfc(receptor, model.getEmisorRfc());
+		
+		// get the proper provider
+		if (proveedores.size() > 1 || proveedores.isEmpty()) {
+			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
+			// instead.
+			emisor = proveedorRepo.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+		} else {
+			emisor = proveedores.get(0);
+		}
+
+		// use the proper sequence for the company and module
+		consecutivo = consecutivoRepository.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
+		idNumSap = consecutivo.getNext();
+		consecutivoRepository.save(consecutivo);
+				
+				
+		//Set the object fields
+		this.empresa = empresa;
+		this.proveedor = proveedor;
+		
+		
+		//Use the information from the XML to fill the information
+		this.uuid = model.getUuidTfd();
+		this.serie = model.getSerie();
+		this.folio = model.getFolio();
+		this.rfcEmpresa = model.getReceptorRfc();
+		this.rfcProveedor = model.getEmisorRfc();
+		this.fechaEmision = model.getFecha();
+		this.fechaTimbre = model.getFechaTimbradoTfd();
+		this.noCertificadoEmpresa = model.getNoCertificado();
+		this.noCertificadoSat = model.getNoCertificadoSatTfd();
+		this.versionCfd = model.getVersion();
+		this.versionTimbre = model.getVersionTfd();
+		this.moneda = model.getMoneda();
+		this.total = model.getTotal();
+		this.tipoDocumento = model.getTipoDeComprobante();
+		
+		//Related UUIDs
+		if (model.haveUuidsRelacionados()) {
+			this.uuidRelacionados = model.getUuidsRelacionados();
+			this.tipoRelacionUuidRelacionados = model.getTipoRelacionUuidRelacionados();
+		}
 		
 	}
 
@@ -508,7 +581,7 @@ public abstract class ComprobanteFiscal {
 			
 		} catch(Exception e) {
 			
-			Log.general(e.getLocalizedMessage());;
+			Log.general(e.getMessage());
 			return false;
 		}
 		
@@ -654,8 +727,8 @@ public abstract class ComprobanteFiscal {
 	    private ComplementoPago complemento;
 		
 		
-		public Factura() {
-			// Default constructor
+		public Factura(Documento documento) {
+			super(documento);
 		}
 		
 		public Factura(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
@@ -693,8 +766,8 @@ public abstract class ComprobanteFiscal {
 	@DiscriminatorValue("NOTA_DE_CREDITO")
 	public static class NotaDeCredito extends ComprobanteFiscal {
 		
-		public NotaDeCredito() {
-			// Default constructor
+		public NotaDeCredito(Documento documento) {
+			super(documento);
 		}
 
 		public NotaDeCredito(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
@@ -708,8 +781,8 @@ public abstract class ComprobanteFiscal {
 	@DiscriminatorValue("COMPLEMENTO_DE_PAGO")
 	public static class ComplementoPago extends ComprobanteFiscal {
 		
-		public ComplementoPago() {
-			// Default constructor
+		public ComplementoPago(Documento documento) {
+			super(documento);
 		}
 		
 		public ComplementoPago(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
