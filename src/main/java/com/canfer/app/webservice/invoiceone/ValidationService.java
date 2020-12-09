@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
 import com.canfer.app.cfd.XmlService;
+import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.Log;
 import com.canfer.app.wsdl.invoiceone.ObtenerEstatusCuentaResponse;
 import com.canfer.app.wsdl.invoiceone.ValidayVerificaXMLResponse;
@@ -45,12 +46,12 @@ public class ValidationService {
 	 **/
 	
 	//Valida y Verifica con MultipartFile 
-	public List<String> validaVerifica(MultipartFile file) {
+	public List<String> validaVerifica(ArchivoXML file) {
 
 		try {
 			
 			// create string from xml doc
-			String xmlString = xmlService.docToString(file);
+			String xmlString = file.toString();
 
 			// use user and passwd from account of web service
 			String user = "Pruebas";
@@ -75,34 +76,7 @@ public class ValidationService {
 
 	}
 	
-	//Valida y verifica con un path
-	public List<String> validaVerifica(Path path) {
-		try {
-			// create string from xml doc
-			String xmlString = xmlService.docToString(path);
-
-			// use user and passwd from account of web service
-			String user = "Pruebas";
-			String passwd = "Htp.7894";
-
-			// send request to web service
-			ValidayVerificaXMLResponse response = client.getInfo(user, passwd, xmlString);
-			// decode response
-			byte[] decodedResponse = Base64.getDecoder().decode(response.getValidayVerificaXMLResult());
-			String utf8EncodedString = new String(decodedResponse, StandardCharsets.UTF_8);
-			// get answer from validation in list
-			return validationAnswer.getValidation(utf8EncodedString);
-			
-		} catch (SoapFaultClientException e) {
-			Log.falla("No se pudo conectar con el Servidor Web de INVOICE ONE. ", "ERROR_CONNECTION");
-			return Arrays.asList("0", "Este documento no fue procesado por el Web Service", "No encontrado");          
-
-		} catch (XmlInfrastructureException e) {
-			Log.falla("Ocurrió un error con el XML: "+e.getMessage(), "ERROR_FILE");
-			return Arrays.asList("0", "Este documento no fue procesado por el Web Service", "No encontrado");          
-		}
-
-	}
+	
 
 	public void estatusCuenta() {
 		try {

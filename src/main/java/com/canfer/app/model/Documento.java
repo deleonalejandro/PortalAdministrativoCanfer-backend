@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
 import com.canfer.app.repository.DocumentoRepository;
+import com.canfer.app.model.Archivo.ArchivoXML;
+
 
 	
 @Entity(name = "Documento")
@@ -93,8 +95,8 @@ public class Documento {
 		this.docEntry = docEntry;
 	}
 
-	public Archivo getArchivoXML() {
-		return archivoXML;
+	public ArchivoXML getArchivoXML() {
+		return (ArchivoXML) archivoXML;
 	}
 
 	public void setArchivoXML(Archivo archivoXML) {

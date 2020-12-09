@@ -41,17 +41,12 @@ public class CrystalReportService {
 	private EmpresaRepository empresaRepository; 
 	@Autowired
 	private DocumentoRepository documentoRepository; 
-	@Autowired
-	private XmlService xmlService; 
-	@Autowired
-	private DocumentoService documentoService; 
-	@Autowired
-	private ComprobanteFiscalRespository comprobanteFiscalRepository; 
 	
-	public String exportPDF(String empresa, Integer pago, String user, String password, String rfc, Long idTabla) {
+	public String exportPDF(String empresa, Integer pago, String user, String password, String rfc, Long id) {
 
 		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
 		 String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs";
+		 String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
 		 
 		try {
 
@@ -81,7 +76,7 @@ public class CrystalReportService {
 			byte byteArray[] = new byte[byteArrayInputStream.available()];
 
 			//Create a new file that will contain the exported result.
-			String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
+			
 			
 			File file = new File(path);
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -97,7 +92,6 @@ public class CrystalReportService {
 			byteArrayOutputStream.close();
 			fileOutputStream.close();
 			
-			//TODO rutas del crystal 
 			//Guardamos el Crystal
 					
  			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de Pago", 
@@ -122,15 +116,23 @@ public class CrystalReportService {
 
 	}
 
-	public String exportGenerico(Long id, String uuid) {
-
-		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\pdfGenerico.rpt";
-		String EXPORT_FILE = "C:\\Users\\aadministrador\\Desktop\\PDFGenerico";
-
-		 
-		Documento doc = documentoRepository.findByIdTablaAndExtension(id, "xml");
-		Comprobante comprobante = xmlService.xmlToObject(Paths.get(doc.getRuta()));
-		ComprobanteFiscal factura = comprobanteFiscalRepository.findById(doc.getIdTabla()).get();
+	public String exportGenerico(Long id, ComprobanteFiscal comprobanteFiscal) {
+		
+		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
+		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
+		
+		String sPath = comprobanteFiscal.getDocumento().getArchivoXML().getRuta();
+		String path = sPath.substring(0, sPath.length() - 3) + "pdf";
+		
+		String pathQR = "C:\\Users\\aadministrador\\Desktop\\CurrentQR.png";
+		
+		File file = new File(path);
+		
+		boolean existsQR = false;
+		
+		
+		Comprobante comprobante = comprobanteFiscal.getDocumento().getArchivoXML().toCfdi();
+		
 		try {
 
 			//Open report.			
@@ -140,7 +142,7 @@ public class CrystalReportService {
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "folio", comprobante.getFolio());
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "serie", "HOLA");
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "serie", comprobante.getSerie());
 			
 			//Incluir Parametros
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "rfcEmisor", comprobante.getEmisorRfc());
@@ -166,19 +168,28 @@ public class CrystalReportService {
 			
 			
 			//save QR
-			String pathQR = "C:\\Users\\aadministrador\\Desktop\\CurrentQR.png";
 			String urlSAT = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+comprobante.getUuidTfd()+
 					"&re="+comprobante.getEmisorRfc()+"&rr="+comprobante.getReceptorRfc()+"&tt="+comprobante.getTotal()+"&fe="+ultimosDig;
-			try {
-	            generateQRCodeImage(urlSAT, 350, 350, pathQR);
-	        } catch (WriterException e) {
+			
+			try {	
+				
+				existsQR  = generateQRCodeImage(urlSAT, 350, 350, pathQR);
+				
+			} catch (WriterException e) {
+	        	
 	            Log.activity("No se pudo generar un QR para el PDF genérico "+comprobante.getUuidTfd()+".", comprobante.getReceptorNombre(), "ERROR");
+	            
 	        } catch (IOException e) {
+	        	
 	        	 Log.activity("No se pudo generar un QR para el PDF genérico "+comprobante.getUuidTfd()+".", comprobante.getReceptorNombre(), "ERROR_FILE");
+	        
 	        }
 			
+			if (existsQR) { 
+				
+				reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "qr", pathQR);
 			
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "qr", pathQR);
+			}
 			
 			//Export report and obtain an input stream that can be written to disk.
 			//See the Java Reporting Component Developer's Guide for more information on the supported export format enumerations
@@ -192,8 +203,6 @@ public class CrystalReportService {
 			byte byteArray[] = new byte[byteArrayInputStream.available()];
 
 			//Create a new file that will contain the exported result.
-			String path = EXPORT_FILE + File.separator  + uuid + ".pdf";
-			File file = new File(path);
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(byteArrayInputStream.available());
@@ -215,14 +224,19 @@ public class CrystalReportService {
 		}
 		catch(ReportSDKException ex) {
 		
-			Log.activity("No se pudo generar el PDF Generico para: " + uuid+".", comprobante.getReceptorNombre(), "ERROR_FILE");
+			Log.activity("No se pudo generar el PDF Generico para: " + comprobanteFiscal.getUuid() +
+					".", comprobante.getReceptorNombre(), "ERROR_FILE");
+			
 			return null; 
+			
 		}
 		catch(Exception ex) {
 			
-			Log.activity("Ocurrió un error al exportar un PDF genérico para "+uuid+".", comprobante.getReceptorNombre(), "ERROR");
-			ex.printStackTrace();
+			Log.activity("Ocurrió un error al exportar un PDF genérico para " + comprobanteFiscal.getUuid() 
+				+".", comprobante.getReceptorNombre(), "ERROR");
+			
 			return null; 	
+			
 		}
 		
 		
@@ -230,13 +244,17 @@ public class CrystalReportService {
 	}
 	
 
-	    private void generateQRCodeImage(String text, int width, int height, String filePath)
+	    private boolean generateQRCodeImage(String text, int width, int height, String filePath)
 	            throws WriterException, IOException {
+	    	
 	        QRCodeWriter qrCodeWriter = new QRCodeWriter();
 	        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
 
 	        Path path = FileSystems.getDefault().getPath(filePath);
 	        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+	        
+	        return true; 
+	        
 	    }
 }
 

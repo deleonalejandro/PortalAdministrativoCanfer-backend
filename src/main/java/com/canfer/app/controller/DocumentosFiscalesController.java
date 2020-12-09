@@ -302,14 +302,13 @@ public class DocumentosFiscalesController {
 		String contentType = "application/octet-stream";
 		
 		Optional<ComprobanteFiscal> factura = comprobanteFiscalRepository.findById(id);
-		String concepto = factura.get().getTipoDocumento()+"_"+factura.get().getUuid();
 		
-		Documento doc = documentoService.findByConceptoAndExtension(concepto, extension);
 		Path path = null; 
 		Resource resource = null;
 		
-		if (doc == null) {
-			path = Paths.get(crystalReportService.exportGenerico(id,  factura.get().getUuid()));
+		if (factura.get().getDocumento().getArchivoPDF() == null &&
+				factura.get() != null) {
+			path = Paths.get(crystalReportService.exportGenerico(id,  factura.get()));
 			doc = documentoService.findByConceptoAndExtension(concepto, extension);
 			
 		} else {
