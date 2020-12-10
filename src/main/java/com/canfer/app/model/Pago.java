@@ -5,20 +5,19 @@ import java.sql.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.canfer.app.model.ComprobanteFiscal.Factura;
+
 
 
 
 	
 @Entity(name = "PagoSAP")
-public class Pago {
+public class Pago implements IModuleEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +75,8 @@ public class Pago {
 	//Constructor 
 	public Pago() {
 	}
+	
+	
 
 	
 	//Getters and Setters
@@ -217,6 +218,24 @@ public class Pago {
 
 	public void setDocumento(Documento documento) {
 		this.documento = documento;
+	}
+
+
+	@Override
+	public Documento fetchDocument() {
+		return this.documento;
+	}
+
+
+	@Override
+	public Archivo fetchXML() {
+		return this.documento.getArchivoXML();
+	}
+
+
+	@Override
+	public Archivo fetchPDF() {
+		return this.documento.getArchivoPDF();
 	} 
 	
 	
