@@ -15,14 +15,16 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvException;
 
+@Component
 public class Downloader {
 
-	public HttpServletResponse downloadCSV(List<Object> entradas, HttpServletResponse response)
+	public HttpServletResponse downloadCSV(List<IModuleEntity> comprobantes, HttpServletResponse response)
 			throws CsvException, IOException {
 
 		// set file name and content type
@@ -33,7 +35,7 @@ public class Downloader {
 
 		Writer writer = new PrintWriter(response.getWriter());
 		StatefulBeanToCsv<Object> beanToCsv = new StatefulBeanToCsvBuilder<Object>(writer).build();
-		beanToCsv.write(entradas);
+		beanToCsv.write(comprobantes);
 		writer.close();
 
 		return response;
