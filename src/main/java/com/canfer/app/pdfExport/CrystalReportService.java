@@ -1,3 +1,4 @@
+package com.canfer.app.pdfExport;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -10,7 +11,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import com.canfer.app.cfd.Comprobante;
-import com.canfer.app.model.Archivo;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
