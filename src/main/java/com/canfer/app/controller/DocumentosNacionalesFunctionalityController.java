@@ -30,11 +30,11 @@ public class DocumentosNacionalesFunctionalityController {
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
 		
 		ArchivoPDF filePDF = null; 
-		ArchivoXML fileXML = storageService.storeXML(files[0]);
+		ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
 	
 		if (files.length > 1) {
 			
-			filePDF = storageService.storePDF(files[1]);
+			filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
 			
 		} 
 		

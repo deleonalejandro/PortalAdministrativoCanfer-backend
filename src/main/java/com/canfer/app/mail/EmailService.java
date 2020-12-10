@@ -90,8 +90,8 @@ public class EmailService {
 
 	private boolean processDocuments(List<Archivo> files) {
 
-		Archivo pdfFile = null;
-		Archivo xmlFile = null;
+		ArchivoPDF pdfFile = null;
+		ArchivoXML xmlFile = null;
 		List<Archivo> filesMatched = new ArrayList<>();
 		List<ArchivoXML> filesXML = new ArrayList<>();
 
@@ -118,11 +118,11 @@ public class EmailService {
 
 				if (matchedFile instanceof ArchivoPDF) {
 
-					pdfFile = matchedFile;
+					pdfFile = (ArchivoPDF) matchedFile;
 
 				} else {
 
-					xmlFile = matchedFile;
+					xmlFile = (ArchivoXML) matchedFile;
 
 				}
 
