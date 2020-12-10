@@ -22,19 +22,6 @@ import com.opencsv.exceptions.CsvException;
 
 public class Downloader {
 
-	public ResponseEntity<Resource> download(Archivo file) {
-
-		String contentType = "application/octet-stream";
-
-		// try to load resource
-		Resource resource = file.loadAsResource();
-
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getNombre() + "\"")
-				.body(resource);
-
-	}
-
 	public HttpServletResponse downloadCSV(List<Object> entradas, HttpServletResponse response)
 			throws CsvException, IOException {
 
@@ -79,6 +66,37 @@ public class Downloader {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFileName + "\"")
 				.body(bos.toByteArray());
 
+	}
+
+	public ResponseEntity<Resource> download(Archivo file, String method) {
+
+		String action = null;
+		
+		switch(method) {
+
+		case "p":
+			
+			action = "inline";
+			break;
+			
+		case "d":
+			
+			action = "attachment";
+			break;
+			
+		}
+			String contentType = "application/pdf";
+
+			if (file.getExtension().equalsIgnoreCase("xml")) {
+				contentType = "text/xml";
+			}
+
+			Resource resource = file.loadAsResource();
+
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+					.header(HttpHeaders.CONTENT_DISPOSITION, action + "; filename=\"" + resource.getFilename() + "\"")
+					.body(resource);
+		
 	}
 
 }

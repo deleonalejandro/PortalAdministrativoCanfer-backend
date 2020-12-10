@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.XmlService;
+import com.canfer.app.model.Archivo;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Log;
 import com.canfer.app.service.DocumentoService;
@@ -110,7 +111,7 @@ public class EmailService {
 
 	private boolean processDocuments() {
 
-		List<Path> filePaths = new ArrayList<>();
+		List<Archivo> filePaths = new ArrayList<>();
 		
 		// list of XML paths
 		try {
@@ -288,7 +289,6 @@ public class EmailService {
 
 	private List<BodyPart> getAllAttachments(Message[] messages) {
 
-		// TODO try to reduce algorithm complexity
 		
 		List<BodyPart> bodyParts = new ArrayList<>();
 		Message msg;

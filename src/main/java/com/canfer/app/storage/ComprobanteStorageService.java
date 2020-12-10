@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.model.Archivo.ArchivoPDF;
+import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
 
@@ -30,8 +33,12 @@ import net.bytebuddy.asm.Advice.This;
 
 @Service
 public class ComprobanteStorageService implements StorageService {
-
+	
+	@Autowired
+	StorageProperties storageProperties;
+	
 	private Path rootLocation;
+	private Path entriesPortalLocation = storageProperties.getEntryPortalLocation();
 	
 	public ComprobanteStorageService(StorageProperties storageProperties) {
 		this.rootLocation = storageProperties.getFacturasLocation();
@@ -241,6 +248,78 @@ public class ComprobanteStorageService implements StorageService {
 					+ extension);
 		}
 	}
+
+	public ArchivoXML storeXML(MultipartFile multipartFile) {
+		
+		String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		Path fileLocation = this.entriesPortalLocation.resolve(filename);
+			try {
+				
+				if (multipartFile.isEmpty()) {
+					
+					throw new StorageException("Error al guardar un archivo vacío. " + filename);
+				
+				}
+				
+				if (filename.contains("..")) {
+					
+					// This is a security check
+					throw new StorageException(
+							"No es posible guardar un archivo con una ruta relativa fuera del directorio " + filename);
+				
+				}
+				
+				try (InputStream inputStream = multipartFile.getInputStream()) {
+					
+					Files.copy(inputStream, this.rootLocation.resolve(filename),
+						StandardCopyOption.REPLACE_EXISTING);
+				
+				}
+			}
+			
+			catch (IOException e) {
+				throw new StorageException("Error al guardar el archivo " + filename, e);
+			}
+			
+			return new ArchivoXML(fileLocation.toString(), "xml", filename);
+	}
+	
+
+	public ArchivoPDF storePDF(MultipartFile multipartFile) {
+		
+		String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+		Path fileLocation = this.entriesPortalLocation.resolve(filename);
+			try {
+				
+				if (multipartFile.isEmpty()) {
+					
+					throw new StorageException("Error al guardar un archivo vacío. " + filename);
+				
+				}
+				
+				if (filename.contains("..")) {
+					
+					// This is a security check
+					throw new StorageException(
+							"No es posible guardar un archivo con una ruta relativa fuera del directorio " + filename);
+				
+				}
+				
+				try (InputStream inputStream = multipartFile.getInputStream()) {
+					
+					Files.copy(inputStream, this.rootLocation.resolve(filename),
+						StandardCopyOption.REPLACE_EXISTING);
+				
+				}
+			}
+			
+			catch (IOException e) {
+				throw new StorageException("Error al guardar el archivo " + filename, e);
+			}
+			
+			return new ArchivoPDF(fileLocation.toString(), "xml", filename);
+	}
+	
 	
 	
 }

@@ -16,6 +16,7 @@ public class StorageProperties {
 	// take values from .properties file
 	private Path facturasLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Facturas", "PortalProveedores");
 	private Path entriesLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Entradas");
+	private Path entryPortalLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Entries");
 	private Path errorLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Error");
 	private Path okLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "OK");
 	private Path downloadLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Descargas");
@@ -56,6 +57,12 @@ public class StorageProperties {
 	}
 	public void setLogoLocation(Path logoLocation) {
 		this.logoLocation = logoLocation;
+	}
+	public Path getEntryPortalLocation() {
+		return entryPortalLocation;
+	}
+	public void setEntryPortalLocation(Path entryPortalLocation) {
+		this.entryPortalLocation = entryPortalLocation;
 	}
 	
 	
