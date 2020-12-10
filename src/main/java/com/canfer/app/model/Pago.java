@@ -229,7 +229,7 @@ public class Pago implements IModuleEntity {
 
 	@Override
 	public Archivo fetchXML() {
-		return this.documento.getArchivoXML();
+		return null;
 	}
 
 

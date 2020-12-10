@@ -43,7 +43,7 @@ import com.opencsv.bean.CsvBindByName;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Comprobante")
-public abstract class ComprobanteFiscal {
+public abstract class ComprobanteFiscal implements IModuleEntity {
 	
 	@Transient
 	@Autowired
@@ -763,6 +763,21 @@ public abstract class ComprobanteFiscal {
 			return this.complemento != null;
 		}
 
+		@Override
+		public Documento fetchDocument() {
+			return this.getDocumento();
+		}
+
+		@Override
+		public Archivo fetchXML() {
+			return this.getDocumento().getArchivoXML();
+		}
+
+		@Override
+		public Archivo fetchPDF() {
+			return this.getDocumento().getArchivoPDF();
+		}
+
 	}
 	
 	@Entity
@@ -775,6 +790,21 @@ public abstract class ComprobanteFiscal {
 
 		public NotaDeCredito(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
 			super(comprobante, empresa, proveedor, consecutivo);
+		}
+
+		@Override
+		public Documento fetchDocument() {
+			return this.getDocumento();
+		}
+
+		@Override
+		public Archivo fetchXML() {
+			return this.getDocumento().getArchivoXML();
+		}
+
+		@Override
+		public Archivo fetchPDF() {
+			return this.getDocumento().getArchivoPDF();
 		}
 		
 		
@@ -791,9 +821,25 @@ public abstract class ComprobanteFiscal {
 		public ComplementoPago(Comprobante comprobante, Empresa empresa, Proveedor proveedor, Long consecutivo) {
 			super(comprobante, empresa, proveedor, consecutivo);
 		}
+
+		@Override
+		public Documento fetchDocument() {
+			return this.getDocumento();
+		}
+
+		@Override
+		public Archivo fetchXML() {
+			return this.getDocumento().getArchivoXML();
+		}
+
+		@Override
+		public Archivo fetchPDF() {
+			return this.getDocumento().getArchivoPDF();
+		}
 		
 
 	}
+
 
 	
 	
