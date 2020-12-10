@@ -4,13 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -20,42 +16,26 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.persistence.NoResultException;
 
-import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.canfer.app.cfd.Comprobante;
-import com.canfer.app.cfd.XmlService;
 import com.canfer.app.model.Archivo;
-import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Archivo.ArchivoPDF;
+import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.Log;
-import com.canfer.app.service.DocumentoService;
-import com.canfer.app.service.ComprobanteFiscalService;
+import com.canfer.app.model.ModuleActions;
 import com.canfer.app.storage.ComprobanteStorageService;
-import com.canfer.app.storage.FileStorageService;
 import com.canfer.app.storage.StorageException;
-import com.canfer.app.webservice.invoiceone.ValidationService;
-
-import javassist.NotFoundException;
 
 @Service
 public class EmailService {
 
 	@Autowired
-	private FileStorageService fileStorageService;
-	@Autowired
-	private XmlService xmlService;
-	@Autowired
-	private ComprobanteFiscalService comprobanteFiscalService;
-	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
-	private ValidationService validationService;
-	@Autowired
-	private EmailSenderService emailSender; 
+	private ModuleActions actioner;
 
 	public EmailService() {
 		// Constructor vacio
@@ -64,15 +44,13 @@ public class EmailService {
 	public void handleEmails(Message[] messages) {
 
 		List<BodyPart> attachments;
+		List<Archivo> files = new ArrayList<>();
 
 		attachments = getAllAttachments(messages);
 
 		if (attachments.isEmpty()) {
 			throw new NoResultException("No existen archivos adjuntos.");
 		}
-
-		// initializing directories
-		fileStorageService.init();
 
 		// iterate bodyPart list
 		for (BodyPart attachment : attachments) {
@@ -87,168 +65,92 @@ public class EmailService {
 				if (extension != null) {
 					if (extension.equalsIgnoreCase("zip")) {
 						// process the ZIP file
-						zipExtraction(attachment);
+						files.addAll(zipExtraction(attachment));
 					}
 
 					else {
 						// Save the documents into the base folder
-						fileStorageService.storeAttachment(attachment);
+						files.add(comprobanteStorageService.storeAttachment(attachment));
 					}
 
 				}
 
 			} catch (StorageException | MessagingException e) {
-				Log.falla("Error al procesar correo: No fue posible recibir el archivo adjunto. " + e.getMessage(), "ERROR_FILE");
+				Log.falla("Error al procesar correo: No fue posible recibir el archivo adjunto. " + e.getMessage(),
+						"ERROR_FILE");
 			}
 
 		}
 
-		if (processDocuments()) {
+		if (processDocuments(files)) {
 			Log.general("Los correos fueron procesados satisfactoriamente. La bandeja de entrada ha sido vaciada.");
 		}
 
 	}
 
-	private boolean processDocuments() {
+	private boolean processDocuments(List<Archivo> files) {
 
-		List<Archivo> filePaths = new ArrayList<>();
-		
-		// list of XML paths
-		try {
-			
-			filePaths = fileStorageService.loadAllRoutes()
-					.filter(file -> FilenameUtils.getExtension(file.getFileName().toString()).equalsIgnoreCase("xml"))
-					.collect(Collectors.toList());
-			
-		} catch (StorageException e2) {
-			Log.falla("Error al procesar documentos descargados: " + e2.getMessage(), "ERROR_FILE");
+		Archivo pdfFile = null;
+		Archivo xmlFile = null;
+		List<Archivo> filesMatched = new ArrayList<>();
+		List<ArchivoXML> filesXML = new ArrayList<>();
+
+		for (Archivo file : files) {
+
+			if (file instanceof ArchivoXML) {
+
+				ArchivoXML xml = (ArchivoXML) file;
+				filesXML.add(xml);
+
+			}
 		}
 
-		for (Path path : filePaths) {
+		for (Archivo file : filesXML) {
 
-			List<Path> files = new ArrayList<>();
-			String baseName = FilenameUtils.getBaseName(path.getFileName().toString());
+			String baseName = FilenameUtils.getBaseName(file.getNombre());
 
-			// Filter the directory and throw the paths that contain the base name on it.
-			try {
-				
-				files = fileStorageService.loadAllRoutes()
-						.filter(file -> file.getFileName().toString().contains(baseName)).sorted(Comparator.reverseOrder())
+			filesMatched = files.stream().filter(f -> f.getNombre().contains(baseName))
 						.collect(Collectors.toList());
 
-			} catch (Exception e2) {
-				Log.falla("Error al procesar documentos descargados: " + e2.getMessage(), "ERROR_FILE");
+			
+			// Move files to corresponding official directories
+			for (Archivo matchedFile : filesMatched) {
+
+				if (matchedFile instanceof ArchivoPDF) {
+
+					pdfFile = matchedFile;
+
+				} else {
+
+					xmlFile = matchedFile;
+
+				}
+
+				// Erase files from the entries directory
+				files.remove(matchedFile);
+
 			}
 
-			// Move files to corresponding official directories
-			saveOfficialDocuments(files);
+			actioner.upload(xmlFile, pdfFile);
 
-			// Erase files from the entries directory
-			files.forEach(file -> {
-				if (file.toFile().exists()) {
-					try {
-						// delete file if exists
-						Files.delete(file);
-
-					} catch (IOException e) {
-						Log.falla("Error al procesar documentos descargados: No fue posible eliminar el archivo del directorio de descargas." + e.getMessage(), "ERROR_STORAGE");
-						e.printStackTrace();
-					}
-				}
-			});
 		}
 		
-		try {
+		for (Archivo file : files) {
 			
-			// clear entries directory
-			Stream<Path> remainingFiles = fileStorageService.loadAllRoutes();
-			
-			if (remainingFiles.findAny().isPresent()) {
-				// finally copy remaining files into the unknown directory and delete all from the entries.
-				fileStorageService.loadAllRoutes().forEach(file -> fileStorageService.migrateAttachments(file, "OTHER"));
-				fileStorageService.deleteAll();
-			}
-			
-		} catch (StorageException e2) {
-			Log.falla("Error al procesar documentos descargados: " + e2.getMessage(), "ERROR_FILE");
+			file.discard();
 		}
-
-
-		return true;
+		
+		return true; 
+		
+		
 	}
 
-	private void saveOfficialDocuments(List<Path> files) {
 
-		Comprobante comprobante = null;
-		ComprobanteFiscal comprobanteFiscal;
-		String ruta; 
-		List<String> validationResponse;
-
-		try {
-			// Read the information from the XML.
-			comprobante = xmlService.xmlToObject(files.get(0));
-
-			// Send the information to FacturaNotaComplementoService.
-			comprobanteFiscal = comprobanteFiscalService.save(comprobante);
-
-			/***************************
-			 * Save XML into the server
-			 */
-
-			// Initialize folders and get the route.
-			comprobanteStorageService.init(comprobanteFiscal);
-			// Store the XML in the server.
-			ruta = comprobanteStorageService.store(files.get(0), comprobanteFiscal);
-			// Save document object.
-			documentoService.save(comprobanteFiscal, "xml", "Documentos Fiscales", ruta);
-
-			/*************************************
-			 * Save PDF into the server
-			 */
-
-			if (files.size() > 1) {
-				// Take the route.
-				ruta = comprobanteStorageService.store(files.get(1), comprobanteFiscal);
-				// Save document object.
-				documentoService.save(comprobanteFiscal, "pdf", "Documentos Fiscales", ruta);
-			}
-
-			/***********************************************************
-			 * Use InvoiceOne web service to validate and set responses.
-			 *
-			 */
-			
-			validationResponse = validationService.validaVerifica(files.get(0));
-			
-			comprobanteFiscalService.setValidation(comprobanteFiscal, validationResponse);
-			
-			// send email to the supplier, invoice received
-			emailSender.sendEmailNewDoc(comprobanteFiscal, validationResponse.get(1), validationResponse.get(2));
-
-
-		} catch (FileExistsException e) {
-			// La factura ya existe
-			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre(), "ERROR_DB");
-			e.printStackTrace();
-		} catch (NotFoundException e) {
-			// La empresa o el proveedor no se encuentran en el catalogo
-			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.activity("Error al intentar guardar factura: " + e.getMessage(), comprobante.getReceptorNombre(), "ERROR_DB");
-			e.printStackTrace();
-		} catch (XmlInfrastructureException e) {
-			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.falla("Error al leer el CFD: " + e.getMessage(), "ERROR_FILE");
-			e.printStackTrace();
-		} catch (Exception e) {
-			// Error inesperado
-			files.forEach(file -> fileStorageService.migrateAttachments(file, "ERROR"));
-			Log.activity("Error al intentar guardar factura: Ocurrió un error inesperado", comprobante.getReceptorNombre(), "ERROR");
-			e.printStackTrace();
-		}
-	}
-
-	private void zipExtraction(BodyPart bodyPart) {
+	
+	private List<Archivo> zipExtraction(BodyPart bodyPart) {
+		
+		List<Archivo> files = new ArrayList<>(); 
+		
 		try {
 
 			InputStream is = bodyPart.getInputStream();
@@ -268,7 +170,7 @@ public class EmailService {
 					InputStream targetStream = new ByteArrayInputStream(out.toByteArray());
 
 					// save the zip attachments
-					fileStorageService.storeZipAttachment(targetStream, ze);
+					files.add(comprobanteStorageService.storeZipAttachment(targetStream, ze));
 
 				}
 
@@ -281,29 +183,30 @@ public class EmailService {
 			zis.close();
 
 		} catch (IOException | MessagingException e) {
+			
 			Log.falla("Error al procesar el archivo comprimido ZIP: " + e.getMessage(), "ERROR_STORAGE");
-			e.printStackTrace();
+			 
 		}
+		
+		return files; 
 
 	}
 
 	private List<BodyPart> getAllAttachments(Message[] messages) {
 
-		
 		List<BodyPart> bodyParts = new ArrayList<>();
 		Message msg;
 		Multipart multipart;
 		BodyPart bodyPart;
 		String fileName;
 		String extension;
-		
 
 		for (int i = 0; i < messages.length; i++) {
 			// assign first message
 			msg = messages[i];
 
 			try {
-				
+
 				// get message content
 				multipart = (Multipart) msg.getContent();
 

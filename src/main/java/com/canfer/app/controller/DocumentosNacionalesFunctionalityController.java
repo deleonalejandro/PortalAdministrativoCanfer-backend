@@ -2,6 +2,8 @@ package com.canfer.app.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,9 +55,9 @@ public class DocumentosNacionalesFunctionalityController {
 	}
 	
 	@GetMapping("/csv/{repo}/")
-	public ResponseEntity<byte[]> download(@RequestParam List<Long> ids, @PathVariable String repo) {
+	public ResponseEntity<byte[]> download(HttpServletResponse response, @RequestParam List<Long> ids, @PathVariable String repo) {
 		
-		actioner.downloadCSV(ids);
+		actioner.downloadCSV(ids, response);
 		return null;
 		
 	}
