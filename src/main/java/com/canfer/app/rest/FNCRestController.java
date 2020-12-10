@@ -99,18 +99,14 @@ public class FNCRestController {
   
     @PostMapping(value = "/getVigencia/{id}")
     @ResponseBody
-	public String getVigencia(@PathVariable long id) {
+	public void getVigencia(@PathVariable long id) {
 	
 		Optional<ComprobanteFiscal> comprobante = comprobanteFiscalRepo.findById(id);
 		if(comprobante.isPresent()) {
-			String respuestaSat = comprobante.get().verificaSat(); 
 			
-			comprobante.get().setEstatusSAT(respuestaSat);
-			comprobanteFiscalRepo.save(comprobante.get());
+			comprobante.get().verificaSat(); 
 			
-			return respuestaSat; 
 		}
-		return null; 
 		
 	}
       
