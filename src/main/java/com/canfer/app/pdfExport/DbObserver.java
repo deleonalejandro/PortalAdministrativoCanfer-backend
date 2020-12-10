@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.mail.EmailSenderService;
+import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
@@ -30,6 +31,8 @@ public class DbObserver {
 	
 	public void checkPago() {
 
+		String user = "sa"; 
+		String psswd = "q2y72-m9t9q"; 
 		//Busca pagos que no hayan sido procesados
 		List<Pago> pagos = pagoRepository.findByBitProcesadoAndNuevoEstatusFactura(false,"Pagado");
 	
@@ -38,7 +41,7 @@ public class DbObserver {
 		for(Pago pago: pagos) {
 
 			//TODO poner la contraseña en un lugar seguro
-			String exportedFile = crService.exportPDF(pago.getRepBaseDatos(),pago.getIdNumPago(), "sa", "q2y72-m9t9q",pago.getRfcEmpresa(),pago.getIdPago());
+			ArchivoPDF exportedFile = crService.exportPDF(pago, user, psswd);
 			
 			if (exportedFile == null) {
 				

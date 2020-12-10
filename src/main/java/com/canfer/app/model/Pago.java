@@ -2,6 +2,7 @@ package com.canfer.app.model;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -67,6 +68,10 @@ public class Pago {
 	
 	@Column
 	private String moneda;
+	
+	@JoinColumn(name = "idDocumento")
+	@OneToOne(cascade = CascadeType.ALL)
+	private Documento documento;
 
 	//Constructor 
 	public Pago() {

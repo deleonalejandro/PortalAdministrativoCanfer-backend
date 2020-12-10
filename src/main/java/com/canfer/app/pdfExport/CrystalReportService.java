@@ -1,4 +1,4 @@
-package com.canfer.app.pdfExport;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -8,18 +8,13 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import com.canfer.app.cfd.Comprobante;
-import com.canfer.app.cfd.XmlService;
+import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.ComprobanteFiscal;
-import com.canfer.app.model.Documento;
-import com.canfer.app.model.Documento.DocumentoPDF;
 import com.canfer.app.model.Log;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.ArchivoRepository;
 import com.canfer.app.repository.DocumentoRepository;
-import com.canfer.app.repository.EmpresaRepository;
-import com.canfer.app.service.DocumentoService;
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
 import com.crystaldecisions.sdk.occa.report.lib.*;
@@ -38,12 +33,13 @@ import org.springframework.stereotype.Service;
 public class CrystalReportService {
 	
 	@Autowired
-	private EmpresaRepository empresaRepository; 
-	@Autowired
 	private DocumentoRepository documentoRepository; 
+	@Autowired
+	private ArchivoRepository archivoRepository; 
 	
-	public String exportPDF(String empresa, Integer pago, String user, String password, String rfc, Long id) {
+	public ArchivoPDF exportPDF(Pago pago, String user, String password) {
 
+		
 		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
 		 String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs";
 		 String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
@@ -93,12 +89,12 @@ public class CrystalReportService {
 			fileOutputStream.close();
 			
 			//Guardamos el Crystal
-					
- 			DocumentoPDF doc = new DocumentoPDF(idTabla, empresaRepository.findByRfc(rfc),"Documentos Fiscales", "Aviso de Pago", 
-					"pdf", path);
-			documentoRepository.save(doc);
 			
-			return path;			
+ 			ArchivoPDF archivo = new ArchivoPDF(EXPORT_FILE,"pdf", REPORT_NAME);
+			
+ 			archivoRepository.save(archivo);
+			
+			return archivo;			
 		}
 		catch(ReportSDKException ex) {
 		
@@ -116,7 +112,7 @@ public class CrystalReportService {
 
 	}
 
-	public String exportGenerico(Long id, ComprobanteFiscal comprobanteFiscal) {
+	public String exportGenerico(ComprobanteFiscal comprobanteFiscal) {
 		
 		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
 		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
@@ -217,8 +213,12 @@ public class CrystalReportService {
 			fileOutputStream.close();
 			
 			//Guardamos el PDF Generico
-			Documento documento = documentoService.save(factura, "pdf", doc.getModulo(), path);
-			documentoRepository.save(documento);
+			ArchivoPDF archivo = new ArchivoPDF(path, "pdf", REPORT_NAME);
+			archivo = archivoRepository.save(archivo);
+			
+			comprobanteFiscal.getDocumento().setArchivoPDF(archivo);
+			
+			documentoRepository.save(comprobanteFiscal.getDocumento());
 			
 			return path;			
 		}
