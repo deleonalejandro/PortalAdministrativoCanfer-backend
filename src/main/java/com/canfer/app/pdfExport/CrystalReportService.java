@@ -10,11 +10,16 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.model.Archivo;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Documento;
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
+import com.canfer.app.model.Pago;
 import com.canfer.app.repository.ArchivoRepository;
 import com.canfer.app.repository.DocumentoRepository;
+import com.canfer.app.repository.EmpresaRepository;
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
 import com.crystaldecisions.sdk.occa.report.lib.*;
@@ -36,14 +41,18 @@ public class CrystalReportService {
 	private DocumentoRepository documentoRepository; 
 	@Autowired
 	private ArchivoRepository archivoRepository; 
+	@Autowired
+	private EmpresaRepository empresaRepository; 
 	
 	public ArchivoPDF exportPDF(Pago pago, String user, String password) {
 
+		Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 		
 		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
-		 String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs";
-		 String path = EXPORT_FILE + File.separator + rfc + File.separator + pago + ".pdf";
-		 
+		String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs";
+		String path = EXPORT_FILE + File.separator + empresa.getRfc() + File.separator + pago + ".pdf";
+		
+		
 		try {
 
 			//Open report.			
@@ -91,20 +100,25 @@ public class CrystalReportService {
 			//Guardamos el Crystal
 			
  			ArchivoPDF archivo = new ArchivoPDF(EXPORT_FILE,"pdf", REPORT_NAME);
-			
  			archivoRepository.save(archivo);
+ 			
+ 			Documento doc = pago.getDocumento();
+ 			doc.setArchivoPDF(archivo);
+ 			documentoRepository.save(doc);
 			
-			return archivo;			
+			return archivo;	
+			
 		}
+		
 		catch(ReportSDKException ex) {
 		
-			Log.activity("No se pudo generar el Crystal Report para el Pago: " + pago,empresa, "ERROR_FILE" );
+			Log.activity("No se pudo generar el Crystal Report para el Pago: " + pago, empresa.getNombre(), "ERROR_FILE" );
 			return null; 
 		}
+		
 		catch(Exception ex) {
 			
-			Log.activity("Ocurrió un error al exportar el aviso de Pago: "+ pago+".", empresa, "ERROR");
-			ex.printStackTrace();
+			Log.activity("Ocurrió un error al exportar el aviso de Pago: "+ pago+".", empresa.getNombre(), "ERROR");
 			return null; 	
 		}
 		
@@ -112,7 +126,7 @@ public class CrystalReportService {
 
 	}
 
-	public String exportGenerico(ComprobanteFiscal comprobanteFiscal) {
+	public ArchivoPDF exportGenerico(ComprobanteFiscal comprobanteFiscal) {
 		
 		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
 		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
@@ -216,12 +230,13 @@ public class CrystalReportService {
 			ArchivoPDF archivo = new ArchivoPDF(path, "pdf", REPORT_NAME);
 			archivo = archivoRepository.save(archivo);
 			
-			comprobanteFiscal.getDocumento().setArchivoPDF(archivo);
+			Documento doc = comprobanteFiscal.getDocumento();
+			doc.setArchivoPDF(archivo);
+			documentoRepository.save(doc);
 			
-			documentoRepository.save(comprobanteFiscal.getDocumento());
-			
-			return path;			
+			return archivo;			
 		}
+		
 		catch(ReportSDKException ex) {
 		
 			Log.activity("No se pudo generar el PDF Generico para: " + comprobanteFiscal.getUuid() +
@@ -230,6 +245,7 @@ public class CrystalReportService {
 			return null; 
 			
 		}
+		
 		catch(Exception ex) {
 			
 			Log.activity("Ocurrió un error al exportar un PDF genérico para " + comprobanteFiscal.getUuid() 

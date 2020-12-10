@@ -23,16 +23,17 @@ public class DbObserver {
 	@Autowired
 	EmailSenderService eSenderService;
 	@Autowired
-	CrystalReportService crService; 
-	@Autowired
 	EmpresaRepository empresaRepository; 
 	@Autowired
 	FacturaRepository facturaRepository; 
+	@Autowired 
+	CrystalReportService crService; 
 	
 	public void checkPago() {
 
 		String user = "sa"; 
 		String psswd = "q2y72-m9t9q"; 
+		
 		//Busca pagos que no hayan sido procesados
 		List<Pago> pagos = pagoRepository.findByBitProcesadoAndNuevoEstatusFactura(false,"Pagado");
 	
@@ -52,27 +53,34 @@ public class DbObserver {
 			
 			if(pago.getBitEnviarCorreo()) {
 				
-				eSenderService.sendEmailAvisoPago(pago, exportedFile);
+				eSenderService.sendEmailAvisoPago(pago);
 			}
 			
 			//Guardamos el bit procesado en la bd
 			pago.setBitProcesado(true);
 			pagoRepository.save(pago);
 			
-			Factura factura = facturaRepository.findByRfcEmpresaAndRfcProveedorAndIdNumSap(pago.getRfcEmpresa(), pago.getRfcProveedor(), pago.getIdNumSap());
+			Factura factura = facturaRepository.findByRfcEmpresaAndRfcProveedorAndIdNumSap(pago.getRfcEmpresa(), 
+					pago.getRfcProveedor(), pago.getIdNumSap());
+			
 			factura.setPago(pago);
 			facturaRepository.save(factura);
 			
 			Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 			String nombre = "NA"; 
+			
 			if(empresa == null) {
+				
 				 nombre = pago.getRfcEmpresa();
 			}
+			
 			else {
+				
 				 nombre = empresa.getNombre();
 			}
 			
 			Log.activity("Se ha agregado el Aviso de Pago Número " + pago.getIdNumPago(), nombre, "PAYMENT");
-			};
+			
+			}
 	}
 }

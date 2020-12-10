@@ -207,6 +207,16 @@ public class Pago {
 
 	public void setMoneda(String moneda) {
 		this.moneda = moneda;
+	}
+
+
+	public Documento getDocumento() {
+		return documento;
+	}
+
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	} 
 	
 	

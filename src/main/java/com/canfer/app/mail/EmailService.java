@@ -50,8 +50,6 @@ public class EmailService {
 	@Autowired
 	private ComprobanteFiscalService comprobanteFiscalService;
 	@Autowired
-	private DocumentoService documentoService;
-	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
 	private ValidationService validationService;

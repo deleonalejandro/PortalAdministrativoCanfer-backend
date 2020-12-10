@@ -70,23 +70,32 @@ public class EmailSenderService {
 	   */
 	
 	
-	public void sendEmailAvisoPago(Pago pago, String path){
+	public void sendEmailAvisoPago(Pago pago){
 
 		//Obtener correo de contadores y de proveedor
 		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
 				empresaRep.findByRfc(pago.getRfcEmpresa()));
+		
 		String to = pago.getCorreo();
-		for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
+		for(UsuarioCanfer contador:contadores) {
+			
+			to=to+","+contador.getCorreo();
+			
+		}
 		
 	    MimeMessage message = javaMailSender.createMimeMessage();
+	    
 	    try {
+	    	
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	        
 	        //helper.setTo(InternetAddress.parse(to));
 	        helper.setTo("yasminfemerling@gmail.com");
 	        helper.setSubject("Aviso de Pago");
 	        helper.setText("Se ha realizado el pago de una factura.");
-	        helper.addAttachment("AvisoDePago.pdf", new File(path));
+	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
 	        javaMailSender.send(message);
+	        
 	    } catch (MessagingException e) {
 
 	        Log.falla("No se pudo enviar correo a " + to + " con el aviso de Pago.", "ERROR_CONNECTION");;

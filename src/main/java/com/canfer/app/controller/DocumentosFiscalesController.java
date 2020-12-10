@@ -51,7 +51,6 @@ import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
-import com.canfer.app.service.DocumentoService;
 import com.canfer.app.service.ComprobanteFiscalService;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageException;
@@ -75,8 +74,6 @@ public class DocumentosFiscalesController {
 	private ProveedorRepository proveedorRepository; 
 	@Autowired
 	private ComprobanteFiscalService comprobanteService;
-	@Autowired
-	private DocumentoService documentoService;
 	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
