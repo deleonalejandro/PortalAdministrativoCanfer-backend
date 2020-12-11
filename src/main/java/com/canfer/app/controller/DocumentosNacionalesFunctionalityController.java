@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
+import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -36,6 +37,9 @@ public class DocumentosNacionalesFunctionalityController {
 	
 	@PostMapping("/uploadFactura")
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
+		
+		// initializing directories
+		storageService.init();
 		
 		ArchivoPDF filePDF = null; 
 		ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
@@ -111,9 +115,25 @@ public class DocumentosNacionalesFunctionalityController {
 		actioner.delete(id);
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
+			
+			
+	}
+	
+	@PostMapping(value = "/update")
+	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, @RequestParam("pdf") MultipartFile pdf) {
 		
+		
+		if (pdf != null) {
 			
+			actioner.updateCfdFile(pdf, documento.getIdComprobanteFiscal());
 			
+		}
+		
+		// update object information normally 
+		actioner.updateCfdInformation(documento);
+			
+	
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 	}
 	
 

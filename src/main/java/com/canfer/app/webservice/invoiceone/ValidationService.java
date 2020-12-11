@@ -7,17 +7,14 @@ import org.hibernate.internal.util.xml.XmlInfrastructureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 
-import com.canfer.app.cfd.XmlService;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.Log;
 import com.canfer.app.wsdl.invoiceone.ObtenerEstatusCuentaResponse;
 import com.canfer.app.wsdl.invoiceone.ValidayVerificaXMLResponse;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -25,8 +22,6 @@ import java.util.Base64;
 @Service
 public class ValidationService {
 
-	@Autowired
-	private XmlService xmlService;
 	@Autowired
 	private ResponseWebService validationAnswer;
 	
@@ -53,6 +48,7 @@ public class ValidationService {
 			// create string from xml doc
 			String xmlString = file.toString();
 
+			//TODO REMOVE HARDCODEO
 			// use user and passwd from account of web service
 			String user = "Pruebas";
 			String passwd = "Htp.7894";
@@ -80,6 +76,7 @@ public class ValidationService {
 
 	public void estatusCuenta() {
 		try {
+			//TODO REMOVE HARDCODEO
 			// use user and passwd from account of web service
 			String user = "PAE92070";
 			String passwd = "a0e6$X8x";

@@ -39,11 +39,11 @@ public class Documento {
 	
 	@JoinColumn(name = "id_xml")
 	@OneToOne(cascade = CascadeType.ALL)
-	private Archivo archivoXML;
+	private ArchivoXML archivoXML;
 	
 	@JoinColumn(name = "id_pdf")
 	@OneToOne(cascade = CascadeType.ALL)
-	private Archivo archivoPDF;
+	private ArchivoPDF archivoPDF;
 	
 	@Column(nullable = false)
 	@CreationTimestamp
@@ -58,7 +58,7 @@ public class Documento {
 	
 
 	//Constructor
-	public Documento(Archivo archivoXML, Archivo archivoPDF) {
+	public Documento(ArchivoXML archivoXML, ArchivoPDF archivoPDF) {
 		
 		// adding company stamp to PDF file
 		archivoPDF.setReceptor(archivoXML.getReceptor());
@@ -106,18 +106,18 @@ public class Documento {
 	}
 
 	public ArchivoXML getArchivoXML() {
-		return (ArchivoXML) archivoXML;
+		return archivoXML;
 	}
 
-	public void setArchivoXML(Archivo archivoXML) {
+	public void setArchivoXML(ArchivoXML archivoXML) {
 		this.archivoXML = archivoXML;
 	}
 
-	public Archivo getArchivoPDF() {
+	public ArchivoPDF getArchivoPDF() {
 		return archivoPDF;
 	}
 
-	public void setArchivoPDF(Archivo archivoPDF) {
+	public void setArchivoPDF(ArchivoPDF archivoPDF) {
 		this.archivoPDF = archivoPDF;
 	}
 

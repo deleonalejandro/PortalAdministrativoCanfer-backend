@@ -381,9 +381,10 @@ public abstract class Archivo {
 		public void actualizar(MultipartFile newFile) {
 			
 			try {
+				
 				if (newFile.isEmpty()) {
 					
-					throw new StorageException("Error al guardar un archivo vacío. " + newFile.getOriginalFilename());
+					Log.activity("Error al guardar un archivo vacío. " + newFile.getOriginalFilename(), this.receptor, "UPDATE");
 					
 				}
 				
@@ -391,10 +392,11 @@ public abstract class Archivo {
 					
 					Files.copy(inputStream, Paths.get(this.ruta), StandardCopyOption.REPLACE_EXISTING);
 				}
-			}
-			catch (IOException e) {
 				
-				throw new StorageException("Error al guardar el archivo " + newFile.getOriginalFilename(), e);
+			} catch (IOException e) {
+				
+				Log.activity("Error al guardar un archivo vacío. " + newFile.getOriginalFilename(), this.receptor, "UPDATE");
+				
 			}
 			
 		}

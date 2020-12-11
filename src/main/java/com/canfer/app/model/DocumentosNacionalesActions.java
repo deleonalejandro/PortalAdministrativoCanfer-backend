@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -90,6 +92,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		if (value.isPresent()) {
 			
 			comprobanteFiscal = value.get();
+			
 			comprobanteFiscal.delete();
 			
 			return true;
@@ -107,6 +110,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		try {
 			
 			comprobantes = comprobanteRepo.findAllById(ids);
+			
 			comprobantes.forEach(comprobante -> comprobante.delete());
 			
 			return true;
@@ -117,6 +121,50 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		}
 		
 	}
+	
+	public boolean updateCfdFile(MultipartFile file, Long id) {
+		
+		ComprobanteFiscal comprobante;
+		Optional<ComprobanteFiscal> value = comprobanteRepo.findById(id);
+		
+		if (value.isPresent()) {
+			
+			comprobante = value.get();
+			
+			comprobante.fetchPDF().actualizar(file);
+			
+			return true;
+		
+		}else {
+			
+			return false;
+		}
+	}
+	
+	public boolean updateCfdInformation(ComprobanteFiscalDTO documento) {
+		
+		Optional<ComprobanteFiscal> comprobante = comprobanteRepo.findById(documento.getIdComprobanteFiscal());
+		
+		if (comprobante.isPresent()) {
+			
+			try {
+				
+				return comprobante.get().actualizar(documento);
+				
+			} catch (Exception e) {
+				
+				Log.activity("Error al actualizar CFDI: " +documento.getUuid(), comprobante.get().getEmpresaNombre(), "ERROR");
+				return false;
+			}
+			
+		} else {
+			
+			return false;
+		}
+		
+	}
+	
+	
 	
 	private ComprobanteFiscal makeCfd(Documento documento) throws NotFoundException {
 		

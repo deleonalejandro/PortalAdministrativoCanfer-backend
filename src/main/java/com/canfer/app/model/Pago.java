@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.canfer.app.model.Archivo.ArchivoPDF;
+import com.canfer.app.model.Archivo.ArchivoXML;
+
 
 
 
@@ -228,13 +231,13 @@ public class Pago implements IModuleEntity {
 
 
 	@Override
-	public Archivo fetchXML() {
+	public ArchivoXML fetchXML() {
 		return null;
 	}
 
 
 	@Override
-	public Archivo fetchPDF() {
+	public ArchivoPDF fetchPDF() {
 		return this.documento.getArchivoPDF();
 	} 
 	

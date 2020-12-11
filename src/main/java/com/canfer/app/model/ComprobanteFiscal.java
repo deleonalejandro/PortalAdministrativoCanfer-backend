@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,9 +29,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.model.Archivo.ArchivoPDF;
+import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.ConsecutivoRepository;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.webservice.invoiceone.ValidationService;
@@ -55,6 +60,10 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	
 	@Transient
 	@Autowired
+	private FacturaRepository facturaRepo;
+	
+	@Transient
+	@Autowired
 	private ValidationService validationService; 
 	
 	@Transient
@@ -72,6 +81,8 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@Transient
 	@Autowired
 	private ConsecutivoRepository consecutivoRepo;
+	
+
 	
 	
 	
@@ -249,6 +260,13 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	public void delete() {
 		
 		this.documento.delete();
+		
+		if (this instanceof ComplementoPago) {
+			
+			clearComplemento();
+			
+		}
+		
 		comprobanteRepo.delete(this);
 		
 	}
@@ -312,6 +330,30 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			this.uuidRelacionados = model.getUuidsRelacionados();
 			this.tipoRelacionUuidRelacionados = model.getTipoRelacionUuidRelacionados();
 		}
+		
+	}
+	
+	public boolean actualizar(ComprobanteFiscalDTO documento) {
+		
+		//Checar que la clave del proveedor del comprobante sea consistente 	
+		if(documento.getIdProveedor() != null) {
+
+			Optional<Proveedor> proveedor = proveedorRepo.findById(documento.getIdProveedor());
+			
+			if (proveedor.isPresent()) {
+				
+				this.setProveedor(proveedor.get());
+				
+			}
+		}
+		
+		this.setBitRSusuario(documento.getBitRSusuario());
+		this.setEstatusPago(documento.getEstatus());
+		this.setComentario(documento.getComentario());
+		
+		Log.activity("Se actualizó el documento fiscal " + this.getUuid() + ".", this.getEmpresaNombre(), "UPDATE");
+		
+		return true;
 		
 	}
 
@@ -714,10 +756,26 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 				String.valueOf(today.getYear()),
 				String.valueOf(today.getMonthValue()), 
 				this.rfcProveedor);
+		
 
 		return comprobanteStorageService.init(route);
 		
 	}
+	
+	private boolean clearComplemento() {
+	    
+	    List<Factura> facturas = facturaRepo.findAllByComplemento((ComplementoPago) this);
+
+	    if (!facturas.isEmpty()) {
+	    	
+	      facturas.forEach(factura -> factura.removeComplemento());
+	      
+	      facturaRepo.saveAll(facturas);
+	    }
+	    
+	    return true;
+
+	  }
 	
 	
 	
@@ -726,7 +784,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	public static class Factura extends ComprobanteFiscal{
 		
 		@JoinColumn(name = "idComplemento", nullable= true)
-	    @ManyToOne(fetch = FetchType.LAZY)
+	    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	    private ComplementoPago complemento;
 		
 		
@@ -769,12 +827,12 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		}
 
 		@Override
-		public Archivo fetchXML() {
+		public ArchivoXML fetchXML() {
 			return this.getDocumento().getArchivoXML();
 		}
 
 		@Override
-		public Archivo fetchPDF() {
+		public ArchivoPDF fetchPDF() {
 			return this.getDocumento().getArchivoPDF();
 		}
 
@@ -798,12 +856,12 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		}
 
 		@Override
-		public Archivo fetchXML() {
+		public ArchivoXML fetchXML() {
 			return this.getDocumento().getArchivoXML();
 		}
 
 		@Override
-		public Archivo fetchPDF() {
+		public ArchivoPDF fetchPDF() {
 			return this.getDocumento().getArchivoPDF();
 		}
 		
@@ -828,12 +886,12 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		}
 
 		@Override
-		public Archivo fetchXML() {
+		public ArchivoXML fetchXML() {
 			return this.getDocumento().getArchivoXML();
 		}
 
 		@Override
-		public Archivo fetchPDF() {
+		public ArchivoPDF fetchPDF() {
 			return this.getDocumento().getArchivoPDF();
 		}
 		
