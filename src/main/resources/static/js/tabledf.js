@@ -46,6 +46,7 @@
 		$(document).ready(function () {
 			var xhttp = new XMLHttpRequest();
 		         var table = $('#facturas').DataTable({
+					stateSave: true,
 					ajax: {
 		            url: getInitUrl(),
 					dataSrc:""
@@ -146,6 +147,7 @@
 		 
 		 //Tabla de Avisos
 		  var table2 = $('#avisosDePago').DataTable({
+					stateSave: true,
 					ajax: {
 		            url: "/documentosFiscalesApi/avisos/"+$("#selectedCompany").text(),
 					dataSrc:""
