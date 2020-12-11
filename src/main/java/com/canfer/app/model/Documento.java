@@ -59,6 +59,10 @@ public class Documento {
 
 	//Constructor
 	public Documento(Archivo archivoXML, Archivo archivoPDF) {
+		
+		// adding company stamp to PDF file
+		archivoPDF.setReceptor(archivoXML.getReceptor());
+
 		this.archivoXML = archivoXML;
 		this.archivoPDF = archivoPDF;
 	}

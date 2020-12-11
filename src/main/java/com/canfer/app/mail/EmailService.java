@@ -16,6 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.persistence.NoResultException;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ import com.canfer.app.model.Log;
 import com.canfer.app.model.ModuleActions;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageException;
+
+import javassist.NotFoundException;
 
 @Service
 public class EmailService {
@@ -131,7 +134,17 @@ public class EmailService {
 
 			}
 
-			actioner.upload(xmlFile, pdfFile);
+			try {
+				
+				actioner.upload(xmlFile, pdfFile);
+				
+			} catch (FileExistsException e) {
+				// TODO add logs
+				e.printStackTrace();
+			} catch (NotFoundException e) {
+				// TODO add logs
+				e.printStackTrace();
+			}
 
 		}
 		

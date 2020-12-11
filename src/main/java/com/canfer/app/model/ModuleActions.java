@@ -115,7 +115,7 @@ public abstract class ModuleActions {
 		return null;
 	}
 	
-	public ResponseEntity<byte[]> download(String method, String repo, List<Long> ids) throws IOException {
+	public ResponseEntity<byte[]> download(String method, String repo, List<Long> ids) {
 		
 		List<Archivo> files = new ArrayList<>();
 		List<ComprobanteFiscal> comprobantes = new ArrayList<>();

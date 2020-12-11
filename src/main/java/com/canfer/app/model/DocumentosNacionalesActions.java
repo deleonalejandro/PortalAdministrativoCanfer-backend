@@ -1,7 +1,7 @@
 package com.canfer.app.model;
 
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +18,7 @@ import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
-import com.canfer.app.repository.FacturaRepository;
-import com.opencsv.exceptions.CsvException;
+import com.canfer.app.repository.FacturaRepository; 
 
 import javassist.NotFoundException;
 
@@ -36,9 +35,16 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException {
 		
+		Documento doc;
+		
 		if (fileXML.businessValidation()) {
 			
-			Documento doc = new Documento(fileXML, filePDF);
+			if (filePDF == null) {
+				
+				doc = new Documento(fileXML);
+			}
+			
+			doc = new Documento(fileXML, filePDF);
 			
 			ComprobanteFiscal cfd = makeCfd(doc);
 			
@@ -169,7 +175,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	}
 
 	@Override
-	public void downloadCsv(List<Long> ids, HttpServletResponse response) throws CsvException, IOException {
+	public void downloadCsv(List<Long> ids, HttpServletResponse response) {
 
 		List<IModuleEntity> comprobantes = comprobanteRepo.findByAllEntityById(ids);
 		

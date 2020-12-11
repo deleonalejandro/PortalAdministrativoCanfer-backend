@@ -96,6 +96,9 @@ public abstract class Archivo {
 	@Column
 	protected LocalDateTime fechaMod;
 	
+	@Transient
+	protected String receptor;
+	
 	public  Archivo(String ruta, String extension, String nombre) {
 		
 		this.ruta = ruta; 
@@ -249,6 +252,16 @@ public abstract class Archivo {
 		this.fechaMod = fechaMod;
 	}
 
+	public String getReceptor() {
+		return receptor;
+	}
+
+	public void setReceptor(String receptor) {
+		this.receptor = receptor;
+	}
+
+
+
 
 
 	@Entity
@@ -278,8 +291,10 @@ public abstract class Archivo {
 						.unmarshal(new InputStreamReader(new BufferedInputStream(bis)));
 				
 			} catch (JAXBException | IOException e) {
+				 
+				Log.falla("No fue posible leer el comprobante fiscal digital: " + this.getNombre(), "ERROR_STORAGE");
 				
-				throw new XmlInfrastructureException("No fue posible leer el comprobante fiscal digital: " + this.getNombre());
+				return null;
 			} 
 		} 
 		
@@ -330,6 +345,10 @@ public abstract class Archivo {
 				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
 						+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
 			}
+			
+			// adding company stamp
+			
+			this.receptor = comprobante.getReceptorNombre();
 			
 			return true; 
 			
