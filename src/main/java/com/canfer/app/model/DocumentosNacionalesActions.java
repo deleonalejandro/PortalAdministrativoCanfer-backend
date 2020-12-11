@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -32,6 +33,9 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	@Autowired
 	private FacturaRepository facturaRepo;
+	
+	@Autowired
+	private EmailSenderService emailSender; 
 	
 	
 	@Override
@@ -69,6 +73,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				
 			}
 			
+			emailSender.sendEmailNewDoc(cfd);
 			return true;
 			
 		} else {
@@ -78,6 +83,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			return false;
 		}
+		
 		
 	}
 
