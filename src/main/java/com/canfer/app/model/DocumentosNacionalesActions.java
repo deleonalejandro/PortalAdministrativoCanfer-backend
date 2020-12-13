@@ -23,23 +23,15 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
-import com.canfer.app.repository.FacturaRepository; 
+import com.canfer.app.service.RepositoryService;
 
 import javassist.NotFoundException;
 
 @Component
 public class DocumentosNacionalesActions extends ModuleActions {
-
-	@Autowired
-	private ComprobanteFiscalRespository comprobanteRepo;
-	
-	@Autowired
-	private FacturaRepository facturaRepo;
 	
 	@Autowired
 	private EmailSenderService emailSender; 
-	
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException {
@@ -67,8 +59,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			cfd.accept();
 			
 			// persist the entities into DB,
-			// superRepo.save()
-			cfd.save();
+			superRepo.save(cfd);
 			
 			// match CFD type P with other CFD.
 			if (cfd instanceof ComplementoPago) {
@@ -104,7 +95,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		
 		case "Pago":
 			
-			valuePago = pagoRepo.findById(id);
+			valuePago = superRepo.findPagoById(id);
 			
 			if (valuePago.isPresent()) {
 				
@@ -115,7 +106,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 		case "ComprobanteFiscal":
 			
-			valueComprobante =  comprobanteRepo.findById(id);
+			valueComprobante =  superRepo.findComprobanteById(id);
 			
 			if (valueComprobante.isPresent()) {
 				
@@ -169,7 +160,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 			case "ComprobanteFiscal":
 				
-				comprobantes = comprobanteRepo.findAllById(ids);
+				comprobantes = superRepo.findAllComprobanteById(ids);
 				
 				break;
 	
@@ -224,13 +215,17 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		Optional<ComprobanteFiscal> value;
 		ComprobanteFiscal comprobanteFiscal = null;
 		
-		value = comprobanteRepo.findById(id);
+		value = superRepo.findComprobanteById(id);
 		
 		if (value.isPresent()) {
 			
 			comprobanteFiscal = value.get();
 			
-			comprobanteFiscal.delete();
+			if(comprobanteFiscal instanceof ComplementoPago) {
+				clearComplemento((ComplementoPago) comprobanteFiscal);
+			}
+			
+			superRepo.delete(comprobanteFiscal);
 			
 			return true;
 		}
@@ -241,12 +236,12 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	@Override
 	public boolean deleteAll(List<Long> ids) {
-		
+		//TODO usar el remove complemento
 		List<ComprobanteFiscal> comprobantes = new ArrayList<>();
 				
 		try {
 			
-			comprobantes = comprobanteRepo.findAllById(ids);
+			comprobantes = superRepo.findAllComprobanteById(ids);
 			
 			comprobantes.forEach(comprobante -> comprobante.delete());
 			
@@ -262,7 +257,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	public boolean updateCfdFile(MultipartFile file, Long id) {
 		
 		ComprobanteFiscal comprobante;
-		Optional<ComprobanteFiscal> value = comprobanteRepo.findById(id);
+		Optional<ComprobanteFiscal> value = superRepo.findComprobanteById(id);
 		
 		if (value.isPresent()) {
 			
@@ -280,13 +275,29 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	public boolean updateCfdInformation(ComprobanteFiscalDTO documento) {
 		
-		Optional<ComprobanteFiscal> comprobante = comprobanteRepo.findById(documento.getIdComprobanteFiscal());
+		Optional<Proveedor> proveedor = null;
+		Optional<ComprobanteFiscal> comprobante = superRepo.findComprobanteById(documento.getIdComprobanteFiscal());
 		
 		if (comprobante.isPresent()) {
 			
+			//Checar que la clave del proveedor del comprobante sea consistente 	
+			if(documento.getIdProveedor() != null) {
+
+				proveedor = superRepo.findProveedorById(documento.getIdProveedor());
+			}
+			
 			try {
 				
-				return comprobante.get().actualizar(documento);
+				if(comprobante.get().actualizar(documento, proveedor)) {
+					
+					superRepo.save(comprobante.get());
+					
+					return true;
+					
+				} else {
+					
+					return false;
+				}
 				
 			} catch (Exception e) {
 				
@@ -294,12 +305,43 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				return false;
 			}
 			
+			
 		} else {
 			
 			return false;
 		}
 		
 	}
+	
+
+	
+	public boolean refreshEstatusSat(Long id) {
+		
+		Optional<ComprobanteFiscal> comprobante = superRepo.findComprobanteById(id);
+		
+		if(comprobante.isPresent()) {
+			
+			if(comprobante.get().verificaSat()) {
+				
+				superRepo.save(comprobante.get());
+				
+				return true;
+				
+			} else {
+				
+				return false;
+			}
+
+			
+		} else {
+			
+			return false;
+		}
+		
+	}
+	
+	
+	
 	
 	
 	
@@ -374,7 +416,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 					
 					factura.setComplemento(complementoPago);
 					
-					facturaRepo.save(factura);
+					superRepo.save(factura);
 					
 				}
 			}
@@ -386,16 +428,24 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		
 		
 	}
+	
+	private boolean clearComplemento(ComplementoPago complementoPago) {
+	    
+	    List<Factura> facturas = facturaRepo.findAllByComplemento(complementoPago);
 
-	@Override
-	public void downloadCsv(List<Long> ids, HttpServletResponse response) {
+	    if (!facturas.isEmpty()) {
+	    	
+	      facturas.forEach(factura -> factura.removeComplemento());
+	      
+	      facturaRepo.saveAll(facturas);
+	    }
+	    
+	    return true;
 
-		List<ComprobanteFiscal> comprobantes = comprobanteRepo.findAllById(ids);
-		
-		//dowloadManager.downloadCSV(comprobantes, response);
-		
-		
-	}
+	  }
+	
+
+
 	
 
 	

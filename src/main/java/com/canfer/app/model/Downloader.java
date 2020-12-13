@@ -15,17 +15,17 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-@Component
+@Service
 public class Downloader {
 
-	public HttpServletResponse downloadCSV(List<IModuleEntity> comprobantes, HttpServletResponse response) {
+	public HttpServletResponse downloadComprobanteFiscalCsv(List<ComprobanteFiscal> comprobantes, HttpServletResponse response) {
 
 		// set file name and content type
 		Writer writer;
@@ -38,7 +38,7 @@ public class Downloader {
 		try {
 			
 			writer = new PrintWriter(response.getWriter());
-			StatefulBeanToCsv<Object> beanToCsv = new StatefulBeanToCsvBuilder<Object>(writer).build();
+			StatefulBeanToCsv<ComprobanteFiscal> beanToCsv = new StatefulBeanToCsvBuilder<ComprobanteFiscal>(writer).build();
 			beanToCsv.write(comprobantes);
 			writer.close();
 			

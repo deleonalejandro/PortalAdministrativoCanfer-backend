@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import com.canfer.app.model.Archivo;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
+import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.ModuleActions;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -38,7 +39,7 @@ public class EmailService {
 	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
 	@Autowired
-	private ModuleActions actioner;
+	private DocumentosNacionalesActions actioner;
 
 	public EmailService() {
 		// Constructor vacio

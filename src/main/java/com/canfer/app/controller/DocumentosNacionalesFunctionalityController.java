@@ -1,7 +1,6 @@
 package com.canfer.app.controller;
 
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileExistsException;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -21,7 +21,6 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
-import com.canfer.app.model.Prueba;
 import com.canfer.app.storage.ComprobanteStorageService;
 
 import javassist.NotFoundException;
@@ -38,9 +37,6 @@ public class DocumentosNacionalesFunctionalityController {
 	
 	@PostMapping("/uploadFactura")
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
-		
-		Prueba prueba = new Prueba();
-		prueba.print();
 		
 		// initializing directories
 		storageService.init();
@@ -139,6 +135,15 @@ public class DocumentosNacionalesFunctionalityController {
 	
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 	}
+	
+	@PostMapping(value = "/getVigencia/{id}")
+	@ResponseBody
+	public boolean getVigencia(@PathVariable Long id) {
+		
+		return actioner.refreshEstatusSat(id);
+		
+	}
+	
 	
 
 

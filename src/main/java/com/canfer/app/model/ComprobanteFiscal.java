@@ -32,11 +32,6 @@ import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
-import com.canfer.app.repository.ConsecutivoRepository;
-import com.canfer.app.repository.EmpresaRepository;
-import com.canfer.app.repository.FacturaRepository;
-import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.webservice.invoiceone.ClientConfiguration;
 import com.canfer.app.webservice.invoiceone.ValidationService;
@@ -226,21 +221,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			
 	}
 	
-	public void delete() {
-		
-		this.documento.delete();
-		
-		if (this instanceof ComplementoPago) {
-			
-			clearComplemento();
-			
-		}
-		
-		comprobanteRepo.delete(this);
-		
-	}
-
-	
 	public void fill() {
 		
 		Comprobante model = this.documento.getArchivoXML().toCfdi();
@@ -269,18 +249,13 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		
 	}
 	
-	public boolean actualizar(ComprobanteFiscalDTO documento) {
+	public boolean actualizar(ComprobanteFiscalDTO documento, Optional<Proveedor> proveedor) {
 		
-		//Checar que la clave del proveedor del comprobante sea consistente 	
-		if(documento.getIdProveedor() != null) {
-
-			Optional<Proveedor> proveedor = proveedorRepo.findById(documento.getIdProveedor());
+	
+		if (proveedor.isPresent()) {
 			
-			if (proveedor.isPresent()) {
-				
-				this.setProveedor(proveedor.get());
-				
-			}
+			this.setProveedor(proveedor.get());
+			
 		}
 		
 		this.setBitRSusuario(documento.getBitRSusuario());
@@ -556,13 +531,13 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			
 			String respuestaSat =  service.validaVerifica(msg);
 			this.setEstatusSAT(respuestaSat);
-			comprobanteRepo.save(this);
 			
 			return true; 
 			
 		} catch(Exception e) {
 			
 			Log.general(e.getMessage());
+			
 			return false;
 		}
 		
@@ -579,8 +554,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		this.setBitValidoSAT(Boolean.valueOf(respuestas.get(0)));
 		this.setRespuestaValidacion(respuestas.get(1));
 		this.setEstatusSAT(respuestas.get(2));
-
-		comprobanteRepo.save(this);
 		
 		return true; 
 		
@@ -700,21 +673,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		
 	}
 	
-	private boolean clearComplemento() {
-	    
-	    List<Factura> facturas = facturaRepo.findAllByComplemento((ComplementoPago) this);
 
-	    if (!facturas.isEmpty()) {
-	    	
-	      facturas.forEach(factura -> factura.removeComplemento());
-	      
-	      facturaRepo.saveAll(facturas);
-	    }
-	    
-	    return true;
-
-	  }
-	
 	
 	
 	@Entity
