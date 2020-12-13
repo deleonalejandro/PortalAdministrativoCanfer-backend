@@ -21,6 +21,7 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
+import com.canfer.app.model.Prueba;
 import com.canfer.app.storage.ComprobanteStorageService;
 
 import javassist.NotFoundException;
@@ -38,13 +39,16 @@ public class DocumentosNacionalesFunctionalityController {
 	@PostMapping("/uploadFactura")
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
 		
+		Prueba prueba = new Prueba();
+		prueba.print();
+		
 		// initializing directories
 		storageService.init();
 		
 		ArchivoPDF filePDF = null; 
 		ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
 	
-		if (files.length > 1) {
+		if (!files[1].isEmpty()) {
 			
 			filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
 			

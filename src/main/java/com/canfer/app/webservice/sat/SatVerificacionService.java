@@ -1,7 +1,6 @@
 package com.canfer.app.webservice.sat;
 
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 

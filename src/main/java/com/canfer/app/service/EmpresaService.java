@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
+import org.junit.validator.PublicClassValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -124,6 +125,10 @@ public class EmpresaService {
 		empresaRepository.deleteById(id);
 		
 		Log.activity("Se eliminó una empresa." , empresa.getNombre(), "DELETE");
+	}
+	
+	public void printTest() {
+		System.out.println("Hola");
 	}
 	
 

@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -64,6 +67,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			cfd.accept();
 			
 			// persist the entities into DB,
+			// superRepo.save()
 			cfd.save();
 			
 			// match CFD type P with other CFD.
@@ -86,6 +90,133 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		
 		
 	}
+	
+	public ResponseEntity<Resource> download(String method, String repo, Long id, String action) {
+		
+		Optional<Pago> valuePago;
+		Optional<ComprobanteFiscal> valueComprobante;
+		ComprobanteFiscal comprobante;
+		
+		IModuleEntity entity = null;
+		
+		// switching the repository strategies for single files.
+		switch (repo) {
+		
+		case "Pago":
+			
+			valuePago = pagoRepo.findById(id);
+			
+			if (valuePago.isPresent()) {
+				
+				entity = valuePago.get();
+			}
+				
+			break;
+			
+		case "ComprobanteFiscal":
+			
+			valueComprobante =  comprobanteRepo.findById(id);
+			
+			if (valueComprobante.isPresent()) {
+				
+				entity = valueComprobante.get();
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+		
+		// switching the method strategies for single files.
+		switch (method) {
+		
+		case "singleXML":
+			
+			return dowloadManager.download(entity.fetchXML(), action);
+
+		case "singlePDF":
+			
+			return dowloadManager.download(entity.fetchPDF(), action);
+			
+		case "singlePayment":
+			
+			comprobante = (ComprobanteFiscal) entity;
+			
+			return dowloadManager.download(comprobante.getPago().fetchPDF(), action);
+			
+		case "singleComplemento":
+			
+			comprobante = (ComprobanteFiscal) entity;
+			
+			return dowloadManager.download(((Factura) comprobante).getComplemento().fetchXML(), action);
+			
+		default:
+			break;
+			
+		}
+		
+		return null;
+	}
+	
+	public ResponseEntity<byte[]> download(String method, String repo, List<Long> ids) {
+			
+			List<Archivo> files = new ArrayList<>();
+			List<ComprobanteFiscal> comprobantes = new ArrayList<>();
+			
+			// switching the repository strategies for single files.
+			switch (repo) {
+	
+			case "ComprobanteFiscal":
+				
+				comprobantes = comprobanteRepo.findAllById(ids);
+				
+				break;
+	
+			default:
+				break;
+			}
+			
+			switch (method) {
+			
+			case "zipXML":
+				
+				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+					
+					files.add(comprobanteFiscal.fetchXML());
+					
+				}
+				
+				break;
+				
+			case "zipPDF":
+				
+				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+	
+					files.add(comprobanteFiscal.fetchPDF());
+	
+				}
+	
+				break;
+				
+			case "zip":
+				
+				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+					
+					files.add(comprobanteFiscal.fetchXML());
+					files.add(comprobanteFiscal.fetchPDF());
+	
+				}
+	
+				break;
+	
+			default:
+				break;
+			}
+				
+			return dowloadManager.downloadZip(files);
+			
+		}
 
 	@Override
 	public boolean delete(Long id) {
@@ -175,18 +306,39 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	private ComprobanteFiscal makeCfd(Documento documento) throws NotFoundException {
 		
 		ComprobanteFiscal comprobanteFiscal;
-		String tipoComprobante = documento.getArchivoXML().toCfdi().getTipoDeComprobante();
+		Comprobante model;
+		String tipoComprobante;
+		Empresa receptor;
+		Proveedor emisor;
+		Consecutivo consecutivo;
+		List<Proveedor> proveedores;
+		
+		model = documento.getArchivoXML().toCfdi();
+		tipoComprobante = model.getTipoDeComprobante();
+		
+		receptor = empresaRepo.findByRfc(model.getReceptorRfc());
+		proveedores = proveedorRepo.findAllByEmpresasAndRfc(receptor, model.getEmisorRfc());
+		
+		// get the proper provider
+		if (proveedores.size() > 1 || proveedores.isEmpty()) {
+			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
+			// instead.
+			emisor = proveedorRepo.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+		} else {
+			emisor = proveedores.get(0);
+		}
+
+		// use the proper sequence for the company and module
+		consecutivo = consecutivoRepo.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
 		
 		if (tipoComprobante.equalsIgnoreCase("I")) {
 			
 			comprobanteFiscal = new Factura(documento);
 			
-
 		} else if (tipoComprobante.equalsIgnoreCase("E")) {
 			
 			comprobanteFiscal = new NotaDeCredito(documento); 
 			
-
 		} else if (tipoComprobante.equalsIgnoreCase("P")) {
 			
 			comprobanteFiscal = new ComplementoPago(documento);
@@ -195,6 +347,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			// throw error since no document type was found
 			throw new NotFoundException("No se encontro el tipo de documento para procesar el comprobante fiscal. ("+tipoComprobante+")");
 		}
+		
+		// assigning base values to the CFD
+		comprobanteFiscal.setEmpresa(receptor);
+		comprobanteFiscal.setProveedor(emisor);
+		comprobanteFiscal.setIdNumSap(consecutivo.getNext());
+		
+		consecutivoRepo.save(consecutivo);
 		
 		return comprobanteFiscal;
 		
@@ -231,9 +390,9 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	@Override
 	public void downloadCsv(List<Long> ids, HttpServletResponse response) {
 
-		List<IModuleEntity> comprobantes = comprobanteRepo.findByAllEntityById(ids);
+		List<ComprobanteFiscal> comprobantes = comprobanteRepo.findAllById(ids);
 		
-		dowloadManager.downloadCSV(comprobantes, response);
+		//dowloadManager.downloadCSV(comprobantes, response);
 		
 		
 	}

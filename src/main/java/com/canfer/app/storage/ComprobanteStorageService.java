@@ -12,6 +12,7 @@ import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,11 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.canfer.app.model.Archivo;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
+import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.model.Log;
 
 
 @Service
 public class ComprobanteStorageService implements StorageService {
+	
+	@Autowired
+	private EmpresaRepository empresaRepository;
 
 
 	private Path rootLocation;
