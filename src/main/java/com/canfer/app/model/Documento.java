@@ -136,16 +136,17 @@ public class Documento {
 	public void setFechaMod(LocalDateTime fechaMod) {
 		this.fechaMod = fechaMod;
 	}
+
+	public boolean hasPDF() {
+			
+		return (this.archivoPDF != null); 
 	
-	//TODO 
-	public void save() {
+	}
+	
+	public boolean hasXML() {
 		
-		this.archivoXML.save();
-		this.archivoPDF.save();
-		
-		docRepo.save(this);
-		
-		
+		return (this.archivoXML != null);
+			
 	}
 	
 	public void accept(String nombre, String ruta) {

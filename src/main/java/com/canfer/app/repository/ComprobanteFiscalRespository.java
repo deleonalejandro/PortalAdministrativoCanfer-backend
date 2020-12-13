@@ -13,7 +13,9 @@ import com.canfer.app.model.IModuleEntity;
 @Repository
 public interface ComprobanteFiscalRespository extends ComprobanteFiscalBaseRepository<ComprobanteFiscal>, JpaSpecificationExecutor<ComprobanteFiscal> {
 	
-	List<IModuleEntity> findByAllEntityById(List<Long> ids);
+	List<ComprobanteFiscal> findAllById(List<Long> ids);
+
+	void deleteAll(List<ComprobanteFiscal> list);
 	
 }
 

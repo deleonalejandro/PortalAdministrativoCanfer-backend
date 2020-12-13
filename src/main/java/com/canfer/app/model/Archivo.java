@@ -40,7 +40,7 @@ import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.storage.StorageProperties;
 import com.canfer.app.cfd.Comprobante;
-import com.canfer.app.repository.ArchivoRepository;
+import com.canfer.app. ository.ArchivoRepository;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
@@ -104,13 +104,6 @@ public abstract class Archivo {
 		this.ruta = ruta; 
 		this.extension = extension; 
 		this.nombre = nombre; 
-		
-	}
-	
-	public void save() {
-		
-		this.archivoRepo.save(this);
-		
 		
 	}
 	
@@ -203,7 +196,6 @@ public abstract class Archivo {
  	
  	public abstract void discard();
  	
-	
 	public long getIdArchivo() {
 		return idArchivo;
 	}
