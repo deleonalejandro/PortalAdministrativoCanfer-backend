@@ -151,19 +151,26 @@ public class Documento {
 	
 	public void accept(String nombre, String ruta) {
 		
-		this.archivoXML.accept(nombre, ruta);
+		if (this.hasXML()) {
+		 this.archivoXML.accept(nombre, ruta);
+		}
 		
-		this.archivoPDF.accept(nombre, ruta);
-		
+		if (this.hasPDF()) {
+		 this.archivoPDF.accept(nombre, ruta);
+		}	
 	}
 	
 	public void delete() {
 		
 		//delete archivos
 		
-		this.archivoPDF.deleteFile();
-		this.archivoXML.deleteFile();
-		
+		if (this.hasXML()) {
+			this.archivoPDF.deleteFile();
+		}
+			
+		if (this.hasXML()) {
+			this.archivoXML.deleteFile();
+		}	
 		
 	}
 	
@@ -171,7 +178,7 @@ public class Documento {
 		
 		List<Resource> resources = new ArrayList<>();
 		
-		if (this.archivoPDF != null) {
+		if (this.hasPDF()) {
 			
 			Resource resourcePDF = this.archivoPDF.loadAsResource();
 			
@@ -182,7 +189,7 @@ public class Documento {
 			}
 		}
 			
-		if (this.archivoXML != null) {
+		if (this.hasXML()) {
 			
 			Resource resourceXML = this.archivoPDF.loadAsResource();
 			

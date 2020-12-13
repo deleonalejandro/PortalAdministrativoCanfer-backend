@@ -230,14 +230,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		
 		this.documento.delete();
 		
-		if (this instanceof ComplementoPago) {
-			
-			clearComplemento();
-			
-		}
-		
-		comprobanteRepo.delete(this);
-		
 	}
 
 	
