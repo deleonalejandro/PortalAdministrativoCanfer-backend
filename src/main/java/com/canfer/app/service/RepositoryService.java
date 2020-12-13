@@ -378,7 +378,7 @@ public class RepositoryService {
 		}
 		
 
-		public List<Proveedor> findProveedorByEmpresaAndRFC(Empresa empresa, String rfc) {
+		public List<Proveedor> findAllProveedorByEmpresaAndRFC(Empresa empresa, String rfc) {
 			
 			return proveedorRepo.findAllByEmpresasAndRfc(empresa, rfc);
 			
