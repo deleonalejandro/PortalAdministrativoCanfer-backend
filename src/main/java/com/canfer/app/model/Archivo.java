@@ -36,11 +36,10 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 
-import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.storage.StorageProperties;
 import com.canfer.app.cfd.Comprobante;
-import com.canfer.app. ository.ArchivoRepository;
+import com.canfer.app.repository.ArchivoRepository;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
