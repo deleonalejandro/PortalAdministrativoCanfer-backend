@@ -221,6 +221,12 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			
 	}
 	
+	public void delete() {
+		
+		this.documento.delete();
+		
+	}
+
 	public void fill() {
 		
 		Comprobante model = this.documento.getArchivoXML().toCfdi();
