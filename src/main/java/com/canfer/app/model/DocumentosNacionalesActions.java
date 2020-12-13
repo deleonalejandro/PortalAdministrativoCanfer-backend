@@ -358,8 +358,8 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		model = documento.getArchivoXML().toCfdi();
 		tipoComprobante = model.getTipoDeComprobante();
 		
-		receptor = empresaRepo.findByRfc(model.getReceptorRfc());
-		proveedores = proveedorRepo.findAllByEmpresasAndRfc(receptor, model.getEmisorRfc());
+		receptor = superRepo.findEmpresaByRFC(model.getReceptorRfc());
+		proveedores = superRepo.findbye proveedorRepo.find(receptor, model.getEmisorRfc());
 		
 		// get the proper provider
 		if (proveedores.size() > 1 || proveedores.isEmpty()) {
