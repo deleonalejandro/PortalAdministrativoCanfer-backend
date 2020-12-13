@@ -28,15 +28,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource; 
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.input.BOMInputStream;
+import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 
-import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.storage.StorageProperties;
 import com.canfer.app.cfd.Comprobante;
@@ -51,15 +53,12 @@ import javassist.NotFoundException;
 @Entity(name = "Archivo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Tipo_Archivo")
+@Component
 public abstract class Archivo {
 	
 	@Transient
 	@Autowired
 	protected ComprobanteFiscalRespository comprobanteFiscalRepository;
-	
-	@Transient
-	@Autowired
-	protected EmpresaRepository empresaRepository;
 	
 	@Transient
 	@Autowired
@@ -71,10 +70,7 @@ public abstract class Archivo {
 	
 	@Transient
 	@Autowired
-	protected StorageProperties st;
-
-	@Transient
-	protected final Path errorLocation = st.getErrorLocation();
+	protected StorageProperties storageProperties;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,18 +95,14 @@ public abstract class Archivo {
 	@Transient
 	protected String receptor;
 	
-	public  Archivo(String ruta, String extension, String nombre) {
-		
-		this.ruta = ruta; 
-		this.extension = extension; 
-		this.nombre = nombre; 
+	public Archivo() {
 		
 	}
 	
-	public void save() {
-		
-		this.archivoRepo.save(this);
-		
+	public  Archivo(String ruta, String extension, String nombre) {
+		this.ruta = ruta; 
+		this.extension = extension; 
+		this.nombre = nombre; 
 		
 	}
 	
@@ -259,6 +251,7 @@ public abstract class Archivo {
 	public void setReceptor(String receptor) {
 		this.receptor = receptor;
 	}
+	
 
 
 
@@ -266,11 +259,20 @@ public abstract class Archivo {
 
 	@Entity
 	@DiscriminatorValue("ARCHIVO_XML")
+	@Configurable
+	@Aspect
 	public static class ArchivoXML extends Archivo {
 		
+		@Transient
+		private EmpresaRepository empresaRepo;
 		
+		
+		public ArchivoXML() { 
+			
+		}
+	
 		public ArchivoXML(String ruta, String extension, String nombre) { 
-			super(ruta, extension, nombre); 
+			super(ruta, extension, nombre);
 		}
 		
 		public Comprobante toCfdi() {
@@ -329,7 +331,7 @@ public abstract class Archivo {
 		public Boolean businessValidation() throws NotFoundException, FileExistsException {
 			
 			Comprobante comprobante = this.toCfdi();
-			Empresa receptor = empresaRepository.findByRfc(comprobante.getReceptorRfc());
+			Empresa receptor = empresaRepo.findByRfc(comprobante.getReceptorRfc());
 			
 			//check if uuid is in DB
 			if (exist(comprobante.getUuidTfd())) {
@@ -358,7 +360,7 @@ public abstract class Archivo {
 		@Override
 		public void discard() {
 			
-			move(String.valueOf(errorLocation));
+			move(String.valueOf(storageProperties.getErrorLocation()));
 			
 		}
 		
@@ -372,6 +374,9 @@ public abstract class Archivo {
 	@Entity
 	@DiscriminatorValue("ARCHIVO_PDF")
 	public static class ArchivoPDF extends Archivo {
+		
+		public ArchivoPDF() {
+		}
 		
 		public ArchivoPDF(String ruta, String extension, String nombre) {
 			
@@ -404,7 +409,7 @@ public abstract class Archivo {
 		@Override
 		public void discard() {
 
-			move(String.valueOf(errorLocation));
+			move(String.valueOf(storageProperties.getErrorLocation()));
 			
 		}
 	}

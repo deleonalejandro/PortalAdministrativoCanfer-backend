@@ -14,7 +14,6 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvException;
 
-@Component
 public class PortalProveedorActions extends DocumentosNacionalesActions {
 	
 	@GetMapping(value = "/csvProveedor")

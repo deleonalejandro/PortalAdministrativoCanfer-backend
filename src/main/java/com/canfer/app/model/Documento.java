@@ -137,16 +137,6 @@ public class Documento {
 		this.fechaMod = fechaMod;
 	}
 	
-	//TODO 
-	public void save() {
-		
-		this.archivoXML.save();
-		this.archivoPDF.save();
-		
-		docRepo.save(this);
-		
-		
-	}
 	
 	public void accept(String nombre, String ruta) {
 		

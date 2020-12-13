@@ -309,11 +309,12 @@
             <version>12.2.220.2677</version>
         </dependency>
         <!--End of CR Dependencies-->
-
         
+
 	</dependencies>
 
 	<build>
+		<pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -325,6 +326,7 @@
 				<version>0.14.0</version>
 			</plugin>
 		</plugins>
+		</pluginManagement>
 	</build>
 
 </project>

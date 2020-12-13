@@ -38,6 +38,7 @@ import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.canfer.app.webservice.invoiceone.ClientConfiguration;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
 import com.canfer.app.webservice.sat.SatVerificacionService;
@@ -64,14 +65,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	
 	@Transient
 	@Autowired
-	private ValidationService validationService; 
-	
-	@Transient
-	@Autowired
-	private SatVerificacionService verificationService; 
-	
-	@Transient
-	@Autowired
 	private EmpresaRepository empresaRepo;
 	
 	@Transient
@@ -81,10 +74,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@Transient
 	@Autowired
 	private ConsecutivoRepository consecutivoRepo;
-	
-
-	
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -270,45 +259,12 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		comprobanteRepo.delete(this);
 		
 	}
-	
-	public void save() {
-		
-		this.documento.save();
-		comprobanteRepo.save(this);
-		
-	}
+
 	
 	public void fill() {
 		
 		Comprobante model = this.documento.getArchivoXML().toCfdi();
-		Empresa receptor;
-		Proveedor emisor;
-		Consecutivo consecutivo;
-		List<Proveedor> proveedores;
-		
-		receptor = empresaRepo.findByRfc(model.getReceptorRfc());
-		proveedores = proveedorRepo.findAllByEmpresasAndRfc(receptor, model.getEmisorRfc());
-		
-		// get the proper provider
-		if (proveedores.size() > 1 || proveedores.isEmpty()) {
-			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
-			// instead.
-			emisor = proveedorRepo.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
-		} else {
-			emisor = proveedores.get(0);
-		}
 
-		// use the proper sequence for the company and module
-		consecutivo = consecutivoRepo.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
-		this.idNumSap = consecutivo.getNext();
-		consecutivoRepo.save(consecutivo);
-				
-				
-		//Set the object fields
-		this.empresa = receptor;
-		this.proveedor = emisor;
-		
-		
 		//Use the information from the XML to fill the information
 		this.uuid = model.getUuidTfd();
 		this.serie = model.getSerie();
@@ -611,8 +567,8 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	public Boolean verificaSat() {
 		try {
 			
-			ClientConfigurationSAT clientconfigurationSAT = new ClientConfigurationSAT();
-			SatVerificacionService service = new SatVerificacionService(clientconfigurationSAT);
+			SatVerificacionService service = new SatVerificacionService(new ClientConfigurationSAT());
+			
 			String msg = "re=" + this.proveedor.getRfc() + "&" +
 						 "rr=" + this.empresa.getRfc() + "&" +
 						 "tt=" + this.total + "&" +
@@ -634,17 +590,19 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	}
 	
 	public Boolean validateInvoiceOne() {
+		
+		ValidationService validationService = new ValidationService(new ClientConfiguration());
 			
-			List<String> respuestas = validationService.validaVerifica(this.getDocumento().getArchivoXML()); 
-			
-			// Update information with the responses from validation service.
-			this.setBitValidoSAT(Boolean.valueOf(respuestas.get(0)));
-			this.setRespuestaValidacion(respuestas.get(1));
-			this.setEstatusSAT(respuestas.get(2));
+		List<String> respuestas = validationService.validaVerifica(this.getDocumento().getArchivoXML()); 
+		
+		// Update information with the responses from validation service.
+		this.setBitValidoSAT(Boolean.valueOf(respuestas.get(0)));
+		this.setRespuestaValidacion(respuestas.get(1));
+		this.setEstatusSAT(respuestas.get(2));
 
-			comprobanteRepo.save(this);
-			
-			return true; 
+		comprobanteRepo.save(this);
+		
+		return true; 
 		
 		
 	}
