@@ -89,7 +89,7 @@ public class DocumentosNacionalesFunctionalityController {
 	
 	}
 	
-	@GetMapping("/preview/{repo}/{id}")
+	@GetMapping("/preview/{method}/{repo}/{id}")
 	public ResponseEntity<Resource> preview(@PathVariable Long id, @PathVariable String method, @PathVariable String repo) {
 		
 		return actioner.download(method, repo, id, "p");

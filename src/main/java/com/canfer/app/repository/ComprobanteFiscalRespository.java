@@ -10,6 +10,6 @@ import com.canfer.app.model.ComprobanteFiscal;
 @Repository
 public interface ComprobanteFiscalRespository extends ComprobanteFiscalBaseRepository<ComprobanteFiscal>, JpaSpecificationExecutor<ComprobanteFiscal> {
 	
-	
+
 }
 

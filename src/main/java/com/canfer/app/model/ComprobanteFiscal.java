@@ -55,26 +55,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
 	
-	@Transient
-	@Autowired
-	private ComprobanteFiscalRespository comprobanteRepo;
-	
-	@Transient
-	@Autowired
-	private FacturaRepository facturaRepo;
-	
-	@Transient
-	@Autowired
-	private EmpresaRepository empresaRepo;
-	
-	@Transient
-	@Autowired
-	private ProveedorRepository proveedorRepo;
-	
-	@Transient
-	@Autowired
-	private ConsecutivoRepository consecutivoRepo;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idComprobanteFiscal;

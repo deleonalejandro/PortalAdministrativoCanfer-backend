@@ -4,17 +4,17 @@
 	         // `d` is the original data object for the row
 	         return '<table class="" style="text-align: left">' +
 	             '<tr>' +
-	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
+	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singlePDF/ComprobanteFiscal/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singleXML/ComprobanteFiscal/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
 					'<span class="ml-0 float-left fa-stack fa-2x"><i class="fas fa-file-invoice-dollar fa-stack-1x " style="color:teal"></i><i class="fas fa-slash fa-stack-1x" style="color:red"></i></span>'+
 	             '</tr>' +
 	         '</table>';  
 	         } else{
 	         return '<table class="" style="text-align: left">' +
 	             '<tr>' +
-	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/pdf/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/xml/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/complemento/'+d.idComplemento+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
+	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singlePDF/ComprobanteFiscal/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singleXML/ComprobanteFiscal/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singleComplemento/ComprobanteFiscal/'+d.idComplemento+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
 	             '</tr>' +
 	         '</table>';
 	         
@@ -46,6 +46,7 @@
 		$(document).ready(function () {
 			var xhttp = new XMLHttpRequest();
 		         var table = $('#facturas').DataTable({
+					stateSave: true,
 					ajax: {
 		            url: getInitUrl(),
 					dataSrc:""
@@ -146,6 +147,7 @@
 		 
 		 //Tabla de Avisos
 		  var table2 = $('#avisosDePago').DataTable({
+					stateSave: true,
 					ajax: {
 		            url: "/documentosFiscalesApi/avisos/"+$("#selectedCompany").text(),
 					dataSrc:""
@@ -163,7 +165,7 @@
 		                     "data": null,
 		                     "defaultContent": '',
 		                     "render": function (data) {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/documentosFiscalesClient/preview/avisoPago/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/documentosFiscalesClient/preview/singlePDF/Pago/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
 							 },
 		                 },
 
@@ -413,10 +415,10 @@
 					$('.detailsForm #bitRSusuarioText').val(jsonData.bitRSusuario);
 					$('.detailsForm').attr('action',"documentosFiscalesClient/update?rfc="+ $("#selectedCompany").text());
 					$('.detailsForm #docsRelacionados').val(jsonData.uuidRelacionados)
-					$('.detailsForm .pdfBtn').attr('href','/documentosFiscalesClient/download/pdf/'+jsonData.idComprobanteFiscal)
-					$('.detailsForm .xmlBtn').attr('href','/documentosFiscalesClient/download/xml/'+jsonData.idComprobanteFiscal)
+					$('.detailsForm .pdfBtn').attr('href','/documentosFiscalesClient/download/singlePDF/ComprobanteFiscal/'+jsonData.idComprobanteFiscal)
+					$('.detailsForm .xmlBtn').attr('href','/documentosFiscalesClient/download/singleXML/ComprobanteFiscal/'+jsonData.idComprobanteFiscal)
 					if (jsonData.hasComplemento){
-						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/complemento/"+jsonData.idComplemento)
+						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/singleComplemento/ComprobanteFiscal/"+jsonData.idComplemento)
 						document.getElementById("sinpago").hidden = true
 					}else {
 						document.getElementById("conpago").hidden = true
@@ -560,7 +562,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#xml').attr("href","/documentosFiscalesClient/download/xml?ids="+ids)
+					$('#xml').attr("href","/documentosFiscalesClient/download/zipXML/ComprobanteFiscal/?ids="+ids)
 					}
 				});
 				
@@ -575,7 +577,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#pdf').attr("href","/documentosFiscalesClient/download/pdf?ids="+ids)
+					$('#pdf').attr("href","/documentosFiscalesClient/download/zipPDF/ComprobanteFiscal?ids="+ids)
 					}
 				});
 				
@@ -590,7 +592,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#csv').attr("href","/documentosFiscalesClient/csv?ids="+ids)
+					$('#csv').attr("href","/documentosFiscalesClient/csv/ComprobanteFiscal?ids="+ids)
 					}
 				});
 				
@@ -607,7 +609,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#comprimir').attr("href","/documentosFiscalesClient/zip-download?cfdId="+ids)
+					$('#comprimir').attr("href","/documentosFiscalesClient/zip/ComprobanteFiscal?ids="+ids)
 					}
 				});
 				

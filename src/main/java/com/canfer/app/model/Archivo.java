@@ -195,7 +195,6 @@ public abstract class Archivo {
  	
  	public abstract void discard();
  	
-	
 	public long getIdArchivo() {
 		return idArchivo;
 	}

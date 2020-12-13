@@ -102,7 +102,7 @@ public class EmailSenderService {
 	    }
 	}
 
-	public void sendEmailNewDoc(ComprobanteFiscal comprobante, String validacion, String estatus){
+	public void sendEmailNewDoc(ComprobanteFiscal comprobante){
 		final String EMAIL_TEMPLATE_NAME = "emailNewDoc.html";
         
 		//Obtener correo de contadores y de proveedor
@@ -119,8 +119,8 @@ public class EmailSenderService {
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
 			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
-			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ validacion+"" );
-			ctx.setVariable("vigencia","El estatus actual del documento es:  "+estatus+"."); 
+			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
+			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -140,5 +140,43 @@ public class EmailSenderService {
 	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");;
 	    }
 	}
+	
+	public void sendEmailUpdateDoc(ComprobanteFiscal comprobante){
+		final String EMAIL_TEMPLATE_NAME = "emailUpdateDoc.html";
+        
+		//Obtener correo de contadores y de proveedor
+		UsuarioProveedor proveedor = usuarioProvRep.findByUsername(comprobante.getRfcProveedor());
+	      
 		
+		//String to = proveedor.getCorreo();
+		//List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
+				//empresaRep.findByRfc(comprobante.getRfcEmpresa()));
+		//for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
+		
+	    try {
+	        
+	        // Prepare the evaluation context
+	        final Context ctx = new Context();
+			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
+			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
+			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
+
+	        // Prepare message using a Spring helper
+	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+	        // Create the HTML body using Thymeleaf
+	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
+	        message.setText(htmlContent, true /* isHtml */);
+	        //helper.setTo(InternetAddress.parse(to));
+	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com,aldelemo96@gmail.com"));
+	        message.setSubject("Actualización de Documento Fiscal.");
+			
+		    
+	        javaMailSender.send(mimeMessage);
+	    } catch (MessagingException e) {
+
+	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");;
+	    }
+	}
 }
