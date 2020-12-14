@@ -203,16 +203,17 @@
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			        },
 			        "columns": [
-					{ "width": "20%", "targets": 0},
-					{ "width": "20%", "targets": 4},
 			          { data: "fecha",
+						width: '20%',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 		                       return string[0]
 						     }
 						},
-						{ data : "empresa" },
+						{ data : "empresa" ,
+							width: '20%',},
 		                { data : "concepto",
+							width: '2%',
 		                "render": function(data) {
 		                      if(data=="ERROR"){
 		                      
@@ -267,12 +268,14 @@
 						     } 
 					 },
 		                
-		                { data : "mensaje" },
+		                { data : "mensaje",
+							width: '38%',},
 		                { data: "fecha",
+							width: '20%',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 								string = string[1].split('.')
-		                       return string[1] 
+		                       return string[0] 
 						     }
 						}
 		             ],
