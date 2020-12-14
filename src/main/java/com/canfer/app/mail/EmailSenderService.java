@@ -99,7 +99,7 @@ public class EmailSenderService {
 	        
 	    } catch (MessagingException e) {
 
-	        Log.falla("No se pudo enviar correo a " + to + " con el aviso de Pago.", "ERROR_CONNECTION");;
+	        Log.falla("No se pudo enviar correo a " + to + " con un aviso de pago.", "ERROR_CONNECTION");;
 	    }
 	}
 
@@ -141,8 +141,8 @@ public class EmailSenderService {
 	        
 	    } catch (MessagingException | MailException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con la confirmación de recepción del Documento Fiscal: "
-	        		+ comprobante.getUuid()+" .", "ERROR_CONNECTION");;
+	        Log.falla("No se pudo enviar correo a " + "to" + " con la confirmación de recepción del documento fiscal: "
+	        		+ comprobante.getUuid()+" .", "ERROR_CONNECTION");
 	    }
 	}
 	
@@ -185,7 +185,8 @@ public class EmailSenderService {
 	        
 	    } catch (MessagingException | MailException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");
+	        Log.falla("No se pudo enviar correo a " + "to" + " con la actualización del documento fiscal: "  
+	        		+ comprobante.getUuid() + "." ,"ERROR_CONNECTION");
 	    }
 	}
 }

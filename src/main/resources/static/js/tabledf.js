@@ -272,6 +272,7 @@
 							width: '40%',},
 		                { data: "fecha",
 							width: '15%',
+							type: 'time-uni',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 								string = string[1].split('.')
