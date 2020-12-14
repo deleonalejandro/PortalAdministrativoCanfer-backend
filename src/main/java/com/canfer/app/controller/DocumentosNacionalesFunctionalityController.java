@@ -51,22 +51,17 @@ public class DocumentosNacionalesFunctionalityController {
 			filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
 			
 		} 
-		
+
+			
 		try {
 			
 			actioner.upload(fileXML, filePDF);
 			
-		} catch (FileExistsException e) {
-			
-			// handle exception for a duplicated invoice
-			Log.activity("Error al intentar guardar factura: "+fileXML.toCfdi().getUuidTfd()+ " el archivo ya existe.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-						
 		} catch (NotFoundException e) {
 			
-			// La empresa o el proveedor no se encuentran en el catalogo
-			Log.activity("Error al intentar guardar factura: " + fileXML.toCfdi().getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-
-		} 
+			Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
+		}
+			
 		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 		
@@ -101,7 +96,7 @@ public class DocumentosNacionalesFunctionalityController {
 		
 	}
 	
-	@PostMapping(value = "/deleteMultipleFacturas")
+	@GetMapping(value = "/deleteMultipleFacturas")
 	public String deleteMultipleComprobanteFiscal(@RequestParam List<Long> ids, @RequestParam String rfc) {
 		
 		actioner.deleteAll(ids);
@@ -111,7 +106,7 @@ public class DocumentosNacionalesFunctionalityController {
 			
 	}
 	
-	@PostMapping(value = "/delete/{id}")
+	@GetMapping(value = "/delete/{id}")
 	public String deleteComprobanteFiscal(@PathVariable Long id, @RequestParam String rfc) {
 		
 		actioner.delete(id);
@@ -140,7 +135,7 @@ public class DocumentosNacionalesFunctionalityController {
 	
 	@PostMapping(value = "/getVigencia/{id}")
 	@ResponseBody
-	public boolean getVigencia(@PathVariable Long id) {
+	public String getVigencia(@PathVariable Long id) {
 		
 		return actioner.refreshEstatusSat(id);
 		

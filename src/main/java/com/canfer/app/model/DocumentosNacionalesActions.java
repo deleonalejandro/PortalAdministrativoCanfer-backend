@@ -29,7 +29,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	
 	@Override
-	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException {
+	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
 		
 		Documento doc;
 		String ruta;
@@ -78,7 +78,12 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		} else {
 			
 			fileXML.discard();
-			filePDF.discard();
+			
+			if (filePDF != null) {
+
+				filePDF.discard();
+
+			} 
 			
 			return false;
 		}
@@ -187,8 +192,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			case "zipPDF":
 				
 				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+					
+					if (comprobanteFiscal.getDocumento().hasPDF()) {
+						
+						files.add(comprobanteFiscal.fetchPDF());
+						
+					}
 	
-					files.add(comprobanteFiscal.fetchPDF());
 	
 				}
 	
@@ -199,7 +209,12 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
 					
 					files.add(comprobanteFiscal.fetchXML());
-					files.add(comprobanteFiscal.fetchPDF());
+					
+					if (comprobanteFiscal.getDocumento().hasPDF()) {
+						
+						files.add(comprobanteFiscal.fetchPDF());
+						
+					}
 	
 				}
 	
@@ -228,6 +243,8 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			if(comprobanteFiscal instanceof ComplementoPago) {
 				clearComplemento((ComplementoPago) comprobanteFiscal);
 			}
+			
+			comprobanteFiscal.delete();
 			
 			superRepo.delete(comprobanteFiscal);
 			
@@ -319,27 +336,24 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 
 	
-	public boolean refreshEstatusSat(Long id) {
+	public String refreshEstatusSat(Long id) {
+		
+		String respuestaSat;
 		
 		Optional<ComprobanteFiscal> comprobante = superRepo.findComprobanteById(id);
 		
 		if(comprobante.isPresent()) {
 			
-			if(comprobante.get().verificaSat()) {
+			respuestaSat = comprobante.get().verificaSat();
 				
-				superRepo.save(comprobante.get());
+			superRepo.save(comprobante.get());
 				
-				return true;
-				
-			} else {
-				
-				return false;
-			}
+			return respuestaSat;
 
 			
 		} else {
 			
-			return false;
+			return null;
 		}
 		
 	}
@@ -449,7 +463,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	  }
 	
 
-	private Boolean businessValidation(ArchivoXML archivo) throws NotFoundException, FileExistsException {
+	private Boolean businessValidation(ArchivoXML archivo) {
 		
 		Comprobante comprobante = archivo.toCfdi();
 		Empresa receptor = superRepo.findEmpresaByRFC(comprobante.getReceptorRfc());
@@ -457,16 +471,20 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		//check if uuid is in DB
 		if (exist(comprobante.getUuidTfd())) {
 			
-			throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
-					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
+			Log.activity("Error al intentar guardar factura: El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorNombre(), comprobante.getReceptorNombre(), "ERROR_DB");
+			
+			return false;
 			
 		}
 		
 		// check if the company or the provider exist on the data base.
 		if (receptor == null) {
 			
-			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
-					+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
+			Log.activity("Error al intentar guardar factura: La empresa no se encuentra registrada en el catálogo. "
+					+ "Empresa: " + comprobante.getReceptorNombre() + "RFC: " + comprobante.getReceptorRfc() + ".", comprobante.getReceptorNombre(), "ERROR_DB"); 
+			
+			return false;
 		}
 		
 		// adding company stamp

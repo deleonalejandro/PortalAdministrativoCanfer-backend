@@ -151,22 +151,19 @@ public abstract class Archivo {
 			
 			temp = Files.move(Paths.get(this.ruta), Paths.get(newRuta), StandardCopyOption.REPLACE_EXISTING);
 			
+			if (temp != null) {
+				
+				this.ruta = newRuta;
+				
+			}
+			
+			
 		} catch (IOException e) {
 			
 			Log.falla("No se logró mover el archivo " + this.nombre + ".", "ERROR_STORAGE");
 			
 		}
 		
-
-		if (temp != null) {
-			
-			this.ruta = newRuta;
-			
-		} else {
-			
-			Log.falla("No se logró mover el archivo " + this.nombre + ".", "ERROR_STORAGE");
-			
-		}
 		
 
  	}
@@ -310,7 +307,7 @@ public abstract class Archivo {
 		@Override
 		public void discard() {
 			
-			move(String.valueOf(storageProperties.getErrorLocation()));
+			move(String.valueOf(storageProperties.getErrorLocation().resolve(this.nombre)));
 			
 		}
 
@@ -356,7 +353,7 @@ public abstract class Archivo {
 		@Override
 		public void discard() {
 
-			move(String.valueOf(storageProperties.getErrorLocation()));
+			move(String.valueOf(storageProperties.getErrorLocation().resolve(this.nombre)));
 			
 		}
 	}

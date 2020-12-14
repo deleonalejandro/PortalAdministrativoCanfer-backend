@@ -165,14 +165,14 @@ public class Documento {
 	public void delete() {
 		
 		//delete archivos
-		
-		if (this.hasXML()) {
-			this.archivoPDF.deleteFile();
-		}
-			
 		if (this.hasXML()) {
 			this.archivoXML.deleteFile();
 		}	
+		
+		if (this.hasPDF()) {
+			this.archivoPDF.deleteFile();
+		}
+			
 		
 	}
 	

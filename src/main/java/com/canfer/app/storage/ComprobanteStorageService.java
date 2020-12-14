@@ -35,12 +35,14 @@ public class ComprobanteStorageService implements StorageService {
 	private Path rootLocation;
 	private Path entriesPortalLocation;
 	private Path entriesEmailLocation;
+	private Path errorLocation;
 	
 
 	public ComprobanteStorageService(StorageProperties storageProperties) {
 		this.rootLocation = storageProperties.getFacturasLocation();
 		this.entriesPortalLocation = storageProperties.getEntryPortalLocation();
 		this.entriesEmailLocation = storageProperties.getEntriesLocation();
+		this.errorLocation = storageProperties.getErrorLocation();
 	}
 
 	@Override
@@ -70,6 +72,7 @@ public class ComprobanteStorageService implements StorageService {
 			Files.createDirectories(this.rootLocation);
 			Files.createDirectories(this.entriesEmailLocation);
 			Files.createDirectories(this.entriesPortalLocation);
+			Files.createDirectories(this.errorLocation);
 			
 		} catch (IOException e) {
 			
