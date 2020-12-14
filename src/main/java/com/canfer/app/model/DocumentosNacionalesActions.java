@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
@@ -25,16 +26,15 @@ import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 
 import javassist.NotFoundException;
 
-@Component
+@Service
 public class DocumentosNacionalesActions extends ModuleActions {
-	
-	@Autowired
-	private EmailSenderService emailSender; 
+
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException {
 		
 		Documento doc;
+		String ruta;
 		
 		if (fileXML.businessValidation()) {
 			
@@ -53,8 +53,11 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			// use the PAC to validate the CFD
 			cfd.validateInvoiceOne();
 			
+			// prepare the new route for the accepted file
+			ruta = comprobanteStorageService.init(cfd.createRoute());
+			
 			// accept the CFD
-			cfd.accept();
+			cfd.accept(ruta);
 			
 			// persist the entities into DB,
 			superRepo.save(cfd);
@@ -67,6 +70,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			}
 			
 			emailSender.sendEmailNewDoc(cfd);
+			
 			return true;
 			
 		} else {
