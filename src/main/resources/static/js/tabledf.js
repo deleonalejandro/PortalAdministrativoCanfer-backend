@@ -271,7 +271,7 @@
 		                { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
-								string = string[1].split(':')
+								string = string[1].split('.')
 		                       return string[1] 
 						     }
 						}
