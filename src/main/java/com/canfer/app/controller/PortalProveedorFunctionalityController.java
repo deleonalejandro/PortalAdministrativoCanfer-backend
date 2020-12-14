@@ -1,8 +1,5 @@
 package com.canfer.app.controller;
 
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.model.Log;
 import com.canfer.app.model.PortalProveedorActions;
@@ -40,8 +38,10 @@ public class PortalProveedorFunctionalityController {
 	}
 	
 	@PostMapping("/uploadFactura")
-	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc, @RequestParam String clv) {
+	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc, 
+			@RequestParam String clv, RedirectAttributes ra) {
 		
+		boolean value = false; 
 		// initializing directories
 		storageService.init();
 		
@@ -57,6 +57,7 @@ public class PortalProveedorFunctionalityController {
 		try {
 			
 			actioner.upload(fileXML, filePDF);
+			value = true; 
 			
 		} catch (NotFoundException e) {
 			
@@ -65,7 +66,7 @@ public class PortalProveedorFunctionalityController {
 
 		} 
 		
-		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv;
+		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv+"&upload="+value;
 		
 	}
 	
@@ -84,9 +85,9 @@ public class PortalProveedorFunctionalityController {
 	}
 	
 	@GetMapping("/csv/{rfc}/{clave}")
-	public void download(HttpServletResponse response, String rfc, String clave) {
+	public void download(String rfc, String clave) {
 
-			actioner.downloadCsv(response, rfc, clave);
+			actioner.downloadXls(rfc, clave);
 	
 		
 	}

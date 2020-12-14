@@ -27,13 +27,11 @@ import javax.persistence.Transient;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.input.BOMInputStream;
 import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,12 +40,7 @@ import org.hibernate.boot.jaxb.internal.stax.XmlInfrastructureException;
 import com.canfer.app.storage.StorageFileNotFoundException;
 import com.canfer.app.storage.StorageProperties;
 import com.canfer.app.cfd.Comprobante;
-import com.canfer.app.repository.ArchivoRepository;
-import com.canfer.app.repository.ComprobanteFiscalRespository;
-import com.canfer.app.repository.EmpresaRepository;
-import com.canfer.app.repository.ProveedorRepository;
 
-import javassist.NotFoundException;
 
 
 @Entity(name = "Archivo")

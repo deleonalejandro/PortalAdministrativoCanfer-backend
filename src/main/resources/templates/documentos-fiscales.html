@@ -224,6 +224,7 @@
 						<!-- Main Content Tables  facturas-->
 						<div class="card mb-0"  id="divFacturas">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
+							<div id="upload" th:text="${upload}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -1045,6 +1046,15 @@
 							        <small class="text-white-50 ml-2">Ahora</small>
 							    </div>
 							    <div class="toast-body">Se procesó la petición ante el SAT.</div> 
+							</div>
+			<!-- TOAST PARA UPLOAD -->
+							<div class="toast" role="alert" id="toastUpload" data-autohide=true data-delay="4000" style=" z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;" aria-live="assertive" aria-atomic="true">
+							    <div class="toast-header bg-primary text-white">
+							        <i data-feather="alert-circle"></i>
+							        <strong class="mr-auto">Nuevo Documento Fiscal.</strong>
+							        <small class="text-white-50 ml-2">Ahora</small>
+							    </div>
+							    <div class="toast-body">Carga de documento fiscal exitosa.</div> 
 							</div>
 							
 		</main>

@@ -24,7 +24,6 @@ import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
-import com.canfer.app.service.EmpresaService;
 import com.canfer.app.service.UsuarioService;
 
 import javassist.NotFoundException;
@@ -33,8 +32,6 @@ import javassist.NotFoundException;
 @Controller
 public class PortalProveedorController {
 	
-	@Autowired
-	private EmpresaService empresaService;
 	@Autowired
 	private EmpresaRepository empresaRepo;
 	@Autowired
@@ -47,7 +44,8 @@ public class PortalProveedorController {
 
 	
 	@GetMapping(value = "/proveedoresClient")
-	public String getModuloProveedores(@RequestParam("rfc") String rfc, @RequestParam("clv") String claveProv, Model model, RedirectAttributes ra) {
+	public String getModuloProveedores(@RequestParam("rfc") String rfc, @RequestParam("clv") String claveProv, 
+			@RequestParam String upload, Model model, RedirectAttributes ra) {
 		
 		List<String> claves = new ArrayList<>();
 		Empresa company = empresaRepo.findByRfc(rfc);
@@ -69,6 +67,7 @@ public class PortalProveedorController {
 			
 			model.addAttribute("selectedCompany", rfc);
 			model.addAttribute("selectedClave", claveProv);
+			model.addAttribute("upload", upload);
 			model.addAttribute("companyProfile", company.getProfilePictureName());
 			
 			return "proveedores";
