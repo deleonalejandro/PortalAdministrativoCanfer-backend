@@ -63,9 +63,7 @@ public class EmailReceiver {
             FlagTerm unseenFlagTerm = new FlagTerm(seen,false);
             Message[] messages = folderInbox.search(unseenFlagTerm);
             folderInbox.setFlags(messages, new Flags(Flags.Flag.SEEN), true);
-            
-            //Processing E-mails
-            System.out.println(messages.length);
+           
             
             // just call the method when emails are present
             if (messages.length > 0) {
@@ -76,11 +74,9 @@ public class EmailReceiver {
 
 		} catch (NoSuchProviderException ex) {
 			Log.falla("No hay proveedor de correo para el protocolo: " + protocol, "ERROR_CONNECTION");
-			ex.printStackTrace();
 
 		} catch (MessagingException ex) {
 			Log.falla("No se pudo conectar al servicio de mensajeria", "ERROR_CONNECTION");
-			ex.printStackTrace();
 
 		} catch (NoResultException e) {
 			Log.general("La bandeja fue procesada: " + e.getMessage());

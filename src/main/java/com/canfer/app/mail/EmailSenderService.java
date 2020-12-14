@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class EmailSenderService {
     private TemplateEngine htmlTemplateEngine;
     
 
-	public EmailSenderService(JavaMailSender javaMailSender) throws Exception {
+	public EmailSenderService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
@@ -121,6 +122,9 @@ public class EmailSenderService {
 			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
 			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
 			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
+			ctx.setVariable("tel","8181818181"); 
+			ctx.setVariable("correo","canfer@canfer.com"); 
+			ctx.setVariable("empresa",comprobante.getEmpresaNombre()+"."); 
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -133,9 +137,9 @@ public class EmailSenderService {
 	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com,aldelemo96@gmail.com"));
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
-		    
 	        javaMailSender.send(mimeMessage);
-	    } catch (MessagingException e) {
+	        
+	    } catch (MessagingException | MailException e) {
 
 	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");;
 	    }
@@ -157,9 +161,13 @@ public class EmailSenderService {
 	        
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
-			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
+			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue modificado.");
 			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
 			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
+			ctx.setVariable("comentarios","Comentarios:  "+comprobante.getComentario()+"."); 
+			ctx.setVariable("tel","8181818181"); 
+			ctx.setVariable("correo","canfer@canfer.com"); 
+			ctx.setVariable("empresa",comprobante.getEmpresaNombre()+"."); 
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -171,12 +179,12 @@ public class EmailSenderService {
 	        //helper.setTo(InternetAddress.parse(to));
 	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com,aldelemo96@gmail.com"));
 	        message.setSubject("Actualización de Documento Fiscal.");
-			
 		    
 	        javaMailSender.send(mimeMessage);
-	    } catch (MessagingException e) {
+	        
+	    } catch (MessagingException | MailException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");;
+	        Log.falla("No se pudo enviar correo a " + "to" + " con el aviso de Pago.", "ERROR_CONNECTION");
 	    }
 	}
 }
