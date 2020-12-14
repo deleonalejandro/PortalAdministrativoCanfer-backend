@@ -1,5 +1,7 @@
 package com.canfer.app.model;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
@@ -23,16 +25,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
-import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.webservice.invoiceone.ClientConfiguration;
 import com.canfer.app.webservice.invoiceone.ValidationService;
 import com.canfer.app.webservice.sat.ClientConfigurationSAT;
@@ -525,7 +524,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		return Arrays.asList(this.uuidRelacionados.split(",")); 
 	}
 	
-	public Boolean verificaSat() {
+	public String verificaSat() {
 		try {
 			
 			SatVerificacionService service = new SatVerificacionService(new ClientConfigurationSAT());
@@ -538,14 +537,14 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			String respuestaSat =  service.validaVerifica(msg);
 			this.setEstatusSAT(respuestaSat);
 			
-			return true; 
+			return respuestaSat; 
 			
 		} catch(Exception e) {
 			
 			Log.general(e.getMessage());
-			
-			return false;
+			return null;
 		}
+
 		
 		
 	}

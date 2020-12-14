@@ -62,7 +62,7 @@ public class Downloader {
 	
 		for (Archivo file : files) {
 
-			FileSystemResource resource = (FileSystemResource) file.loadAsResource();
+			Resource resource = file.loadAsResource();
 			ZipEntry zipEntry = new ZipEntry(resource.getFilename());
 
 			try {
