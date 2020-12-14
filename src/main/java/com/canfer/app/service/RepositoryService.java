@@ -171,24 +171,11 @@ public class RepositoryService {
 
 	public void delete(ComprobanteFiscal comprobante) {
 
-		delete(comprobante.getDocumento());
 		comprobanteRepo.delete(comprobante);
 
 	}
 
 	public void delete(Documento documento) {
-
-		if (documento.hasPDF()) {
-
-			delete(documento.getArchivoPDF());
-
-		}
-
-		if (documento.hasXML()) {
-
-			delete(documento.getArchivoXML());
-
-		}
 
 		documentoRepo.delete(documento);
 
@@ -220,7 +207,6 @@ public class RepositoryService {
 
 	public void delete(Pago pago) {
 
-		delete(pago.getDocumento());
 		pagoRepo.delete(pago);
 
 	}
@@ -234,17 +220,13 @@ public class RepositoryService {
 
 	public void deleteAllComprobante(List<ComprobanteFiscal> list) {
 
-		list.forEach((comprobante) -> {
-			delete(comprobante);
-		});
+		comprobanteRepo.deleteAll(list);
 
 	}
 
 	public void deleteAllDocumento(List<Documento> list) {
 
-		list.forEach((documento) -> {
-			delete(documento);
-		});
+		documentoRepo.deleteAll(list);
 
 	}
 
@@ -274,9 +256,7 @@ public class RepositoryService {
 
 	public void deleteAllPago(List<Pago> list) {
 
-		list.forEach((pago) -> {
-			delete(pago);
-		});
+		pagoRepo.deleteAll(list);
 
 	}
 
