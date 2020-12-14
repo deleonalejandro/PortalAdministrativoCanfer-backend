@@ -272,7 +272,7 @@
 						     }
 						}
 		             ],
-					 "order": [[0, 4, 'desc', 'desc']],
+					 "order": [[0, 4, 'desc']],
 		 });
  			
 			// Filters
@@ -449,7 +449,7 @@
 					$(' .detailsForm #detailsModal').modal('show');
 					
 					$('.detailsForm .refreshBtn').on('click', function(event){
-					event.preventDefault();
+						event.preventDefault();
 					
 					  xhttp.onreadystatechange = function() {
 					    if (this.readyState == 4 && this.status == 200) {
