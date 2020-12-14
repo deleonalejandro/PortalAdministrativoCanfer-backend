@@ -134,7 +134,7 @@
 		                     "data": null,
 		                     "defaultContent": '',
 		                     "render": function (data) {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/documentosFiscalesClient/preview/avisoPago/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/proveedoresClient/preview/singlePDF/Pago/'+data.idPago+'" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>' 
 							 },
 		                 },
 		                { data : "idNumPago" },
@@ -224,7 +224,7 @@
 						$('#totalPago').val(jsonData.pagoTotalPago)
 						$('#totalFactura').val(jsonData.pagoTotalFactura)
 					if(jsonData.pagoIdPago != null){
-						$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
+						$('#pdfDetails').attr('href','/proveedoresClient/preview/singlePDF/Pago/'+jsonData.pagoIdPago)
 					
 					}
 					
@@ -290,7 +290,7 @@
 							$('#fechaPago').val(jsonData.pagoFecmvto)
 							$('#totalPago').val(jsonData.pagoTotalPago)
 							$('#totalFactura').val(jsonData.pagoTotalFactura)
-							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
+							$('#pdfDetails').attr('href','/proveedoresClient/preview/singlePDF/Pago/'+jsonData.pagoIdPago)
 						
 						}
 						
@@ -357,7 +357,7 @@
 							$('#fechaPago').val(jsonData.pagoFecmvto)
 							$('#parcialidad').val(jsonData.pagoTotalParcialidad)
 							$('#totalFactura').val(jsonData.pagoTotalFactura)
-							$('#pdfDetails').attr('href','/documentosFiscalesClient/preview/avisoPago/'+jsonData.pagoIdPago)
+							$('#pdfDetails').attr('href','/proveedoresClient/preview/singlePDF/Pago/'+jsonData.pagoIdPago)
 						
 						}
 						

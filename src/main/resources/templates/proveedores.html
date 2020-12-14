@@ -132,7 +132,7 @@
 												class="btn btn-outline-danger mr-2" data-toggle="modal"
 												data-target="#nuevoModal">Nuevo</button>
 											<a type="button" id="btn-csv"
-												class="btn btn-outline-danger mr-2" th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}" >CSV</a>
+												class="btn btn-outline-danger mr-2" th:href="@{/proveedoresClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}" >CSV</a>
 											<button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 											    <i class="" style="color:white" data-feather="search"></i>
 											</button>
@@ -159,7 +159,7 @@
 															<div>
 																<form method="post" enctype="multipart/form-data"
 																	action="#"
-																	th:action="@{/documentosFiscalesClient/uploadFactura}">
+																	th:action="@{/proveedoresClient/uploadFactura(rfc=${selectedCompany},clave=${selectedClave})}">
 																	<table>
 																		<div>Cargar un XML:</div>
 																		<div class="input-group mb-2">

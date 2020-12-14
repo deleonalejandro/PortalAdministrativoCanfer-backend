@@ -67,7 +67,7 @@ public class PortalProveedorFunctionalityController {
 
 		} 
 		
-		return "redirect:/proveedoresClient?rfc=" + rfc + "&clv=" + clv;
+		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv;
 		
 	}
 	
