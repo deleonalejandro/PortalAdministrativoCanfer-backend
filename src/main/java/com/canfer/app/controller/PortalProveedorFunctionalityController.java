@@ -1,5 +1,10 @@
 package com.canfer.app.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.model.Log;
 import com.canfer.app.model.PortalProveedorActions;
+import com.canfer.app.service.RepositoryService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.opencsv.exceptions.CsvException;
 
 import javassist.NotFoundException;
 
@@ -31,6 +38,9 @@ public class PortalProveedorFunctionalityController {
 	
 	@Autowired
 	private ComprobanteStorageService storageService; 
+	
+	@Autowired
+	private RepositoryService repoService; 
 	
 	public PortalProveedorFunctionalityController() {
 		// default controller
@@ -67,7 +77,7 @@ public class PortalProveedorFunctionalityController {
 
 		} 
 		
-		return "redirect:/proveedoresClient?rfc=" + rfc + "&clv=" + clv;
+		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv;
 		
 	}
 	
@@ -82,6 +92,14 @@ public class PortalProveedorFunctionalityController {
 	public ResponseEntity<Resource> preview(@PathVariable Long id, @PathVariable String method, @PathVariable String repo) {
 		
 		return actioner.download(method, "Pago", id, "p");
+		
+	}
+	
+	@GetMapping("/csv/{rfc}/{clave}")
+	public void download(HttpServletResponse response, String rfc, String clave) {
+
+			actioner.downloadCsv(response, rfc, clave);
+	
 		
 	}
 
