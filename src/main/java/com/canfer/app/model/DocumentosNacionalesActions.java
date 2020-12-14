@@ -2,6 +2,7 @@ package com.canfer.app.model;
 
 
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		Documento doc;
 		String ruta;
 		
-		if (fileXML.businessValidation()) {
+		if (businessValidation(fileXML)) {
 			
 			if (filePDF == null) {
 				
@@ -51,7 +52,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			cfd.validateInvoiceOne();
 			
 			// prepare the new route for the accepted file
-			ruta = comprobanteStorageService.init(cfd.createRoute());
+			ruta = comprobanteStorageService.init(Paths.get(cfd.createRoute()));
 			
 			// accept the CFD
 			cfd.accept(ruta);
@@ -444,8 +445,38 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	  }
 	
 
+	private Boolean businessValidation(ArchivoXML archivo) throws NotFoundException, FileExistsException {
+		
+		Comprobante comprobante = archivo.toCfdi();
+		Empresa receptor = superRepo.findEmpresaByRFC(comprobante.getReceptorRfc());
+		
+		//check if uuid is in DB
+		if (exist(comprobante.getUuidTfd())) {
+			
+			throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
+			
+		}
+		
+		// check if the company or the provider exist on the data base.
+		if (receptor == null) {
+			
+			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
+					+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
+		}
+		
+		// adding company stamp
+		
+		archivo.setReceptor(comprobante.getReceptorNombre());
+		
+		return true; 
+		
+	}
 
 	
+	private boolean exist(String uuid) {
+		return (superRepo.findComprobanteByUUID(uuid) != null);
+	}
 
 	
 

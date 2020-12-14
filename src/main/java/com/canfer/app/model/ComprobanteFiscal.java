@@ -270,21 +270,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		return true;
 		
 	}
-	
-	public Path createRoute() {
-		
-		LocalDateTime today = LocalDateTime.now();
-		
-		Path route = Paths.get(this.rfcEmpresa, 
-				String.valueOf(today.getYear()),
-				String.valueOf(today.getMonthValue()), 
-				this.rfcProveedor);
-		
-
-		return route;
-		
-	}
-	
 
 	public Long getIdComprobanteFiscal() {
 		return idComprobanteFiscal;
@@ -677,7 +662,19 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 
 	}
 
-
+	public String createRoute() {
+		
+		LocalDateTime today = LocalDateTime.now();
+		
+		Path route = Paths.get(this.rfcEmpresa, 
+				String.valueOf(today.getYear()),
+				String.valueOf(today.getMonthValue()), 
+				this.rfcProveedor);
+		
+		return route.toString();
+		
+	}
+	
 
 	
 	
