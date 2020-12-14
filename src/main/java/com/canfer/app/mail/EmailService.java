@@ -20,6 +20,7 @@ import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Archivo;
@@ -27,7 +28,6 @@ import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
-import com.canfer.app.model.ModuleActions;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageException;
 
@@ -38,7 +38,9 @@ public class EmailService {
 
 	@Autowired
 	private ComprobanteStorageService comprobanteStorageService;
+	
 	@Autowired
+	@Qualifier("DocumentosNacionalesActions")
 	private DocumentosNacionalesActions actioner;
 
 	public EmailService() {

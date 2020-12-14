@@ -161,6 +161,9 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Documento documento;
 	
+	public ComprobanteFiscal() {
+	}
+	
 	public ComprobanteFiscal(Documento documento) {
 		
 		this.estatusPago = "EN PROCESO";
@@ -686,6 +689,8 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
 	    private ComplementoPago complemento;
 		
+		public Factura() {
+		}
 		
 		public Factura(Documento documento) {
 			super(documento);
@@ -741,6 +746,9 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@DiscriminatorValue("NOTA_DE_CREDITO")
 	public static class NotaDeCredito extends ComprobanteFiscal {
 		
+		public NotaDeCredito() {
+		}
+		
 		public NotaDeCredito(Documento documento) {
 			super(documento);
 		}
@@ -770,6 +778,9 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@Entity
 	@DiscriminatorValue("COMPLEMENTO_DE_PAGO")
 	public static class ComplementoPago extends ComprobanteFiscal {
+		
+		public ComplementoPago() {
+		}
 		
 		public ComplementoPago(Documento documento) {
 			super(documento);

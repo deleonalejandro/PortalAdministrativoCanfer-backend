@@ -2,6 +2,7 @@ package com.canfer.app.controller;
 
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import javassist.NotFoundException;
 public class PortalProveedorFunctionalityController {
 	
 	@Autowired
+	@Qualifier("PortalProveedorActions")
 	private PortalProveedorActions actioner;
 	
 	@Autowired

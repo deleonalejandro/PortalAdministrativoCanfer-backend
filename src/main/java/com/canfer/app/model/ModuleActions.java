@@ -8,7 +8,6 @@ import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -18,7 +17,6 @@ import com.canfer.app.storage.ComprobanteStorageService;
 
 import javassist.NotFoundException;
 
-@Service
 public abstract class ModuleActions {
 	
 	@Autowired

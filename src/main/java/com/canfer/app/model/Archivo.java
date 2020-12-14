@@ -149,7 +149,7 @@ public abstract class Archivo {
 		
 		try {
 			
-			temp = Files.move(Paths.get(this.ruta), Paths.get(newRuta));
+			temp = Files.move(Paths.get(this.ruta), Paths.get(newRuta), StandardCopyOption.REPLACE_EXISTING);
 			
 		} catch (IOException e) {
 			
@@ -183,13 +183,6 @@ public abstract class Archivo {
  	
  	public abstract void discard();
  	
-	public long getIdArchivo() {
-		return idArchivo;
-	}
-	
-	public void setIdArchivo(long idArchivo) {
-		this.idArchivo = idArchivo;
-	}
 	
 	public String getRuta() {
 		return ruta;

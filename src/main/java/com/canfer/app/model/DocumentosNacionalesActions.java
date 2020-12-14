@@ -24,7 +24,7 @@ import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 
 import javassist.NotFoundException;
 
-@Service
+@Service("DocumentosNacionalesActions")
 public class DocumentosNacionalesActions extends ModuleActions {
 
 	
@@ -39,9 +39,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			if (filePDF == null) {
 				
 				doc = new Documento(fileXML);
+				
+			} else {
+				
+				doc = new Documento(fileXML, filePDF);
+				
 			}
 			
-			doc = new Documento(fileXML, filePDF);
 			
 			ComprobanteFiscal cfd = makeCfd(doc);
 			

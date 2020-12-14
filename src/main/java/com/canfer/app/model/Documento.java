@@ -55,6 +55,8 @@ public class Documento {
 	
 	private String docEntry;
 	
+	public Documento() {
+	}
 	
 
 	//Constructor

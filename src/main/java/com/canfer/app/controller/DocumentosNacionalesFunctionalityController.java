@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import javassist.NotFoundException;
 public class DocumentosNacionalesFunctionalityController {
 
 	@Autowired
+	@Qualifier("DocumentosNacionalesActions")
 	private DocumentosNacionalesActions actioner; 
 	
 	@Autowired
