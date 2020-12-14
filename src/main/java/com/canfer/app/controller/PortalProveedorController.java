@@ -22,7 +22,6 @@ import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
-import com.canfer.app.repository.UsuarioRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 import com.canfer.app.service.EmpresaService;
