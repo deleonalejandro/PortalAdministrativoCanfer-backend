@@ -203,6 +203,8 @@
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			        },
 			        "columns": [
+					{ "width": "20%", "targets": 0},
+					{ "width": "20%", "targets": 4},
 			          { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
@@ -252,7 +254,11 @@
 		                      
 		                       return '<i style="color:black" data-feather="trash-2"></i><script> feather.replace()</script>';
 		                      
-		                      } else {
+		                      } else if (data == "ERROR_UPDATE"){
+		                      
+		                       return '<i style="color:red" data-feather="edit"></i><script> feather.replace()</script>';
+		                      
+		                      }else {
 		                      
 		                       return '<i style="color:blue" data-feather="activity"></i><script> feather.replace()</script>';
 		                      
@@ -266,7 +272,7 @@
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 								string = string[1].split('.')
-		                       return string[0] 
+		                       return string[1] 
 						     }
 						}
 		             ],
@@ -711,5 +717,4 @@
 			});
 			 
 			
-				
 		});
