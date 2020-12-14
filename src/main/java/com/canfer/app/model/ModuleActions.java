@@ -10,9 +10,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.service.RepositoryService;
+import com.canfer.app.storage.ComprobanteStorageService;
 
 import javassist.NotFoundException;
 
@@ -24,6 +26,12 @@ public abstract class ModuleActions {
 	
 	@Autowired
 	protected Downloader dowloadManager;
+	
+	@Autowired
+	protected ComprobanteStorageService comprobanteStorageService;
+	
+	@Autowired
+	protected EmailSenderService emailSender;
 
 
 	protected abstract boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException;
