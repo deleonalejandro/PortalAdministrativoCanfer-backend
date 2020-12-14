@@ -411,6 +411,7 @@
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
 					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
 					$('.detailsForm #comentario').val(jsonData.comentario)
+					$('.detailsForm #idComprobanteFiscal').val(jsonData.idComprobanteFiscal)
 					         
 			        $('.detailsForm #bitRSusuario').prop("checked", jsonData.bitRSusuario);
 			        $('.detailsForm #bitRS').prop("checked", jsonData.bitRS);
