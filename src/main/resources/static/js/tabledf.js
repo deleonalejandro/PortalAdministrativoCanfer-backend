@@ -271,11 +271,12 @@
 		                { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
-		                       return string[1]
+								string = string[1].split(':')
+		                       return string[1] 
 						     }
 						}
 		             ],
-					 "order": [[0, 5, 'desc']],
+					 "order": [[0, 5, 'desc', 'desc']],
 		 });
  			
 			// Filters
