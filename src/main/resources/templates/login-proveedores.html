@@ -28,7 +28,7 @@
                                     <hr class="my-0" />
                                     <div class="card-body p-5">
                                     <!-- Alerta de error al iniciar sesion -->
-                                    <div class="alert alert-danger" role="alert" th:if="${loginError}"> El usuario o contraseña son incorrectos. </div>
+                                    <div class="alert alert-danger" role="alert" th:if="${loginError}"> El RFC o la contraseña es incorrecta. </div>
                                     <div class="alert alert-success" role="alert" th:if="${success}"> Ha cerrado sesión exitosamente. </div> 
                                     <div th:if="${registerSuccess}" class="alert alert-success alert-icon" role="alert">
 									    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
@@ -44,6 +44,11 @@
 									</div>
                                         <!-- Login form-->
                                         <form th:action="@{/check_login}" method="post">
+                                        
+                                        	<div class="form-group"> 
+                                                <input class="form-control form-control-solid py-4" type="text" id="auth" name="auth" value="pp" hidden />
+                                            </div>
+                                            
                                             <!-- Form Group (email address)-->
                                             <div class="form-group">
                                                 <label class="text-gray-600 small" for="emailExample">RFC</label>

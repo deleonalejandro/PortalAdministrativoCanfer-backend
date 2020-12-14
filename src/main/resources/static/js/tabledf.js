@@ -194,6 +194,7 @@
 		 
 		  //Tabla de Log
 		  var table3 = $('#logMov').DataTable({
+					
 					ajax: {
 		            url: "/catalogsAPI/log",
 					dataSrc:""
@@ -204,16 +205,16 @@
 			        },
 			        "columns": [
 			          { data: "fecha",
-						width: '15%',
+						width: '10%',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 		                       return string[0]
 						     }
 						},
 						{ data : "empresa" ,
-							width: '20%',},
+							width: '25%',},
 		                { data : "concepto",
-							width: '10%',
+							width: '5%',
 		                "render": function(data) {
 		                      if(data=="ERROR"){
 		                      
@@ -269,9 +270,9 @@
 					 },
 		                
 		                { data : "mensaje",
-							width: '40%',},
+							width: '50%',},
 		                { data: "fecha",
-							width: '15%',
+							width: '10%',
 							type: 'time-uni',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
@@ -280,7 +281,7 @@
 						     }
 						}
 		             ],
-					 "order": [[0, 4, 'desc','desc']],
+					 "order": [[ 0, "desc" ], [ 4, "desc" ]]
 		 });
  			
 			// Filters
@@ -335,9 +336,6 @@
 			// Clear filters
 			$('#clearFilters').on('click', function() { 
 				
-				var start = moment();
-    			var end = moment();
-
 				$("#inputFiltroProveedor").val('');
 				$("#inputFiltroIdSap").val('');
 				$("#inputFiltroUUID").val('');
@@ -352,9 +350,6 @@
 				$("#checkRS").prop("checked", false);
 				$("#checkComplemento").prop("checked", false); 
 				$("#reportrangeEmision span").text("");
-				$("#reportrangeCarga span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-				$("#uploadAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-				$("#uploadBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 				
 		
 			});

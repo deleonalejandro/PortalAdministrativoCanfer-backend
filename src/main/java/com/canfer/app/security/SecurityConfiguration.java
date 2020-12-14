@@ -20,8 +20,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserPrincipalDetailsService userPrincipalDetailsService;
+	
 	@Autowired
 	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	
+	@Autowired
+	private CustomAuthenticationFailureHandler authenticationFailureHandler;
+	
+	@Autowired
+	private CustomLogoutSuccessHandler logoutSuccessHandler;
 	
 	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
 		this.userPrincipalDetailsService = userPrincipalDetailsService;
@@ -43,11 +50,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.successHandler(customAuthenticationSuccessHandler)
 				.loginProcessingUrl("/check_login")
-				.failureUrl("/login-error")
+				.failureHandler(authenticationFailureHandler)
 				.and()
 				.logout()
 				.logoutUrl("/logout")
-				.logoutSuccessUrl("/logoutSuccess")
+				.logoutSuccessHandler(logoutSuccessHandler)
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
 				.and()

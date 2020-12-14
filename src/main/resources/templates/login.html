@@ -33,7 +33,10 @@
                                     
                                         <!-- Login form-->
                                         <form th:action="@{/check_login}" method="post">
-                                            <!-- Form Group (email address)-->
+                                        	<div class="form-group"> 
+                                                <input class="form-control form-control-solid py-4" type="text" id="auth" name="auth" value="pa" hidden />
+                                            </div>
+                                            <!-- Form Group (username)-->
                                             <div class="form-group">
                                                 <label class="text-gray-600 small" for="emailExample">Usuario</label>
                                                 <input class="form-control form-control-solid py-4" type="text" id="username" name="username" placeholder="" aria-label="Email Address" aria-describedby="username" />

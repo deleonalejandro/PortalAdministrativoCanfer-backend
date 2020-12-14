@@ -76,7 +76,7 @@ public class EmailReceiver {
 			Log.falla("No hay proveedor de correo para el protocolo: " + protocol, "ERROR_CONNECTION");
 
 		} catch (MessagingException ex) {
-			Log.falla("No se pudo conectar al servicio de mensajeria", "ERROR_CONNECTION");
+			Log.falla("No se pudo conectar al servicio de mensajería", "ERROR_CONNECTION");
 
 		} catch (NoResultException e) {
 			Log.general("La bandeja fue procesada: " + e.getMessage());

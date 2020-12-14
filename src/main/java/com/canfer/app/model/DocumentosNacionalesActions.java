@@ -247,7 +247,10 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			comprobanteFiscal.delete();
 			
+			Log.activity("Se ha eliminado el documento fiscal No. " + comprobanteFiscal.getIdNumSap() + "." , comprobanteFiscal.getEmpresaNombre(), "DELETE");
+			
 			superRepo.delete(comprobanteFiscal);
+			
 			
 			return true;
 		}
@@ -258,14 +261,26 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	@Override
 	public boolean deleteAll(List<Long> ids) {
-		//TODO usar el remove complemento
+
 		List<ComprobanteFiscal> comprobantes = new ArrayList<>();
 				
 		try {
 			
 			comprobantes = superRepo.findAllComprobanteById(ids);
 			
-			comprobantes.forEach(comprobante -> comprobante.delete());
+			comprobantes.forEach(comprobante -> {
+				
+				if(comprobante instanceof ComplementoPago) {
+					clearComplemento((ComplementoPago) comprobante);
+				}
+				
+				comprobante.delete();
+				
+				Log.activity("Se ha eliminado el documento fiscal No. " + comprobante.getIdNumSap() + "." , comprobante.getEmpresaNombre(), "DELETE");
+				
+				});
+			
+			superRepo.deleteAllComprobante(comprobantes);
 			
 			return true;
 			
@@ -323,7 +338,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				
 			} catch (Exception e) {
 				
-				Log.activity("Error al actualizar CFDI: " +documento.getUuid(), comprobante.get().getEmpresaNombre(), "ERROR");
+				Log.activity("Error al actualizar CFDI: " + documento.getUuid(), comprobante.get().getEmpresaNombre(), "ERROR_UPDATE");
 				return false;
 			}
 			
@@ -473,7 +488,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		if (exist(comprobante.getUuidTfd())) {
 			
 			Log.activity("Error al intentar guardar factura: El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
-					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorNombre(), comprobante.getReceptorNombre(), "ERROR_DB");
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorRfc(), comprobante.getReceptorRfc(), "ERROR_DB");
 			
 			return false;
 			
