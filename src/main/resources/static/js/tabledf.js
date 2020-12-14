@@ -204,7 +204,7 @@
 			        },
 			        "columns": [
 			          { data: "fecha",
-						width: '20%',
+						width: '15%',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 		                       return string[0]
@@ -213,7 +213,7 @@
 						{ data : "empresa" ,
 							width: '20%',},
 		                { data : "concepto",
-							width: '2%',
+							width: '10%',
 		                "render": function(data) {
 		                      if(data=="ERROR"){
 		                      
@@ -269,9 +269,9 @@
 					 },
 		                
 		                { data : "mensaje",
-							width: '38%',},
+							width: '40%',},
 		                { data: "fecha",
-							width: '20%',
+							width: '15%',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 								string = string[1].split('.')
@@ -279,7 +279,7 @@
 						     }
 						}
 		             ],
-					 "order": [[0, 4, 'desc']],
+					 "order": [[0, 4, 'desc','desc']],
 		 });
  			
 			// Filters
