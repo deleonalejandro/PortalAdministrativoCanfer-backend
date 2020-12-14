@@ -211,10 +211,10 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		
 	}
 	
-	public void accept() {
+	public void accept(String ruta) {
 		
 		// creamos los nombres y las rutas donde se guardaran los archivos
-		this.documento.accept(createName(), createRoute());
+		this.documento.accept(createName(), ruta);
 			
 	}
 	
@@ -660,6 +660,19 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 
 		}
 
+	}
+
+	public String createRoute() {
+		
+		LocalDateTime today = LocalDateTime.now();
+		
+		Path route = Paths.get(this.rfcEmpresa, 
+				String.valueOf(today.getYear()),
+				String.valueOf(today.getMonthValue()), 
+				this.rfcProveedor);
+		
+		return route.toString();
+		
 	}
 	
 

@@ -57,19 +57,6 @@ import javassist.NotFoundException;
 public abstract class Archivo {
 	
 	@Transient
-	@Autowired
-	protected ComprobanteFiscalRespository comprobanteFiscalRepository;
-	
-	@Transient
-	@Autowired
-	protected ProveedorRepository proveedorRepository;
-	
-	@Transient
-	@Autowired
-	protected ArchivoRepository archivoRepo;
-	
-	@Transient
-	@Autowired
 	protected StorageProperties storageProperties;
 	
 	@Id
@@ -103,6 +90,7 @@ public abstract class Archivo {
 		this.ruta = ruta; 
 		this.extension = extension; 
 		this.nombre = nombre; 
+		this.storageProperties = new StorageProperties(); 
 		
 	}
 	
@@ -262,9 +250,6 @@ public abstract class Archivo {
 	@Aspect
 	public static class ArchivoXML extends Archivo {
 		
-		@Transient
-		private EmpresaRepository empresaRepo;
-		
 		
 		public ArchivoXML() { 
 			
@@ -326,34 +311,7 @@ public abstract class Archivo {
 			}
 
 		}
-		
-		public Boolean businessValidation() throws NotFoundException, FileExistsException {
-			
-			Comprobante comprobante = this.toCfdi();
-			Empresa receptor = empresaRepo.findByRfc(comprobante.getReceptorRfc());
-			
-			//check if uuid is in DB
-			if (exist(comprobante.getUuidTfd())) {
-				
-				throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
-						+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
-				
-			}
-			
-			// check if the company or the provider exist on the data base.
-			if (receptor == null) {
-				
-				throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
-						+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
-			}
-			
-			// adding company stamp
-			
-			this.receptor = comprobante.getReceptorNombre();
-			
-			return true; 
-			
-		}
+	
 		
 
 		@Override
@@ -362,10 +320,7 @@ public abstract class Archivo {
 			move(String.valueOf(storageProperties.getErrorLocation()));
 			
 		}
-		
-		private boolean exist(String uuid) {
-			return (comprobanteFiscalRepository.findByUuid(uuid) != null);
-		}
+
 		
 		
 	}

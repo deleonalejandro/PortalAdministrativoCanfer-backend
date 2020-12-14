@@ -412,4 +412,9 @@ public class RepositoryService {
 
 	}
 
+	public ComprobanteFiscal findComprobanteByUUID(String uuid) {
+
+		return comprobanteRepo.findByUuid(uuid);
+
+	}
 }

@@ -2,22 +2,20 @@ package com.canfer.app.model;
 
 
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 import org.apache.commons.io.FileExistsException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
-import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -36,7 +34,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		Documento doc;
 		String ruta;
 		
-		if (fileXML.businessValidation()) {
+		if (businessValidation(fileXML)) {
 			
 			if (filePDF == null) {
 				
@@ -54,7 +52,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			cfd.validateInvoiceOne();
 			
 			// prepare the new route for the accepted file
-			ruta = comprobanteStorageService.init(cfd.createRoute());
+			ruta = comprobanteStorageService.init(Paths.get(cfd.createRoute()));
 			
 			// accept the CFD
 			cfd.accept(ruta);
@@ -447,8 +445,38 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	  }
 	
 
+	private Boolean businessValidation(ArchivoXML archivo) throws NotFoundException, FileExistsException {
+		
+		Comprobante comprobante = archivo.toCfdi();
+		Empresa receptor = superRepo.findEmpresaByRFC(comprobante.getReceptorRfc());
+		
+		//check if uuid is in DB
+		if (exist(comprobante.getUuidTfd())) {
+			
+			throw new FileExistsException("El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisor());
+			
+		}
+		
+		// check if the company or the provider exist on the data base.
+		if (receptor == null) {
+			
+			throw new NotFoundException("La empresa o el proveedor no estan registrados en el catalogo. "
+					+ "Nombre Empresa: " + comprobante.getReceptorNombre() + " Empresa RFC: " + comprobante.getReceptorRfc() + "."); 
+		}
+		
+		// adding company stamp
+		
+		archivo.setReceptor(comprobante.getReceptorNombre());
+		
+		return true; 
+		
+	}
 
 	
+	private boolean exist(String uuid) {
+		return (superRepo.findComprobanteByUUID(uuid) != null);
+	}
 
 	
 
