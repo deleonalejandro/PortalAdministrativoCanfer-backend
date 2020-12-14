@@ -2,6 +2,7 @@ package com.canfer.app.model;
 
 
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 
 import org.apache.commons.io.FileExistsException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,19 @@ import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
-import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito; 
+import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
+import com.canfer.app.service.ExcelService;
 
 import javassist.NotFoundException;
+import jxl.write.WriteException;
 
 @Service("DocumentosNacionalesActions")
 public class DocumentosNacionalesActions extends ModuleActions {
-
+	
+	@Autowired
+	private ExcelService xlsService; 
+	@Autowired
+	private Downloader downloader;
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
@@ -514,6 +522,25 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	private boolean exist(String uuid) {
 		return (superRepo.findComprobanteByUUID(uuid) != null);
+	}
+
+	public ResponseEntity<Resource> downloadXls(List<Long> ids) {
+		
+		List<ComprobanteFiscal> comprobantes = superRepo.findAllComprobanteById(ids); 
+		
+		try {
+			
+			Archivo file = xlsService.makeExcel(comprobantes);
+			file.loadAsResource();
+			return downloader.download(file,"d");
+			
+		} catch (WriteException | IOException e) {
+			
+			Log.activity("Error al intentar generar un reporte de Excel. ", comprobantes.get(0).getEmpresaNombre(), "ERROR_FILE"); 
+			return null;
+		}
+
+		
 	}
 
 	

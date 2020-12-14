@@ -1,6 +1,5 @@
 package com.canfer.app.model;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

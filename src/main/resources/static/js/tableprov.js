@@ -24,6 +24,11 @@
 		
 		$(document).ready(function () {
 				
+				//Checar si necesita el Toast de Upload
+				if($("#upload").text() == true) {
+		            $('#toastSAT').toast('show')
+		     	}
+
 				//Initial Values
 				$('#antiguedad').val(moment().subtract(3, "month").startOf("month"))
 				

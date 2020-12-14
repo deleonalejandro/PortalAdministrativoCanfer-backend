@@ -41,6 +41,7 @@ public class DocumentosNacionalesFunctionalityController {
 	@PostMapping("/uploadFactura")
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
 		
+		boolean value = false; 
 		// initializing directories
 		storageService.init();
 		
@@ -57,6 +58,7 @@ public class DocumentosNacionalesFunctionalityController {
 		try {
 			
 			actioner.upload(fileXML, filePDF);
+			value = true; 
 			
 		} catch (NotFoundException e) {
 			
@@ -65,7 +67,7 @@ public class DocumentosNacionalesFunctionalityController {
 		}
 		
 		
-		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc+"&upload="+value;
 		
 	}
 	
@@ -92,9 +94,9 @@ public class DocumentosNacionalesFunctionalityController {
 	}
 	
 	@GetMapping("/csv/{repo}")
-	public void download(HttpServletResponse response, @RequestParam List<Long> ids) {
+	public void download(@RequestParam List<Long> ids) {
 		
-		actioner.downloadCsv(ids, response);
+		actioner.downloadXls(ids);
 		
 	}
 	

@@ -10,7 +10,6 @@ import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -117,6 +116,8 @@ public class Downloader {
 
 			if (file.getExtension().equalsIgnoreCase("xml")) {
 				contentType = "text/xml";
+			} else if (file.getExtension().equalsIgnoreCase("xls")) {
+				contentType = "application/xls";
 			}
 
 			Resource resource = file.loadAsResource();

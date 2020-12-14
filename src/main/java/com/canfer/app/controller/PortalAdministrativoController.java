@@ -38,7 +38,7 @@ public class PortalAdministrativoController {
 	
 
 	@GetMapping(value = "/documentosFiscalesClient")
-	public String getModuloDocumentosFiscales(@RequestParam String rfc, Model model, RedirectAttributes ra) {
+	public String getModuloDocumentosFiscales(@RequestParam String rfc, @RequestParam String upload, Model model, RedirectAttributes ra) {
 		
 		// getting the authenticated user
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
@@ -54,6 +54,7 @@ public class PortalAdministrativoController {
 		// check if the user is an admin
 		if (loggedPrincipal.isAdmin()) {
 			model.addAttribute("selectedCompany", rfc);
+			model.addAttribute("upload", upload);
 			model.addAttribute("companyProfile", company.getProfilePictureName());
 			return "documentos-fiscales";
 		}
