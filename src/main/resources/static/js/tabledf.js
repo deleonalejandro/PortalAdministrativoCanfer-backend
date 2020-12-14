@@ -203,6 +203,12 @@
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			        },
 			        "columns": [
+					    { "width": "20%" },
+					    null,
+					    null,
+					    null,
+					    { "width": "20%" },
+					  
 			          { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
@@ -265,11 +271,12 @@
 		                { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
-		                       return string[1]
+								string = string[1].split('.')
+		                       return string[1] 
 						     }
 						}
 		             ],
-					 "order": [[0, 5, 'desc']],
+					 "order": [[0, 5, 'desc', 'desc']],
 		 });
  			
 			// Filters
