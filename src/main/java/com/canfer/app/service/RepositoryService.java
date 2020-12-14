@@ -417,4 +417,14 @@ public class RepositoryService {
 		return comprobanteRepo.findByUuid(uuid);
 
 	}
+
+	public Optional<Proveedor> findProveedorByEmpresaAndClaveProv(Empresa empresa, String clave) {
+		
+		return proveedorRepo.findByEmpresasAndClaveProv(empresa, clave);
+	}
+
+	public List<ComprobanteFiscal> findAllComprobanteByRfcEmpresaAndProveedor(String rfc, Proveedor proveedor) {
+
+		return comprobanteRepo.findAllByRfcEmpresaAndProveedor(rfc, proveedor);
+	}
 }

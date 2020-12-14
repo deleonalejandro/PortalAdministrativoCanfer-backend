@@ -609,7 +609,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('#comprimir').attr("href","/documentosFiscalesClient/zip/ComprobanteFiscal?ids="+ids)
+					$('#comprimir').attr("href","/documentosFiscalesClient/download/zip/ComprobanteFiscal?ids="+ids)
 					}
 				});
 				
