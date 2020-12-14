@@ -46,9 +46,6 @@ import com.opencsv.bean.CsvBindByName;
 @DiscriminatorColumn(name = "Tipo_Comprobante")
 public abstract class ComprobanteFiscal implements IModuleEntity {
 	
-	@Transient
-	@Autowired
-	private ComprobanteStorageService comprobanteStorageService;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
