@@ -672,7 +672,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 				this.rfcProveedor);
 		
 
-		return comprobanteStorageService.init(route);
+		return route.toString();
 		
 	}
 	
