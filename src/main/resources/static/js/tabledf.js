@@ -203,12 +203,6 @@
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			        },
 			        "columns": [
-					    { "width": "20%" },
-					    null,
-					    null,
-					    null,
-					    { "width": "20%" },
-					  
 			          { data: "fecha",
 		                    "render": function(data) {
 		                       var string = data.split(' ')
