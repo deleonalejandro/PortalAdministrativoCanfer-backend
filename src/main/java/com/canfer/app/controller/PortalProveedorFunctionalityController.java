@@ -1,11 +1,8 @@
 package com.canfer.app.controller;
 
-import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -20,11 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.model.Log;
 import com.canfer.app.model.PortalProveedorActions;
-import com.canfer.app.service.RepositoryService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.storage.ComprobanteStorageService;
-import com.opencsv.exceptions.CsvException;
 
 import javassist.NotFoundException;
 
@@ -38,9 +33,7 @@ public class PortalProveedorFunctionalityController {
 	
 	@Autowired
 	private ComprobanteStorageService storageService; 
-	
-	@Autowired
-	private RepositoryService repoService; 
+
 	
 	public PortalProveedorFunctionalityController() {
 		// default controller

@@ -75,7 +75,7 @@ public class DocumentosNacionalesFunctionalityController {
 	}
 	
 	
-	@GetMapping("/download/{method}/{repo}/")
+	@GetMapping("/download/{method}/{repo}")
 	public ResponseEntity<byte[]> download(@RequestParam List<Long> ids, @PathVariable String method, @PathVariable String repo) {
 		
 		return actioner.download(method, repo, ids);
@@ -89,7 +89,7 @@ public class DocumentosNacionalesFunctionalityController {
 		
 	}
 	
-	@GetMapping("/csv/{repo}/")
+	@GetMapping("/csv/{repo}")
 	public void download(HttpServletResponse response, @RequestParam List<Long> ids) {
 		
 		actioner.downloadCsv(ids, response);
