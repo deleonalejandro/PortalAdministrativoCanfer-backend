@@ -161,6 +161,11 @@ public class RepositoryService {
 		});
 
 	}
+	
+	public void saveAllFactura(List<Factura> list) {
+		
+		facturaRepo.saveAll(list);
+	}
 
 	// DELETE METHODS
 

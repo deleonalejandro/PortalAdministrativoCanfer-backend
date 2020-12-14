@@ -1,6 +1,5 @@
 package com.canfer.app.model;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.service.RepositoryService;
-import com.opencsv.exceptions.CsvException;
 
 import javassist.NotFoundException;
 
@@ -38,12 +36,11 @@ public abstract class ModuleActions {
 	
 	protected abstract ResponseEntity<byte[]> download(String method, String repo, List<Long> ids);
 	
-	protected void downloadCsv(List<Long> ids, HttpServletResponse response) {
+	public void downloadCsv(List<Long> ids, HttpServletResponse response) {
 
-		List<ComprobanteFiscal> comprobantes = comprobanteRepo.findAllById(ids);
+		List<ComprobanteFiscal> comprobantes = superRepo.findAllComprobanteById(ids);
 		
 		dowloadManager.downloadComprobanteFiscalCsv(comprobantes, response);
-		
 		
 	}
 

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,7 @@ import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
-import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
-import com.canfer.app.service.RepositoryService;
+import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito; 
 
 import javassist.NotFoundException;
 
@@ -359,19 +357,19 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		tipoComprobante = model.getTipoDeComprobante();
 		
 		receptor = superRepo.findEmpresaByRFC(model.getReceptorRfc());
-		proveedores = superRepo.findbye proveedorRepo.find(receptor, model.getEmisorRfc());
+		proveedores = superRepo.findAllProveedorByEmpresaAndRFC(receptor, model.getEmisorRfc());
 		
 		// get the proper provider
 		if (proveedores.size() > 1 || proveedores.isEmpty()) {
 			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
 			// instead.
-			emisor = proveedorRepo.findByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+			emisor = superRepo.findProveedorByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
 		} else {
 			emisor = proveedores.get(0);
 		}
 
 		// use the proper sequence for the company and module
-		consecutivo = consecutivoRepo.findByEmpresaAndModulo(receptor, "Documentos Fiscales");
+		consecutivo = superRepo.findConsecutivoByEmpresaAndModulo(receptor, "Documentos Fiscales");
 		
 		if (tipoComprobante.equalsIgnoreCase("I")) {
 			
@@ -395,7 +393,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		comprobanteFiscal.setProveedor(emisor);
 		comprobanteFiscal.setIdNumSap(consecutivo.getNext());
 		
-		consecutivoRepo.save(consecutivo);
+		superRepo.save(consecutivo);
 		
 		return comprobanteFiscal;
 		
@@ -410,7 +408,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			// the related document is identified by a string variable containing the UUID for a particular invoice.
 			for (String docRelacionado : complementoPago.getUuidRelacionadosList()) {
 				
-				factura = facturaRepo.findByUuid(docRelacionado);
+				factura = superRepo.findFacturaByUUID(docRelacionado);
 				
 				if (factura != null) {
 					
@@ -431,13 +429,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	private boolean clearComplemento(ComplementoPago complementoPago) {
 	    
-	    List<Factura> facturas = facturaRepo.findAllByComplemento(complementoPago);
+	    List<Factura> facturas = superRepo.findAllFacturaByComplemento(complementoPago);
 
 	    if (!facturas.isEmpty()) {
 	    	
 	      facturas.forEach(factura -> factura.removeComplemento());
 	      
-	      facturaRepo.saveAll(facturas);
+	      superRepo.saveAllFactura(facturas);
 	    }
 	    
 	    return true;
