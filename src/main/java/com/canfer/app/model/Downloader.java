@@ -117,6 +117,8 @@ public class Downloader {
 
 			if (file.getExtension().equalsIgnoreCase("xml")) {
 				contentType = "text/xml";
+			} else if (file.getExtension().equalsIgnoreCase("xls")) {
+				contentType = "application/xls";
 			}
 
 			Resource resource = file.loadAsResource();

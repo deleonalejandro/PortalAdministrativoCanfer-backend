@@ -90,9 +90,9 @@ public class DocumentosNacionalesFunctionalityController {
 	}
 	
 	@GetMapping("/csv/{repo}")
-	public void download(HttpServletResponse response, @RequestParam List<Long> ids) {
+	public void download(@RequestParam List<Long> ids) {
 		
-		actioner.downloadCsv(ids, response);
+		actioner.downloadXls(ids);
 		
 	}
 	

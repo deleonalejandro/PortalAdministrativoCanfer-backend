@@ -52,24 +52,11 @@ public class RepositoryService {
 
 	public ComprobanteFiscal save(ComprobanteFiscal comprobante) {
 
-		save(comprobante.getDocumento());
 		return comprobanteRepo.save(comprobante);
 
 	}
 
 	public Documento save(Documento documento) {
-
-		if (documento.hasPDF()) {
-
-			save(documento.getArchivoPDF());
-
-		}
-
-		if (documento.hasXML()) {
-
-			save(documento.getArchivoXML());
-
-		}
 
 		return documentoRepo.save(documento);
 
@@ -101,7 +88,6 @@ public class RepositoryService {
 
 	public Pago save(Pago pago) {
 
-		save(pago.getDocumento());
 		return pagoRepo.save(pago);
 
 	}
@@ -116,17 +102,13 @@ public class RepositoryService {
 
 	public void saveAllComprobante(List<ComprobanteFiscal> list) {
 
-		list.forEach((comprobante) -> {
-			save(comprobante);
-		});
+		comprobanteRepo.saveAll(list);
 
 	}
 
 	public void saveAllDocumento(List<Documento> list) {
 
-		list.forEach((documento) -> {
-			save(documento);
-		});
+		documentoRepo.saveAll(list);
 
 	}
 
@@ -156,9 +138,7 @@ public class RepositoryService {
 
 	public void saveAllPago(List<Pago> list) {
 
-		list.forEach((pago) -> {
-			save(pago);
-		});
+		pagoRepo.saveAll(list);
 
 	}
 	
