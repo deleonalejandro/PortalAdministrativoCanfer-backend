@@ -65,11 +65,6 @@ public class PortalProveedorFunctionalityController {
 			
 			actioner.upload(fileXML, filePDF);
 			
-		} catch (FileExistsException e) {
-			
-			// handle exception for a duplicated invoice
-			Log.activity("Error al intentar guardar factura: "+fileXML.toCfdi().getUuidTfd()+ " el archivo ya existe.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-						
 		} catch (NotFoundException e) {
 			
 			// La empresa o el proveedor no se encuentran en el catalogo
