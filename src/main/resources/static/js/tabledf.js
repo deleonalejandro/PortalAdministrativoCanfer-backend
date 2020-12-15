@@ -45,11 +45,6 @@
 		
 		$(document).ready(function () {
 			
-			//Checar si necesita el Toast de Upload
-			if($("#upload").text() == true) {
-		            $('#toastSAT').toast('show')
-		     }
-		
 			//Crear unica variable de http request
 			var xhttp = new XMLHttpRequest();
 			
@@ -723,6 +718,12 @@
 				
 			});
 			 
+			
+			//Checar si necesita el Toast de Upload
+			if($("#upload").text() == true) {
+		            $('#toastSAT').toast('show')
+		     }
+		
 			
 				
 		});
