@@ -30,7 +30,8 @@
 	href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <link href="css/stylesdf.css" rel="stylesheet" />
 </head>
@@ -41,20 +42,21 @@
 		id="sidenavAccordion">
 
 		<!-- LOGO DE LA EMPRESA -->
-		<a class="navbar-brand" href="#"> 
-			<!-- PRINT THE CORRESPONDING LOGO --> 
-			<img th:src="@{'company/profile/' + ${companyProfile}}" class="pl-3 img-fluid mr-0" alt="logo" style="height: 38px" /> 
+		<a class="navbar-brand" href="#"> <!-- PRINT THE CORRESPONDING LOGO -->
+			<img th:src="@{'company/profile/' + ${companyProfile}}"
+			class="pl-3 img-fluid mr-0" alt="logo" style="height: 38px" />
 		</a>
 
 
 		<!-- ICONOS DE TOP NAV BAR -->
 		<ul class="navbar-nav align-items-center ml-auto">
-			
-			<li class="nav-item dropdown no-caret mr-3 d-md-inline">
-            	<a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
-            </li>
-		
-		
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark" href="/dashboard"
+				id="dashboardButton" role="button" aria-haspopup="true"
+				aria-expanded="false"><i data-feather=layout></i></a></li>
+
+
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownModulo" href="javascript:void(0);" role="button"
@@ -125,9 +127,8 @@
 							Documentos Extranjeros
 						</div>
 					</a>
-				</div>
-			</li>
-			
+				</div></li>
+
 
 
 			<!-- CONFIGURACIONES -->
@@ -156,8 +157,8 @@
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownUserImage" href="javascript:void(0);"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false" ><img class="img-fluid"
-					th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"/></a>
+				aria-expanded="false"><img class="img-fluid"
+					th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" /></a>
 				<div
 					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
 					aria-labelledby="navbarDropdownUserImage">
@@ -165,17 +166,21 @@
 						<img class="dropdown-user-img"
 							th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" />
 						<div class="dropdown-user-details">
-							<div class="dropdown-user-details-name"><span sec:authentication="name"></div>
-							<div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
+							<div class="dropdown-user-details-name">
+								<span sec:authentication="name">
+							</div>
+							<div class="dropdown-user-details-email">
+								<div th:text="${#authentication.principal.correo}"></div>
+							</div>
 						</div>
 					</h6>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="/logout?auth=pa">
-                        <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                        Cerrar Sesión
-                    </a>
-				</div>
-			</li>
+						<div class="dropdown-item-icon">
+							<i data-feather="log-out"></i>
+						</div> Cerrar Sesión
+					</a>
+				</div></li>
 		</ul>
 	</nav>
 	<div class="overflow:hidden">
@@ -206,23 +211,22 @@
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column" style="position: fixed">
 							<a class="nav-link active" id="pestañaInicio" href="#!">Inicio</a>
-							<a class="nav-link" href="#!" id="pestañaFacturas">Facturas</a> 
-							<a class="nav-link" id="pestañaNotas" href="#!">Notas de Crédito</a> 
-							<a class="nav-link" id="pestañaCompl" href="#!">Complementos de Pago</a> 
-							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de Pago</a>
-							<a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
-							
-							<img src="assets/img/logosEmpresas/canfer.gif"
-								class=" pl-5 pb-5"
+							<a class="nav-link" href="#!" id="pestañaFacturas">Facturas</a> <a
+								class="nav-link" id="pestañaNotas" href="#!">Notas de
+								Crédito</a> <a class="nav-link" id="pestañaCompl" href="#!">Complementos
+								de Pago</a> <a class="nav-link" id="pestañaAvisos" href="#!">Avisos
+								de Pago</a> <a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
+
+							<img src="assets/img/logosEmpresas/canfer.gif" class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
-							
+
 						</nav>
 					</div>
 					<div class="col-10">
 
 						<!-- Main Content Tables  facturas-->
-						<div class="card mb-0"  id="divFacturas">
+						<div class="card mb-0" id="divFacturas">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
 							<div id="upload" th:text="${upload}" hidden></div>
 							<div class="card-body">
@@ -234,8 +238,10 @@
 											<button type="button" id="btn-add"
 												class="btn btn-outline-primary mr-2" data-toggle="modal"
 												data-target="#nuevoModal">Nuevo</button>
-											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-											    <i class="" style="color:white" data-feather="search"></i>
+											<button class="btn btn-primary" type="button"
+												data-toggle="collapse" data-target="#collapseExample"
+												aria-expanded="false" aria-controls="collapseExample">
+												<i class="" style="color: white" data-feather="search"></i>
 											</button>
 											<button id="btn-show-all-children"
 												class="btn btn-outline-primary p-0 ml-2" type="button">
@@ -245,10 +251,9 @@
 												class="btn btn-outline-primary p-0" type="button">
 												<i data-feather="chevrons-up" style="width: 10px"></i>
 											</button>
-											<label class="form-check-label ml-2"
-												for="exampleCheck1">Seleccionar todo</label>
-												 <input type="checkbox" class="form-check-input ml-2 mt-2 pt-1"
-												id="selectAll"> 
+											<label class="form-check-label ml-2" for="exampleCheck1">Seleccionar
+												todo</label> <input type="checkbox"
+												class="form-check-input ml-2 mt-2 pt-1" id="selectAll">
 										</div>
 									</div>
 
@@ -260,12 +265,13 @@
 											aria-labelledby="myLargeModalLabel" aria-hidden="true">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
-													 <div class="modal-header">
-												        <h5 class="modal-title" > Nuevo Documento Fiscal </h5>
-												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												          <span aria-hidden="true">&times;</span>
-												        </button>
-												      </div>
+													<div class="modal-header">
+														<h5 class="modal-title">Nuevo Documento Fiscal</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
 													<div class="modal-body">
 														<div class="form-group">
 															<div>
@@ -309,163 +315,199 @@
 											</div>
 										</div>
 									</div>
-									
+
 									<!-- FILTROS DE BUSQUEDA -->
-									
+
 									<div class="collapse" id="collapseExample">
 										<div class="card shadow-none mb-3">
-										  <div class="card-header">
-										  	<i class="mr-2 text-primary" data-feather="search"></i>
-										    Filtros de Búsqueda
-										    
-										  </div>
-										  <div class="card-body">
-   
-											<div class="row pb-1">
-												<div class="col">
-													<label class="form-check-label" for="reportrangeCarga">Fecha de Carga:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroProveedor">Proveedor:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroImporteDesde">Importe:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroImporteHasta">Importe:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
-												</div>
-												<div class="col">
-													
-												</div>
-												
+											<div class="card-header">
+												<i class="mr-2 text-primary" data-feather="search"></i>
+												Filtros de Búsqueda
+
 											</div>
-											<div class="row pb-1">
-												<div class="col">
-												  	<!-- Date Range Picker CARGA-->
-													<button class="btn btn-light btn-sm line-height-normal p-2 " id="reportrangeCarga">
-													    <i class="mr-2 text-primary" data-feather="calendar"></i>
-													    <span></span>
-													    <div id="uploadBefore" hidden></div>
-													    <div id="uploadAfter" hidden></div>
-													    <i class="ml-1" data-feather="chevron-down"></i>
-													</button>
-												</div>
-												<div class="col">
-												  	<!-- INPUT PROVEEDOR -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroProveedor" type="text" placeholder="Nombre o RFC">
-												</div>
-												<div class="col">
-												  	<!-- INPUT IMPORTE DESDE -->
-												  	<div class="input-group input-group-joined input-group-solid">
-														<div class="input-group-append">
-													        <span class="input-group-text pl-3" >
-													            <i class="text-primary" data-feather="dollar-sign"></i>
-													        </span>
-													    </div>
-														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteDesde" type="text" placeholder="Desde">
-												  	</div>
-												</div>
-												<div class="col">
-												  	<!-- INPUT IMPORTE HASTA -->
-													<div class="input-group input-group-joined input-group-solid">
-														<div class="input-group-append">
-													        <span class="input-group-text pl-3" >
-													            <i class="text-primary" data-feather="dollar-sign"></i>
-													        </span>
-													    </div>
-														<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroImporteHasta" type="text" placeholder="Hasta">
-												  	</div>
-												</div> 
-												<div class="col">
-												  	<!-- INPUT IMPORTE ESTATUS -->
-													<select class="form-control form-control-solid"  style="height: 30px; font-size: 14px" id="inputFiltroEstatus">
-											            <option value="">--Seleccionar--</option>
-											            <option>EN PROCESO</option>
-											            <option>PAGADO</option>
-											            <option>CANCELADO</option>
-											        </select>
-												</div>
-												<div class="col">
-													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
-													    <input class="custom-control-input" id="checkRS" type="checkbox">
-													    <label class="custom-control-label" for="checkRS">RS</label>
+											<div class="card-body">
+
+												<div class="row pb-1">
+													<div class="col">
+														<label class="form-check-label" for="reportrangeCarga">Fecha
+															de Carga:</label>
 													</div>
-													<div class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
-													    <input class="custom-control-input" id="checkGenerico"  type="checkbox">
-													    <label class="custom-control-label" for="checkGenerico">Genérico</label>
+													<div class="col">
+														<label class="form-check-label" for="inputFiltroProveedor">Proveedor:</label>
 													</div>
-													<div class="d-inline custom-control custom-checkbox custom-control-solid">
-													    <input class="custom-control-input" id="checkComplemento" name="checkComplemento" type="checkbox">
-													    <label class="custom-control-label" for="checkComplemento">Complemento</label>
+													<div class="col">
+														<label class="form-check-label"
+															for="inputFiltroImporteDesde">Importe:</label>
+													</div>
+													<div class="col">
+														<label class="form-check-label"
+															for="inputFiltroImporteHasta">Importe:</label>
+													</div>
+													<div class="col">
+														<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
+													</div>
+													<div class="col"></div>
+
+												</div>
+												<div class="row pb-1">
+													<div class="col">
+														<!-- Date Range Picker CARGA-->
+														<button
+															class="btn btn-light btn-sm line-height-normal p-2 "
+															id="reportrangeCarga">
+															<i class="mr-2 text-primary" data-feather="calendar"></i>
+															<span></span>
+															<div id="uploadBefore" hidden></div>
+															<div id="uploadAfter" hidden></div>
+															<i class="ml-1" data-feather="chevron-down"></i>
+														</button>
+													</div>
+													<div class="col">
+														<!-- INPUT PROVEEDOR -->
+														<input class="form-control form-control-solid"
+															style="height: 30px; font-size: 14px"
+															id="inputFiltroProveedor" type="text"
+															placeholder="Nombre o RFC">
+													</div>
+													<div class="col">
+														<!-- INPUT IMPORTE DESDE -->
+														<div
+															class="input-group input-group-joined input-group-solid">
+															<div class="input-group-append">
+																<span class="input-group-text pl-3"> <i
+																	class="text-primary" data-feather="dollar-sign"></i>
+																</span>
+															</div>
+															<input class="form-control form-control-solid"
+																style="height: 30px; font-size: 14px"
+																id="inputFiltroImporteDesde" type="text"
+																placeholder="Desde">
+														</div>
+													</div>
+													<div class="col">
+														<!-- INPUT IMPORTE HASTA -->
+														<div
+															class="input-group input-group-joined input-group-solid">
+															<div class="input-group-append">
+																<span class="input-group-text pl-3"> <i
+																	class="text-primary" data-feather="dollar-sign"></i>
+																</span>
+															</div>
+															<input class="form-control form-control-solid"
+																style="height: 30px; font-size: 14px"
+																id="inputFiltroImporteHasta" type="text"
+																placeholder="Hasta">
+														</div>
+													</div>
+													<div class="col">
+														<!-- INPUT IMPORTE ESTATUS -->
+														<select class="form-control form-control-solid"
+															style="height: 30px; font-size: 14px"
+															id="inputFiltroEstatus">
+															<option value="">--Seleccionar--</option>
+															<option>EN PROCESO</option>
+															<option>PAGADO</option>
+															<option>CANCELADO</option>
+														</select>
+													</div>
+													<div class="col">
+														<div
+															class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+															<input class="custom-control-input" id="checkRS"
+																type="checkbox"> <label
+																class="custom-control-label" for="checkRS">RS</label>
+														</div>
+														<div
+															class="d-inline custom-control custom-checkbox custom-control-solid pr-2">
+															<input class="custom-control-input" id="checkGenerico"
+																type="checkbox"> <label
+																class="custom-control-label" for="checkGenerico">Genérico</label>
+														</div>
+														<div
+															class="d-inline custom-control custom-checkbox custom-control-solid">
+															<input class="custom-control-input" id="checkComplemento"
+																name="checkComplemento" type="checkbox"> <label
+																class="custom-control-label" for="checkComplemento">Complemento</label>
+														</div>
 													</div>
 												</div>
+												<div class="row pb-1">
+													<div class="col">
+														<label class="form-check-label" for="reportrangeEmision">Fecha
+															de Emisión:</label>
+													</div>
+													<div class="col">
+														<label class="form-check-label" for="inputFiltroUUID">UUID:</label>
+													</div>
+													<div class="col">
+														<label class="form-check-label"
+															for="inputFiltroFolioInicial">Folio:</label>
+													</div>
+													<div class="col">
+														<label class="form-check-label"
+															for="inputFiltroFolioFinal">Folio:</label>
+													</div>
+													<div class="col">
+														<label class="form-check-label"
+															for="inputFiltroFolioFinal">ID SAP:</label>
+													</div>
+													<div class="col"></div>
+
+												</div>
+												<div class="row pb-1">
+													<div class="col">
+														<!-- Date Range Picker EMISION-->
+														<button
+															class="btn btn-light btn-sm line-height-normal p-2"
+															id="reportrangeEmision">
+															<i class="mr-2 text-primary" data-feather="calendar"></i>
+															<span></span>
+															<div id="registeredBefore" hidden></div>
+															<div id="registeredAfter" hidden></div>
+															<i class="ml-1" data-feather="chevron-down"></i>
+														</button>
+													</div>
+													<div class="col">
+														<!-- INPUT UUID -->
+														<input class="form-control form-control-solid"
+															style="height: 30px; font-size: 14px"
+															id="inputFiltroUUID" type="text" placeholder="UUID">
+													</div>
+													<div class="col">
+														<!-- INPUT FOLIO INICIAL -->
+														<input class="form-control form-control-solid"
+															style="height: 30px; font-size: 14px"
+															id="inputFiltroFolioInicial" type="text"
+															placeholder="Inicial">
+													</div>
+													<div class="col">
+														<!-- INPUT FOLIO FINAL -->
+														<input class="form-control form-control-solid"
+															style="height: 30px; font-size: 14px"
+															id="inputFiltroFolioFinal" type="text"
+															placeholder="Final">
+													</div>
+													<div class="col">
+														<!-- INPUT ID SAP -->
+														<input class="form-control form-control-solid"
+															style="height: 30px; font-size: 14px"
+															id="inputFiltroIdSap" type="text" placeholder="ID">
+													</div>
+													<div class="col"></div>
+
+												</div>
+												<div class="row justify-content-end">
+													<div class="col">
+														<button class="btn btn-blue float-right" type="button"
+															id="reloadTableBtn">
+															Buscar<i class="ml-2" data-feather="search"></i>
+														</button>
+														<button class="btn btn-blue float-right mr-2"
+															type="button" id="clearFilters">Limpiar</button>
+													</div>
+												</div>
+
 											</div>
-											<div class="row pb-1">
-												<div class="col">
-													<label class="form-check-label" for="reportrangeEmision">Fecha de Emisión:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroUUID">UUID:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroFolioInicial">Folio:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroFolioFinal">Folio:</label>
-												</div>
-												<div class="col">
-													<label class="form-check-label" for="inputFiltroFolioFinal">ID SAP:</label>
-												</div>
-												<div class="col">
-													
-												</div>
-												
-											</div>
-											<div class="row pb-1">
-												<div class="col">
-												  	<!-- Date Range Picker EMISION-->
-													<button class="btn btn-light btn-sm line-height-normal p-2" id="reportrangeEmision">
-													    <i class="mr-2 text-primary" data-feather="calendar"></i>
-													    <span></span>
-													    <div id="registeredBefore" hidden></div>
-													    <div id="registeredAfter" hidden></div>
-													    <i class="ml-1" data-feather="chevron-down"></i>
-													</button>
-												</div>
-												<div class="col">
-												  	<!-- INPUT UUID -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroUUID" type="text" placeholder="UUID">
-												</div>
-												<div class="col">
-												  	<!-- INPUT FOLIO INICIAL -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioInicial" type="text" placeholder="Inicial">
-												</div>
-												<div class="col">
-												  	<!-- INPUT FOLIO FINAL -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroFolioFinal" type="text" placeholder="Final">
-												</div>
-												<div class="col">
-												  	<!-- INPUT ID SAP -->
-													<input class="form-control form-control-solid" style="height: 30px; font-size: 14px" id="inputFiltroIdSap" type="text" placeholder="ID">
-												</div>
-												<div class="col">
-													
-												</div>
-												
-											</div>
-											<div class="row justify-content-end">
-												<div class="col">
-													<button class="btn btn-blue float-right" type="button" id="reloadTableBtn">
-												     Buscar<i class="ml-2" data-feather="search"></i>
-													</button>
-													<button class="btn btn-blue float-right mr-2" type="button" id="clearFilters"> Limpiar </button>
-												</div>
-											</div>
-											
-										</div>
 										</div>
 									</div>
 
@@ -532,7 +574,7 @@
 											<a class="dropdown-item" id="comprimir" href="#">Comprimir</a>
 											<a class="dropdown-item" id="csv" href="#">CSV</a> <a
 												class="dropdown-item" id="pdf" href="#">PDF</a> <a
-												class="dropdown-item" id="xml" href="#">XML</a>
+												class="dropdown-item" id="xls" href="#">EXCEL</a> 
 										</div>
 									</div>
 								</div>
@@ -540,18 +582,21 @@
 
 
 							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
-							<form class="detailsForm" method="post" enctype="multipart/form-data">
+							<form class="detailsForm" method="post"
+								enctype="multipart/form-data">
 								<div class="modal fade" id="detailsModal" tabindex="-1"
 									role="dialog" aria-labelledby="myLargeModalLabel"
 									aria-hidden="true">
-									<div class="modal-dialog modal-dialog-scrollable" role="document">
+									<div class="modal-dialog modal-dialog-scrollable"
+										role="document">
 										<div class="modal-content">
-											 <div class="modal-header">
-												        <h5 class="modal-title" id="headerValue"> </h5>
-												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												          <span aria-hidden="true">&times;</span>
-												        </button>
-												      </div>
+											<div class="modal-header">
+												<h5 class="modal-title" id="headerValue"></h5>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
 											<div class="modal-body">
 												<div class="form-group">
 
@@ -572,7 +617,7 @@
 															</div>
 															<div class="form-check form-check-inline">
 																<input class="form-check-input" type="checkbox"
-																	 id="bitRSusuario" value="" /> <label
+																	id="bitRSusuario" value="" /> <label
 																	class="form-check-label font-weight-bold"
 																	for="bitRSusuario"> RS Usuario</label>
 															</div>
@@ -593,7 +638,8 @@
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
 																class="form-control form-control-sm bg-white"
-																id="bitRSusuarioText" hidden name="bitRSusuario" value="" />
+																id="bitRSusuarioText" hidden name="bitRSusuario"
+																value="" />
 														</div>
 													</div>
 													<div class="row">
@@ -605,8 +651,8 @@
 														</div>
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
-																class="form-control form-control-sm bg-white" name="uuid" id="uuid"
-																value="" />
+																class="form-control form-control-sm bg-white"
+																name="uuid" id="uuid" value="" />
 														</div>
 													</div>
 													<div class="row pt-1">
@@ -723,17 +769,19 @@
 															<input type="text" style="height: 20px" readonly
 																class="form-control form-control-sm bg-white"
 																id="proveedor" value="" />
-																<div class="input-group-append">
-																	<span class="input-group-text" style="height: 20px">
-																		<a class=" refreshProv pt-2" type="button"><i
-																			data-feather="edit" style="color:blue"></i></a>
-																	</span>
-																</div>
+															<div class="input-group-append">
+																<span class="input-group-text" style="height: 20px">
+																	<a class=" refreshProv pt-2" type="button"><i
+																		data-feather="edit" style="color: blue"></i></a>
+																</span>
+															</div>
 														</div>
 														<div class="col-3"></div>
-														<div class="col-9 input-group align-self-end" >
-															<select class="form-control form-control-sm bg-white" hidden="true" name="idProveedor" style="height: 30px; font-size: 14px" id="newSuppliers">
-													        </select>
+														<div class="col-9 input-group align-self-end">
+															<select class="form-control form-control-sm bg-white"
+																hidden="true" name="idProveedor"
+																style="height: 30px; font-size: 14px" id="newSuppliers">
+															</select>
 														</div>
 													</div>
 													<div class="row pt-1">
@@ -796,13 +844,15 @@
 															</label>
 														</div>
 														<div class="col-9">
-														  	<!-- INPUT IMPORTE ESTATUS -->
-															<select class="form-control form-control-sm bg-white"  name="estatus" style="height: 30px; font-size: 14px" id="estatusPago">
-													            <option value="">--Selecciona--</option>
-													            <option value="PAGADO">PAGADO</option>
-													            <option value="CANCELADO">CANCELADO</option>
-													            <option value="EN PROCESO">EN PROCESO</option>
-													        </select>
+															<!-- INPUT IMPORTE ESTATUS -->
+															<select class="form-control form-control-sm bg-white"
+																name="estatus" style="height: 30px; font-size: 14px"
+																id="estatusPago">
+																<option value="">--Selecciona--</option>
+																<option value="PAGADO">PAGADO</option>
+																<option value="CANCELADO">CANCELADO</option>
+																<option value="EN PROCESO">EN PROCESO</option>
+															</select>
 														</div>
 													</div>
 													<div class="row pt-1">
@@ -820,7 +870,7 @@
 																<div class="input-group-append">
 																	<span class="input-group-text" style="height: 20px">
 																		<a class="refreshBtn pt-2" type="button"><i
-																			data-feather="refresh-cw" style="color:blue"></i></a>
+																			data-feather="refresh-cw" style="color: blue"></i></a>
 																	</span>
 																</div>
 															</div>
@@ -869,7 +919,8 @@
 														<div class="col-9">
 															<input type="text" style="height: 20px" readonly
 																class="form-control form-control-sm bg-white"
-																id="idComprobanteFiscal" name="idComprobanteFiscal"  value="" />
+																id="idComprobanteFiscal" name="idComprobanteFiscal"
+																value="" />
 														</div>
 													</div>
 													<div class="row mt-0 pt-0">
@@ -909,36 +960,44 @@
 														</div>
 													</div>
 													<div>Adjuntar un PDF:</div>
-																		<div class="input-group mb-2">
-																			<div class="input-group-prepend">
-																				<div class="input-group-text">
-																					<i class="far fa-file-pdf float-left fa-lg"
-																						style="color: red"></i>
-																				</div>
-																			</div>
-																			<input class="form-control" id="pdf"
-																				type="file" accept=".pdf" name="pdf" />
-																		</div>
+													<div class="input-group mb-2">
+														<div class="input-group-prepend">
+															<div class="input-group-text">
+																<i class="far fa-file-pdf float-left fa-lg"
+																	style="color: red"></i>
+															</div>
+														</div>
+														<input class="form-control" id="pdf" type="file"
+															accept=".pdf" name="pdf" />
+													</div>
 												</div>
 											</div>
 											<div class="modal-footer">
-												<a class="btn btn-datatable btn-icon btn-transparent-dark float-right pdfBtn mr-1"><i class="fa fa-file-pdf fa-2x" style="color: red"></i></a> 
-												<a class="btn btn-datatable btn-icon btn-transparent-dark float-right xmlBtn mr-1"><i class="fas fa-file-code fa-2x" style="color: green"></i></a> 
+												<a
+													class="btn btn-datatable btn-icon btn-transparent-dark float-right pdfBtn mr-1"><i
+													class="fa fa-file-pdf fa-2x" style="color: red"></i></a> <a
+													class="btn btn-datatable btn-icon btn-transparent-dark float-right xmlBtn mr-1"><i
+													class="fas fa-file-code fa-2x" style="color: green"></i></a>
 												<div id="conpago" class="mr-auto">
-													<a class="btn btn-datatable btn-icon btn-transparent-dark float-right pagoBtn"><i class="fas fa-file-invoice-dollar fa-2x" style="color: teal"></i></a>
+													<a
+														class="btn btn-datatable btn-icon btn-transparent-dark float-right pagoBtn"><i
+														class="fas fa-file-invoice-dollar fa-2x"
+														style="color: teal"></i></a>
 												</div>
 												<div id="sinpago" class="mr-auto">
-													<span class="ml-0  fa-stack fa-2x mr-1"><i class="fas fa-file-invoice-dollar fa-stack-1x float-left sinPagoBtn" style="color: teal"></i><i
-														class="fas fa-slash fa-stack-1x" style="color: red"></i></span> 
+													<span class="ml-0  fa-stack fa-2x mr-1"><i
+														class="fas fa-file-invoice-dollar fa-stack-1x float-left sinPagoBtn"
+														style="color: teal"></i><i
+														class="fas fa-slash fa-stack-1x" style="color: red"></i></span>
 												</div>
-												<button  class="btn btn-primary" type="submit">Guardar</button>
+												<button class="btn btn-primary" type="submit">Guardar</button>
 											</div>
 										</div>
 									</div>
 								</div>
 							</form>
 
-			
+
 							<!-- MODAL PARA CONFIRMAR BORRAR -->
 							<div class="deleteForm">
 								<div class="modal fade" id="deleteModal" tabindex="-1"
@@ -968,12 +1027,12 @@
 
 
 						</div>
-					
+
 						<!-- Main Content Table avisos de Pago -->
 						<div class="card mb-0" hidden="true" id="divAvisos">
 							<div class="card-body">
 								<div class="datatable">
-								<!-- TABLA -->
+									<!-- TABLA -->
 									<table class="compact table-hover" id="avisosDePago"
 										style="text-align: center; width: 100%">
 										<thead>
@@ -1004,12 +1063,12 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<!-- Tabla para Log de movimientos -->
 						<div class="card mb-0" hidden="true" id="divLog">
 							<div class="card-body">
 								<div class="datatable">
-								<!-- TABLA -->
+									<!-- TABLA -->
 									<table class="compact table-hover" id="logMov"
 										style="text-align: center; width: 100%">
 										<thead>
@@ -1034,39 +1093,44 @@
 								</div>
 							</div>
 						</div>
-					
+
 					</div>
 				</div>
 			</div>
 			<!-- TOAST PARA REFRESH DE SAT -->
-							<div class="toast" role="alert" id="toastSAT" data-autohide="true" data-delay="4000" style=" z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;" aria-live="assertive" aria-atomic="true">
-							    <div class="toast-header bg-primary text-white">
-							        <i data-feather="alert-circle"></i>
-							        <strong class="mr-auto">Cambio de Estatus de Vigencia</strong>
-							        <small class="text-white-50 ml-2">Ahora</small>
-							    </div>
-							    <div class="toast-body">Se procesó la petición ante el SAT.</div> 
-							</div>
+			<div class="toast" role="alert" id="toastSAT" data-autohide="true"
+				data-delay="4000"
+				style="z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;"
+				aria-live="assertive" aria-atomic="true">
+				<div class="toast-header bg-primary text-white">
+					<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
+						de Estatus de Vigencia</strong> <small class="text-white-50 ml-2">Ahora</small>
+				</div>
+				<div class="toast-body">Se procesó la petición ante el SAT.</div>
+			</div>
 			<!-- TOAST PARA UPLOAD -->
-							<div class="toast" role="alert" id="toastUpload" data-autohide=true data-delay="4000" style=" z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;" aria-live="assertive" aria-atomic="true">
-							    <div class="toast-header bg-primary text-white">
-							        <i data-feather="alert-circle"></i>
-							        <strong class="mr-auto">Nuevo Documento Fiscal.</strong>
-							        <small class="text-white-50 ml-2">Ahora</small>
-							    </div>
-							    <div class="toast-body">Carga de documento fiscal exitosa.</div> 
-							</div>
-							
+			<div class="toast" role="alert" id="toastUpload" data-autohide=true
+				data-delay="4000"
+				style="z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;"
+				aria-live="assertive" aria-atomic="true">
+				<div class="toast-header bg-primary text-white">
+					<i data-feather="alert-circle"></i> <strong class="mr-auto">Nuevo
+						Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
+				</div>
+				<div class="toast-body">Carga de documento fiscal exitosa.</div>
+			</div>
+
 		</main>
 		<footer class="footer mt-auto footer-light">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-10 offset-md-2">
 						<div class="row">
-							<div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
+							<div class="col-md-6 small">Copyright &copy; Canfer Grupo
+								Empresarial 2020</div>
 							<div class="col-md-6 text-md-right small">
-								<a > Políticas de Privacidad</a> &middot; <a >Términos
-									&amp; Condiciones</a>
+								<a> Políticas de Privacidad</a> &middot; <a>Términos &amp;
+									Condiciones</a>
 							</div>
 						</div>
 					</div>
@@ -1108,8 +1172,10 @@
 		src="https://cdn.datatables.net/searchpanes/1.1.1/js/searchPanes.bootstrap4.min.js"></script>
 	<script type="text/javascript"
 		src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script src="assets/demo/date-range-picker-demo.js"></script>
 
 
