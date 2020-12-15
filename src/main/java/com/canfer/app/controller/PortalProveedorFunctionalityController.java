@@ -1,5 +1,9 @@
 package com.canfer.app.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -84,11 +88,18 @@ public class PortalProveedorFunctionalityController {
 	}
 	
 	@GetMapping("/csv/{rfc}/{clave}")
-	public void download(String rfc, String clave) {
+	public void download(String rfc, String clave, HttpServletResponse response) {
 
-			actioner.downloadXls(rfc, clave);
+			actioner.downloadCsv(response, rfc, clave);
 	
 		
 	}
+	
+	@GetMapping("/excel/{rfc}/{clave}")
+	public ResponseEntity<Resource> downloadExcel(@PathVariable String rfc, @PathVariable String clave) {
+		
+		return actioner.downloadXls(rfc, clave);
+	}
+	
 
 }
