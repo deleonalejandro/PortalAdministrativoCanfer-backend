@@ -76,7 +76,7 @@ public class PortalProveedorActions extends DocumentosNacionalesActions {
        List<ComprobanteFiscal> comprobantes = repoService.findAllComprobanteByRfcEmpresaAndProveedor(rfc,proveedor.get());
        
        try {
-			
+    	   
 			Archivo file = xlsService.makeExcel(comprobantes);
 			file.loadAsResource();
 			return downloader.download(file,"d");

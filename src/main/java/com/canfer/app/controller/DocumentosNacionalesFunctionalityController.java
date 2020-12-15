@@ -39,9 +39,8 @@ public class DocumentosNacionalesFunctionalityController {
 	private ComprobanteStorageService storageService; 
 	
 	@PostMapping("/uploadFactura")
-	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc) {
+	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc, RedirectAttributes ra) {
 		
-		boolean value = false; 
 		// initializing directories
 		storageService.init();
 		
@@ -58,16 +57,16 @@ public class DocumentosNacionalesFunctionalityController {
 		try {
 			
 			actioner.upload(fileXML, filePDF);
-			value = true; 
+			ra.addFlashAttribute("upload", true);
 			
 		} catch (NotFoundException e) {
 			
 			Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
-			
+			ra.addFlashAttribute("upload", false);
 		}
 		
 		
-		return "redirect:/documentosFiscalesClient?rfc=" + rfc+"&upload="+value;
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 		
 	}
 	
@@ -93,13 +92,21 @@ public class DocumentosNacionalesFunctionalityController {
 		
 	}
 	
-	@GetMapping("/csv/{repo}")
-	public void download(@RequestParam List<Long> ids) {
+	@GetMapping("/csv")
+	public void downloadCsv(@RequestParam List<Long> ids, HttpServletResponse response) {
 		
-		actioner.downloadXls(ids);
+		actioner.downloadCsv(ids, response);
 		
 	}
 	
+	@GetMapping("/excel")
+	public ResponseEntity<Resource> downloadExcel(@RequestParam List<Long> ids) {
+		
+		return actioner.downloadXls(ids);
+		
+	}
+	
+
 	@GetMapping(value = "/deleteMultipleFacturas")
 	public String deleteMultipleComprobanteFiscal(@RequestParam List<Long> ids, @RequestParam String rfc) {
 		
