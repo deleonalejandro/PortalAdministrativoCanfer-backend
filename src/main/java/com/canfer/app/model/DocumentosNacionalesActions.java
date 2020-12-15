@@ -169,73 +169,90 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	}
 	
 	public ResponseEntity<byte[]> download(String method, String repo, List<Long> ids) {
-			
-			List<Archivo> files = new ArrayList<>();
-			List<ComprobanteFiscal> comprobantes = new ArrayList<>();
-			
-			// switching the repository strategies for single files.
-			switch (repo) {
-	
-			case "ComprobanteFiscal":
-				
-				comprobantes = superRepo.findAllComprobanteById(ids);
-				
-				break;
-	
-			default:
-				break;
-			}
-			
-			switch (method) {
-			
-			case "zipXML":
-				
-				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
-					
-					files.add(comprobanteFiscal.fetchXML());
-					
-				}
-				
-				break;
-				
-			case "zipPDF":
-				
-				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
-					
-					if (comprobanteFiscal.getDocumento().hasPDF()) {
-						
-						files.add(comprobanteFiscal.fetchPDF());
-						
-					}
-	
-	
-				}
-	
-				break;
-				
-			case "zip":
-				
-				for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
-					
-					files.add(comprobanteFiscal.fetchXML());
-					
-					if (comprobanteFiscal.getDocumento().hasPDF()) {
-						
-						files.add(comprobanteFiscal.fetchPDF());
-						
-					}
-	
-				}
-	
-				break;
-	
-			default:
-				break;
-			}
-				
-			return dowloadManager.downloadZip(files);
-			
+
+		List<Archivo> files = new ArrayList<>();
+		List<ComprobanteFiscal> comprobantes = new ArrayList<>();
+
+		// switching the repository strategies for single files.
+		switch (repo) {
+
+		case "ComprobanteFiscal":
+
+			comprobantes = superRepo.findAllComprobanteById(ids);
+
+			break;
+
+		default:
+			break;
 		}
+
+		switch (method) {
+
+		case "zipXML":
+
+			for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+
+				files.add(comprobanteFiscal.fetchXML());
+
+			}
+
+			break;
+
+		case "zipPDF":
+
+			for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+
+				if (comprobanteFiscal.getDocumento().hasPDF()) {
+
+					files.add(comprobanteFiscal.fetchPDF());
+
+				}
+
+			}
+
+			break;
+
+		case "zip":
+
+			for (ComprobanteFiscal comprobanteFiscal : comprobantes) {
+
+				files.add(comprobanteFiscal.fetchXML());
+
+				if (comprobanteFiscal.getDocumento().hasPDF()) {
+
+					files.add(comprobanteFiscal.fetchPDF());
+
+				}
+
+			}
+
+			break;
+
+		default:
+			break;
+		}
+
+		return dowloadManager.downloadZip(files);
+
+	}
+	
+	public ResponseEntity<Resource> downloadXls(List<Long> ids) {
+		
+		List<ComprobanteFiscal> comprobantes = superRepo.findAllComprobanteById(ids); 
+		
+		try {
+			
+			Archivo file = xlsService.makeExcel(comprobantes);
+			return downloader.download(file,"d");
+			
+		} catch (WriteException | IOException e) {
+			
+			Log.activity("Error al intentar generar un reporte de Excel. ", comprobantes.get(0).getEmpresaNombre(), "ERROR_FILE"); 
+			return null;
+		}
+
+		
+	}
 
 	@Override
 	public boolean delete(Long id) {
@@ -255,7 +272,10 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			comprobanteFiscal.delete();
 			
+			Log.activity("Se ha eliminado el documento fiscal No. " + comprobanteFiscal.getIdNumSap() + "." , comprobanteFiscal.getEmpresaNombre(), "DELETE");
+			
 			superRepo.delete(comprobanteFiscal);
+			
 			
 			return true;
 		}
@@ -266,14 +286,26 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	@Override
 	public boolean deleteAll(List<Long> ids) {
-		//TODO usar el remove complemento
+
 		List<ComprobanteFiscal> comprobantes = new ArrayList<>();
 				
 		try {
 			
 			comprobantes = superRepo.findAllComprobanteById(ids);
 			
-			comprobantes.forEach(comprobante -> comprobante.delete());
+			comprobantes.forEach(comprobante -> {
+				
+				if(comprobante instanceof ComplementoPago) {
+					clearComplemento((ComplementoPago) comprobante);
+				}
+				
+				comprobante.delete();
+				
+				Log.activity("Se ha eliminado el documento fiscal No. " + comprobante.getIdNumSap() + "." , comprobante.getEmpresaNombre(), "DELETE");
+				
+				});
+			
+			superRepo.deleteAllComprobante(comprobantes);
 			
 			return true;
 			
@@ -331,7 +363,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				
 			} catch (Exception e) {
 				
-				Log.activity("Error al actualizar CFDI: " +documento.getUuid(), comprobante.get().getEmpresaNombre(), "ERROR");
+				Log.activity("Error al actualizar CFDI: " + documento.getUuid(), comprobante.get().getEmpresaNombre(), "ERROR_UPDATE");
 				return false;
 			}
 			
@@ -481,7 +513,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		if (exist(comprobante.getUuidTfd())) {
 			
 			Log.activity("Error al intentar guardar factura: El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
-					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorNombre(), comprobante.getReceptorNombre(), "ERROR_DB");
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorRfc(), comprobante.getReceptorRfc(), "ERROR_DB");
 			
 			return false;
 			
@@ -509,24 +541,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		return (superRepo.findComprobanteByUUID(uuid) != null);
 	}
 
-	public ResponseEntity<Resource> downloadXls(List<Long> ids) {
-		
-		List<ComprobanteFiscal> comprobantes = superRepo.findAllComprobanteById(ids); 
-		
-		try {
-			
-			Archivo file = xlsService.makeExcel(comprobantes);
-			file.loadAsResource();
-			return downloader.download(file,"d");
-			
-		} catch (WriteException | IOException e) {
-			
-			Log.activity("Error al intentar generar un reporte de Excel. ", comprobantes.get(0).getEmpresaNombre(), "ERROR_FILE"); 
-			return null;
-		}
 
-		
-	}
 
 	
 

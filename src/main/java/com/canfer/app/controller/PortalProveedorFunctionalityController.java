@@ -41,7 +41,6 @@ public class PortalProveedorFunctionalityController {
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc, 
 			@RequestParam String clv, RedirectAttributes ra) {
 		
-		boolean value = false; 
 		// initializing directories
 		storageService.init();
 		
@@ -57,16 +56,16 @@ public class PortalProveedorFunctionalityController {
 		try {
 			
 			actioner.upload(fileXML, filePDF);
-			value = true; 
+			ra.addFlashAttribute("upload", true);
 			
 		} catch (NotFoundException e) {
 			
 			// La empresa o el proveedor no se encuentran en el catalogo
 			Log.activity("Error al intentar guardar factura: " + fileXML.toCfdi().getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-
+			ra.addFlashAttribute("upload", true);
 		} 
 		
-		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv+"&upload="+value;
+		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv;
 		
 	}
 	

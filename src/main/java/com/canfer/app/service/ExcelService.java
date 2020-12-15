@@ -22,8 +22,14 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
 
+
+
 @Service
 public class ExcelService {
+	
+	public ExcelService() {
+		// TODO Auto-generated constructor stub
+	}
 	
     public Archivo makeExcel(List<ComprobanteFiscal> comprobantes) throws IOException, WriteException {
 

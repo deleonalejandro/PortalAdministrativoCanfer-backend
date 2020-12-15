@@ -387,4 +387,9 @@ public class RepositoryService {
 
 		return comprobanteRepo.findAllByRfcEmpresaAndProveedor(rfc, proveedor);
 	}
+	
+	public Usuario findUsuarioByUsername(String username) {
+		
+		return usuarioRepo.findByUsername(username);
+	}
 }

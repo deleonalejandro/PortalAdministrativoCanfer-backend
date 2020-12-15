@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.canfer.app.security.AuthenticationFacade;
 
@@ -46,15 +47,34 @@ public class MainController {
 
 	// Login form with error
 	@RequestMapping("/login-error")
-	public String loginError(Model model) {
+	public String loginError(Model model, @RequestParam("auth") String authentication ) {
+		
 		model.addAttribute("loginError", true);
-		return "login";
+		
+		if (authentication.equalsIgnoreCase("pa")) {
+			
+			return "login";
+			
+		} else {
+			
+			return "login-proveedores";
+		}
 	}
 	
 	@RequestMapping("/logoutSuccess")
-	public String logout(Model model) {
+	public String logout(Model model, @RequestParam("auth") String module) {
+		
 		model.addAttribute("success", true);
-		return "login";
+		
+		if (module.equalsIgnoreCase("pa")) {
+			
+			return "login";
+			
+		} else {
+			
+			return "login-proveedores";
+		}
+		
 	}
 	
 	/*

@@ -326,7 +326,7 @@ public abstract class Archivo {
 				
 				if (newFile.isEmpty()) {
 					
-					Log.activity("Error al guardar un archivo vacío. " + newFile.getOriginalFilename(), this.receptor, "UPDATE");
+					Log.activity("Error al actualizar CFDI: No se logró guardar un archivo vacío. " + newFile.getOriginalFilename(), this.receptor, "ERROR_UPDATE");
 					
 				}
 				
@@ -337,7 +337,7 @@ public abstract class Archivo {
 				
 			} catch (IOException e) {
 				
-				Log.activity("Error al guardar un archivo vacío. " + newFile.getOriginalFilename(), this.receptor, "UPDATE");
+				Log.activity("Error al actualizar CFDI: No se logró guardar el archivo " + newFile.getOriginalFilename() + ".", this.receptor, "ERROR_UPDATE");
 				
 			}
 			
