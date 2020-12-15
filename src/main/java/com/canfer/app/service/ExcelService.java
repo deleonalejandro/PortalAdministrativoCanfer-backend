@@ -1,6 +1,8 @@
 package com.canfer.app.service;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal;
 
 import jxl.Workbook;
+import jxl.format.Alignment;
 import jxl.format.Colour;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
@@ -26,87 +29,85 @@ public class ExcelService {
 
     	File currDir = new File(".");
     	String path = currDir.getAbsolutePath();
-    	String fileLocation = path.substring(0, path.length() - 1) + "temp.xls";
+    	String fileLocation = path.substring(0, path.length() - 1) + "Reporte.xls";
     	int count = 2; 
 
     	WritableWorkbook workbook = Workbook.createWorkbook(new File(fileLocation));
 
-    	WritableSheet sheet = workbook.createSheet("Sheet 1", 0);
+    	WritableSheet sheet = workbook.createSheet("Reporte Listado CFDIs", 0);
 
+    	WritableCellFormat headerFormatC = new WritableCellFormat();
+    	WritableFont fontc
+    	  = new WritableFont(WritableFont.ARIAL, 13, WritableFont.BOLD);
+    	headerFormatC.setFont(fontc);
+    	headerFormatC.setWrap(true);
+
+    	Label headerLabelc = new Label(0, 0, "Reporte Documentos Fiscales", headerFormatC);
+    	sheet.setColumnView(0, 60);
+    	sheet.addCell(headerLabelc);
+    	
     	WritableCellFormat headerFormat = new WritableCellFormat();
     	WritableFont font
-    	  = new WritableFont(WritableFont.ARIAL, 16, WritableFont.BOLD);
+    	  = new WritableFont(WritableFont.ARIAL, 12, WritableFont.BOLD);
     	headerFormat.setFont(font);
-    	headerFormat.setBackground(Colour.LIGHT_BLUE);
     	headerFormat.setWrap(true);
 
-    	Label headerLabel = new Label(0, 0, "UUID", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	Label headerLabel = new Label(0, 1, "UUID", headerFormat);
     	sheet.addCell(headerLabel);
 
-    	headerLabel = new Label(1, 0, "No. SAP", headerFormat);
-    	sheet.setColumnView(0, 40);
+    	headerLabel = new Label(1, 1, "No. SAP", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(2, 0, "Serie", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(2, 1, "Serie", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(3, 0, "Folio", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(3, 1, "Folio", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(4, 0, "RFC Emisor", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(4, 1, "RFC Emisor", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(5, 0, "RFC Receptor", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(5, 1, "RFC Receptor", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(6, 0, "Fecha Emisión", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(6, 1, "Fecha Emisión", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(7, 0, "Fecha Carga", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(7, 1, "Fecha Carga", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(8, 0, "Timbre", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(8, 1, "Timbre", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(9, 0, "Moneda", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(9, 1, "Moneda", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(10, 0, "Total", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(10, 1, "Total", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(11, 0, "Tipo de Comprobante", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(11, 1, "Tipo de Comprobante", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(12, 0, "Estatus Pago", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(12, 1, "Estatus Pago", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(13, 0, "Validación SAT", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(13, 1, "Validación SAT", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(14, 0, "Vigencia", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(14, 1, "Vigencia", headerFormat);
     	sheet.addCell(headerLabel);
     	
-    	headerLabel = new Label(15, 0, "Comentario", headerFormat);
-    	sheet.setColumnView(0, 60);
+    	headerLabel = new Label(15, 1, "Comentario", headerFormat);
     	sheet.addCell(headerLabel);
 
+    	
+    	WritableCellFormat cellFormatWrap = new WritableCellFormat();
+    	cellFormatWrap.setWrap(true);
+    	cellFormatWrap.setAlignment(Alignment.CENTRE);
     	
     	WritableCellFormat cellFormat = new WritableCellFormat();
     	cellFormat.setWrap(true);
+    	cellFormat.setAlignment(Alignment.CENTRE);
     	
     	for (ComprobanteFiscal cfd : comprobantes) {
     	Label cell = new Label(0, count, cfd.getUuid(), cellFormat);
@@ -127,10 +128,10 @@ public class ExcelService {
     	cell = new Label(5, count, cfd.getRfcEmpresa(), cellFormat);
     	sheet.addCell(cell);
     	
-    	cell = new Label(6, count, cfd.getFechaEmision(), cellFormat);
+    	cell = new Label(6, count, cfd.getFechaEmision(), cellFormatWrap);
     	sheet.addCell(cell);
     	
-    	cell = new Label(7, count, cfd.getFechaCarga().toString(), cellFormat);
+    	cell = new Label(7, count, cfd.getFechaCarga().toString(), cellFormatWrap);
     	sheet.addCell(cell);
     	
     	cell = new Label(8, count, cfd.getVersionTimbre(), cellFormat);
@@ -148,18 +149,25 @@ public class ExcelService {
     	cell = new Label(12, count, cfd.getEstatusPago(), cellFormat);
     	sheet.addCell(cell);
     	
-    	cell = new Label(13, count, cfd.getRespuestaValidacion(), cellFormat);
+    	cell = new Label(13, count, cfd.getRespuestaValidacion(), cellFormatWrap);
     	sheet.addCell(cell);
     	
     	cell = new Label(14, count, cfd.getEstatusSAT(), cellFormat);
     	sheet.addCell(cell);
     	
-    	cell = new Label(15, count, cfd.getComentario(), cellFormat);
+    	cell = new Label(15, count, cfd.getComentario(), cellFormatWrap);
     	sheet.addCell(cell);
     	
     	count = count+ 1; 
     	
     	}
+    	
+    	WritableCellFormat cellFormatF = new WritableCellFormat();
+    	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+    	   LocalDateTime now = LocalDateTime.now(); 
+    	   
+    	Label cell = new Label(0, count+1, "Reporte generado el : " + dtf.format(now), cellFormatF);
+    	sheet.addCell(cell);
 
     	workbook.write();
     	workbook.close();
