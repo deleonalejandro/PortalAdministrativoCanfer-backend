@@ -193,5 +193,43 @@ public class EmailSenderService {
 	    }
 	}
 	
+	public void sendEmailNewAccount(UsuarioProveedor usuario, String contraseña){
+		final String EMAIL_TEMPLATE_NAME = "emailUpdateDoc.html";
+        
+		
+		//String to = proveedor.getCorreo();
+		//List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
+				//empresaRep.findByRfc(comprobante.getRfcEmpresa()));
+		//for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
+		
+	    try {
+	        
+	        // Prepare the evaluation context
+	        final Context ctx = new Context();
+			ctx.setVariable("usuario", "Nombre de usuario: "+ usuario.getUsername());
+			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+" !");
+			ctx.setVariable("contraseña", "Contraseña: "+ contraseña);
+
+	        // Prepare message using a Spring helper
+	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+	        // Create the HTML body using Thymeleaf
+	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
+	        message.setText(htmlContent, true /* isHtml */);
+	        //helper.setTo(InternetAddress.parse(to));
+	        message.setTo(InternetAddress.parse("A01039359@itesm.mx"));
+	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
+		    
+	        javaMailSender.send(mimeMessage);
+	        
+	    } catch (MessagingException | MailException e) {
+
+	        Log.falla("No se pudo enviar correo a " + "to" + " con la información del nuevo usuario proveedor: "  
+	        		+ usuario.getUsername() + "." ,"ERROR_CONNECTION");
+	    }
+	}
+	
 	
 }

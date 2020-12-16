@@ -18,6 +18,7 @@ import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.dto.UserDTO;
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
@@ -46,6 +47,8 @@ public class UsuarioService {
 	private UsuarioCanferRepository usuarioCanferRepository;
 	@Autowired
 	private UsuarioProveedorRepository usuarioProveedorRepository;
+	@Autowired
+	private EmailSenderService emailSender; 
 
 	public List<Usuario> findAll() {
 		return usuarioRepository.findAll();
@@ -107,7 +110,7 @@ public class UsuarioService {
 
 		password = generatePassword(user.getRfc());
 
-		/* TODO EMAIL THE USER WITH THE GENERATED CREDENTIALS */
+		
 		System.out.println(user.getRfc() + " " + password);
 		ePassword = passwordEncoder.encode(password);
 
@@ -125,8 +128,10 @@ public class UsuarioService {
 		usuario.setEmpresas(empresas);
 
 		Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
-
+		emailSender.sendEmailNewAccount(usuario, password);
+		
 		return usuarioProveedorRepository.save(usuario);
+		
 
 	}
 
