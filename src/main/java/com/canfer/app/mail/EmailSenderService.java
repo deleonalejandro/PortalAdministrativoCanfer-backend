@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -53,6 +54,8 @@ public class EmailSenderService {
     private JavaMailSender mailSender;
     @Autowired
     private TemplateEngine htmlTemplateEngine;
+    @Autowired
+    private Environment env;
     
 
 	public EmailSenderService(JavaMailSender javaMailSender) {
@@ -94,6 +97,7 @@ public class EmailSenderService {
 	        //helper.setTo(InternetAddress.parse(to));
 	        helper.setTo("yasminfemerling@gmail.com");
 	        helper.setSubject("Aviso de Pago");
+	        helper.setFrom(env.getProperty("spring.mail.username"));
 	        helper.setText("Se ha realizado el pago de una factura.");
 	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
 	        javaMailSender.send(message);
@@ -134,7 +138,7 @@ public class EmailSenderService {
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
 	        message.setTo(InternetAddress.parse("A01039359@itesm.mx,aldelemo96@gmail.com"));
-	        message.setFrom("yas.ale@hotmail.com");
+	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
 		    
@@ -177,7 +181,7 @@ public class EmailSenderService {
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
 	        message.setTo(InternetAddress.parse("A01039359@itesm.mx"));
-	        message.setFrom("yas.ale@hotmail.com");
+	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Actualización de Documento Fiscal.");
 		    
 	        javaMailSender.send(mimeMessage);
@@ -189,39 +193,5 @@ public class EmailSenderService {
 	    }
 	}
 	
-	public void sendNewDoc(ComprobanteFiscal comprobante)
-    {
-		try {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("a01039359@itesm.mx");
-        message.setFrom("yas.ale@hotmail.com");
-        message.setSubject("subject prueba");
-        message.setText("Test");
-        mailSender.send(message);
-        
-	    }catch (MailException e) {
 	
-	        Log.falla("No se pudo enviar correo a " + "to" + " con la actualización del documento fiscal: "  
-	        		+ comprobante.getUuid() + "." ,"ERROR_CONNECTION");
-	    }
-			
-    }
-	
-	public void sendUpdateDoc(ComprobanteFiscal comprobante)
-    {
-		try {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("a01039359@itesm.mx");
-        message.setFrom("yas.ale@hotmail.com");
-        message.setSubject("subject prueba");
-        message.setText("Test");
-        mailSender.send(message);
-        
-	    }catch (MailException e) {
-	
-	        Log.falla("No se pudo enviar correo a " + "to" + " con la actualización del documento fiscal: "  
-	        		+ comprobante.getUuid() + "." ,"ERROR_CONNECTION");
-	    }
-			
-    }
 }
