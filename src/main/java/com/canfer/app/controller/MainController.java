@@ -88,6 +88,18 @@ public class MainController {
 		
 		return "login-proveedores";
 	}
+	
+	@GetMapping(value = "/cpanel")
+	public String getCPanel() {
+		
+		return "admin-panel";
+	}
+	
+	@GetMapping(value = "/cajaChicaClient")
+	public String getModuloCajaChica() {
+		
+		return "caja-chica";
+	}
 
 	
 
@@ -101,11 +113,7 @@ public class MainController {
 	}
 
 
-	@GetMapping(value = "/cajaChicaClient")
-	public String getModuloCajaChica() {
-		
-		return "caja-chica";
-	}
+
 
 
 }

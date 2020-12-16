@@ -99,11 +99,6 @@ public class PortalAdministrativoController {
 				.body(resource);
 	}
 	
-	@GetMapping(value = "/cpanel")
-	public String getCPanel() {
-		
-		return "admin-panel";
-	}
 	
 
 }

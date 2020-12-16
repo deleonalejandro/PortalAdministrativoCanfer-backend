@@ -31,7 +31,7 @@ import javassist.NotFoundException;
 
 @Service
 public class UsuarioService {
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
@@ -47,29 +47,26 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioProveedorRepository usuarioProveedorRepository;
 
-	
-	
-	public List<Usuario> findAll(){
+	public List<Usuario> findAll() {
 		return usuarioRepository.findAll();
 	}
-	
+
 	public Usuario findById(Long id) {
 		Optional<Usuario> userUsuario = usuarioRepository.findById(id);
 		if (userUsuario.isEmpty()) {
 			throw new UsernameNotFoundException("El usuario no existe.");
 		}
-		return userUsuario.get(); 
+		return userUsuario.get();
 	}
-	
+
 	// TODO add more try catch to handle unexpected errors
 	public Usuario save(UserDTO user) throws NotFoundException {
-		
+
 		Usuario testUsuario;
 		String ePassword;
 		List<Empresa> empresas = empresaService.findAllById(user.getEmpresaIdsList());
 
-		
-		// we  check if the user already exists.
+		// we check if the user already exists.
 		testUsuario = usuarioRepository.findByUsername(user.getUsername());
 		if (testUsuario != null) {
 			throw new UsernameNotFoundException("El usuario: " + user.getUsername() + " ya existe.");
@@ -78,84 +75,84 @@ public class UsuarioService {
 		if (user.getRol().isEmpty()) {
 			throw new EmptyResultDataAccessException("El usuario debe tener un rol asignado.", 1);
 		}
-		
+
 		ePassword = passwordEncoder.encode(user.getPassword());
-		
-		UsuarioCanfer usuario = new UsuarioCanfer(user.getUsername(), ePassword,
-				user.getNombre(), user.getApellido(), user.getCorreo(), user.getRol(), user.getPermisosToString());
-		
+
+		UsuarioCanfer usuario = new UsuarioCanfer(user.getUsername(), ePassword, user.getNombre(), user.getApellido(),
+				user.getCorreo(), user.getRol(), user.getPermisosToString());
+
 		// assign the companies that the user will manage
 		usuario.setEmpresas(empresas);
-    
-    Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
-		
+
+		Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
+
 		return usuarioCanferRepository.save(usuario);
-		
+
 	}
-	
+
 	public Usuario saveUsuarioProveedor(UserDTO user) throws NotFoundException {
-		
+
 		Usuario testProveedor;
 		String ePassword;
 		String password;
 		List<Proveedor> proveedoresList;
 		List<Empresa> empresas = new ArrayList<>();
-			
+
 		testProveedor = usuarioProveedorRepository.findByUsername(user.getUsername());
 		proveedoresList = proveedorRepository.findAllByRfcAndBitActivo(user.getRfc(), true);
-		
+
 		if (proveedoresList.isEmpty()) {
 			throw new NotFoundException("El RFC para registrar la cuenta no es valido.");
 		}
-	
+
 		password = generatePassword(user.getRfc());
-		
+
 		/* TODO EMAIL THE USER WITH THE GENERATED CREDENTIALS */
 		System.out.println(user.getRfc() + " " + password);
 		ePassword = passwordEncoder.encode(password);
-		
-		UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword,
-				user.getNombre(), user.getApellido(), user.getCorreo(), "USER_PROVEEDOR", "");
+
+		UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword, user.getNombre(),
+				user.getApellido(), user.getCorreo(), "USER_PROVEEDOR", "");
 
 		// assign the suppliers to the users
 		usuario.setProveedores(proveedoresList);
-		
+
 		// lets get which companies this user is related to
 		for (Proveedor proveedor : proveedoresList) {
 			empresas.addAll(proveedor.getEmpresas());
 		}
-		
+
 		usuario.setEmpresas(empresas);
-    
-    Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
-		
+
+		Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
+
 		return usuarioProveedorRepository.save(usuario);
 
 	}
-	
+
 	public Usuario updateUserSuppliers(UsuarioProveedor user) {
-		
+
 		List<Proveedor> proveedoresList;
-		
+
 		proveedoresList = proveedorRepository.findAllByRfcAndBitActivo(user.getUsername(), true);
-		
+
 		// assign the suppliers to the users
 		user.setProveedores(proveedoresList);
-		
+
 		return usuarioProveedorRepository.save(user);
 	}
-	
+
 	// TODO add more try catch to handle unexpected errors
 	public Usuario update(UserDTO user) {
-		//Create the object user, that will be updated in the DB.
+		// Create the object user, that will be updated in the DB.
 		Optional<Usuario> checkUsuario = usuarioRepository.findById(user.getUserId());
 		if (checkUsuario.isEmpty()) {
 			throw new UsernameNotFoundException("El usuario no existe");
 		}
-		//Take the value of the object if exists
+		// Take the value of the object if exists
 		Usuario updateUsuario = checkUsuario.get();
-		
-		//Use setters to transfer the basic information, except password.
+
+		// Use setters to transfer the basic information, except password.
 		updateUsuario.setUsername(user.getUsername());
 		updateUsuario.setActivo(user.getActivo());
 		updateUsuario.setApellido(user.getApellido());
@@ -163,33 +160,35 @@ public class UsuarioService {
 		updateUsuario.setNombre(user.getNombre());
 		updateUsuario.setPermisos(user.getPermisosToString());
 		updateUsuario.setRol(user.getRol());
-		
-		Log.activity("Se actualizó el usuario "+user.getUsername()+".", checkUsuario.get().getEmpresasNombre().toString(), "NEW_USER");
-		
+
+		Log.activity("Se actualizó el usuario " + user.getUsername() + ".",
+				checkUsuario.get().getEmpresasNombre().toString(), "NEW_USER");
+
 		return usuarioRepository.save(updateUsuario);
 	}
-	
+
 	public void delete(Long id) {
-		//We  check if the user already exists.
+		// We check if the user already exists.
 		Optional<Usuario> deleteUsuario = usuarioRepository.findById(id);
+		
 		if (deleteUsuario.isEmpty()) {
 			throw new UsernameNotFoundException("El usuario no existe.");
 		}
-		
+
 		usuarioRepository.delete(deleteUsuario.get());
 
-		Log.activity("Se eliminó al usuario "+ deleteUsuario.get().getUsername()+".", deleteUsuario.get().getEmpresasNombre().toString(), "DELETE");
+		Log.activity("Se eliminó al usuario " + deleteUsuario.get().getUsername() + ".",
+				deleteUsuario.get().getEmpresasNombre().toString(), "DELETE");
 	}
-	
+
 	private String generatePassword(String rfc) {
-		
+
 		LocalDateTime todayDateTime = LocalDateTime.now();
 		String pwd;
-		
-		pwd = rfc.substring(0,4) + String.valueOf(todayDateTime.getHour()) + String.valueOf(todayDateTime.getMinute());
-		
+
+		pwd = rfc.substring(0, 4) + String.valueOf(todayDateTime.getHour()) + String.valueOf(todayDateTime.getMinute());
+
 		return pwd;
 	}
-	
 
 }
