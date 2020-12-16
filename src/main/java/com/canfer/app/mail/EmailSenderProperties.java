@@ -1,14 +1,33 @@
 package com.canfer.app.mail;
 
 
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Component;
+import java.util.Properties;
 
-@Component
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.validation.annotation.Validated;
+
+@Configuration
+@PropertySource("classpath:mail.properties")
+@Validated
 public class EmailSenderProperties extends JavaMailSenderImpl {
 	
-	public EmailSenderProperties() {
+	public EmailSenderProperties(@Value("${senderhost}") String host, @Value("${senderusername}") String username,
+    		@Value("${senderpassword}") String password, @Value("${senderport}") int port) {
+		
 		super();
+		this.setHost(host);
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setPort(port);
+		Properties props = this.getJavaMailProperties();
+	    props.put("mail.smtp.auth", "true");
+	    props.put("mail.smtp.starttls.enable", "true");
+	    props.put("mail.smtp.starttls.required", "true");
+	    props.put("mail.debug", "false");
+			
 	}
 	
 	public void changeUsername(String username) {

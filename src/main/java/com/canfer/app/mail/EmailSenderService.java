@@ -10,7 +10,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,6 @@ import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioCanferRepository;
-import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.service.RepositoryService;
 
 /**
@@ -46,18 +47,14 @@ public class EmailSenderService {
 	@Autowired
 	private UsuarioCanferRepository usuarioCanferRep; 
 	@Autowired
-	private UsuarioProveedorRepository usuarioProvRep; 
-	@Autowired
 	private EmpresaRepository empresaRep; 
 	@Autowired
 	private RepositoryService superRepo; 
     @Autowired
     private TemplateEngine htmlTemplateEngine;
     @Autowired
-    private Environment env;
-    @Autowired
     private EmailSenderProperties emailSenderProperties;
-	
+    
 	// ==============
 	// PUBLIC METHODS
 	// ==============
@@ -91,7 +88,7 @@ public class EmailSenderService {
 	        
 	        helper.setTo(InternetAddress.parse(to));
 	        helper.setSubject("Aviso de Pago");
-	        helper.setFrom(env.getProperty("spring.mail.username"));
+	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setText("Se ha realizado el pago de una factura.");
 	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
 	        emailSenderProperties.send(message);
@@ -132,7 +129,7 @@ public class EmailSenderService {
 	        message.setText(htmlContent, true /* isHtml */);
 	        //message.setTo(InternetAddress.parse(to));
 	        message.setTo(InternetAddress.parse("a01039359@itesm.mx"));
-	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
 		   
@@ -175,7 +172,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        message.setTo(InternetAddress.parse(to));
-	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Actualización de Documento Fiscal.");
 		    
 	        emailSenderProperties.send(mimeMessage);
@@ -207,7 +204,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
-	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
 		    
 	        emailSenderProperties.send(mimeMessage);
