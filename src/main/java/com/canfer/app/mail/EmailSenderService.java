@@ -193,8 +193,8 @@ public class EmailSenderService {
 	    }
 	}
 	
-	public void sendEmailNewAccount(UsuarioProveedor usuario, String contraseña){
-		final String EMAIL_TEMPLATE_NAME = "emailUpdateDoc.html";
+	public void sendEmailNewAccount(UsuarioProveedor usuario, String pass){
+		final String EMAIL_TEMPLATE_NAME = "emailUsuarioProv.html";
         
 		
 		//String to = proveedor.getCorreo();
@@ -207,8 +207,8 @@ public class EmailSenderService {
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
 			ctx.setVariable("usuario", "Nombre de usuario: "+ usuario.getUsername());
-			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+" !");
-			ctx.setVariable("contraseña", "Contraseña: "+ contraseña);
+			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+"!");
+			ctx.setVariable("psss", "Contraseña: "+ pass);
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -218,7 +218,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("A01039359@itesm.mx"));
+	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
 	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
 		    
