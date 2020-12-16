@@ -95,23 +95,7 @@
                 <!-- CONFIGURACIONES -->
                 <div sec:authorize="hasRole('ROLE_ADMIN')">
 	                <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-	                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a>
-	                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownMessages">
-	                        <h6 class="dropdown-header dropdown-notifications-header">
-	                            <i class="mr-2" data-feather="settings"></i>
-	                            Configuraciones
-	                        </h6>
-	                       <a class="dropdown-item dropdown-notifications-item" href="#!">
-	                            <div class="dropdown-notifications-item-content">
-	                                <div class="dropdown-notifications-item-content-text">Catálogos</div>
-	                            </div>
-	                        </a>
-	                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-	                            <div class="dropdown-notifications-item-content">
-	                                <div class="dropdown-notifications-item-content-text">Preferencias</div>
-	                            </div>
-	                        </a>
-	                    </div>
+	                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="/admin/cpanel" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a> 
 	                </li>
 				</div>
 				
@@ -186,7 +170,31 @@
                                     <div class="card-body">
                                         <div class="tab-content" id="dashboardNavContent">
                                             <!-- Dashboard Tab Pane 1-->
-                                            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-pill">
+                                            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-pill"> 
+                                                <h4 class="mb-1" for="reception-section">Rutas de almacenamiento</h4>
+                                               	<label class="small mb-2" for="reception-description">Configura las rutas de almacenamiento para los diferentes archivos.</label><br>
+                                               	
+                                               	<!-- (default CORREO ruta)-->
+										      	<label class="small mb-1" for="rutaEntradaCorreo">Comprobantes Fiscales</label>
+                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" value="fep@canfer.com.mx" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                               	
+                                               	<!-- (default CORREO ruta)-->
+										      	<label class="small mb-1" for="rutaEntradaCorreo">Entradas de Correo</label>
+                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" value="fep@canfer.com.mx" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                                
+                                                <!-- (default PORTAL ruta)-->
+										      	<label class="small mb-1" for="rutaEntradaPortal">Entradas del Portal</label>
+                                                <input class="form-control mb-2" id="rutaFacturas" type="text" value="fep@canfer.com.mx" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                                
+                                                <!-- (default ERROR ruta)-->
+										      	<label class="small mb-1" for="rutaError">Errores</label>
+                                                <input class="form-control mb-2" id="rutaError" type="text" value="fep@canfer.com.mx" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                                
+                                                
                                                 
                                             </div>
                                             <!-- Dashboard Tab Pane 2-->
@@ -220,14 +228,14 @@
                                                	<!-- (default email CFD reception)-->
 										      	<label class="small mb-1" for="inputCfdEmail">Correo</label>
                                                 <input class="form-control mb-2" id="inputCfdEmail" type="email" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button">Cambiar</button> 
+                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button> 
                                                 
                                                 <h4 class="mb-1" for="send-section">Envío</h4>
                                                	<label class="small mb-2" for="send-description">Configura el correo por defecto para enviar notificaciones a los proveedores.</label><br>
                                                	<!-- (default email notifications)-->
 										      	<label class="small mb-1" for="outputCfdEmail">Correo</label>
                                                 <input class="form-control mb-2" id="outputCfdEmail" type="email" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button">Cambiar</button> 
+                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button> 
                     
 		                                        
                                             </div>
@@ -331,11 +339,18 @@
                                     <div class="card-header">Atajos</div>
                                     <div class="card-body">
                                         <!-- Item 1-->
-                                        
                                         <div class="d-flex align-items-center justify-content-between mb-4">
                                             
                                                 <div class="d-flex flex-column font-weight-bold">
                                                     <a class="text-dark line-height-normal mb-1" href="/admin/addUser"><i class="feather-l text-green mr-2"  data-feather="user-plus"></i>Añadir usuario</a>
+                                                </div>
+                                            
+                                        </div>
+                                         <!-- Item 1-->
+                                        <div class="d-flex align-items-center justify-content-between mb-4">
+                                            
+                                                <div class="d-flex flex-column font-weight-bold">
+                                                    <a class="text-dark line-height-normal mb-1" href="/registerSupplier"><i class="feather-l text-green mr-2"  data-feather="user-plus"></i>Añadir usuario proveedor</a>
                                                 </div>
                                             
                                         </div>
