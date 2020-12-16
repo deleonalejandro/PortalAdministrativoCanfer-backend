@@ -45,28 +45,36 @@ public class DocumentosNacionalesFunctionalityController {
 		storageService.init();
 		
 		ArchivoPDF filePDF = null; 
-		ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
-	
-		if (!files[1].isEmpty()) {
+		if (!files[0].isEmpty()) {
 			
-			filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
+			ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
 			
-		} 
 
+		
+			if (!files[1].isEmpty()) {
+				
+				filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
+				
+			} 
+	
+				
+			try {
+				
+				boolean value = actioner.upload(fileXML, filePDF);
+				ra.addFlashAttribute("upload", value);
+				
+			} catch (NotFoundException e) {
+				
+				Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
+				ra.addFlashAttribute("upload", false);
+			}
 			
-		try {
-			
-			boolean value = actioner.upload(fileXML, filePDF);
-			ra.addFlashAttribute("upload", value);
-			
-		} catch (NotFoundException e) {
-			
-			Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
-			ra.addFlashAttribute("upload", false);
+		} else {
+						
+			ra.addFlashAttribute("upload", false);	
 		}
-		
-		
-		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
+			
+			return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 		
 	}
 	
