@@ -48,25 +48,32 @@ public class PortalProveedorFunctionalityController {
 		storageService.init();
 		
 		ArchivoPDF filePDF = null; 
-		ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
-	
-		if (!files[1].isEmpty()) {
+		if (!files[0].isEmpty()) {
 			
-			filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
+			ArchivoXML fileXML = (ArchivoXML) storageService.storePortalFile(files[0]);
 			
-		} 
-		
-		try {
+				if (!files[1].isEmpty()) {
+					
+					filePDF = (ArchivoPDF) storageService.storePortalFile(files[1]);
+					
+				} 
 			
-			boolean value = actioner.upload(fileXML, filePDF);
-			ra.addFlashAttribute("upload", value);
+			try {
+				
+				boolean value = actioner.upload(fileXML, filePDF);
+				ra.addFlashAttribute("upload", value);
+				
+			} catch (NotFoundException e) {
+				
+				// La empresa o el proveedor no se encuentran en el catalogo
+				Log.activity("Error al intentar guardar factura: " + fileXML.toCfdi().getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
+				ra.addFlashAttribute("upload", false);
+			} 
 			
-		} catch (NotFoundException e) {
+		} else {
 			
-			// La empresa o el proveedor no se encuentran en el catalogo
-			Log.activity("Error al intentar guardar factura: " + fileXML.toCfdi().getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-			ra.addFlashAttribute("upload", false);
-		} 
+			ra.addFlashAttribute("upload", false);	
+		}
 		
 		return "redirect:/proveedoresClient?rfc=" + rfc + "&clv=" + clv;
 		
