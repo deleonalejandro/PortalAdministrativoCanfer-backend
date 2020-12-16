@@ -17,8 +17,8 @@
 	* El file que guarda los movimientos
 	-->
     <RollingFile name="logMovimientos" 
-      fileName = "C:\Users\alex2\PortalProveedores\log\activity\CurrentLog.json"
-      filePattern = "C:\Users\alex2\PortalProveedores\log\activity\%d{yyyy-MM-dd}.json"
+      fileName = "C:\PortalProveedores\log\activity\CurrentLog.json"
+      filePattern = "C:\PortalProveedores\log\activity\%d{yyyy-MM-dd}.json"
       append="true">
       <PatternLayout pattern= "{&quot; level &quot;:&quot;[%-5level]&quot;,&quot;empresa&quot;:&quot;%X{empresa}&quot;,&quot;concepto&quot;:&quot;%X{concepto}&quot;,&quot;mensaje&quot;:&quot;%msg&quot;, &quot;fecha&quot;:&quot;%d{yyyy-MM-dd HH:mm:ss.SSS}&quot;},%n"/>
             <Policies>
@@ -39,8 +39,8 @@
 	* El file que guarda los errores
 	-->
      <RollingFile name="logErrores" 
-      fileName = "C:\Users\alex2\PortalProveedores\log\error\CurrentLog.log"
-      filePattern="C:\Users\alex2\PortalProveedores\log\error\%d{yyyy-MM-dd}.log"
+      fileName = "C:\PortalProveedores\log\error\CurrentLog.log"
+      filePattern="C:\PortalProveedores\log\error\%d{yyyy-MM-dd}.log"
       append="true">
       <PatternLayout pattern= "[%-5level] - %msg - %d{yyyy-MM-dd HH:mm:ss.SSS}%n%n"/>
             <Policies>

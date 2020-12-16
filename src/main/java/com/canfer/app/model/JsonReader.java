@@ -21,7 +21,7 @@ public class JsonReader
           
         try {
         	
-        	List<File> filesInFolder = Files.walk(Paths.get("C:\\Users\\alex2\\PortalProveedores\\log\\activity"))
+        	List<File> filesInFolder = Files.walk(Paths.get("C:\\PortalProveedores\\log\\activity"))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
