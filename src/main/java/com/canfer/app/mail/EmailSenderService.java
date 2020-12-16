@@ -8,7 +8,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,8 @@ public class EmailSenderService {
     private JavaMailSender mailSender;
     @Autowired
     private TemplateEngine htmlTemplateEngine;
+    @Autowired
+    private Environment env;
     
 
 	public EmailSenderService(JavaMailSender javaMailSender) {
@@ -93,6 +97,7 @@ public class EmailSenderService {
 	        //helper.setTo(InternetAddress.parse(to));
 	        helper.setTo("yasminfemerling@gmail.com");
 	        helper.setSubject("Aviso de Pago");
+	        helper.setFrom(env.getProperty("spring.mail.username"));
 	        helper.setText("Se ha realizado el pago de una factura.");
 	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
 	        javaMailSender.send(message);
@@ -120,10 +125,9 @@ public class EmailSenderService {
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
 			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
-			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
+			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getRespuestaValidacion()+"" );
 			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
-			ctx.setVariable("tel","8181818181"); 
-			ctx.setVariable("empresa",comprobante.getEmpresaNombre()+"."); 
+			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -133,15 +137,16 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        message.setTo(InternetAddress.parse("A01039359@itesm.mx,aldelemo96@gmail.com"));
+	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
+		    
 	        javaMailSender.send(mimeMessage);
-	        
-	    } catch (MessagingException | MailException e) {
+	    } catch (MessagingException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con la confirmación de recepción del documento fiscal: "
-	        		+ comprobante.getUuid()+" .", "ERROR_CONNECTION");
+	    	Log.activity("No se pudo enviar correo a " + "to" + " con la confirmación de recepción de documento fiscal: "  
+	        		+ comprobante.getUuid() + ".", comprobante.getEmpresaNombre() ,"ERROR_CONNECTION");
 	    }
 	}
 	
@@ -164,9 +169,8 @@ public class EmailSenderService {
 			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue modificado.");
 			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
 			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
-			ctx.setVariable("comentarios","Comentarios:  "+comprobante.getComentario()+"."); 
-			ctx.setVariable("tel","8181818181"); 
-			ctx.setVariable("empresa",comprobante.getEmpresaNombre()+"."); 
+			ctx.setVariable("comentarios","Comentarios:  "+comprobante.getComentario()+".");
+			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
@@ -176,7 +180,8 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com,aldelemo96@gmail.com"));
+	        message.setTo(InternetAddress.parse("A01039359@itesm.mx"));
+	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Actualización de Documento Fiscal.");
 		    
 	        javaMailSender.send(mimeMessage);
@@ -187,4 +192,44 @@ public class EmailSenderService {
 	        		+ comprobante.getUuid() + "." ,"ERROR_CONNECTION");
 	    }
 	}
+	
+	public void sendEmailNewAccount(UsuarioProveedor usuario, String pass){
+		final String EMAIL_TEMPLATE_NAME = "emailUsuarioProv.html";
+        
+		
+		//String to = proveedor.getCorreo();
+		//List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
+				//empresaRep.findByRfc(comprobante.getRfcEmpresa()));
+		//for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
+		
+	    try {
+	        
+	        // Prepare the evaluation context
+	        final Context ctx = new Context();
+			ctx.setVariable("usuario", "Nombre de usuario: "+ usuario.getUsername());
+			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+"!");
+			ctx.setVariable("psss", "Contraseña: "+ pass);
+
+	        // Prepare message using a Spring helper
+	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+	        // Create the HTML body using Thymeleaf
+	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
+	        message.setText(htmlContent, true /* isHtml */);
+	        //helper.setTo(InternetAddress.parse(to));
+	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
+	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
+		    
+	        javaMailSender.send(mimeMessage);
+	        
+	    } catch (MessagingException | MailException e) {
+
+	        Log.falla("No se pudo enviar correo a " + "to" + " con la información del nuevo usuario proveedor: "  
+	        		+ usuario.getUsername() + "." ,"ERROR_CONNECTION");
+	    }
+	}
+	
+	
 }
