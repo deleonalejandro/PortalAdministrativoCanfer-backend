@@ -94,15 +94,14 @@ public class EmailSenderService {
 	    	
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	        
-	        //helper.setTo(InternetAddress.parse(to));
-	        helper.setTo("yasminfemerling@gmail.com");
+	        helper.setTo(InternetAddress.parse(to));
 	        helper.setSubject("Aviso de Pago");
 	        helper.setFrom(env.getProperty("spring.mail.username"));
 	        helper.setText("Se ha realizado el pago de una factura.");
 	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
 	        javaMailSender.send(message);
 	        
-	    } catch (MessagingException e) {
+	    } catch (MessagingException | MailException e) {
 
 	        Log.falla("No se pudo enviar correo a " + to + " con un aviso de pago.", "ERROR_CONNECTION");;
 	    }
@@ -115,10 +114,10 @@ public class EmailSenderService {
 		UsuarioProveedor proveedor = usuarioProvRep.findByUsername(comprobante.getRfcProveedor());
 	      
 		
-		//String to = proveedor.getCorreo();
-		//List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
-				//empresaRep.findByRfc(comprobante.getRfcEmpresa()));
-		//for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
+		String to = proveedor.getCorreo();
+		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
+				empresaRep.findByRfc(comprobante.getRfcEmpresa()));
+		for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
 		
 	    try {
 	        
@@ -136,16 +135,15 @@ public class EmailSenderService {
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
-	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("A01039359@itesm.mx,aldelemo96@gmail.com"));
+	        message.setTo(InternetAddress.parse(to));
 	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
 		    
 	        javaMailSender.send(mimeMessage);
-	    } catch (MessagingException e) {
+	    } catch (MessagingException | MailException e) {
 
-	    	Log.activity("No se pudo enviar correo a " + "to" + " con la confirmación de recepción de documento fiscal: "  
+	    	Log.activity("No se pudo enviar correo a " + to + " con la confirmación de recepción de documento fiscal: "  
 	        		+ comprobante.getUuid() + ".", comprobante.getEmpresaNombre() ,"ERROR_CONNECTION");
 	    }
 	}
@@ -157,10 +155,10 @@ public class EmailSenderService {
 		UsuarioProveedor proveedor = usuarioProvRep.findByUsername(comprobante.getRfcProveedor());
 	      
 		
-		//String to = proveedor.getCorreo();
-		//List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
-				//empresaRep.findByRfc(comprobante.getRfcEmpresa()));
-		//for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
+		String to = proveedor.getCorreo();
+		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
+				empresaRep.findByRfc(comprobante.getRfcEmpresa()));
+		for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
 		
 	    try {
 	        
@@ -179,8 +177,7 @@ public class EmailSenderService {
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
-	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("A01039359@itesm.mx"));
+	        message.setTo(InternetAddress.parse(to));
 	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Actualización de Documento Fiscal.");
 		    
@@ -188,7 +185,7 @@ public class EmailSenderService {
 	        
 	    } catch (MessagingException | MailException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con la actualización del documento fiscal: "  
+	        Log.falla("No se pudo enviar correo a " + to + " con la actualización del documento fiscal: "  
 	        		+ comprobante.getUuid() + "." ,"ERROR_CONNECTION");
 	    }
 	}
@@ -196,11 +193,6 @@ public class EmailSenderService {
 	public void sendEmailNewAccount(UsuarioProveedor usuario, String pass){
 		final String EMAIL_TEMPLATE_NAME = "emailUsuarioProv.html";
         
-		
-		//String to = proveedor.getCorreo();
-		//List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
-				//empresaRep.findByRfc(comprobante.getRfcEmpresa()));
-		//for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
 		
 	    try {
 	        
@@ -217,7 +209,6 @@ public class EmailSenderService {
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
-	        //helper.setTo(InternetAddress.parse(to));
 	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
 	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
@@ -226,7 +217,7 @@ public class EmailSenderService {
 	        
 	    } catch (MessagingException | MailException e) {
 
-	        Log.falla("No se pudo enviar correo a " + "to" + " con la información del nuevo usuario proveedor: "  
+	        Log.falla("No se pudo enviar correo a " + usuario.getCorreo() + " con la información del nuevo usuario proveedor: "  
 	        		+ usuario.getUsername() + "." ,"ERROR_CONNECTION");
 	    }
 	}
