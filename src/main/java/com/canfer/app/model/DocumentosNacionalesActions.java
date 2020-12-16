@@ -81,7 +81,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				matchFacturaWithComplemento((ComplementoPago) cfd);
 				
 			}
-			
+		
 			emailSender.sendEmailNewDoc(cfd);
 			
 			Log.activity("Se ha guardado el comprobante fiscal No." + cfd.getIdNumSap() + ". Emisor: "+ cfd.getProveedorNombre()+", UUID: "+ cfd.getUuid()+"." , cfd.getEmpresaNombre(), "NEW_DOC");
