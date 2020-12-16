@@ -134,6 +134,8 @@
 												data-target="#nuevoModal">Nuevo</button>
 											<a type="button" id="btn-csv"
 												class="btn btn-outline-danger mr-2" th:href="@{/proveedoresClient/csv(rfc=${selectedCompany},clave=${selectedClave})}" >CSV</a>
+												<a type="button" id="btn-csv"
+												class="btn btn-outline-danger mr-2" th:href="@{/proveedoresClient/xml(rfc=${selectedCompany},clave=${selectedClave})}" >XML</a>
 											<button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 											    <i class="" style="color:white" data-feather="search"></i>
 											</button>
@@ -765,8 +767,16 @@
 													            <i data-feather="user"></i>
 													        </span>
 													    </div>
-                                                    	<input style="height: 30px" class="form-control" id="nombreContacto" type="text" readonly th:value="${@environment.getProperty('contacto.nombre')}"/>
-                                               		</div>
+													    <td>
+													    	<input th:if="${selectedCompany == 'PAE920709D75'}" style="height: 30px" class="form-control" id="nombreContactoPAE" type="text" readonly th:value="${@environment.getProperty('contactoPAE.nombre')}"/>
+                                               				<input th:if="${selectedCompany == 'PFL830127PP3'}" style="height: 30px" class="form-control" id="nombreContactoPFL" type="text" readonly th:value="${@environment.getProperty('contactoPFL.nombre')}"/>
+                                               				<input th:if="${selectedCompany == 'CSO080325968'}" style="height: 30px" class="form-control" id="nombreContactoEXCELCUT" type="text" readonly th:value="${@environment.getProperty('contactoEXCELCUT.nombre')}"/>
+                                               				<input th:if="${selectedCompany == 'WHI020314BE4'}" style="height: 30px" class="form-control" id="nombreContactoWHIS" type="text" readonly th:value="${@environment.getProperty('contactoWHIS.nombre')}"/>
+                                               				<input th:if="${selectedCompany == 'SPE880430485'}" style="height: 30px" class="form-control" id="nombreContactoSDP" type="text" readonly th:value="${@environment.getProperty('contactoSDP.nombre')}"/>
+                                               				<input th:if="${selectedCompany == 'NME801205JE7'}" style="height: 30px" class="form-control" id="nombreContactoNEWLAND" type="text" readonly th:value="${@environment.getProperty('contactoNEWLAND.nombre')}"/>
+                                               				<input th:if="${selectedCompany == 'PRO070511ST2'}" style="height: 30px" class="form-control" id="nombreContactoPROFLUX" type="text" readonly th:value="${@environment.getProperty('contactoPROFLUX.nombre')}"/>
+													    </td>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="small mb-1" for="correoContacto">Correo</label>
@@ -776,7 +786,15 @@
 													            <i data-feather="mail"></i>
 													        </span>
 													    </div>
-                                                    	<input style="height: 30px;" class="form-control" id="telefonoContacto" type="text" readonly th:value="${@environment.getProperty('contacto.correo')}"/>
+													    <td>
+														    <input th:if="${selectedCompany == 'PAE920709D75'}" style="height: 30px;" class="form-control" id="telefonoContactoPAE" type="text" readonly th:value="${@environment.getProperty('contactoPAE.correo')}"/>
+														    <input th:if="${selectedCompany == 'PFL830127PP3'}" style="height: 30px;" class="form-control" id="telefonoContactoPFL" type="text" readonly th:value="${@environment.getProperty('contactoPFL.correo')}"/>
+														    <input th:if="${selectedCompany == 'CSO080325968'}" style="height: 30px;" class="form-control" id="telefonoContactoEXCELCUT" type="text" readonly th:value="${@environment.getProperty('contactoEXCELCUT.correo')}"/>
+														    <input th:if="${selectedCompany == 'WHI020314BE4'}" style="height: 30px;" class="form-control" id="telefonoContactoWHIS" type="text" readonly th:value="${@environment.getProperty('contactoWHIS.correo')}"/>
+														    <input th:if="${selectedCompany == 'SPE880430485'}" style="height: 30px;" class="form-control" id="telefonoContactoSDP" type="text" readonly th:value="${@environment.getProperty('contactoSDP.correo')}"/>
+														    <input th:if="${selectedCompany == 'NME801205JE7'}" style="height: 30px;" class="form-control" id="telefonoContactoNEWLAND" type="text" readonly th:value="${@environment.getProperty('contactoNEWLAND.correo')}"/>
+														    <input th:if="${selectedCompany == 'PRO070511ST2'}" style="height: 30px;" class="form-control" id="telefonoContactoPROFLUX" type="text" readonly th:value="${@environment.getProperty('contactoPROFLUX.correo')}"/>
+														</td>
                                                		</div>
                                                 </div>
                                                 <div class="form-group">
@@ -787,8 +805,16 @@
 													            <i data-feather="phone"></i>
 													        </span>
 													    </div>
-                                                   		 <input style="height: 30px;" class="form-control" id="correoContacto" type="text" readonly th:value="${@environment.getProperty('contacto.telefono')}" />
-                                               		</div>
+													    <td>
+													    	<input th:if="${selectedCompany == 'PAE920709D75'}" style="height: 30px;" class="form-control" id="correoContactoPAE" type="text" readonly th:value="${@environment.getProperty('contactoPAE.telefono')}" />
+                                               				<input th:if="${selectedCompany == 'PFL830127PP3'}" style="height: 30px;" class="form-control" id="correoContactoPFL" type="text" readonly th:value="${@environment.getProperty('contactoPFL.telefono')}" />
+                                               				<input th:if="${selectedCompany == 'CSO080325968'}" style="height: 30px;" class="form-control" id="correoContactoEXCELCUT" type="text" readonly th:value="${@environment.getProperty('contactoEXCELCUT.telefono')}" />
+                                               				<input th:if="${selectedCompany == 'WHI020314BE4'}" style="height: 30px;" class="form-control" id="correoContactoWHIS" type="text" readonly th:value="${@environment.getProperty('contactoWHIS.telefono')}" />
+                                               				<input th:if="${selectedCompany == 'SPE880430485'}" style="height: 30px;" class="form-control" id="correoContactoSDP" type="text" readonly th:value="${@environment.getProperty('contactoSDP.telefono')}" />
+                                               				<input th:if="${selectedCompany == 'NME801205JE7'}" style="height: 30px;" class="form-control" id="correoContactoNEWLAND" type="text" readonly th:value="${@environment.getProperty('contactoNEWLAND.telefono')}" />
+                                               				<input th:if="${selectedCompany == 'PRO070511ST2'}" style="height: 30px;" class="form-control" id="correoContactoPROFLUX" type="text" readonly th:value="${@environment.getProperty('contactoPROFLUX.telefono')}" />
+													    </td>
+                                                   	</div>
                                                 </div>
 			                             </div>
 									</div>

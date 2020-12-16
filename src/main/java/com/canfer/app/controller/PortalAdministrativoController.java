@@ -73,13 +73,6 @@ public class PortalAdministrativoController {
 			return "redirect:/dashboard";
 		}
 
-		
-		
-		/*
-		//create cookie
-		Cookie empresaCookie = new Cookie("empresa", idEmpresa);
-		//add cookie
-		response.addCookie(empresaCookie);*/
 	}
 	
 	@GetMapping(value = "/dashboard")

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
@@ -35,6 +35,9 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	private ExcelService xlsService; 
 	@Autowired
 	private Downloader downloader;
+
+	@Autowired
+	private EmailSenderService emailSender; 
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
@@ -352,6 +355,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				
 				if(comprobante.get().actualizar(documento, proveedor)) {
 					
+					emailSender.sendEmailUpdateDoc(comprobante.get());
 					superRepo.save(comprobante.get());
 					
 					return true;

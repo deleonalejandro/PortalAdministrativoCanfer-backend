@@ -1,27 +1,112 @@
 {"properties": [
   {
-    "name": "telefono.contacto",
-    "type": "java.lang.String",
-    "description": "A description for 'telefono.contacto'"
-  },
-  {
-    "name": "contacto.telefono",
-    "type": "java.lang.String",
-    "description": "A description for 'contacto.telefono'"
-  },
-  {
-    "name": "contacto.nombre",
-    "type": "java.lang.String",
-    "description": "A description for 'contacto.nombre'"
-  },
-  {
-    "name": "contacto.correo",
-    "type": "java.lang.String",
-    "description": "A description for 'contacto.correo'"
-  },
-  {
     "name": "app.version",
     "type": "java.lang.String",
     "description": "A description for 'app.version'"
+  },
+  {
+    "name": "contactoPAE.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPAE.telefono'"
+  },
+  {
+    "name": "contactoPAE.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPAE.correo'"
+  },
+  {
+    "name": "contactoPAE.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPAE.nombre'"
+  },
+  {
+    "name": "contactoPFL.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPFL.telefono'"
+  },
+  {
+    "name": "contactoEXCELCUT.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoEXCELCUT.telefono'"
+  },
+  {
+    "name": "contactoEXCELCUT.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoEXCELCUT.nombre'"
+  },
+  {
+    "name": "contactoEXCELCUT.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoEXCELCUT.correo'"
+  },
+  {
+    "name": "contactoPFL.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPFL.nombre'"
+  },
+  {
+    "name": "contactoPFL.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPFL.correo'"
+  },
+  {
+    "name": "contactoWHIS.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoWHIS.telefono'"
+  },
+  {
+    "name": "contactoWHIS.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoWHIS.nombre'"
+  },
+  {
+    "name": "contactoWHIS.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoWHIS.correo'"
+  },
+  {
+    "name": "contactoSDP.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoSDP.telefono'"
+  },
+  {
+    "name": "contactoSDP.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoSDP.nombre'"
+  },
+  {
+    "name": "contactoSDP.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoSDP.correo'"
+  },
+  {
+    "name": "contactoNEWLAND.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoNEWLAND.telefono'"
+  },
+  {
+    "name": "contactoNEWLAND.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoNEWLAND.nombre'"
+  },
+  {
+    "name": "contactoNEWLAND.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoNEWLAND.correo'"
+  },
+  {
+    "name": "contactoPROFLUX.telefono",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPROFLUX.telefono'"
+  },
+  {
+    "name": "contactoPROFLUX.nombre",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPROFLUX.nombre'"
+  },
+  {
+    "name": "contactoPROFLUX.correo",
+    "type": "java.lang.String",
+    "description": "A description for 'contactoPROFLUX.correo'"
   }
 ]}

@@ -11,6 +11,7 @@ import com.canfer.app.model.Archivo;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal;
 
+import jxl.CellView;
 import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Colour;
@@ -47,6 +48,7 @@ public class ExcelService {
     	  = new WritableFont(WritableFont.ARIAL, 13, WritableFont.BOLD);
     	headerFormatC.setFont(fontc);
     	headerFormatC.setWrap(true);
+    	headerFormatC.setBackground(Colour.GOLD);
 
     	Label headerLabelc = new Label(0, 0, "Reporte Documentos Fiscales", headerFormatC);
     	sheet.setColumnView(0, 60);
@@ -105,7 +107,12 @@ public class ExcelService {
     	
     	headerLabel = new Label(15, 1, "Comentario", headerFormat);
     	sheet.addCell(headerLabel);
-
+    	
+    	for (int c = 0; c < 15; c++) {
+    		  CellView cell = sheet.getColumnView(c);
+    		  cell.setAutosize(true);
+    		  sheet.setColumnView(c, cell);
+    		 }
     	
     	WritableCellFormat cellFormatWrap = new WritableCellFormat();
     	cellFormatWrap.setWrap(true);
@@ -163,7 +170,7 @@ public class ExcelService {
     	
     	cell = new Label(15, count, cfd.getComentario(), cellFormatWrap);
     	sheet.addCell(cell);
-    	
+    
     	count = count+ 1; 
     	
     	}

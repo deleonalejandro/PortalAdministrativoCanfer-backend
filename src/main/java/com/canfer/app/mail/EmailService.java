@@ -221,7 +221,7 @@ public class EmailService {
 
 				// get message content
 				multipart = (Multipart) msg.getContent();
-
+				
 				for (int j = 0; j < multipart.getCount(); j++) {
 
 					bodyPart = multipart.getBodyPart(j);
@@ -242,7 +242,7 @@ public class EmailService {
 
 				}
 
-			} catch (MessagingException e) {
+			} catch (MessagingException | ClassCastException  e) {
 				Log.falla("Ocurrió un error durante la lectura del mensaje de correo.", "ERROR_FILE");
 				e.printStackTrace();
 			} catch (IOException e) {
