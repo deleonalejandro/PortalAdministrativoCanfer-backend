@@ -1,5 +1,6 @@
 package com.canfer.app.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -183,7 +184,7 @@ public class ComprobanteStorageService implements StorageService {
 	
 	public Archivo storeZipAttachment(InputStream is, ZipEntry ze) throws MessagingException {
 		
-		String filename = ze.getName();
+		String filename = new File(ze.getName()).getName();
 		Path fileLocation = this.entriesEmailLocation.resolve(filename);
 		String extension = FilenameUtils.getExtension(filename);
 
