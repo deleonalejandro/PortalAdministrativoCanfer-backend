@@ -127,8 +127,7 @@ public class EmailSenderService {
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
-	        //message.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("a01039359@itesm.mx"));
+	        message.setTo(InternetAddress.parse(to));
 	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
