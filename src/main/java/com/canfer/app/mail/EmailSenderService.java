@@ -3,6 +3,8 @@ package com.canfer.app.mail;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -20,11 +22,13 @@ import org.thymeleaf.context.Context;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Pago;
+import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioCanferRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
+import com.canfer.app.service.RepositoryService;
 
 /**
  * 
@@ -49,6 +53,8 @@ public class EmailSenderService {
 	private UsuarioProveedorRepository usuarioProvRep; 
 	@Autowired
 	private EmpresaRepository empresaRep; 
+	@Autowired
+	private RepositoryService superRepo; 
 	
     @Autowired
     private JavaMailSender mailSender;
@@ -111,10 +117,10 @@ public class EmailSenderService {
 		final String EMAIL_TEMPLATE_NAME = "emailNewDoc.html";
         
 		//Obtener correo de contadores y de proveedor
-		UsuarioProveedor proveedor = usuarioProvRep.findByUsername(comprobante.getRfcProveedor());
+		Optional<Proveedor> proveedor = superRepo.findProveedorByEmpresaAndClaveProv(comprobante.getEmpresa(), comprobante.getProveedorClaveProv());
 	      
 		
-		String to = proveedor.getCorreo();
+		String to = proveedor.get().getCorreo();
 		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
 				empresaRep.findByRfc(comprobante.getRfcEmpresa()));
 		for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
@@ -135,7 +141,8 @@ public class EmailSenderService {
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
-	        message.setTo(InternetAddress.parse(to));
+	        //message.setTo(InternetAddress.parse(to));
+	        message.setTo(InternetAddress.parse("a01039359@itesm.mx"));
 	        message.setFrom(env.getProperty("spring.mail.username"));
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
@@ -152,10 +159,10 @@ public class EmailSenderService {
 		final String EMAIL_TEMPLATE_NAME = "emailUpdateDoc.html";
         
 		//Obtener correo de contadores y de proveedor
-		UsuarioProveedor proveedor = usuarioProvRep.findByUsername(comprobante.getRfcProveedor());
+		Optional<Proveedor> proveedor = superRepo.findProveedorByEmpresaAndClaveProv(comprobante.getEmpresa(), comprobante.getProveedorClaveProv());
 	      
 		
-		String to = proveedor.getCorreo();
+		String to = proveedor.get().getCorreo();
 		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
 				empresaRep.findByRfc(comprobante.getRfcEmpresa()));
 		for(UsuarioCanfer contador:contadores) {to=to+","+contador.getCorreo();}
