@@ -49,8 +49,8 @@ public class CrystalReportService {
 		Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 		
 		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
-		String EXPORT_FILE = "C:\\Users\\alex2\\PortalProveedores\\ExportedPDFs";
-		String path = EXPORT_FILE + File.separator + empresa.getRfc() + File.separator + pago + ".pdf";
+		String EXPORT_FILE = "C:\\Users\\aadministrador\\PortalProveedores\\ExportedPDFs";
+		String path = EXPORT_FILE + File.separator + empresa.getRfc() + File.separator + pago.getIdNumPago() + ".pdf";
 		
 		
 		try {
@@ -99,7 +99,7 @@ public class CrystalReportService {
 			
 			//Guardamos el Crystal
 			
- 			ArchivoPDF archivo = new ArchivoPDF(EXPORT_FILE,"pdf", REPORT_NAME);
+ 			ArchivoPDF archivo = new ArchivoPDF(path,"pdf", pago.getIdNumPago() + ".pdf");
  			archivoRepository.save(archivo);
  			
  			Documento doc = pago.getDocumento();

@@ -220,6 +220,14 @@ public class EmailService {
 			try {
 
 				// get message content
+				if (msg.getContent() instanceof String)  
+				{  
+					continue;
+				}  
+				else if (msg.getContent() instanceof Multipart)  
+				{  
+				   
+				
 				multipart = (Multipart) msg.getContent();
 				
 				for (int j = 0; j < multipart.getCount(); j++) {
@@ -240,6 +248,7 @@ public class EmailService {
 						bodyParts.add(bodyPart);
 					}
 
+				   }
 				}
 
 			} catch (MessagingException | ClassCastException  e) {
