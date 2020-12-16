@@ -132,12 +132,12 @@
 
 
 			<!-- CONFIGURACIONES -->
-			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
-				class="btn btn-icon btn-transparent-dark dropdown-toggle"
-				id="navbarDropdownMessages" href="/admin/cpanel" role="button"
-				aria-haspopup="true" aria-expanded="false"><i
-					data-feather=settings></i></a>
-			</li>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                <li class="nav-item dropdown no-caret mr-3 d-md-inline">
+                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="/admin/cpanel" role="button" aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a>
+                </li>
+			</div>
+			
 			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownUserImage" href="javascript:void(0);"
