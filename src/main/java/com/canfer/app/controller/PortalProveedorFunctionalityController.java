@@ -1,6 +1,5 @@
 package com.canfer.app.controller;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,7 +42,7 @@ public class PortalProveedorFunctionalityController {
 	
 	@PostMapping("/uploadFactura")
 	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc, 
-			@RequestParam String clv, RedirectAttributes ra) {
+			@RequestParam("clave") String clv, RedirectAttributes ra) {
 		
 		// initializing directories
 		storageService.init();
@@ -66,10 +65,10 @@ public class PortalProveedorFunctionalityController {
 			
 			// La empresa o el proveedor no se encuentran en el catalogo
 			Log.activity("Error al intentar guardar factura: " + fileXML.toCfdi().getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-			ra.addFlashAttribute("upload", true);
+			ra.addFlashAttribute("upload", false);
 		} 
 		
-		return "redirect:/proveedoresClient?rfc=" + rfc + "&clave=" + clv;
+		return "redirect:/proveedoresClient?rfc=" + rfc + "&clv=" + clv;
 		
 	}
 	
