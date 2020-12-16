@@ -1075,34 +1075,50 @@
 											</tr>
 										</tfoot>
 									</table>
+									
+									
+									
+									<!-- TOAST PARA REFRESH DE SAT -->
+										<div class="toast" role="alert" id="toastSAT" data-autohide="true"
+											data-delay="4000"
+											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+											aria-live="assertive" aria-atomic="true">
+											<div class="toast-header bg-primary text-white">
+												<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
+													de Estatus de Vigencia</strong> <small class="text-white-50 ml-2">Ahora</small>
+											</div>
+											<div class="toast-body">Se procesó la petición ante el SAT.</div>
+										</div>
+										<!-- TOAST PARA UPLOAD -->
+										<div class="toast" role="alert" id="toastUploadtrue" data-autohide=true
+											data-delay="3000"
+											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+											aria-live="assertive" aria-atomic="true">
+											<div class="toast-header bg-success text-white">
+												<i data-feather="check-circle"></i> <strong class="mr-auto">Nuevo
+													Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
+											</div>
+											<div class="toast-body">Carga de documento fiscal exitosa.</div>
+										</div>
+										<!-- TOAST PARA UPLOAD FALSE -->
+										<div class="toast" role="alert" id="toastUploadfalse" data-autohide=true
+											data-delay="3000"
+											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+											aria-live="assertive" aria-atomic="true">
+											<div class="toast-header bg-danger text-white">
+												<i data-feather="x-circle"></i> <strong class="mr-auto">Nuevo
+													Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
+											</div>
+											<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
+										</div>
+			
 								</div>
 							</div>
 						</div>
 
+			
 					</div>
 				</div>
-			</div>
-			<!-- TOAST PARA REFRESH DE SAT -->
-			<div class="toast" role="alert" id="toastSAT" data-autohide="true"
-				data-delay="4000"
-				style="z-index: 7000; position: absolute; bottom: .5rem; right: .5rem;"
-				aria-live="assertive" aria-atomic="true">
-				<div class="toast-header bg-primary text-white">
-					<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
-						de Estatus de Vigencia</strong> <small class="text-white-50 ml-2">Ahora</small>
-				</div>
-				<div class="toast-body">Se procesó la petición ante el SAT.</div>
-			</div>
-			<!-- TOAST PARA UPLOAD -->
-			<div class="toast" role="alert" id="toastUpload" data-autohide=true
-				data-delay="3000"
-				style="z-index: 7000; position: absolute; bottom: .6rem; right: .6rem;"
-				aria-live="assertive" aria-atomic="true">
-				<div class="toast-header bg-primary text-white">
-					<i data-feather="alert-circle"></i> <strong class="mr-auto">Nuevo
-						Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-				</div>
-				<div class="toast-body">Carga de documento fiscal exitosa.</div>
 			</div>
 
 		</main>

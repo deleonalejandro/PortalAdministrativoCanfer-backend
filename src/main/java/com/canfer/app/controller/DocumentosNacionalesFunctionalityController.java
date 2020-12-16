@@ -56,8 +56,8 @@ public class DocumentosNacionalesFunctionalityController {
 			
 		try {
 			
-			actioner.upload(fileXML, filePDF);
-			ra.addFlashAttribute("upload", true);
+			boolean value = actioner.upload(fileXML, filePDF);
+			ra.addFlashAttribute("upload", value);
 			
 		} catch (NotFoundException e) {
 			

@@ -734,7 +734,11 @@
 			});
 			 
 			  if($("#upload").text() == 'true') {
-		          $('#toastUpload').toast('show')
+		          $('#toastUploadtrue').toast('show')
+		     }
+
+			if($("#upload").text() == 'false') {
+		          $('#toastUploadfalse').toast('show')
 		     }
 				
 	});
