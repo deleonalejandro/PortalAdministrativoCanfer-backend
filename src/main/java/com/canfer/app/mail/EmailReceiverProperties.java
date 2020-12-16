@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 @PropertySource("classpath:mail.properties")
 @ConfigurationProperties
 @Validated
-public class EmailProperties {
+public class EmailReceiverProperties {
 
 	// server properties
     private String hostname;
@@ -19,6 +19,7 @@ public class EmailProperties {
     // account properties
     private String email;
     private String password;
+    
     
     
 	public String getHostname() {
