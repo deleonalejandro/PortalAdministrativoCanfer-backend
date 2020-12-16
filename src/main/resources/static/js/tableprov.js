@@ -450,8 +450,8 @@
 			});
 			
 			//Checar si necesita el Toast de Upload
-				if($("#upload").text() == true) {
-		            $('#toastSAT').toast('show')
+				if($("#upload").text() == 'true') {
+		            $('#toastUpload').toast('show')
 		     	}
 		      
 				

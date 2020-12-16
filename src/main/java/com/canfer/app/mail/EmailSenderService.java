@@ -133,7 +133,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        message.setTo("yas.ale@hotmail.com");
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
 	        javaMailSender.send(mimeMessage);
@@ -176,7 +176,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com,aldelemo96@gmail.com"));
+	        message.setTo("yas.ale@hotmail.com");
 	        message.setSubject("Actualización de Documento Fiscal.");
 		    
 	        javaMailSender.send(mimeMessage);
