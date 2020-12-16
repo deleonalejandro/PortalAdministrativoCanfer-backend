@@ -144,7 +144,8 @@
 							<div class="alert alert-danger" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
 							<div class="alert alert-danger" role="alert" th:text="${UserNotFoundMessage}" th:if="${UserNotFoundMessage}"></div>
 							<div class="card-header">
-								<a th:href="@{addUser}" class="btn btn-primary">Añadir</a>
+								<a th:href="@{addUser}" class="btn btn-primary">Añadir Usuario</a>
+								<a th:href="@{/registerSupplier}" class="btn btn-primary">Añadir Usuario Proveedor</a>
 							</div>
 							<div class="card-body">
 								<div class="datatable">

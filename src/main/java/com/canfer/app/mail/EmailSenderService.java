@@ -10,10 +10,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -27,7 +27,6 @@ import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioCanferRepository;
-import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.service.RepositoryService;
 
 /**
@@ -44,31 +43,18 @@ public class EmailSenderService {
 	// ==============
 	// PRIVATE FIELDS
 	// ==============
-	
-	@Autowired
-    private JavaMailSender javaMailSender;
+
 	@Autowired
 	private UsuarioCanferRepository usuarioCanferRep; 
-	@Autowired
-	private UsuarioProveedorRepository usuarioProvRep; 
 	@Autowired
 	private EmpresaRepository empresaRep; 
 	@Autowired
 	private RepositoryService superRepo; 
-	
-    @Autowired
-    private JavaMailSender mailSender;
     @Autowired
     private TemplateEngine htmlTemplateEngine;
     @Autowired
-    private Environment env;
+    private EmailSenderProperties emailSenderProperties;
     
-
-	public EmailSenderService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
-
-	
 	// ==============
 	// PUBLIC METHODS
 	// ==============
@@ -94,7 +80,7 @@ public class EmailSenderService {
 			
 		}
 		
-	    MimeMessage message = javaMailSender.createMimeMessage();
+	    MimeMessage message = emailSenderProperties.createMimeMessage();
 	    
 	    try {
 	    	
@@ -102,10 +88,10 @@ public class EmailSenderService {
 	        
 	        helper.setTo(InternetAddress.parse(to));
 	        helper.setSubject("Aviso de Pago");
-	        helper.setFrom(env.getProperty("spring.mail.username"));
+	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setText("Se ha realizado el pago de una factura.");
 	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
-	        javaMailSender.send(message);
+	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {
 
@@ -135,7 +121,7 @@ public class EmailSenderService {
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
 
 	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
 	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
@@ -143,12 +129,13 @@ public class EmailSenderService {
 	        message.setText(htmlContent, true /* isHtml */);
 	        //message.setTo(InternetAddress.parse(to));
 	        message.setTo(InternetAddress.parse("a01039359@itesm.mx"));
-	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
-		    
-	        javaMailSender.send(mimeMessage);
-	    } catch (MessagingException | MailException e) {
+		   
+	        emailSenderProperties.send(mimeMessage);
+	        
+	    } catch (MessagingException e) {
 
 	    	Log.activity("No se pudo enviar correo a " + to + " con la confirmación de recepción de documento fiscal: "  
 	        		+ comprobante.getUuid() + ".", comprobante.getEmpresaNombre() ,"ERROR_CONNECTION");
@@ -178,17 +165,17 @@ public class EmailSenderService {
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
 
 	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
 	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        message.setTo(InternetAddress.parse(to));
-	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Actualización de Documento Fiscal.");
 		    
-	        javaMailSender.send(mimeMessage);
+	        emailSenderProperties.send(mimeMessage);
 	        
 	    } catch (MessagingException | MailException e) {
 
@@ -210,17 +197,17 @@ public class EmailSenderService {
 			ctx.setVariable("psss", "Contraseña: "+ pass);
 
 	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
 	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
-	        message.setFrom(env.getProperty("spring.mail.username"));
+	        message.setFrom(emailSenderProperties.getUsername());
 	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
 		    
-	        javaMailSender.send(mimeMessage);
+	        emailSenderProperties.send(mimeMessage);
 	        
 	    } catch (MessagingException | MailException e) {
 

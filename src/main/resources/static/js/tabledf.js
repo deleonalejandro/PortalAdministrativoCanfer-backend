@@ -36,7 +36,6 @@
 			myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 			myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 			
-			alert(myUrlWithParams.href);
 			
 			return myUrlWithParams.href;
 
@@ -331,8 +330,6 @@
 					table.ajax.url(myUrlWithParams.href).load();
 				}
 				
-				 
-				alert(myUrlWithParams.href);
 		
 			});
 			

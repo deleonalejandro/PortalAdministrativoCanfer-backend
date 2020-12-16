@@ -25,19 +25,8 @@ public class EmailReceiver {
 	@Autowired
 	private EmailService emailService;
 	
-	private final String protocol;
-	private final String host;
-	private final String port;
-	private final String userName;
-	private final String password;
-	
-	public EmailReceiver(EmailProperties mailProperties) {
-		this.protocol = mailProperties.getReceiveProtocol();
-		this.host = mailProperties.getHostname();
-		this.port = mailProperties.getPort();
-		this.userName = mailProperties.getEmail();
-		this.password = mailProperties.getPassword();
-	}
+	@Autowired
+	private EmailReceiverProperties emailReceiver;
 
 	@Async
 	public void downloadEmails() {
@@ -51,8 +40,8 @@ public class EmailReceiver {
 			Session session = Session.getDefaultInstance(properties);
 
 			// connects to the message store
-			Store store = session.getStore(protocol);
-			store.connect(userName, password);
+			Store store = session.getStore(emailReceiver.getReceiveProtocol());
+			store.connect(emailReceiver.getEmail(), emailReceiver.getPassword());
 
 			// opens the inbox folder
 			Folder folderInbox = store.getFolder("INBOX");
@@ -73,7 +62,7 @@ public class EmailReceiver {
             
 
 		} catch (NoSuchProviderException ex) {
-			Log.falla("No hay proveedor de correo para el protocolo: " + protocol, "ERROR_CONNECTION");
+			Log.falla("No hay proveedor de correo para el protocolo: " + emailReceiver.getReceiveProtocol(), "ERROR_CONNECTION");
 
 		} catch (MessagingException ex) {
 			Log.falla("No se pudo conectar al servicio de mensajería", "ERROR_CONNECTION");
@@ -89,14 +78,14 @@ public class EmailReceiver {
 		Properties properties = new Properties();
 
 		// server setting
-		properties.put(String.format("mail.%s.host", protocol), host);
-		properties.put(String.format("mail.%s.port", protocol), port);
+		properties.put(String.format("mail.%s.host", emailReceiver.getReceiveProtocol()), emailReceiver.getHostname());
+		properties.put(String.format("mail.%s.port", emailReceiver.getReceiveProtocol()), emailReceiver.getPort());
 
 		// SSL setting
-		properties.setProperty(String.format("mail.%s.socketFactory.class", protocol),
+		properties.setProperty(String.format("mail.%s.socketFactory.class", emailReceiver.getReceiveProtocol()),
 				"javax.net.ssl.SSLSocketFactory");
-		properties.setProperty(String.format("mail.%s.socketFactory.fallback", protocol), "false");
-		properties.setProperty(String.format("mail.%s.socketFactory.port", protocol), String.valueOf(port));
+		properties.setProperty(String.format("mail.%s.socketFactory.fallback", emailReceiver.getReceiveProtocol()), "false");
+		properties.setProperty(String.format("mail.%s.socketFactory.port", emailReceiver.getReceiveProtocol()), String.valueOf(emailReceiver.getPort()));
 
 		return properties;
 	}

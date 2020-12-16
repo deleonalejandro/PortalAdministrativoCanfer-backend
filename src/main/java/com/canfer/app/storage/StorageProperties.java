@@ -4,11 +4,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@ConfigurationProperties("storage")
-@Component
+@Configuration
+@ConfigurationProperties(prefix = "storage")
 public class StorageProperties {
+	
+	private String facturas;
+	private String entries;
+	private String entry;
+	private String error;
+	private String download;
+	private String logo;
+	private String crystal;
+	private String qr;
+	private String payments;
+	private String log;
 
 	/**
 	 * Folder location for storing files
@@ -18,7 +29,6 @@ public class StorageProperties {
 	private Path entriesLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Entradas");
 	private Path entryPortalLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Entries");
 	private Path errorLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Error");
-	private Path okLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "OK");
 	private Path downloadLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "Descargas");
 	private Path logoLocation = Paths.get(System.getProperty("user.home"), "PortalProveedores", "logos");
 	
@@ -40,12 +50,6 @@ public class StorageProperties {
 	public void setErrorLocation(Path errorLocation) {
 		this.errorLocation = errorLocation;
 	}
-	public Path getOkLocation() {
-		return okLocation;
-	}
-	public void setOkLocation(Path okLocation) {
-		this.okLocation = okLocation;
-	}
 	public Path getDownloadLocation() {
 		return downloadLocation;
 	}
@@ -64,6 +68,67 @@ public class StorageProperties {
 	public void setEntryPortalLocation(Path entryPortalLocation) {
 		this.entryPortalLocation = entryPortalLocation;
 	}
+	public String getFacturas() {
+		return facturas;
+	}
+	public void setFacturas(String facturas) {
+		this.facturas = facturas;
+	}
+	public String getEntries() {
+		return entries;
+	}
+	public void setEntries(String entries) {
+		this.entries = entries;
+	}
+	public String getEntry() {
+		return entry;
+	}
+	public void setEntry(String entry) {
+		this.entry = entry;
+	}
+	public String getError() {
+		return error;
+	}
+	public void setError(String error) {
+		this.error = error;
+	}
+	public String getDownload() {
+		return download;
+	}
+	public void setDownload(String download) {
+		this.download = download;
+	}
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	public String getCrystal() {
+		return crystal;
+	}
+	public void setCrystal(String crystal) {
+		this.crystal = crystal;
+	}
+	public String getQr() {
+		return qr;
+	}
+	public void setQr(String qr) {
+		this.qr = qr;
+	}
+	public String getPayments() {
+		return payments;
+	}
+	public void setPayments(String payments) {
+		this.payments = payments;
+	}
+	public String getLog() {
+		return log;
+	}
+	public void setLog(String log) {
+		this.log = log;
+	}
+	
 	
 	
 	

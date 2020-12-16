@@ -108,5 +108,50 @@
     "name": "contactoPROFLUX.correo",
     "type": "java.lang.String",
     "description": "A description for 'contactoPROFLUX.correo'"
+  },
+  {
+    "name": "storage.logo",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.logoLocation'"
+  },
+  {
+    "name": "storage.download",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.downloadLocation'"
+  },
+  {
+    "name": "storage.entry",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.entryLocation'"
+  },
+  {
+    "name": "storage.entries",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.entriesLocation'"
+  },
+  {
+    "name": "storage.facturas",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.facturasLocation'"
+  },
+  {
+    "name": "storage.error",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.errorLocation'"
+  },
+  {
+    "name": "storage.qr",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.qr'"
+  },
+  {
+    "name": "storage.crystal",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.crystal'"
+  },
+  {
+    "name": "storage.payments",
+    "type": "java.lang.String",
+    "description": "A description for 'storage.payments'"
   }
 ]}
