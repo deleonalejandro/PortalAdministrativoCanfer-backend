@@ -123,7 +123,6 @@ public class EmailSenderService {
 			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
 			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
 			ctx.setVariable("tel","8181818181"); 
-			ctx.setVariable("correo","canfer@canfer.com"); 
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()+"."); 
 
 	        // Prepare message using a Spring helper
@@ -134,7 +133,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        message.setText(htmlContent, true /* isHtml */);
 	        //helper.setTo(InternetAddress.parse(to));
-	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com,aldelemo96@gmail.com"));
+	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
 	        message.setSubject("Recepción de Documento Fiscal.");
 			
 	        javaMailSender.send(mimeMessage);
@@ -167,7 +166,6 @@ public class EmailSenderService {
 			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
 			ctx.setVariable("comentarios","Comentarios:  "+comprobante.getComentario()+"."); 
 			ctx.setVariable("tel","8181818181"); 
-			ctx.setVariable("correo","canfer@canfer.com"); 
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()+"."); 
 
 	        // Prepare message using a Spring helper
