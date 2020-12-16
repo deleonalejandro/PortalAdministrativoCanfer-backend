@@ -11,6 +11,7 @@ public class EmailThread implements Runnable {
 	@Autowired
 	private EmailReceiver emailReceiver;
 	private boolean doStop = false;
+	private boolean checkingMail = true;
 	
 	
 	public EmailThread() {
@@ -20,33 +21,55 @@ public class EmailThread implements Runnable {
     public synchronized void doStop() {
         this.doStop = true;
     }
-
+    
     private synchronized boolean keepRunning() {
         return this.doStop == false;
     }
+    
+    public synchronized boolean getStatus() {
+    	return this.checkingMail;
+    }
+    
+    public synchronized void stopCheckingMail() {
+    	this.checkingMail = false;
+    }
+    
+    public synchronized void runCheckingMail() {
+    	this.checkingMail = true;
+    }
 	
-
 	@Override
 	public void run() {
 		// Checking email every 5 minutes.
 		while (keepRunning()) {
-			
-			// Thread running externally
-			System.out.println("Llamare al metodo");
-			emailReceiver.downloadEmails();
-			
+
+			if (checkingMail) {
+
+				// Thread running externally
+				System.out.println("Llamare al metodo");
+				emailReceiver.downloadEmails();
+
+			} else {
+				
+				// Thread running externally
+				System.out.println("Estoy detenido, no llamare al metodo");
+
+			}
+
 			try {
+				
 				System.out.println("Thread running... ya me fui a dormir");
-                Thread.sleep(60L * 1000L);
-            } catch (InterruptedException e) {
-            	System.out.println("Se interrumpio el thread");
-                e.printStackTrace();
-                Log.falla("Se interrumpió el thread del E-mail.", "ERROR_CONNECTION");
-                // Restore interrupted state...
-                Thread.currentThread().interrupt();
-            }
-			
+				Thread.sleep(60L * 1000L);
+				
+			} catch (InterruptedException e) {
+				System.out.println("Se interrumpio el thread");
+				e.printStackTrace();
+				Log.falla("Se interrumpió el thread del E-mail.", "ERROR_CONNECTION");
+				// Restore interrupted state...
+				Thread.currentThread().interrupt();
+			}
+
 		}
-		
+
 	}
-  }
+}

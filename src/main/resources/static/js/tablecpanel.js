@@ -1,11 +1,11 @@
-
-        //Tabla 
-		
-		
-		 
+$(document).ready(function () {
+	
+	
 		  //Tabla de Log
 		  var table3 = $('#logMov').DataTable({
 					
+					lengthChange:false,
+					searching:false,
 					ajax: {
 		            url: "/catalogsAPI/log",
 					dataSrc:""
@@ -16,14 +16,14 @@
 			        },
 			        "columns": [
 			          { data: "fecha",
-						width: '10%',
+						width: '15%',
 		                    "render": function(data) {
 		                       var string = data.split(' ')
 		                       return string[0]
 						     }
 						},
 						{ data : "empresa" ,
-							width: '25%',},
+							width: '20%',},
 		                { data : "concepto",
 							width: '5%',
 		                "render": function(data) {
@@ -49,7 +49,7 @@
 		                      
 		                      } else if (data == "NEW_USER"){
 		                      
-		                       return '<i style="color:purple" data-feather="user-plus"></i><script> feather.replace()</script>';
+		                       return '<i style="color:green" data-feather="user-plus"></i><script> feather.replace()</script>';
 		                      
 		                      } else if (data == "ERROR_STORAGE"){
 		                      
@@ -94,5 +94,11 @@
 		             ],
 					 "order": [[ 0, "desc" ], [ 4, "desc" ]]
 		 });
- 			
+	
+	
+	
+});
+	
+		 
+
 		

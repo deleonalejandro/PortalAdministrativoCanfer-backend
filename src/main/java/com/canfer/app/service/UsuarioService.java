@@ -1,5 +1,7 @@
 package com.canfer.app.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -101,6 +103,11 @@ public class UsuarioService {
 		testProveedor = usuarioProveedorRepository.findByUsername(user.getUsername());
 		proveedoresList = proveedorRepository.findAllByRfcAndBitActivo(user.getRfc(), true);
 
+		if (testProveedor != null) {
+			throw new EntityExistsException("El nombre de usuario ya existe. Escoge uno diferente.");
+			
+		}
+		
 		if (proveedoresList.isEmpty()) {
 			throw new NotFoundException("El RFC para registrar la cuenta no es valido.");
 		}

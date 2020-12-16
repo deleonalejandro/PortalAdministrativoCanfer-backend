@@ -12,6 +12,7 @@ public class DBThread implements Runnable {
 	@Autowired
 	private DbObserver dbObserver;
 	private boolean doStop = true;
+	private boolean syncPayments;
 	
 	
 	public DBThread() {
@@ -25,6 +26,18 @@ public class DBThread implements Runnable {
     private synchronized boolean keepRunning() {
         return this.doStop == false;
     }
+    
+    public synchronized boolean getStatus() {
+    	return this.syncPayments;
+    }
+    
+    public synchronized void stopSyncPayments() {
+    	this.syncPayments = false;
+    }
+    
+    public synchronized void runSyncPayments() {
+    	this.syncPayments = true;
+    }
 	
 
 	@Override
@@ -32,9 +45,16 @@ public class DBThread implements Runnable {
 		// Checking email every 5 minutes.
 		while (keepRunning()) {
 			
-			// Thread running externally
-			System.out.println("Checare la Tabla de Pagos");
-			dbObserver.checkPago();
+			if (syncPayments) {
+				
+				// Thread running externally
+				System.out.println("Checare la Tabla de Pagos");
+				dbObserver.checkPago();
+				
+			} else {
+				
+				System.out.println("Sincronizacion con tabla de pagos detenida.");
+			}
 			
 			try {
 				System.out.println("DB Thread running... ya me fui a dormir");

@@ -87,16 +87,16 @@ public class PortalProveedorFunctionalityController {
 		
 	}
 	
-	@GetMapping("/csv/{rfc}/{clave}")
-	public void download(String rfc, String clave, HttpServletResponse response) {
+	@GetMapping("/csv")
+	public void download(@RequestParam String rfc, @RequestParam String clave, HttpServletResponse response) {
 
 			actioner.downloadCsv(response, rfc, clave);
 	
 		
 	}
 	
-	@GetMapping("/excel/{rfc}/{clave}")
-	public ResponseEntity<Resource> downloadExcel(@PathVariable String rfc, @PathVariable String clave) {
+	@GetMapping("/excel")
+	public ResponseEntity<Resource> downloadExcel(@RequestParam String rfc, @RequestParam String clave) {
 		
 		return actioner.downloadXls(rfc, clave);
 	}
