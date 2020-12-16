@@ -240,7 +240,7 @@
 		                      
 		                      } else if (data == "NEW_USER"){
 		                      
-		                       return '<i style="color:purple" data-feather="user-plus"></i><script> feather.replace()</script>';
+		                       return '<i style="color:green" data-feather="user-plus"></i><script> feather.replace()</script>';
 		                      
 		                      } else if (data == "ERROR_STORAGE"){
 		                      
