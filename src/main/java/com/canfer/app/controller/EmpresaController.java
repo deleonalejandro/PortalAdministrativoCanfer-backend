@@ -127,12 +127,12 @@ public class EmpresaController {
 		return empresaRepo.findById(id).get();
 	}
 	
-	@PostMapping(value = "/company/save")
-	public String saveCompany(EmpresaDTO company, MultipartFile logo, RedirectAttributes redirectAttributes) {
+	@PostMapping(value = "/company/update")
+	public String updateCompany(EmpresaDTO company, MultipartFile logo, RedirectAttributes redirectAttributes) {
 		Path file = null;
 		
 		// check if new logo is present
-		if (logo != null) {
+		if (!logo.isEmpty()) {
 			
 			//delete actual logo 
 			try {
@@ -148,7 +148,7 @@ public class EmpresaController {
 			} catch (IOException e) {
 				Log.falla("No se logró eliminar el archivo " + file.getFileName() + ".", "ERROR_STORAGE");
 			} catch (Exception e) {
-				redirectAttributes.addFlashAttribute("logoError", "Ocurrio un error inesperado: No se pudo eliminar la empresa");
+				redirectAttributes.addFlashAttribute("logoError", "Ocurrio un error inesperado: No se pudo eliminar el logotipo anterior");
 			}
 			
 			//save new logo
@@ -160,7 +160,7 @@ public class EmpresaController {
 			} catch (StorageException e) {
 				Log.falla("Error al añadir la empresa: " + e.getMessage(), "ERROR_DB");
 				redirectAttributes.addFlashAttribute("logoError", e.getMessage());
-				return "redirect:/admin/addCompany";
+				return "redirect:/admin/companies";
 			}
 			
 			company.setProfilePictureName(logo.getOriginalFilename());
@@ -168,7 +168,7 @@ public class EmpresaController {
 		
 		try {
 
-			empresaService.save(company);
+			empresaService.update(company);
 			Log.activity("Se actualizó la información de la empresa.", company.getNombre(), "UPDATE");
 
 		} catch (EntityExistsException e) {

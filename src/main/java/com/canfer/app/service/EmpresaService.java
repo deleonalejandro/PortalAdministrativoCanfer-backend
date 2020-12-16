@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
-import org.junit.validator.PublicClassValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,13 +58,9 @@ public class EmpresaService {
 		
 		Empresa checkEmpresa = empresaRepository.findByRfc(empresa.getRfc());
 		
-		if(checkEmpresa != null && empresa.getIdEmpresa() == 0L) {
+		if(checkEmpresa != null) {
 			
 			throw new EntityExistsException("La empresa que desea registrar ya existe.");
-			
-		} else if (checkEmpresa != null && empresa.getIdEmpresa() != 0L) {
-			
-			saveEmpresa = checkEmpresa;		
 			
 		} else {
 			
@@ -73,7 +68,9 @@ public class EmpresaService {
 		}
 		
 		if (empresa.getNombre().isEmpty() || empresa.getRfc().isEmpty()) {
+			
 			throw new NullArgumentException("El nombre o el RFC de la empresa no es válido");
+			
 		}
 
 		try {
@@ -109,10 +106,75 @@ public class EmpresaService {
 			}
 			
 		} catch (Exception e) {
+			
 			throw new UnknownError("Ocurrio un error inesperado");
+			
 		}
 		
-		return empresaRepository.saveAndFlush(saveEmpresa);
+		return empresaRepository.save(saveEmpresa);
+		
+	}
+	
+	public void update(EmpresaDTO empresa) {
+		
+		Empresa saveEmpresa = null;
+		
+		Empresa checkEmpresa = empresaRepository.findByRfc(empresa.getRfc());
+		
+		if(checkEmpresa == null) {
+			
+			throw new EntityExistsException("La empresa que desea actualizar no se encuentra en la base de datos.");
+			
+		} 
+		
+		saveEmpresa = checkEmpresa;
+		
+		try {
+			
+			//Get user principal to fill the user creation field.
+			UserPrincipal userDetails = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
+			
+			//Transfer the information form the DTO object.
+			saveEmpresa.setCalle(empresa.getCalle());
+			saveEmpresa.setColonia(empresa.getColonia());
+			saveEmpresa.setContacto(empresa.getContacto());
+			saveEmpresa.setCorreo(empresa.getCorreo());
+			saveEmpresa.setCp(empresa.getCp());
+			saveEmpresa.setLocalidad(empresa.getLocalidad());
+			saveEmpresa.setNombre(empresa.getNombre());
+			saveEmpresa.setNumExt(empresa.getNumExt());
+			saveEmpresa.setNumInt(empresa.getNumInt());
+			saveEmpresa.setPaginaWeb(empresa.getPaginaWeb());
+			saveEmpresa.setReferencia(empresa.getReferencia());
+			saveEmpresa.setRfc(empresa.getRfc());
+			saveEmpresa.setTelefono(empresa.getTelefono());
+			saveEmpresa.setIdUsuarioCreador(userDetails.getUserId());
+			saveEmpresa.setColor(empresa.getColor());
+			
+			if (!empresa.getProfilePictureName().isEmpty()) {
+				
+				saveEmpresa.setProfilePictureName(empresa.getProfilePictureName());
+				
+			}
+			
+			if (empresa.getIdMunicipio() != null) {
+				
+				Optional<Municipio> mun = municipioRepository.findById(empresa.getIdMunicipio());
+				
+				if (mun.isPresent()) {
+					saveEmpresa.setMunicipio(mun.get().getNombre());
+				}
+			}
+			
+			empresaRepository.save(saveEmpresa);
+			
+		} catch (Exception e) {
+			
+			throw new UnknownError("Ocurrio un error inesperado");
+			
+		}
+		
+		
 		
 	}
 	
@@ -126,10 +188,6 @@ public class EmpresaService {
 		
 		Log.activity("Se eliminó una empresa." , empresa.getNombre(), "DELETE");
 	}
-	
-	public void printTest() {
-		System.out.println("Hola");
-	}
-	
+
 
 }
