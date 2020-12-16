@@ -19,6 +19,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<!-- Spring Cloud -->
+		<spring-cloud.version>Greenwich.SR6</spring-cloud.version>
 	</properties>
 
 	<!-- Make repository for crystal report libraries -->
@@ -53,6 +55,12 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency> 
         
+        <!-- 3a) Dependency for spring-cloud-config-Server -->
+	    <dependency>
+	        <groupId>org.springframework.cloud</groupId>
+	        <artifactId>spring-cloud-config-server</artifactId>
+	        <version>2.1.8.RELEASE</version>
+	    </dependency>
         <!--  Add the API to channel log4j to log4j2 -->
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
 		<dependency>
@@ -317,6 +325,19 @@
    		</dependency>
 
 	</dependencies>
+	
+	<!-- 4) Dependency Management Cloud-->
+		<dependencyManagement>
+		    <dependencies>
+		        <dependency>
+		            <groupId>org.springframework.cloud</groupId>
+		            <artifactId>spring-cloud-dependencies</artifactId>
+		            <version>${spring-cloud.version}</version>
+		            <type>pom</type>
+		            <scope>import</scope>
+		        </dependency>
+		    </dependencies>
+		</dependencyManagement>
 
 	<build>
 		<pluginManagement>
