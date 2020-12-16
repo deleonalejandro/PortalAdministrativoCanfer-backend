@@ -222,7 +222,7 @@ public class EmailService {
 				// get message content
 				if (msg.getContent() instanceof String)  
 				{  
-				   break;
+					continue;
 				}  
 				else if (msg.getContent() instanceof Multipart)  
 				{  
