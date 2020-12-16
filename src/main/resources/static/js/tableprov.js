@@ -450,9 +450,13 @@
 			});
 			
 			//Checar si necesita el Toast de Upload
-				if($("#upload").text() == 'true') {
-		            $('#toastUpload').toast('show')
-		     	}
+				  if($("#upload").text() == 'true') {
+		          $('#toastUploadtrue').toast('show')
+		     }
+
+			if($("#upload").text() == 'false') {
+		          $('#toastUploadfalse').toast('show')
+		     }
 		      
 				
 		});
