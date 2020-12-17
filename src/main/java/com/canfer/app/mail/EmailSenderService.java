@@ -115,9 +115,9 @@ public class EmailSenderService {
 	        
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
-			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
-			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getRespuestaValidacion()+"" );
-			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
+			ctx.setVariable("result", "UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
+			ctx.setVariable("validez", "Respuesta por parte del SAT: "+ comprobante.getRespuestaValidacion()+"" );
+			ctx.setVariable("vigencia","Estatus actual del documento :  "+comprobante.getEstatusPago()+"."); 
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
 
 	        // Prepare message using a Spring helper
@@ -172,7 +172,7 @@ public class EmailSenderService {
 	        message.setText(htmlContent, true /* isHtml */);
 	        message.setTo(InternetAddress.parse(to));
 	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Actualización de Documento Fiscal.");
+	        message.setSubject("Actualización de  un Documento Fiscal.");
 		    
 	        emailSenderProperties.send(mimeMessage);
 	        
@@ -204,7 +204,7 @@ public class EmailSenderService {
 	        message.setText(htmlContent, true /* isHtml */);
 	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
 	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Nueva Cuenta en Portal de Proveedores.");
+	        message.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");
 		    
 	        emailSenderProperties.send(mimeMessage);
 	        
