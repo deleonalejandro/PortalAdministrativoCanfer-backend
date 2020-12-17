@@ -91,6 +91,10 @@ public class MainController {
 	@GetMapping(value = "/login/portalP")
 	public String getLoginProveedores() {
 		
+		if (isAuthenticated()) {
+	        return "redirect:/dashboardSupplier";
+	    }
+		
 		return "login-proveedores";
 	}
 	
