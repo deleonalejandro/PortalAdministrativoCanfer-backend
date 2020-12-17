@@ -76,7 +76,7 @@ public class PortalProveedorController {
 			
 			if (proveedor.isPresent()) {
 				
-				model.addAttribute("supplier", proveedor);
+				model.addAttribute("supplier", proveedor.get());
 				
 			}
 			

@@ -128,6 +128,7 @@ public class CrystalReportService {
 
 	public ArchivoPDF exportGenerico(ComprobanteFiscal comprobanteFiscal) {
 		
+		String CRYSTAL_REPORT = "C:\\Users\\aadministrador\\Desktop\\pdfGenerico.rpt";
 		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
 		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
 		
@@ -135,7 +136,8 @@ public class CrystalReportService {
 		String path = sPath.substring(0, sPath.length() - 3) + "pdf";
 		
 		String pathQR = "C:\\Users\\aadministrador\\Desktop\\CurrentQR.png";
-		
+		String folio = "";
+		String serie = ""; 
 		File file = new File(path);
 		
 		boolean existsQR = false;
@@ -147,12 +149,18 @@ public class CrystalReportService {
 
 			//Open report.			
 			ReportClientDocument reportClientDoc = new ReportClientDocument();			
-			reportClientDoc.open(REPORT_NAME, 0);
-			
+			reportClientDoc.open(CRYSTAL_REPORT, 0);
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "folio", comprobante.getFolio());
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "serie", comprobante.getSerie());
+			if (comprobante.getFolio() != null) {
+				folio = comprobante.getFolio();
+			}
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "folio", folio);
+			if (comprobante.getSerie() != null) {
+				serie = comprobante.getSerie();
+			}
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "serie", serie);
+			
 			
 			//Incluir Parametros
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "rfcEmisor", comprobante.getEmisorRfc());
@@ -184,7 +192,6 @@ public class CrystalReportService {
 			try {	
 				
 				existsQR  = generateQRCodeImage(urlSAT, 350, 350, pathQR);
-				
 			} catch (WriterException e) {
 	        	
 	            Log.activity("No se pudo generar un QR para el PDF genérico "+comprobante.getUuidTfd()+".", comprobante.getReceptorNombre(), "ERROR");

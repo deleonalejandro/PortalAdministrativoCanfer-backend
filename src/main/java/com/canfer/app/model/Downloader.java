@@ -115,6 +115,10 @@ public class Downloader {
 
 		}
 
+		if (file== null) {
+			return null; 
+		}
+		
 		if (file.getExtension().equalsIgnoreCase("xml")) {
 
 			contentType = "text/xml";
