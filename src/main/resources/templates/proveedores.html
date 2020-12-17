@@ -700,51 +700,51 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="claveProvPerfil">Clave de Proveedor</label>
-                                                    <input style="height: 30px;" class="form-control" id="claveProvPerfil" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.claveProv}" type="text" readonly />
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="rfcProveedorPerfil">RFC</label>
-                                                    <input style="height: 30px;" class="form-control" id="rfcProveedor" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.rfc}" type="text" readonly />
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="nombrePerfil">Nombre</label>
-                                                    <input style="height: 30px;" class="form-control" id="nombrePerfil" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.nombre}" type="text" readonly />
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="contactoPerfil">Contacto</label>
-                                                    <input  style="height: 30px;" class="form-control" id="contactoPerfil" type="text" readonly />
+                                                    <input  style="height: 30px;" class="form-control" th:value="${supplier.contacto}" type="text" readonly />
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="callePerfil">Calle</label>
-                                                    <input style="height: 30px;" class="form-control" id="callePerfil" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.calle}" type="text" readonly />
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="municipioPerfil">Municipio</label>
-                                                    <input style="height: 30px;" class="form-control" id="municipioPerfil" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.municipio}" type="text" readonly />
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="estadoPerfil">Estado</label>
-                                                    <input style="height: 30px;" class="form-control" id="estadoPerfil" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.municipio.estado}" type="text" readonly />
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="cpPerfil">CP</label>
-                                                    <input style="height: 30px;" class="form-control" id="cpPeril" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.cp}" type="text" readonly />
                                                 </div>
                                             </div>
                                            <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="telefonoPerfil">Teléfono</label>
-                                                    <input style="height: 30px" class="form-control" id="telefonoPerfil" type="text" readonly />
+                                                    <input style="height: 30px" class="form-control" th:value="${supplier.telefono}" type="text" readonly />
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="small mb-1" for="monedaPerfil">Moneda</label>
-                                                    <input style="height: 30px;" class="form-control" id="monedaPerfil" type="text" readonly />
+                                                    <input style="height: 30px;" class="form-control" th:value="${supplier.moneda}" type="text" readonly />
                                                 </div>
                                             </div>
                                   	  </div>

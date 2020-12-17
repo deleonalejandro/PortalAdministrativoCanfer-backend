@@ -23,6 +23,7 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
+import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.service.ExcelService;
 
 import javassist.NotFoundException;
@@ -38,6 +39,8 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	@Autowired
 	private EmailSenderService emailSender; 
+	@Autowired
+	private CrystalReportService crystalService; 
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
@@ -149,7 +152,18 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 		case "singlePDF":
 			
-			return dowloadManager.download(entity.fetchPDF(), action);
+			if (entity.fetchPDF() != null) {
+					
+				return dowloadManager.download(entity.fetchPDF(), action);
+			
+			} else if (entity instanceof ComprobanteFiscal){
+				
+				
+				ArchivoPDF archivoGen = crystalService.exportGenerico((ComprobanteFiscal) entity);
+				return dowloadManager.download(archivoGen, action);
+				
+				
+			} 
 			
 		case "singlePayment":
 			

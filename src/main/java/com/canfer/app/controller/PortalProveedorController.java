@@ -3,6 +3,7 @@ package com.canfer.app.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
 
@@ -24,6 +25,7 @@ import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
+import com.canfer.app.service.RepositoryService;
 import com.canfer.app.service.UsuarioService;
 
 import javassist.NotFoundException;
@@ -40,7 +42,8 @@ public class PortalProveedorController {
 	private UsuarioProveedorRepository usuarioProveedorRepository;
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
-	
+	@Autowired
+	private RepositoryService superRepo; 
 
 	
 	@GetMapping(value = "/proveedoresClient")
@@ -62,11 +65,20 @@ public class PortalProveedorController {
 		
 		user.getProveedores().forEach(proveedor -> claves.add(proveedor.getClaveProv()));
 		
+		Optional<Proveedor> proveedor = superRepo.findProveedorByEmpresaAndClaveProv(
+				superRepo.findEmpresaByRFC(rfc), claveProv);
+		
 		if (claves.contains(claveProv)) {
 			
 			model.addAttribute("selectedCompany", rfc);
 			model.addAttribute("selectedClave", claveProv);
 			model.addAttribute("companyProfile", company.getProfilePictureName());
+			
+			if (proveedor.isPresent()) {
+				
+				model.addAttribute("supplier", proveedor);
+				
+			}
 			
 			return "proveedores";
 			
