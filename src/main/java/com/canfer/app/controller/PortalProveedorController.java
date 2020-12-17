@@ -66,13 +66,14 @@ public class PortalProveedorController {
 		user.getProveedores().forEach(proveedor -> claves.add(proveedor.getClaveProv()));
 		
 		Optional<Proveedor> proveedor = superRepo.findProveedorByEmpresaAndClaveProv(
-				superRepo.findEmpresaByRFC(rfc), claveProv);
+				company, claveProv);
 		
 		if (claves.contains(claveProv)) {
 			
 			model.addAttribute("selectedCompany", rfc);
 			model.addAttribute("selectedClave", claveProv);
 			model.addAttribute("companyProfile", company.getProfilePictureName());
+			model.addAttribute("company", company);
 			
 			if (proveedor.isPresent()) {
 				
