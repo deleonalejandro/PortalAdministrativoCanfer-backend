@@ -551,7 +551,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids)
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids+"&rfc="+$("#selectedCompany").text())
 					$('#deleteModal').modal('show');
 					}
 				});
