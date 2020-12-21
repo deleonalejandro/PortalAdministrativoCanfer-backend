@@ -255,6 +255,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	
 	public boolean actualizar(ComprobanteFiscalDTO documento, Optional<Proveedor> proveedor) {
 		
+		boolean sendMail = false; 
 	
 		if (proveedor.isPresent()) {
 			
@@ -262,13 +263,19 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			
 		}
 		
+		if (!this.estatusPago.equalsIgnoreCase(documento.getEstatus()) || !this.comentario.equalsIgnoreCase(documento.getComentario())) {
+			
+			Log.activity("Se actualizó el documento fiscal " + this.getUuid() + ".", this.getEmpresaNombre(), "UPDATE");
+			sendMail = true; 
+			
+		}
+		
 		this.setBitRSusuario(documento.getBitRSusuario());
 		this.setEstatusPago(documento.getEstatus());
 		this.setComentario(documento.getComentario());
 		
-		Log.activity("Se actualizó el documento fiscal " + this.getUuid() + ".", this.getEmpresaNombre(), "UPDATE");
 		
-		return true;
+		return sendMail;
 		
 	}
 

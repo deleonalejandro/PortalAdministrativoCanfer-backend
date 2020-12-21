@@ -371,13 +371,14 @@ public class DocumentosNacionalesActions extends ModuleActions {
 					
 					emailSender.sendEmailUpdateDoc(comprobante.get());
 					superRepo.save(comprobante.get());
-					
 					return true;
 					
 				} else {
 					
+					superRepo.save(comprobante.get());
 					return false;
 				}
+				
 				
 			} catch (Exception e) {
 				
