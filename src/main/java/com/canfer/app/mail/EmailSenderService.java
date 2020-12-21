@@ -115,10 +115,27 @@ public class EmailSenderService {
 	        
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
-			ctx.setVariable("result", "UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
-			ctx.setVariable("validez", "Respuesta por parte del SAT: "+ comprobante.getRespuestaValidacion()+"" );
-			ctx.setVariable("vigencia","Estatus actual del documento :  "+comprobante.getEstatusPago()+"."); 
+			ctx.setVariable("profilePictureName", comprobante.getEmpresa().getProfilePictureName());
+			ctx.setVariable("nombreProveedor", comprobante.getProveedorNombre());
+			ctx.setVariable("folio",comprobante.getFolio()); 
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
+			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago()); 
+			ctx.setVariable("folio",comprobante.getFolio()); 
+			ctx.setVariable("uuid",comprobante.getUuid()); 
+			ctx.setVariable("versionCFD",comprobante.getVersionCfd()); 
+			ctx.setVariable("timbre",comprobante.getFechaTimbre()); 
+			ctx.setVariable("versionTimbre",comprobante.getVersionTimbre());
+			ctx.setVariable("noSat",comprobante.getNoCertificadoSat()); 
+			ctx.setVariable("rfcEmisor",comprobante.getRfcProveedor()); 
+			ctx.setVariable("rfcReceptor",comprobante.getRfcEmpresa()); 
+			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
+			ctx.setVariable("NoCerRec",comprobante.getNoCertificadoEmpresa());
+			ctx.setVariable("serie",comprobante.getSerie()); 
+			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
+			ctx.setVariable("estatusSAT",comprobante.getEstatusSAT());
+			
 
 	        // Prepare message using a Spring helper
 	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
