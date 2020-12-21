@@ -151,7 +151,7 @@ public class EmpresaService {
 			saveEmpresa.setIdUsuarioCreador(userDetails.getUserId());
 			saveEmpresa.setColor(empresa.getColor());
 			
-			if (!empresa.getProfilePictureName().isEmpty()) {
+			if (empresa.getProfilePictureName() != null) {
 				
 				saveEmpresa.setProfilePictureName(empresa.getProfilePictureName());
 				
