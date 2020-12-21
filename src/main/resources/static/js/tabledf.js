@@ -618,6 +618,21 @@
 					}
 				});
 				
+				$('#xml').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var ids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
+				 		  }
+				       });
+					$('#xls').attr("href","/documentosFiscalesClient/download/zipXML/ComprobanteFiscal?ids="+ids)
+					}
+				});
+				
 				
 				
 				$('#comprimir').on('click', function(){
