@@ -752,6 +752,10 @@
 			if($("#upload").text() == 'false') {
 		          $('#toastUploadfalse').toast('show')
 		     }
+
+			if($("#delete").text() == 'false') {
+		          $('#toastDeletefalse').toast('show')
+		     }
 				
 	});
 	

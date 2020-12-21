@@ -282,9 +282,17 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		if (value.isPresent()) {
 			
 			comprobanteFiscal = value.get();
-			
+
 			if(comprobanteFiscal instanceof ComplementoPago) {
 				clearComplemento((ComplementoPago) comprobanteFiscal);
+			}
+			
+			if (comprobanteFiscal instanceof Factura
+					&& ((Factura) comprobanteFiscal).getComplemento() != null) {
+				
+					return false;
+					
+				
 			}
 			
 			comprobanteFiscal.delete();

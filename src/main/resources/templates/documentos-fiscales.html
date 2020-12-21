@@ -209,6 +209,7 @@
 						<div class="card mb-0" id="divFacturas">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
 							<div id="upload" th:text="${upload}" hidden></div>
+							<div id="deletePermission" th:text="${delete}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -1106,6 +1107,16 @@
 													Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
 											</div>
 											<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
+										</div>
+										<!-- TOAST PARA DELETE FALSE -->
+										<div class="toast" role="alert" id="toastDeletefalse" data-autohide=true
+											data-delay="6000"
+											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+											aria-live="assertive" aria-atomic="true">
+											<div class="toast-header bg-danger text-white">
+												<i data-feather="x-circle"></i> <strong class="mr-auto">Error</strong> <small class="text-white-50 ml-2">Ahora</small>
+											</div>
+											<div class="toast-body">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
 										</div>
 			
 					</div>
