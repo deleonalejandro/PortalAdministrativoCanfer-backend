@@ -1,10 +1,8 @@
 package com.canfer.app.service;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +22,6 @@ import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
-import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.UsuarioCanferRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
@@ -43,8 +40,6 @@ public class UsuarioService {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private EmpresaService empresaService;
-	@Autowired
-	private EmpresaRepository empresaRepository;
 	@Autowired
 	private UsuarioCanferRepository usuarioCanferRepository;
 	@Autowired
@@ -190,7 +185,7 @@ public class UsuarioService {
 		usuarioRepository.delete(deleteUsuario.get());
 
 		Log.activity("Se eliminó al usuario " + deleteUsuario.get().getUsername() + ".",
-				deleteUsuario.get().getEmpresasNombre().toString(), "DELETE");
+				deleteUsuario.get().getEmpresasNombre().toString(), "DELETE_USER");
 	}
 
 	private String generatePassword(String rfc) {
