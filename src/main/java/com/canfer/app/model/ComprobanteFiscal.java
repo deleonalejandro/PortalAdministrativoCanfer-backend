@@ -142,7 +142,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	
 	@Column
 	@CsvBindByName(column = "Documentos Relacionados")
-	private String uuidRelacionados;
+	private String uuidRelacionados = "";
 	
 	@Column
 	private String tipoRelacionUuidRelacionados;
