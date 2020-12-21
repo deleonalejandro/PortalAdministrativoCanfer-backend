@@ -15,7 +15,7 @@
 					<tr>
 						<td align="center" bgcolor="#fcb603"
 							style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-							<img src='cid:leftSideImage' style='float:left;width:50px;height:50px;'/>
+							<img src='cid:logoCanfer' style='float: left; height: 70px;' />
 						</td>
 					</tr>
 					<tr>
@@ -164,7 +164,8 @@
 																colspan="2" valign="top">Descripción del
 																Comentario:</td>
 															<td colspan="4" valign="top" style="text-align: justify;"><div
-																	style="width: 600px; font-weight: bold; color: #AA0000;" th:text="${comentario}" ></div></td>
+																	style="width: 600px; font-weight: bold; color: #AA0000;"
+																	th:text="${comentario}"></div></td>
 														</tr>
 													</table> <!--Fin de contenido de factura-->
 												</td>
@@ -177,19 +178,25 @@
 											</tr>
 										</table>
 
-										<div style="padding-top: 25px; font-size: 12px;">Atentamente,</div>
-										<div style=" padding-left: 10px; font-size: 12px;"
+										<div
+											style="padding-top: 25px; color: rgb(0, 0, 0); font-size: 12px;">Atentamente,</div>
+										<div>
+											<img src='cid:logoEmpresa'
+												style='padding-top: 25px; float: left; height: 50px;' />
+										</div>
+										<div
+											style="padding-top: 25px; font-size: 12px; color: rgb(0, 0, 0);"
 											th:text="${empresa}"></div>
 
-										<div style="padding-left: 10px; font-size: 12px;">
+										<div
+											style="padding-top: 25px; font-size: 12px; color: rgb(0, 0, 0);">
 											Para más información o aclaraciones favor de acceder al <a
 												href="http://www.twitter.com/"> Portal de Proveedores.</a>
 										</div>
-										<div style="padding-top: 25px; font-size: 12px;">Favor
-											de no responder a este mail. Esta cuenta de correo es una
-											distribución automática de notificaciones.</div>
-									</td>
-
+										<div
+											style="padding-top: 25px; font-size: 12px; color: rgb(0, 0, 0);">
+											Favor de no responder a este mail. Esta cuenta de correo es
+											una distribución automática de notificaciones.</div>
 									</td>
 								</tr>
 								<tr>
