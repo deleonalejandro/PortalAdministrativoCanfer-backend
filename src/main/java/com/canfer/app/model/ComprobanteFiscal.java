@@ -528,8 +528,8 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			
 			SatVerificacionService service = new SatVerificacionService(new ClientConfigurationSAT());
 			
-			String msg = "re=" + this.proveedor.getRfc() + "&" +
-						 "rr=" + this.empresa.getRfc() + "&" +
+			String msg = "re=" + this.rfcProveedor + "&" +
+						 "rr=" + this.rfcEmpresa + "&" +
 						 "tt=" + this.total + "&" +
 						 "id=" + this.uuid;
 			

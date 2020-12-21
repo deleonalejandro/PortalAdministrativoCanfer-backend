@@ -18,6 +18,7 @@ import com.canfer.app.model.Pago;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.PagoRepository;
+import com.canfer.app.service.RepositoryService;
 
 import net.kaczmarzyk.spring.data.jpa.domain.Between;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
@@ -39,6 +40,8 @@ public class FNCRestController {
 	private FacturaRepository facturaRepo;
 	@Autowired
 	private PagoRepository avisosRepo;
+	@Autowired
+	private RepositoryService superRepo;
 	
     @GetMapping
     public List<ComprobanteFiscal> filterComprobanteFiscalBy(
@@ -104,6 +107,7 @@ public class FNCRestController {
 		Optional<ComprobanteFiscal> comprobante = comprobanteFiscalRepo.findById(id);
 		if(comprobante.isPresent()) {
 			
+			superRepo.save(comprobante.get());
 			return comprobante.get().verificaSat(); 
 			
 		}
