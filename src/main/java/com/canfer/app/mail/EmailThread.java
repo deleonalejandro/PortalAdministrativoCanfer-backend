@@ -65,8 +65,6 @@ public class EmailThread implements Runnable {
 				System.out.println("Se interrumpio el thread");
 				e.printStackTrace();
 				Log.falla("Se interrumpió el thread del E-mail.", "ERROR_CONNECTION");
-				// Restore interrupted state...
-				Thread.currentThread().interrupt();
 			}
 
 		}
