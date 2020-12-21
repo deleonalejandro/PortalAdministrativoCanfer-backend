@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.transaction.Transactional;
 
 import org.hibernate.Hibernate;
+import org.junit.validator.PublicClassValidator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -200,6 +201,14 @@ public abstract class Usuario {
 			this.empresas = new ArrayList<>();
 		}
 		this.empresas.add(empresa);
+	}
+	
+	public String getType() {
+		if (this instanceof UsuarioCanfer) {
+			return "CANFER";
+		} else {
+			return "PROVEEDOR";
+		}
 	}
 	
 	@Entity

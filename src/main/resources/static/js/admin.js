@@ -32,6 +32,7 @@ $(document).ready(function() {
 
 				},
 			},
+			{ data: "nombreEmpresa" },
 			{ data: "nombre" },
 			{ data: "claveProv" },
 			{ data: "rfc" },
@@ -80,10 +81,11 @@ $(document).ready(function() {
 
 				},
 			},
+			{ data: "empresasNombre"},
+			{ data: "type"},
 			{ data: "nombre" },
 			{ data: "apellido" },
 			{ data: "username" },
-			{ data: "password" },
 			{ data: "correo" },
 			{ data: "rol" },
 			{ data: "permisos" },
