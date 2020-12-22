@@ -86,7 +86,7 @@ public class EmailSenderService {
 	    	
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	        
-	        helper.setTo(InternetAddress.parse(to));
+	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
 	        helper.setSubject("Aviso de Pago");
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setText("Se ha realizado el pago de una factura.");
@@ -148,7 +148,7 @@ public class EmailSenderService {
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
 	        helper.addInline("logoCanfer",
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
-	        helper.setTo(InternetAddress.parse(to));
+	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Recepción de Documento Fiscal.");
 			
@@ -211,7 +211,7 @@ public class EmailSenderService {
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
 	        helper.addInline("logoCanfer",
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
-	        helper.setTo(InternetAddress.parse(to));
+	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Actualización de  un Documento Fiscal.");
 		    
