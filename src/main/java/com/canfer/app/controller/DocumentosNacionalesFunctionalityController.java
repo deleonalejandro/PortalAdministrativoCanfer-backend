@@ -133,7 +133,7 @@ public class DocumentosNacionalesFunctionalityController {
 			RedirectAttributes ra) {
 		
 			
-			ra.addAttribute("delete", actioner.delete(id));
+			ra.addFlashAttribute("delete", actioner.delete(id));
 			
 	
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;

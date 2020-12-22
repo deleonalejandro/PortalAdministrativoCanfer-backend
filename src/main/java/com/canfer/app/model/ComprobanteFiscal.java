@@ -251,6 +251,10 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 			this.tipoRelacionUuidRelacionados = model.getTipoRelacionUuidRelacionados();
 		}
 		
+		if (this.tipoDocumento.equalsIgnoreCase("P")) {
+			this.uuidRelacionados = String.join(",", model.getComplementoRelatedDocsList());
+		}
+		
 	}
 	
 	public int actualizar(ComprobanteFiscalDTO documento, Optional<Proveedor> proveedor) {

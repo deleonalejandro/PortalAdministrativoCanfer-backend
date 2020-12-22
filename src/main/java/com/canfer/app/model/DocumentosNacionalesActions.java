@@ -36,6 +36,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	@Autowired
 	private ExcelService xlsService; 
+	
 	@Autowired
 	private Downloader downloader;
 
@@ -177,12 +178,6 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			return dowloadManager.download(comprobante.getPago().fetchPDF(), action);
 			
-		case "singleComplemento":
-			
-			comprobante = (ComprobanteFiscal) entity;
-			
-			return dowloadManager.download(((Factura) comprobante).getComplemento().fetchXML(), action);
-			
 		default:
 			break;
 			
@@ -293,8 +288,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				clearComplemento((ComplementoPago) comprobanteFiscal);
 			}
 			
-			if (comprobanteFiscal instanceof Factura
-					&& ((Factura) comprobanteFiscal).getComplemento() != null) {
+			if (comprobanteFiscal instanceof Factura && ((Factura) comprobanteFiscal).getHasComplemento()) {
 				
 					return false;
 					

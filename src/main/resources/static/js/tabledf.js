@@ -14,7 +14,7 @@
 	             '<tr>' +
 	            	'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singlePDF/ComprobanteFiscal/'+d.idComprobanteFiscal+'" target="_blank"><i class="fa fa-file-pdf fa-2x" style="color:red"></i></a>' +
 					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singleXML/ComprobanteFiscal/'+d.idComprobanteFiscal+'" target="_blank"><i class="fas fa-file-code fa-2x" style="color:green"></i></a>'+
-					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singleComplemento/ComprobanteFiscal/'+d.idComplemento+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
+					'<a class="btn btn-datatable btn-icon btn-transparent-dark float-left btn-xl" href="/documentosFiscalesClient/preview/singleXML/ComprobanteFiscal/'+d.idComplemento+'" target="_blank"><i class="fas fa-file-invoice-dollar fa-2x" style="color:teal"></i></a>'+	
 	             '</tr>' +
 	         '</table>';
 	         
@@ -529,7 +529,7 @@
 					$('.detailsForm .pdfBtn').attr('href','/documentosFiscalesClient/download/singlePDF/ComprobanteFiscal/'+jsonData.idComprobanteFiscal)
 					$('.detailsForm .xmlBtn').attr('href','/documentosFiscalesClient/download/singleXML/ComprobanteFiscal/'+jsonData.idComprobanteFiscal)
 					if (jsonData.hasComplemento){
-						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/singleComplemento/ComprobanteFiscal/"+jsonData.idComplemento)
+						$('.detailsForm .pagoBtn').attr("href","/documentosFiscalesClient/download/singleXML/ComprobanteFiscal/"+jsonData.idComplemento)
 						document.getElementById("sinpago").hidden = true
 					}else {
 						document.getElementById("conpago").hidden = true
@@ -857,7 +857,7 @@
 		          $('#toastUploadfalse').toast('show')
 		     }
 
-			if($("#delete").text() == 'false') {
+			if($("#deletePermission").text() == 'false') {
 		          $('#toastDeletefalse').toast('show')
 		     }
 				
