@@ -324,13 +324,21 @@ public class DocumentosNacionalesActions extends ModuleActions {
 					clearComplemento((ComplementoPago) comprobante);
 				}
 				
-				comprobante.delete();
+				if (comprobante instanceof Factura
+						&& ((Factura) comprobante).getComplemento() != null) {
+						
+					
+				} else {
 				
-				Log.activity("Se ha eliminado el documento fiscal No. " + comprobante.getIdNumSap() + "." , comprobante.getEmpresaNombre(), "DELETE");
+					comprobante.delete();
+					superRepo.delete(comprobante);
+					
+					Log.activity("Se ha eliminado el documento fiscal No. " + comprobante.getIdNumSap() + "." , comprobante.getEmpresaNombre(), "DELETE");
+				
+				}
 				
 				});
 			
-			superRepo.deleteAllComprobante(comprobantes);
 			
 			return true;
 			

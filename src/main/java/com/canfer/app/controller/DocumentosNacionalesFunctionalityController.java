@@ -129,11 +129,10 @@ public class DocumentosNacionalesFunctionalityController {
 	public String deleteComprobanteFiscal(@PathVariable Long id, @RequestParam String rfc,
 			RedirectAttributes ra) {
 		
-		if (!actioner.delete(id)) {
 			
-			ra.addAttribute("delete", false);
-		}
-		
+			ra.addAttribute("delete", actioner.delete(id));
+			
+	
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 			
 			
