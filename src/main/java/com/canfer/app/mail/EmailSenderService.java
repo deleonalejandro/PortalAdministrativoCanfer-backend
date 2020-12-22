@@ -86,7 +86,7 @@ public class EmailSenderService {
 	    	
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	        
-	        helper.setTo(InternetAddress.parse(to));
+	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
 	        helper.setSubject("Aviso de Pago");
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setText("Se ha realizado el pago de una factura.");
@@ -115,24 +115,45 @@ public class EmailSenderService {
 	        
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
-			ctx.setVariable("result", "UUID: "+ comprobante.getUuid()+" fue registrado exitosamente.");
-			ctx.setVariable("validez", "Respuesta por parte del SAT: "+ comprobante.getRespuestaValidacion()+"" );
-			ctx.setVariable("vigencia","Estatus actual del documento :  "+comprobante.getEstatusPago()+"."); 
+			ctx.setVariable("profilePictureName", comprobante.getEmpresa().getProfilePictureName());
+			ctx.setVariable("nombreProveedor", comprobante.getProveedorNombre());
+			ctx.setVariable("folio",comprobante.getFolio()); 
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
+			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago()); 
+			ctx.setVariable("folio",comprobante.getFolio()); 
+			ctx.setVariable("uuid",comprobante.getUuid()); 
+			ctx.setVariable("versionCFD",comprobante.getVersionCfd()); 
+			ctx.setVariable("timbre",comprobante.getFechaTimbre()); 
+			ctx.setVariable("versionTimbre",comprobante.getVersionTimbre());
+			ctx.setVariable("noSat",comprobante.getNoCertificadoSat()); 
+			ctx.setVariable("rfcEmisor",comprobante.getRfcProveedor()); 
+			ctx.setVariable("rfcReceptor",comprobante.getRfcEmpresa()); 
+			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
+			ctx.setVariable("NoCerRec",comprobante.getNoCertificadoEmpresa());
+			ctx.setVariable("serie",comprobante.getSerie()); 
+			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
+			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
+			
 
 	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
-	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
-	        message.setText(htmlContent, true /* isHtml */);
-	        message.setTo(InternetAddress.parse(to));
-	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Recepción de Documento Fiscal.");
+	        helper.setText(htmlContent, true /* isHtml */);
+	        helper.addInline("logoEmpresa",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
+	        helper.addInline("logoCanfer",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Recepción de Documento Fiscal.");
 			
 		   
-	        emailSenderProperties.send(mimeMessage);
+	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException e) {
 
@@ -157,24 +178,44 @@ public class EmailSenderService {
 	        
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
-			ctx.setVariable("result", "El documento fiscal con UUID: "+ comprobante.getUuid()+" fue modificado.");
-			ctx.setVariable("validez", "Se obtuvo la siguiente respuesta por parte del SAT: "+ comprobante.getEstatusSAT()+"" );
-			ctx.setVariable("vigencia","El estatus actual del documento es:  "+comprobante.getEstatusPago()+"."); 
-			ctx.setVariable("comentarios","Comentarios:  "+comprobante.getComentario()+".");
+	        ctx.setVariable("profilePictureName", comprobante.getEmpresa().getProfilePictureName());
+			ctx.setVariable("nombreProveedor", comprobante.getProveedorNombre());
+			ctx.setVariable("folio",comprobante.getFolio()); 
 			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
+			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago()); 
+			ctx.setVariable("folio",comprobante.getFolio()); 
+			ctx.setVariable("uuid",comprobante.getUuid()); 
+			ctx.setVariable("versionCFD",comprobante.getVersionCfd()); 
+			ctx.setVariable("timbre",comprobante.getFechaTimbre()); 
+			ctx.setVariable("versionTimbre",comprobante.getVersionTimbre());
+			ctx.setVariable("noSat",comprobante.getNoCertificadoSat()); 
+			ctx.setVariable("rfcEmisor",comprobante.getRfcProveedor()); 
+			ctx.setVariable("rfcReceptor",comprobante.getRfcEmpresa()); 
+			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
+			ctx.setVariable("NoCerRec",comprobante.getNoCertificadoEmpresa());
+			ctx.setVariable("serie",comprobante.getSerie()); 
+			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
+			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
+			ctx.setVariable("comentario",comprobante.getComentario());
 
 	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
-	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
-	        message.setText(htmlContent, true /* isHtml */);
-	        message.setTo(InternetAddress.parse(to));
-	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Actualización de  un Documento Fiscal.");
+	        helper.setText(htmlContent, true /* isHtml */);
+	        helper.addInline("logoEmpresa",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
+	        helper.addInline("logoCanfer",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Actualización de  un Documento Fiscal.");
 		    
-	        emailSenderProperties.send(mimeMessage);
+	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {
 
@@ -195,18 +236,20 @@ public class EmailSenderService {
 			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+"!");
 			ctx.setVariable("psss", "Contraseña: "+ pass);
 
-	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
-	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+			 // Prepare message using a Spring helper
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
-	        message.setText(htmlContent, true /* isHtml */);
-	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
-	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");
+	        helper.setText(htmlContent, true /* isHtml */);
+	        helper.addInline("logoCanfer",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	        helper.setTo(InternetAddress.parse(usuario.getCorreo()));
+	        helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");
 		    
-	        emailSenderProperties.send(mimeMessage);
+	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {
 

@@ -62,8 +62,6 @@ public class DBThread implements Runnable {
             } catch (InterruptedException e) {
             	Log.falla("Se interrumpio el thread que monitorea la base de datos.", "ERROR_CONNECTION");
                 e.printStackTrace();
-                // Restore interrupted state...
-                Thread.currentThread().interrupt();
             }
 			
 		}

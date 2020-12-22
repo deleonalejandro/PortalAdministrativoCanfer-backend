@@ -215,6 +215,7 @@
 						<div class="card mb-0" id="divFacturas">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
 							<div id="upload" th:text="${upload}" hidden></div>
+							<div id="deletePermission" th:text="${delete}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -559,6 +560,7 @@
 										<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 											<a class="dropdown-item" id="comprimir" href="#">Comprimir</a>
 											<a class="dropdown-item" id="csv" href="#">CSV</a> <a
+												class="dropdown-item" id="xml" href="#">XML</a><a
 												class="dropdown-item" id="pdf" href="#">PDF</a> <a
 												class="dropdown-item" id="xls" href="#">EXCEL</a> 
 										</div>
@@ -1112,6 +1114,16 @@
 											</div>
 											<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
 										</div>
+										<!-- TOAST PARA DELETE FALSE -->
+										<div class="toast" role="alert" id="toastDeletefalse" data-autohide=true
+											data-delay="6000"
+											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+											aria-live="assertive" aria-atomic="true">
+											<div class="toast-header bg-danger text-white">
+												<i data-feather="x-circle"></i> <strong class="mr-auto">Error</strong> <small class="text-white-50 ml-2">Ahora</small>
+											</div>
+											<div class="toast-body">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
+										</div>
 			
 					</div>
 				</div>
@@ -1125,10 +1137,6 @@
 						<div class="row">
 							<div class="col-md-6 small">Copyright &copy; Canfer Grupo
 								Empresarial 2020</div>
-							<div class="col-md-6 text-md-right small">
-								<a> Políticas de Privacidad</a> &middot; <a>Términos &amp;
-									Condiciones</a>
-							</div>
 						</div>
 					</div>
 				</div>

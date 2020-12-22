@@ -655,7 +655,7 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids)
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids+"&rfc="+$("#selectedCompany").text())
 					$('#deleteModal').modal('show');
 					}
 				});
@@ -719,6 +719,21 @@
 				 		  }
 				       });
 					$('#xls').attr("href","/documentosFiscalesClient/excel?ids="+ids)
+					}
+				});
+				
+				$('#xml').on('click', function(){
+					if ( table.rows( '.selected' ).any() ) {
+				        // Enumerate all rows
+						var ids = [];
+						table.rows().every(function(){
+				            if ($(this.node()).hasClass('selected')) {
+							var data = this.data()
+							var jsonData = JSON.parse(JSON.stringify(data)).idComprobanteFiscal;
+									ids.push(jsonData);
+				 		  }
+				       });
+					$('#xls').attr("href","/documentosFiscalesClient/download/zipXML/ComprobanteFiscal?ids="+ids)
 					}
 				});
 				
@@ -840,6 +855,10 @@
 
 			if($("#upload").text() == 'false') {
 		          $('#toastUploadfalse').toast('show')
+		     }
+
+			if($("#delete").text() == 'false') {
+		          $('#toastDeletefalse').toast('show')
 		     }
 				
 	});

@@ -129,10 +129,13 @@ public class DocumentosNacionalesFunctionalityController {
 	}
 	
 	@GetMapping(value = "/delete/{id}")
-	public String deleteComprobanteFiscal(@PathVariable Long id, @RequestParam String rfc) {
+	public String deleteComprobanteFiscal(@PathVariable Long id, @RequestParam String rfc,
+			RedirectAttributes ra) {
 		
-		actioner.delete(id);
-		
+			
+			ra.addAttribute("delete", actioner.delete(id));
+			
+	
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 			
 			
