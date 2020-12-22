@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.dto.ProveedorDTO;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
@@ -25,6 +26,7 @@ import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.service.ExcelService;
+import com.canfer.app.service.ProveedorService;
 
 import javassist.NotFoundException;
 import jxl.write.WriteException;
@@ -39,8 +41,12 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	@Autowired
 	private EmailSenderService emailSender; 
+	
 	@Autowired
 	private CrystalReportService crystalService; 
+	
+	@Autowired
+	private ProveedorService proveedorService;
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
@@ -417,6 +423,21 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		
 	}
 	
+	public boolean updateSupplier(ProveedorDTO proveedor) {
+		
+		proveedorService.updateProveedor(proveedor);
+		
+		return true;
+	}
+	
+	public boolean deleteSupplier(Long id) throws NotFoundException {
+		
+		proveedorService.delete(id);
+		
+		return true;
+	}
+
+	
 	
 	
 	
@@ -558,6 +579,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	private boolean exist(String uuid) {
 		return (superRepo.findComprobanteByUUID(uuid) != null);
 	}
+	
 
 
 

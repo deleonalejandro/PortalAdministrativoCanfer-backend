@@ -9,15 +9,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Pago;
+import com.canfer.app.model.Proveedor;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.PagoRepository;
+import com.canfer.app.security.AuthenticationFacade;
+import com.canfer.app.security.UserPrincipal;
+import com.canfer.app.service.RepositoryService;
 
 import net.kaczmarzyk.spring.data.jpa.domain.Between;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
@@ -39,6 +46,12 @@ public class FNCRestController {
 	private FacturaRepository facturaRepo;
 	@Autowired
 	private PagoRepository avisosRepo;
+	@Autowired
+	private AuthenticationFacade authenticationFacade;
+	@Autowired
+	private EmpresaRepository empresaRepo;
+	@Autowired
+	private RepositoryService superRepo;
 	
     @GetMapping
     public List<ComprobanteFiscal> filterComprobanteFiscalBy(
@@ -115,6 +128,15 @@ public class FNCRestController {
     @GetMapping("/avisos/{rfc}")
   	public List<Pago> findAvisosBy(@PathVariable String rfc){
     	return avisosRepo.findByBitProcesadoAndRfcEmpresa(true, rfc);
+    }
+    
+    @GetMapping("/catalogo")
+    public List<Proveedor> getCatalogo(@RequestParam String selectedCompany) {
+    		
+    	Empresa company = empresaRepo.findByRfc(selectedCompany);
+    	
+    	return superRepo.findAllProveedorByEmpresa(company);
+    	
     }
   			
 }

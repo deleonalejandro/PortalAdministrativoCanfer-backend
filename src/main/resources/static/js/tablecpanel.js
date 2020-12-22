@@ -67,6 +67,10 @@ $(document).ready(function () {
 		                      
 		                       return '<i style="color:black" data-feather="trash-2"></i><script> feather.replace()</script>';
 		                      
+		                      } else if (data == "DELETE_USER"){
+		                      
+		                       return '<i style="color:red" data-feather="user-minus"></i><script> feather.replace()</script>';
+		                      
 		                      } else if (data == "ERROR_UPDATE"){
 		                      
 		                       return '<i style="color:red" data-feather="edit"></i><script> feather.replace()</script>';

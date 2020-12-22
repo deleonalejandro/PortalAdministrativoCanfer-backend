@@ -19,7 +19,8 @@ import com.canfer.app.model.Empresa;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
-import com.canfer.app.service.EmpresaService; 
+import com.canfer.app.service.EmpresaService;
+import com.canfer.app.service.RepositoryService;
 import com.canfer.app.storage.LogoStorageService;
  
 
@@ -35,6 +36,8 @@ public class PortalAdministrativoController {
 	private LogoStorageService logoStorageService;
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
+	@Autowired
+	private RepositoryService superRepo;
 	
 
 	@GetMapping(value = "/documentosFiscalesClient")
@@ -73,6 +76,45 @@ public class PortalAdministrativoController {
 			return "redirect:/dashboard";
 		}
 
+	}
+	
+	@GetMapping("/documentosFiscalesClient/catalogo")
+	public String getCatalog(@RequestParam String selectedCompany, Model model, RedirectAttributes ra) {
+		
+		Empresa company = empresaRepo.findByRfc(selectedCompany);
+		
+		if (company == null) {
+			ra.addFlashAttribute("errorCompany", true);
+			return "redirect:/dashboard";
+		}
+		
+		// getting the authenticated user
+		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
+		
+		
+		
+		// check if the user is an admin
+		if (loggedPrincipal.isAdmin()) {
+			model.addAttribute("selectedCompany", selectedCompany);
+			model.addAttribute("companyProfile", company.getProfilePictureName());
+			return "catalog-df";
+		}
+		
+		// if the user is not ADMIN, we need to check if it has access to that company.
+		if (loggedPrincipal.getEmpresasRfc().contains(selectedCompany)) {
+			
+			model.addAttribute("selectedCompany", selectedCompany);
+			model.addAttribute("companyProfile", company.getProfilePictureName());
+			
+			return "catalog-df";
+			
+		} else {
+			
+			ra.addFlashAttribute("errorCompany", true);
+			
+			return "redirect:/dashboard";
+		}
+		
 	}
 	
 	@GetMapping(value = "/dashboard")

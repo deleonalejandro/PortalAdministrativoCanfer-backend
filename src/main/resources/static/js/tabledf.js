@@ -289,6 +289,106 @@
 		             ],
 					 "order": [[ 0, "desc" ], [ 4, "desc" ]]
 		 });
+	
+		// Tabla de catalogo de proveedores
+		
+		var tableProveedor = $('#proveedorTable').DataTable({
+			stateSave: true,
+			ajax: {
+				url: "/documentosFiscalesApi/catalogo?selectedCompany="+$("#selectedCompany").text(),
+				dataSrc: ""
+			},
+			scrollX: true,
+			"language": {
+				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			},
+			columns: [
+				{
+					"className": 'delete-control',
+					"orderable": false,
+					"bSortable": false,
+					"data": null,
+					"defaultContent": '',
+					"render": function() {
+						return '<a class="deleteBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash-2"></i></a><script>feather.replace()</script>';
+	
+					},
+				},
+				{
+					"className": 'edit-control',
+					"orderable": false,
+					"bSortable": false,
+					"data": null,
+					"defaultContent": '',
+					"render": function() {
+						return '<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="edit"></i></a><script>feather.replace()</script>';
+	
+					},
+				},
+				{ data: "nombreEmpresa" },
+				{ data: "nombre" },
+				{ data: "claveProv" },
+				{ data: "rfc" },
+				{ data: "serie" },
+				{ data: "moneda" },
+				{ data: "bitActivo" },
+				{ data: "contacto" },
+				{ data: "correo" },
+				{ data: "telefono" },
+				{ data: "paginaWeb" },
+				{ data: "localidad" },
+			],
+		});
+	
+		// Funcion para editar proveedores
+
+	$('#proveedorTable tbody').on('click', '.editBtn', function() {
+		
+		var tr = $(this).closest('tr');
+		var data = tableProveedor.row($(this).parents(tr)).data();
+		var modData = JSON.stringify(data);
+		var jsonData = JSON.parse(modData);
+
+		$("#idProveedor").val(jsonData.idProveedor);
+		$("#inputEmpresa").val(jsonData.nombreEmpresa);
+		$("#inputRfc").val(jsonData.rfc);
+		$("#inputClaveProv").val(jsonData.claveProv);
+		$("#inputNombre").val(jsonData.nombre);
+		$("#inputCorreo").val(jsonData.correo);
+		$("#inputCalle").val(jsonData.calle);
+		$("#inputExterior").val(jsonData.numExt);
+		$("#inputInterior").val(jsonData.numInt);
+		$("#inputLocalidad").val(jsonData.localidad);
+		$("#inputReferencia").val(jsonData.referencia);
+		$("#inputMoneda").val(jsonData.moneda);
+		$("#inputPaginaWeb").val(jsonData.paginaWeb);
+		$("#checkActivo").prop('checked', jsonData.bitActivo);
+		$("#dropdownEmpresas").val(jsonData.empresasId);
+		$("#inputTelefono").val(jsonData.telefono);
+		$("#inputContacto").val(jsonData.contacto);
+		
+
+
+		$('#editModal').modal('show');
+
+	});
+
+	// Funcion para delete en proveedores
+
+	$('#proveedorTable tbody').on('click', 'td.delete-control', 'tr', function(event) {
+
+		event.preventDefault();
+
+		var tr = $(this).closest('tr');
+		var data = tableProveedor.row($(this).parents(tr)).data();
+		var modData = JSON.stringify(data);
+		var jsonData = JSON.parse(modData);
+
+		$('.deleteForm .delBtn').attr("href", "supplier/delete/" + jsonData.idProveedor)
+		$('#deleteModal').modal("show");
+	});
+	
+		
  			
 			// Filters
 			$('#reloadTableBtn').on('click', function() { 

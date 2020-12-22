@@ -1,6 +1,8 @@
 package com.canfer.app.controller;
 
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
+import com.canfer.app.dto.ProveedorDTO;
 import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -160,6 +163,35 @@ public class DocumentosNacionalesFunctionalityController {
 		
 	}
 	
+	@PostMapping(value = "/supplier/update")
+	public String updateSupplier(ProveedorDTO proveedor, @RequestParam("selectedCompany") String rfc, RedirectAttributes redirectAttributes) {
+		try {
+			
+			actioner.updateSupplier(proveedor);
+		
+		} catch (EntityNotFoundException e) {
+			Log.falla("Error al actualizar la información: " + e.getMessage(), "ERROR_DB");
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+		} catch (UnknownError e) {
+			Log.falla("Error al actualizar la información: " + e.getMessage(), "ERROR");
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+		} 
+		
+		return "redirect:/documentosFiscalesClient/catalogo?selectedCompany=" + rfc;
+	}
+	
+	@GetMapping(value = "/supplier/delete/{id}")
+	public String deleteSupplier(@PathVariable Long id, @RequestParam("selectedCompany") String rfc, RedirectAttributes ra) {
+		try {
+			
+			actioner.deleteSupplier(id);
+				
+		} catch (NotFoundException e) {
+			ra.addFlashAttribute("supplierNotFound", e.getMessage());
+		}
+		
+		return "redirect:/documentosFiscalesClient/catalogo?selectedCompany=" + rfc;
+	}
 	
 
 

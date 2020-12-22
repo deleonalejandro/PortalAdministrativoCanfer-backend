@@ -341,6 +341,12 @@ public class RepositoryService {
 		return empresaRepo.findByRfc(rfc);
 
 	}
+	
+	public List<Proveedor> findAllProveedorByEmpresa(Empresa empresa) {
+
+		return proveedorRepo.findAllByEmpresas(empresa);
+
+	}
 
 	public List<Proveedor> findAllProveedorByEmpresaAndRFC(Empresa empresa, String rfc) {
 

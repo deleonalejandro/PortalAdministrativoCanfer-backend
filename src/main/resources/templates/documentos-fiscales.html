@@ -50,12 +50,18 @@
 
 		<!-- ICONOS DE TOP NAV BAR -->
 		<ul class="navbar-nav align-items-center ml-auto">
-
+		
+			<!-- DASHBOARD FEATHER -->
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
 				class="btn btn-icon btn-transparent-dark" href="/dashboard"
 				id="dashboardButton" role="button" aria-haspopup="true"
 				aria-expanded="false"><i data-feather=layout></i></a></li>
 
+			<!-- CATALOG FEATHER -->
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark" th:href="@{/documentosFiscalesClient/catalogo(selectedCompany=${selectedCompany})}"
+				id="dashboardButton" role="button" aria-haspopup="true"
+				aria-expanded="false"><i data-feather=book-open></i></a></li>
 
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
@@ -174,7 +180,7 @@
 						<div class="row align-items-center justify-content-between">
 							<div class="col-12 pb-3">
 								<h1 class="page-header-title text-white">Documentos
-									Nacionales</h1>
+									Fiscales CFDI</h1>
 								<h1 class="page-header-subtitle text-gray-300 mb-0 text-right">
 									Portal Administrativo</h1>
 							</div>

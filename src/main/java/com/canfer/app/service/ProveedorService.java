@@ -169,9 +169,13 @@ public class ProveedorService {
 			saveProveedor.setRfc(proveedor.getRfc());
 			saveProveedor.setTelefono(proveedor.getTelefono());
 
-			Optional<Municipio> mun = municipioRepository.findById(proveedor.getIdMunicipio());
-			if (mun.isPresent()) {
-				saveProveedor.setMunicipio(mun.get().getNombre());
+			if (proveedor.getIdMunicipio() != null) {
+				
+				Optional<Municipio> mun = municipioRepository.findById(proveedor.getIdMunicipio());
+				if (mun.isPresent()) {
+					saveProveedor.setMunicipio(mun.get().getNombre());
+				}
+				
 			}
 
 			if (proveedor.getIdEmpresa() != null) {
