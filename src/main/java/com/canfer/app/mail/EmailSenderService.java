@@ -139,7 +139,7 @@ public class EmailSenderService {
 
 	        // Prepare message using a Spring helper
 			 MimeMessage message = emailSenderProperties.createMimeMessage();
-	         MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
@@ -148,7 +148,7 @@ public class EmailSenderService {
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
 	        helper.addInline("logoCanfer",
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
-	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        helper.setTo(InternetAddress.parse(to));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Recepción de Documento Fiscal.");
 			
@@ -201,17 +201,21 @@ public class EmailSenderService {
 			ctx.setVariable("comentario",comprobante.getComentario());
 
 	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
-	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
-	        message.setText(htmlContent, true /* isHtml */);
-	        message.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
-	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Actualización de  un Documento Fiscal.");
+	        helper.setText(htmlContent, true /* isHtml */);
+	        helper.addInline("logoEmpresa",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
+	        helper.addInline("logoCanfer",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	        helper.setTo(InternetAddress.parse(to));
+	        helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Actualización de  un Documento Fiscal.");
 		    
-	        emailSenderProperties.send(mimeMessage);
+	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {
 
@@ -232,18 +236,20 @@ public class EmailSenderService {
 			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+"!");
 			ctx.setVariable("psss", "Contraseña: "+ pass);
 
-	        // Prepare message using a Spring helper
-	        final MimeMessage mimeMessage = emailSenderProperties.createMimeMessage();
-	        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+			 // Prepare message using a Spring helper
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 	        // Create the HTML body using Thymeleaf
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
-	        message.setText(htmlContent, true /* isHtml */);
-	        message.setTo(InternetAddress.parse(usuario.getCorreo()));
-	        message.setFrom(emailSenderProperties.getUsername());
-	        message.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");
+	        helper.setText(htmlContent, true /* isHtml */);
+	        helper.addInline("logoCanfer",
+	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	        helper.setTo(InternetAddress.parse(usuario.getCorreo()));
+	        helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");
 		    
-	        emailSenderProperties.send(mimeMessage);
+	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {
 

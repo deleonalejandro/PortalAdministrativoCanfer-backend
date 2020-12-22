@@ -282,9 +282,17 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		if (value.isPresent()) {
 			
 			comprobanteFiscal = value.get();
-			
+
 			if(comprobanteFiscal instanceof ComplementoPago) {
 				clearComplemento((ComplementoPago) comprobanteFiscal);
+			}
+			
+			if (comprobanteFiscal instanceof Factura
+					&& ((Factura) comprobanteFiscal).getComplemento() != null) {
+				
+					return false;
+					
+				
 			}
 			
 			comprobanteFiscal.delete();
@@ -355,6 +363,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	public boolean updateCfdInformation(ComprobanteFiscalDTO documento) {
 		
 		Optional<Proveedor> proveedor = null;
+		ComprobanteFiscal comprobanteUpdate;
 		Optional<ComprobanteFiscal> comprobante = superRepo.findComprobanteById(documento.getIdComprobanteFiscal());
 		
 		if (comprobante.isPresent()) {
@@ -367,17 +376,26 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			try {
 				
-				if(comprobante.get().actualizar(documento, proveedor)) {
+				int choice = comprobante.get().actualizar(documento, proveedor); 
+				
+				if(choice == 1) {
 					
-					emailSender.sendEmailUpdateDoc(comprobante.get());
-					superRepo.save(comprobante.get());
-					
+					comprobanteUpdate = superRepo.save(comprobante.get());
+					emailSender.sendEmailUpdateDoc(comprobanteUpdate);
 					return true;
 					
-				} else {
+				} else if (choice == 2 || choice == 3) {
 					
+					comprobanteUpdate = superRepo.save(comprobante.get());
+					emailSender.sendEmailNewDoc(comprobanteUpdate);
+					return true;
+					
+				}else {
+				
+					superRepo.save(comprobante.get());
 					return false;
 				}
+				
 				
 			} catch (Exception e) {
 				
