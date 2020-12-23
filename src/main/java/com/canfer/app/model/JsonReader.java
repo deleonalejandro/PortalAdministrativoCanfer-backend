@@ -11,17 +11,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.canfer.app.storage.StorageProperties;
  
 @Service
 public class JsonReader 
 {
+	@Autowired
+	private StorageProperties storageProperties;
     public String readLog() 
     {
           
         try {
         	
-        	List<File> filesInFolder = Files.walk(Paths.get("C:\\PortalProveedores\\log\\activity"))
+        	List<File> filesInFolder = Files.walk(storageProperties.getLogLocation().resolve("activity"))
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
                     .collect(Collectors.toList());
