@@ -29,6 +29,7 @@ import com.crystaldecisions.sdk.occa.report.exportoptions.*;
 import java.io.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 
@@ -43,12 +44,14 @@ public class CrystalReportService {
 	private ArchivoRepository archivoRepository; 
 	@Autowired
 	private EmpresaRepository empresaRepository; 
+	@Autowired
+	private Environment env;
 	
 	public ArchivoPDF exportPDF(Pago pago, String user, String password) {
 
 		Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 		
-		String REPORT_NAME = "C:\\Users\\aadministrador\\Desktop\\AVISO_PAGO_PAECRSAP-JDBC .rpt";
+		String REPORT_NAME = "/resources/static/crystalReport/AVISO_PAGO_PAECRSAP-JDBC .rpt";
 		String EXPORT_FILE = "C:\\Users\\aadministrador\\PortalProveedores\\ExportedPDFs";
 		String path = EXPORT_FILE + File.separator + empresa.getRfc() + File.separator + pago.getIdNumPago() + ".pdf";
 		
@@ -128,14 +131,15 @@ public class CrystalReportService {
 
 	public ArchivoPDF exportGenerico(ComprobanteFiscal comprobanteFiscal) {
 		
-		String CRYSTAL_REPORT = "C:\\Users\\aadministrador\\Desktop\\pdfGenerico.rpt";
+		String CRYSTAL_REPORT = env.getProperty("storage.crystalGenerico");
+		
 		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
 		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
 		
 		String sPath = comprobanteFiscal.getDocumento().getArchivoXML().getRuta();
 		String path = sPath.substring(0, sPath.length() - 3) + "pdf";
 		
-		String pathQR = "C:\\Users\\aadministrador\\Desktop\\CurrentQR.png";
+		String pathQR = env.getProperty("storage.qr");
 		String folio = "";
 		String serie = ""; 
 		File file = new File(path);
@@ -148,8 +152,10 @@ public class CrystalReportService {
 		try {
 
 			//Open report.			
-			ReportClientDocument reportClientDoc = new ReportClientDocument();			
+			ReportClientDocument reportClientDoc = new ReportClientDocument();	
+			System.out.println(CRYSTAL_REPORT);
 			reportClientDoc.open(CRYSTAL_REPORT, 0);
+			System.out.println("Ya hice el report");
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
 			if (comprobante.getFolio() != null) {
@@ -184,6 +190,7 @@ public class CrystalReportService {
 			String sello = comprobante.getSelloCfdTfd();
 			String ultimosDig = sello.substring(sello.length() - 8);
 			
+			System.out.println("Ya lo llenet");
 			
 			//save QR
 			String urlSAT = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+comprobante.getUuidTfd()+
