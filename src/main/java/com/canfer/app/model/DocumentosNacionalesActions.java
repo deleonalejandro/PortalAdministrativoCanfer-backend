@@ -479,6 +479,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		receptor = superRepo.findEmpresaByRFC(model.getReceptorRfc());
 		proveedores = superRepo.findAllProveedorByEmpresaAndRFC(receptor, model.getEmisorRfc());
 		
+		for (Proveedor proveedor:proveedores) {
+			
+			if (!proveedor.getMoneda().contains(model.getMoneda())) {
+				proveedores.remove(proveedor);
+			}
+		}
+		
 		// get the proper provider
 		if (proveedores.size() > 1 || proveedores.isEmpty()) {
 			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
