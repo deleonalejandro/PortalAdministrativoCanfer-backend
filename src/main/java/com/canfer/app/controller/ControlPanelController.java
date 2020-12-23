@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.RutaAlmacenamientoDTO;
 import com.canfer.app.mail.EmailThread;
+import com.canfer.app.model.Log;
 import com.canfer.app.model.RutaAlmacenamiento;
 import com.canfer.app.pdfExport.DBThread;
 import com.canfer.app.repository.RutaAlmacenamientoRepository;
@@ -162,16 +163,17 @@ public class ControlPanelController {
 					}
 					
 				} catch (SecurityException e) {
+					Log.falla("Ocurrió un problema al intentar crear los directorios de la ruta.", "ERROR_STORAGE");
 					return false;
-					//TODO agregar al log los errores 
+				 
 				}
 				
 			}
 				
 			
 		} catch (InvalidPathException e) {
+			Log.falla("La ruta especificada no es válida.", "ERROR_STORAGE");
 			return false;
-			//TODO agregar al log los errores
 		}
 		
 	}
