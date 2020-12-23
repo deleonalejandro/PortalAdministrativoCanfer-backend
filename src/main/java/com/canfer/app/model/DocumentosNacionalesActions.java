@@ -472,6 +472,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		Proveedor emisor;
 		Consecutivo consecutivo;
 		List<Proveedor> proveedores;
+		List<Proveedor> proveedoresMoneda = new ArrayList<>();
 		
 		model = documento.getArchivoXML().toCfdi();
 		tipoComprobante = model.getTipoDeComprobante();
@@ -479,18 +480,26 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		receptor = superRepo.findEmpresaByRFC(model.getReceptorRfc());
 		proveedores = superRepo.findAllProveedorByEmpresaAndRFC(receptor, model.getEmisorRfc());
 		
-		for (Proveedor proveedor:proveedores) {
-			
-			if (!proveedor.getMoneda().contains(model.getMoneda())) {
-				proveedores.remove(proveedor);
-			}
-		}
 		
 		// get the proper provider
 		if (proveedores.size() > 1 || proveedores.isEmpty()) {
+			
+			for (Proveedor proveedor:proveedores) {
+				
+				if (proveedor.getMoneda().contains(model.getMoneda())) {
+					proveedoresMoneda.add(proveedor);
+				}
+			}
+			
+			if(proveedoresMoneda.size() == 1) {
+				emisor = proveedoresMoneda.get(0);
+				
+			} else {
 			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
 			// instead.
 			emisor = superRepo.findProveedorByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+			
+			}
 		} else {
 			emisor = proveedores.get(0);
 		}
