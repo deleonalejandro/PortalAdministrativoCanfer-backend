@@ -34,6 +34,10 @@ public class RutaAlmacenamiento {
 	@UpdateTimestamp
 	private LocalDateTime fechaMov;
 	
+	public RutaAlmacenamiento() {
+		// default constructor
+	}
+	
 	public RutaAlmacenamiento(String ruta, String descripcion, boolean activa) {
 		
 		this.ruta = ruta;
