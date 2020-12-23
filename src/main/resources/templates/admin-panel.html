@@ -168,35 +168,261 @@
                                         </ul>
                                     </div>
                                     <div class="card-body">
+                                    	<div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
+										    La ruta se actualizó exitosamente.
+										    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+										        <span aria-hidden="true">×</span>
+										    </button>
+										</div>
+										<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${success == false}">
+										    Ocurrió un problema, verifica que la ruta sea correcta y válida. No olvides reescribir la ruta correctamente.
+										    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+										        <span aria-hidden="true">×</span>
+										    </button>
+										</div>
                                         <div class="tab-content" id="dashboardNavContent">
                                             <!-- Dashboard Tab Pane 1-->
                                             <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-pill"> 
                                                 <h4 class="mb-1" for="reception-section">Rutas de almacenamiento</h4>
                                                	<label class="small mb-2" for="reception-description">Configura las rutas de almacenamiento para los diferentes archivos.</label><br>
                                                	
-                                               	<!-- (default CORREO ruta)-->
+                                               	<!-- (default FACTURAS ruta)-->
 										      	<label class="small mb-1" for="rutaEntradaCorreo">Comprobantes Fiscales</label>
-                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
-                                               	
+                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" th:value="${facturas}" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#facturasModal">Cambiar</button><br>
+                                                
+	                                            <!-- Modal FACTURAS -->
+	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
+	                                            <input id="descripcion" name="descripcion" th:value="facturas" hidden>
+												<div class="modal fade" id="facturasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												    <div class="modal-dialog modal-dialog-centered" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Comprobantes Fiscales</h5>
+												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												            </div>
+												            <div class="modal-body">
+												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
+												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
+												            	<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
+																	<input class="form-control" id="ruta" type="text"
+																		placeholder="C:\..." name="ruta" />
+																</div>
+																
+																<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
+																	<input class="form-control" id="checkRuta" type="text"
+																		placeholder="C:\..." name="checkRuta" />
+																</div>
+												            
+												            </div>
+												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
+												        </div>
+												    </div>
+												</div>
+												</form>
+	                                               	
                                                	<!-- (default CORREO ruta)-->
 										      	<label class="small mb-1" for="rutaEntradaCorreo">Entradas de Correo</label>
-                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" th:value="${entries}" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#entriesModal">Cambiar</button><br>
+                                                
+                                                <!-- Modal CORREO -->
+	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
+	                                            <input id="descripcion" name="descripcion" th:value="entries" hidden>
+												<div class="modal fade" id="entriesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												    <div class="modal-dialog modal-dialog-centered" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Entradas de Correo</h5>
+												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												            </div>
+												            <div class="modal-body">
+												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
+												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
+												            	<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
+																	<input class="form-control" id="ruta" type="text"
+																		placeholder="C:\..." name="ruta" />
+																</div>
+																
+																<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
+																	<input class="form-control" id="checkRuta" type="text"
+																		placeholder="C:\..." name="checkRuta" />
+																</div>
+												            
+												            </div>
+												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
+												        </div>
+												    </div>
+												</div>
+												</form>
                                                 
                                                 <!-- (default PORTAL ruta)-->
 										      	<label class="small mb-1" for="rutaEntradaPortal">Entradas del Portal</label>
-                                                <input class="form-control mb-2" id="rutaFacturas" type="text" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                                <input class="form-control mb-2" id="rutaFacturas" type="text" th:value="${entryPortal}" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#entryPortalModal">Cambiar</button><br>
+                                                
+                                                <!-- Modal PORTAL ENTRADAS -->
+	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
+	                                            <input id="descripcion" name="descripcion"  th:value="entry" hidden>
+												<div class="modal fade" id="entryPortalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												    <div class="modal-dialog modal-dialog-centered" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Entradas del Portal</h5>
+												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												            </div>
+												            <div class="modal-body">
+												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
+												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
+												            	<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
+																	<input class="form-control" id="ruta" type="text"
+																		placeholder="C:\..." name="ruta" />
+																</div>
+																
+																<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
+																	<input class="form-control" id="checkRuta" type="text"
+																		placeholder="C:\..." name="checkRuta" />
+																</div>
+												            
+												            </div>
+												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
+												        </div>
+												    </div>
+												</div>
+												</form>
+                                                
+                                                
                                                 
                                                 <!-- (default ERROR ruta)-->
 										      	<label class="small mb-1" for="rutaError">Errores</label>
-                                                <input class="form-control mb-2" id="rutaError" type="text" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button><br>
+                                                <input class="form-control mb-2" id="rutaError" type="text" th:value="${error}" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#errorModal">Cambiar</button><br>
+                                                
+                                                <!-- Modal ERROR -->
+	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
+	                                            <input id="descripcion" name="descripcion" th:value="error" hidden>
+												<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												    <div class="modal-dialog modal-dialog-centered" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Errores</h5>
+												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												            </div>
+												            <div class="modal-body">
+												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
+												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
+												            	<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
+																	<input class="form-control" id="ruta" type="text"
+																		placeholder="C:\..." name="ruta" />
+																</div>
+																
+																<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
+																	<input class="form-control" id="checkRuta" type="text"
+																		placeholder="C:\..." name="checkRuta" />
+																</div>
+												            
+												            </div>
+												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
+												        </div>
+												    </div>
+												</div>
+												</form>
+                                                
+                                                <!-- (default LOGO ruta)-->
+										      	<label class="small mb-1" for="rutaLogo">Logotipos de Empresa</label>
+                                                <input class="form-control mb-2" id="rutaLogo" type="text" th:value="${logo}" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#logoModal">Cambiar</button><br>
+                                                
+                                                <!-- Modal LOGO -->
+	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
+	                                            <input id="descripcion" name="descripcion" th:value="logo" hidden>
+												<div class="modal fade" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												    <div class="modal-dialog modal-dialog-centered" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Logotipos de Empresa</h5>
+												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												            </div>
+												            <div class="modal-body">
+												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
+												            	<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
+																	<input class="form-control" id="ruta" type="text"
+																		placeholder="C:\..." name="ruta" />
+																</div>
+																
+																<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
+																	<input class="form-control" id="checkRuta" type="text"
+																		placeholder="C:\..." name="checkRuta" />
+																</div>
+												            
+												            </div>
+												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
+												        </div>
+												    </div>
+												</div>
+												</form>
+                                                
+                                                <!-- (default LOG ruta)-->
+										      	<label class="small mb-1" for="rutaLog">Log de Movimientos</label>
+                                                <input class="form-control mb-2" id="rutaLog" type="text" th:value="${log}" disabled/>
+                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#logModal">Cambiar</button><br>
+                                                
+                                                <!-- Modal LOG -->
+	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
+	                                            <input id="descripcion" name="descripcion" th:value="log" hidden>
+												<div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												    <div class="modal-dialog modal-dialog-centered" role="document">
+												        <div class="modal-content">
+												            <div class="modal-header">
+												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Log de Movimientos</h5>
+												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												            </div>
+												            <div class="modal-body">
+												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
+												            	<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
+																	<input class="form-control" id="ruta" type="text"
+																		placeholder="C:\..." name="ruta" />
+																</div>
+																
+																<!-- Form Group (NUEVA RUTA)-->
+																<div class="form-group">
+																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
+																	<input class="form-control" id="checkRuta" type="text"
+																		placeholder="C:\..." name="checkRuta" />
+																</div>
+												            
+												            </div>
+												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
+												        </div>
+												    </div>
+												</div>
+												</form>
                                                 
                                                 
-                                                
-                                            </div>
+                                            </div> 
+											
                                             <!-- Dashboard Tab Pane 2-->
                                             <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="activities-pill">
                                                 <form> 
@@ -397,8 +623,6 @@
         <script src="/js/tablecpanel.js"></script>
         <script src="/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="/assets/demo/chart-area-demo.js"></script>
-        <script src="/assets/demo/chart-pie-demo.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="/assets/demo/datatables-demo.js"></script>

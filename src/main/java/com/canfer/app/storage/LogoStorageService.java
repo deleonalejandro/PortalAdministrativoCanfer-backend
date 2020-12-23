@@ -18,7 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class LogoStorageService implements StorageService {
 
-	private final Path rootLocation;
+	@Autowired
+	private StorageProperties storageProperties;
+	
+	private Path rootLocation;
+	
 
 	@Autowired
 	public LogoStorageService(StorageProperties properties) {
@@ -89,5 +93,13 @@ public class LogoStorageService implements StorageService {
 		} catch (IOException e) {
 			throw new StorageException("No fue posible inicializar los directorios.", e);
 		}
+	}
+	
+	public boolean updatePaths() {
+		
+		this.rootLocation = storageProperties.getLogoLocation();
+		
+		return true;
+		
 	}
 }

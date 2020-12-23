@@ -31,6 +31,9 @@ public class ComprobanteStorageService implements StorageService {
 	
 	@Autowired
 	private EmpresaRepository empresaRepository;
+	
+	@Autowired
+	private StorageProperties storageProperties;
 
 
 	private Path rootLocation;
@@ -210,6 +213,17 @@ public class ComprobanteStorageService implements StorageService {
 			
 			return new ArchivoXML(fileLocation.toString() , "xml" , filename);
 		}
+	}
+	
+	public boolean updatePaths() {
+		
+		this.rootLocation = storageProperties.getFacturasLocation();
+		this.entriesPortalLocation = storageProperties.getEntryPortalLocation();
+		this.entriesEmailLocation = storageProperties.getEntriesLocation();
+		this.errorLocation = storageProperties.getErrorLocation();
+		
+		return true;
+		
 	}
 
 	@Override
