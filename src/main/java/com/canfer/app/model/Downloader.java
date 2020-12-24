@@ -1,6 +1,9 @@
 package com.canfer.app.model;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -100,6 +104,11 @@ public class Downloader {
 
 		String action = null;
 		String contentType = "application/pdf";
+		
+		if (file == null) { 
+			
+			return ResponseEntity.badRequest().body(null);
+		}
 
 		switch (method) {
 
@@ -113,10 +122,6 @@ public class Downloader {
 			action = "attachment";
 			break;
 
-		}
-
-		if (file== null) {
-			return null; 
 		}
 		
 		if (file.getExtension().equalsIgnoreCase("xml")) {
