@@ -353,6 +353,12 @@ public class RepositoryService {
 		return proveedorRepo.findAllByEmpresasAndRfc(empresa, rfc);
 
 	}
+	
+	public List<Proveedor> findAllProveedorByRfcAndBitActivo(String rfc, Boolean activo) {
+
+		return proveedorRepo.findAllByRfcAndBitActivo(rfc, activo);
+
+	}
 
 	public Proveedor findProveedorByEmpresasAndNombre(Empresa empresa, String nombre) {
 
