@@ -133,7 +133,8 @@
 					<div class="col-2">
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column">
-							<a class="nav-link active" th:href="@{users}">Usuarios</a> 
+							<a class="nav-link active" th:href="@{users}">Usuarios Portal Administrativo</a> 
+							<a class="nav-link" th:href="@{suppliersUsers}">Usuarios Portal Proveedor</a>
 							<a class="nav-link" th:href="@{companies}">Empresas</a> 
 							<a class="nav-link" th:href="@{suppliers}">Proveedores</a>
 						</nav>
@@ -144,8 +145,7 @@
 							<div class="alert alert-danger" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
 							<div class="alert alert-danger" role="alert" th:text="${UserNotFoundMessage}" th:if="${UserNotFoundMessage}"></div>
 							<div class="card-header">
-								<a th:href="@{addUser}" class="btn btn-primary">Añadir Usuario</a>
-								<a th:href="@{addUserSupplier}" class="btn btn-primary">Añadir Usuario Proveedor</a>
+								<a th:href="@{addUser}" class="btn btn-primary">Añadir</a>
 							</div>
 							<div class="card-body">
 								<div class="datatable">

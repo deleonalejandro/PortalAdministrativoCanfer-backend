@@ -12,8 +12,12 @@ import com.canfer.app.model.Empresa;
 import com.canfer.app.model.JsonReader;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Usuario.UsuarioCanfer;
+import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.ProveedorRepository;
+import com.canfer.app.repository.UsuarioCanferRepository;
+import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.repository.UsuarioRepository;
 
 @RestController
@@ -22,6 +26,12 @@ public class CatalogoRestController {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private UsuarioCanferRepository usuarioCanferRepo;
+	
+	@Autowired
+	private UsuarioProveedorRepository usuarioProvRepo;
 	@Autowired
 	private ProveedorRepository proveedorRepository;
 	@Autowired
@@ -33,9 +43,14 @@ public class CatalogoRestController {
 		// Este es el constructor vacio del controlador
 	}
 	
-	@GetMapping(value = "/getUsers")
-	public List<Usuario> getAllUsers(){
-		return usuarioRepository.findAll();
+	@GetMapping(value = "/getUsersPA")
+	public List<UsuarioCanfer> getAllUsersCanfer(){
+		return usuarioCanferRepo.findAll();
+	}
+	
+	@GetMapping(value = "/getUsersPP")
+	public List<UsuarioProveedor> getAllUsersProveedor(){
+		return usuarioProvRepo.findAll();
 	}
 	
 	@GetMapping(value = "/getSuppliers")

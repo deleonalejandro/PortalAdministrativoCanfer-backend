@@ -161,13 +161,18 @@ public class UsuarioService {
 
 		// Use setters to transfer the basic information, except password.
 		updateUsuario.setUsername(user.getUsername());
-		updateUsuario.setActivo(user.getActivo());
 		updateUsuario.setApellido(user.getApellido());
 		updateUsuario.setCorreo(user.getCorreo());
 		updateUsuario.setNombre(user.getNombre());
 		updateUsuario.setPermisos(user.getPermisosToString());
 		updateUsuario.setRol(user.getRol());
 
+		if (user.getActivo() == null) {
+			updateUsuario.setActivo(false);
+		} else {
+			updateUsuario.setActivo(user.getActivo());
+		}
+		
 		Log.activity("Se actualizó el usuario " + user.getUsername() + ".",
 				checkUsuario.get().getEmpresasNombre().toString(), "NEW_USER");
 

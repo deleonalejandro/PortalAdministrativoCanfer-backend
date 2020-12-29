@@ -116,6 +116,14 @@ public class UserController {
 		return "redirect:/admin/users";
 	}
 	
+	@GetMapping(value = "/suppliersUsers")
+	public String getSuppliersUsers(Model model) {
+		//Regreso los usuarios al DOM
+		model.addAttribute("list", userRepository.findAll());
+		model.addAttribute("empresas", empresaService.findAll());
+		return "users-supplier-catalog";
+	}
+	
 	@GetMapping(value = "/addUserSupplier")
 	public String addUserSupplier(Model model) {
 		

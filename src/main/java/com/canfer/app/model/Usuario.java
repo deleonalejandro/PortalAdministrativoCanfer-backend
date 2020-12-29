@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -19,12 +18,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.transaction.Transactional;
 
-import org.hibernate.Hibernate;
-import org.junit.validator.PublicClassValidator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -229,7 +223,7 @@ public abstract class Usuario {
 	@Entity
 	@DiscriminatorValue("USUARIO_PROVEEDOR")
 	public static class UsuarioProveedor extends Usuario {
-		
+		@JsonIgnore
 		@JoinTable( 
 		        name = "usuario_proveedor",
 		        joinColumns = @JoinColumn(name = "id_usuario_proveedor", nullable = false),
@@ -254,6 +248,17 @@ public abstract class Usuario {
 
 		public void setProveedores(List<Proveedor> proveedores) {
 			this.proveedores = proveedores;
+		}
+		
+		public String getRfcProveedor() {
+			
+			if (this.proveedores.get(0).getRfc().isEmpty()) {
+				
+				return "";
+				
+			}
+			
+			return this.proveedores.get(0).getRfc();
 		}
 		
 		

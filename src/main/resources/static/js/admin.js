@@ -51,7 +51,7 @@ $(document).ready(function() {
 	// Tabla de usuarios	
 	var tableUsuario = $('#userTable').DataTable({
 		ajax: {
-			url: "/catalogsAPI/getUsers",
+			url: "/catalogsAPI/getUsersPA",
 			dataSrc: ""
 		},
 		scrollX: true,
@@ -89,18 +89,74 @@ $(document).ready(function() {
 			{ data: "correo" },
 			{ data: "rol" },
 			{ data: "permisos" },
-			{ data: "activo" },
+			{ data : "activo" ,
+	            "render": function(data) {
+	                if(data == false) {
+	                    return '<i class="far fa-square" ></i>';
+	                }
+	                if(data == true) {
+	                    return '<i class="far fa-check-square" ></i>';
+	                }
+				}
+			 },
 		],
 		"order": [[3, 'asc']],
 	});
 	
-	// Tabla de proveedores
-	var tableEmpresa = $('#empresaTable').DataTable({
+	// Tabla de usuario proveedor
+	var tableUsuarioProveedor = $('#userProveedorTable').DataTable({
+		ajax: {
+			url: "/catalogsAPI/getUsersPP",
+			dataSrc: ""
+		},
 		scrollX: true,
 		"language": {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-		}
-		
+		},
+		columns: [
+			{
+				"className": 'delete-control',
+				"orderable": false,
+				"bSortable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function() {
+					return '<a class="deleteBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash-2"></i></a><script>feather.replace()</script>';
+
+				},
+			},
+			{
+				"className": 'edit-control',
+				"orderable": false,
+				"bSortable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function() {
+					return '<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="edit"></i></a><script>feather.replace()</script>';
+
+				},
+			},
+			{ data: "empresasNombre"},
+			{ data: "rfcProveedor"},
+			{ data: "type"},
+			{ data: "nombre" },
+			{ data: "apellido" },
+			{ data: "username" },
+			{ data: "correo" },
+			{ data: "rol" },
+			{ data: "permisos" },
+			{ data : "activo" ,
+	            "render": function(data) {
+	                if(data == false) {
+	                    return '<i class="far fa-square" ></i>';
+	                }
+	                if(data == true) {
+	                    return '<i class="far fa-check-square" ></i>';
+	                }
+				}
+			 },
+		],
+		"order": [[3, 'asc']],
 	});
 
 	/****** Funciones para las tablas: elimar, editar *******/
@@ -134,6 +190,42 @@ $(document).ready(function() {
 
 		var tr = $(this).closest('tr');
 		var data = tableUsuario.row($(this).parents(tr)).data();
+		var modData = JSON.stringify(data);
+		var jsonData = JSON.parse(modData);
+
+		$('.deleteForm .delBtn').attr("href", "user/delete/" + jsonData.idUsuario)
+		$('#deleteModal').modal("show");
+	});
+	
+		// Funciona para editar tabla usuarios proveedor
+	$('#userProveedorTable tbody').on('click', '.editBtn', function() {
+		var tr = $(this).closest('tr');
+		var data = tableUsuarioProveedor.row($(this).parents(tr)).data();
+		var modData = JSON.stringify(data);
+		var user = JSON.parse(modData);
+
+		$("#userId").val(user.idUsuario);
+		$("#inputUsername").val(user.username);
+		$("#inputFirstName").val(user.nombre);
+		$("#inputLastName").val(user.apellido);
+		$("#dropdownRoles").val(user.rol);
+		$("#dropdownPermisos").val(user.permisos.split(','));
+		$("#inputEmailAddress").val(user.correo);
+		$("#dropdownEmpresas").val(user.empresasId.join());
+		$("#checkActivo").prop('checked', user.activo);
+
+
+		$('#editModal').modal('show');
+
+	});
+
+	// Funcion para delete usuarios proveedor
+	$('#userProveedorTable tbody').on('click', 'td.delete-control', 'tr', function(event) {
+
+		event.preventDefault();
+
+		var tr = $(this).closest('tr');
+		var data = tableUsuarioProveedor.row($(this).parents(tr)).data();
 		var modData = JSON.stringify(data);
 		var jsonData = JSON.parse(modData);
 
