@@ -110,11 +110,17 @@ public class FNCRestController {
     @ResponseBody
 	public String getVigencia(@PathVariable long id) {
 	
+    	ComprobanteFiscal docFiscal; 
+    	
 		Optional<ComprobanteFiscal> comprobante = comprobanteFiscalRepo.findById(id);
 		if(comprobante.isPresent()) {
 			
-			superRepo.save(comprobante.get());
-			return comprobante.get().verificaSat(); 
+			docFiscal = comprobante.get(); 
+			String response = docFiscal.verificaSat(); 
+			docFiscal.setEstatusSAT(response);
+			
+			//save new response
+			superRepo.save(docFiscal);
 			
 		}
 		
