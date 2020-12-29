@@ -1,5 +1,7 @@
 package com.canfer.app.controller;
 
+import javax.persistence.EntityExistsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -111,6 +113,32 @@ public class UserController {
 			Log.falla("Error al actualizar usuario: " + e.getMessage(),"ERROR_DB");
 			ra.addFlashAttribute("UserNotFoundMessage", e.getMessage());
 		}
+		return "redirect:/admin/users";
+	}
+	
+	@GetMapping(value = "/addUserSupplier")
+	public String addUserSupplier(Model model) {
+		
+		model.addAttribute("user", new UserDTO());
+		
+		return "nueva-cuenta-proveedor-admin";
+	}
+	
+	@PostMapping(value = "/addUserSupplier")
+	public String saveAndRegisterUserSupplier(@ModelAttribute("user") UserDTO user, RedirectAttributes ra) {
+		
+		try {
+			
+			usuarioService.saveUsuarioProveedor(user);
+			
+			
+		} catch (EntityExistsException | NotFoundException e) {
+			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage(), "ERROR_DB");
+			ra.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:/registerSupplier";
+		} 
+		
+		ra.addFlashAttribute("registerSuccess", true);
 		return "redirect:/admin/users";
 	}
 	

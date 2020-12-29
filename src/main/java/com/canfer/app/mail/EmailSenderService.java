@@ -10,9 +10,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -86,7 +83,7 @@ public class EmailSenderService {
 	    	
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 	        
-	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        helper.setTo(InternetAddress.parse(to));
 	        helper.setSubject("Aviso de Pago");
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setText("Se ha realizado el pago de una factura.");
@@ -148,7 +145,7 @@ public class EmailSenderService {
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
 	        helper.addInline("logoCanfer",
 	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
-	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	        helper.setTo(InternetAddress.parse(to));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Recepción de Documento Fiscal.");
 			
@@ -208,10 +205,10 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        helper.setText(htmlContent, true /* isHtml */);
 	        helper.addInline("logoEmpresa",
-	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
+	                new File("C:\\PortalProveedores\\pruebas\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
 	        helper.addInline("logoCanfer",
-	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
-	        helper.setTo(InternetAddress.parse("yas.ale@hotmail.com"));
+	                new File("C:\\PortalProveedores\\pruebas\\logos\\CANFER-logo-transparente.png"));
+	        helper.setTo(InternetAddress.parse(to));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Actualización de  un Documento Fiscal.");
 		    
@@ -244,7 +241,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        helper.setText(htmlContent, true /* isHtml */);
 	        helper.addInline("logoCanfer",
-	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	                new File("C:\\PortalProveedores\\pruebas\\logos\\CANFER-logo-transparente.png"));
 	        helper.setTo(InternetAddress.parse(usuario.getCorreo()));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");

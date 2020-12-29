@@ -167,6 +167,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				
 				
 				ArchivoPDF archivoGen = crystalService.exportGenerico((ComprobanteFiscal) entity);
+
 				return dowloadManager.download(archivoGen, action);
 				
 				
@@ -479,19 +480,36 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		receptor = superRepo.findEmpresaByRFC(model.getReceptorRfc());
 		proveedores = superRepo.findAllProveedorByEmpresaAndRFC(receptor, model.getEmisorRfc());
 		
-		for (Proveedor proveedor:proveedores) {
+		
+		/* if no supplier was found */
+		if (proveedores.isEmpty()) {
 			
-			if (!proveedor.getMoneda().contains(model.getMoneda())) {
-				proveedores.remove(proveedor);
+			emisor = superRepo.findProveedorByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+			
+		} else {
+			
+			/* check if supplier has the same currency, reject if not */
+			for (Proveedor proveedor:proveedores) {
+				
+				if (proveedor.getMoneda() != null) {
+					
+					if (!proveedor.getMoneda().contains(model.getMoneda())) {
+						proveedores.remove(proveedor);
+					}
+					
+				}
 			}
+			
 		}
 		
-		// get the proper provider
-		if (proveedores.size() > 1 || proveedores.isEmpty()) {
+		// get the proper provider, look for more than one
+		if (proveedores.size() > 1) {
 			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
 			// instead.
 			emisor = superRepo.findProveedorByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+			
 		} else {
+			
 			emisor = proveedores.get(0);
 		}
 

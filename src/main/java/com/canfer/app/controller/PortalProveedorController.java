@@ -22,6 +22,7 @@ import com.canfer.app.model.Log;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.UsuarioProveedorRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
@@ -126,10 +127,25 @@ public class PortalProveedorController {
 	@PostMapping(value = "/registerSupplier")
 	public String saveAndRegisterSupplier(@ModelAttribute("user") UserDTO user, RedirectAttributes ra) {
 		
+		List<Proveedor> proveedores = superRepo.findAllProveedorByRfcAndBitActivo(user.getRfc(), true);
+		
+		for (Proveedor proveedor : proveedores) {
+			
+			List<UsuarioProveedor> usuarios = usuarioProveedorRepository.findAllByProveedores(proveedor);
+			
+			if (!usuarios.isEmpty()) {
+				
+				Log.general("Error al registrar el usuario proveedor: El RFC ya tiene una cuenta registrada.");
+				ra.addFlashAttribute("errorMessage", "Este RFC ya se encuentra registrado.");
+				return "redirect:/registerSupplier";
+				
+			}
+		}
+		
+
 		try {
 			
 			usuarioService.saveUsuarioProveedor(user);
-			
 			
 		} catch (EntityExistsException | NotFoundException e) {
 			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage(), "ERROR_DB");
@@ -138,7 +154,6 @@ public class PortalProveedorController {
 		} 
 		
 		ra.addFlashAttribute("registerSuccess", true);
-		//TODO generar dos paginas de login
 		return "redirect:/login/portalP";
 	}
 
