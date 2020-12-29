@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.dto.ProveedorDTO;
+import com.canfer.app.dto.UserDTO;
 import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
@@ -27,6 +29,7 @@ import com.canfer.app.model.ComprobanteFiscal.NotaDeCredito;
 import com.canfer.app.pdfExport.CrystalReportService;
 import com.canfer.app.service.ExcelService;
 import com.canfer.app.service.ProveedorService;
+import com.canfer.app.service.UsuarioService;
 
 import javassist.NotFoundException;
 import jxl.write.WriteException;
@@ -48,6 +51,9 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	@Autowired
 	private ProveedorService proveedorService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
@@ -457,12 +463,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		
 		return true;
 	}
-
 	
-	
-	
-	
-	
+	public boolean saveNewUserSupplier(UserDTO user) throws NotFoundException, EntityExistsException {
+		
+		usuarioService.saveUsuarioProveedor(user);
+		
+		return true;
+	}
 	
 	private ComprobanteFiscal makeCfd(Documento documento) throws NotFoundException {
 		

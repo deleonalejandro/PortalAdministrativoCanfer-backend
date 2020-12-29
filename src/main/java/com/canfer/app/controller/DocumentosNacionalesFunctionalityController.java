@@ -2,6 +2,7 @@ package com.canfer.app.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,7 @@ import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.dto.ComprobanteFiscalDTO;
 import com.canfer.app.dto.ProveedorDTO;
+import com.canfer.app.dto.UserDTO;
 import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -195,6 +199,32 @@ public class DocumentosNacionalesFunctionalityController {
 		
 		return "redirect:/documentosFiscalesClient/catalogo?selectedCompany=" + rfc;
 	}
+	
+	@GetMapping(value = "/addUserSupplier")
+	public String addUserSupplier(Model model) {
+		
+		model.addAttribute("user", new UserDTO());
+		
+		return "nueva-cuenta-proveedor-admin";
+	}
+	
+	@PostMapping(value = "/addUserSupplier")
+	public String saveAndRegisterUserSupplier(@ModelAttribute("user") UserDTO user, RedirectAttributes ra) {
+		
+		try {
+			
+			actioner.saveNewUserSupplier(user);			
+			
+		} catch (EntityExistsException | NotFoundException e) {
+			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage(), "ERROR_DB");
+			ra.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:/registerSupplier";
+		} 
+		
+		ra.addFlashAttribute("registerSuccess", true);
+		return "redirect:/admin/users";
+	}
+	
 	
 
 
