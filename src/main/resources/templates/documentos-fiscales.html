@@ -34,6 +34,7 @@
 	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <link href="css/stylesdf.css" rel="stylesheet" />
+<link rel="icon" type="image/x-icon" href="/assets/img/logosEmpresas/canfer.gif" />
 </head>
 
 <!-- TOP NAV BAR -->
@@ -191,50 +192,6 @@
 
 			<!-- Main page content-->
 			<div class="container-fluid" style="padding-top: 150px">
-			
-				<!-- TOAST PARA REFRESH DE SAT -->
-										<div class="toast" role="alert" id="toastSAT" data-autohide="true"
-											data-delay="6000"
-											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
-											aria-live="assertive" aria-atomic="true">
-											<div class="toast-header bg-primary text-white">
-												<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
-													de Estatus de Vigencia</strong> <small class="text-white-50 ml-2">Ahora</small>
-											</div>
-											<div class="toast-body">Se procesó la petición ante el SAT.</div>
-										</div>
-										<!-- TOAST PARA UPLOAD -->
-										<div class="toast" role="alert" id="toastUploadtrue" data-autohide=true
-											data-delay="6000"
-											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
-											aria-live="assertive" aria-atomic="true">
-											<div class="toast-header bg-success text-white">
-												<i data-feather="check-circle"></i> <strong class="mr-auto">Nuevo
-													Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-											</div>
-											<div class="toast-body">Carga de documento fiscal exitosa.</div>
-										</div>
-										<!-- TOAST PARA UPLOAD FALSE -->
-										<div class="toast" role="alert" id="toastUploadfalse" data-autohide=true
-											data-delay="6000"
-											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
-											aria-live="assertive" aria-atomic="true">
-											<div class="toast-header bg-danger text-white">
-												<i data-feather="x-circle"></i> <strong class="mr-auto">Nuevo
-													Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-											</div>
-											<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
-										</div>
-										<!-- TOAST PARA DELETE FALSE -->
-										<div class="toast" role="alert" id="toastDeletefalse" data-autohide=true
-											data-delay="6000"
-											style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
-											aria-live="assertive" aria-atomic="true">
-											<div class="toast-header bg-danger text-white">
-												<i data-feather="x-circle"></i> <strong class="mr-auto">Error</strong> <small class="text-white-50 ml-2">Ahora</small>
-											</div>
-											<div class="toast-body">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
-										</div>
 										
 				<div class="row">
 					<div class="col-2">
@@ -248,13 +205,56 @@
 								de Pago</a> <a class="nav-link" id="pestañaAvisos" href="#!">Avisos
 								de Pago</a> <a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
 
-							<img src="assets/img/logosEmpresas/canfer.gif" class=" pl-5 pb-5"
+							<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png" class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
 
 						</nav>
 					</div>
 					<div class="col-10">
+						<!-- TOAST PARA REFRESH DE SAT -->
+						<div class="toast" role="alert" id="toastSAT" data-autohide="true"
+							data-delay="6000"
+							style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+							aria-live="assertive" aria-atomic="true">
+							<div class="toast-header bg-primary text-white">
+								<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
+									de Estatus de Vigencia</strong> <small class="text-white-50 ml-2">Ahora</small>
+							</div>
+							<div class="toast-body">Se procesó la petición ante el SAT.</div>
+						</div>
+						<!-- TOAST PARA UPLOAD -->
+						<div class="toast" role="alert" id="toastUploadtrue" data-autohide=true
+							data-delay="6000"
+							style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+							aria-live="assertive" aria-atomic="true">
+							<div class="toast-header bg-success text-white">
+								<i data-feather="check-circle"></i> <strong class="mr-auto">Nuevo
+									Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
+							</div>
+							<div class="toast-body">Carga de documento fiscal exitosa.</div>
+						</div>
+						<!-- TOAST PARA UPLOAD FALSE -->
+						<div class="toast" role="alert" id="toastUploadfalse" data-autohide=true
+							data-delay="6000"
+							style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+							aria-live="assertive" aria-atomic="true">
+							<div class="toast-header bg-danger text-white">
+								<i data-feather="x-circle"></i> <strong class="mr-auto">Nuevo
+									Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
+							</div>
+							<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
+						</div>
+						<!-- TOAST PARA DELETE FALSE -->
+						<div class="toast" role="alert" id="toastDeletefalse" data-autohide=true
+							data-delay="6000"
+							style="z-index: 7000; position: absolute; top: .5rem; right: .5rem;"
+							aria-live="assertive" aria-atomic="true">
+							<div class="toast-header bg-danger text-white">
+								<i data-feather="x-circle"></i> <strong class="mr-auto">Error</strong> <small class="text-white-50 ml-2">Ahora</small>
+							</div>
+							<div class="toast-body">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
+						</div>
 
 						<!-- Main Content Tables  facturas-->
 						<div class="card mb-0" id="divFacturas">
