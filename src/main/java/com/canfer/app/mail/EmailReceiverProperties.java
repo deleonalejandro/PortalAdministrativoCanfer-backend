@@ -5,12 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 
+
 @Configuration
 @PropertySource("classpath:mail.properties")
 @ConfigurationProperties
 @Validated
 public class EmailReceiverProperties {
-
 	// server properties
     private String hostname;
     private String port;
@@ -23,6 +23,7 @@ public class EmailReceiverProperties {
     
     
 	public String getHostname() {
+		
 		return hostname;
 	}
 	public void setHostname(String hostname) {
