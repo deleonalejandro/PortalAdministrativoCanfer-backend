@@ -551,8 +551,6 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 						 "id=" + this.uuid;
 			
 			String respuestaSat =  service.validaVerifica(msg);
-			this.setEstatusSAT(respuestaSat);
-			
 			return respuestaSat; 
 			
 		} catch(Exception e) {

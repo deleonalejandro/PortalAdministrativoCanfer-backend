@@ -124,21 +124,27 @@ public class EmailService {
 				if (matchedFile instanceof ArchivoPDF) {
 
 					pdfFile = (ArchivoPDF) matchedFile;
+					// Erase files from the entries directory
+					files.remove(matchedFile);
 
-				} else {
+				} else if(matchedFile instanceof ArchivoXML) {
 
 					xmlFile = (ArchivoXML) matchedFile;
+					// Erase files from the entries directory
+					files.remove(matchedFile);
 
 				}
 
-				// Erase files from the entries directory
-				files.remove(matchedFile);
+				
 
 			}
 
 			try {
 				
-				actioner.upload(xmlFile, pdfFile);
+				if (xmlFile != null) {
+					
+					actioner.upload(xmlFile, pdfFile);
+				}
 				
 			}  catch (NotFoundException e) {
 				
