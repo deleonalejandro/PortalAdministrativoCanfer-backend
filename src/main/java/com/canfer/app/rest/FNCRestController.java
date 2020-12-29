@@ -121,7 +121,7 @@ public class FNCRestController {
 			
 			//save new response
 			superRepo.save(docFiscal);
-			
+			return response; 
 		}
 		
 		return null;
