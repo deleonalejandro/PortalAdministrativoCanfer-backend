@@ -26,7 +26,7 @@
             
             <!-- LOGO DE LA EMPRESA -->
             <a class="navbar-brand" href="#">
-            	<img src="/assets/img/logosEmpresas/canfer.gif" class="pl-3 img-fluid mr-0" alt="Logo Canfer" style= "height: 55px"/> 
+            	<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png" class="pl-3 img-fluid mr-0" alt="Logo Canfer" style= "height: 45px"/> 
             </a>
             
             <!-- ICONOS DE TOP NAV BAR -->
@@ -225,6 +225,7 @@
                 </div>
             </footer>
         </div>
+    <form action="#" th:action="@{supplier/update}" method="post">
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
@@ -237,7 +238,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="#" th:action="@{supplier/update}" method="post">
+					
 						<input type="hidden" name=idProveedor id="idProveedor">
 						<div class="form-row">
 							<!-- Form Group (EMPRESA DEL PROVEEDOR)-->
@@ -387,18 +388,18 @@
 							</div>
 							
 						</div>
-						<!-- Save changes button-->
-						<br />
-						<button class="btn btn-primary" type="submit">Guardar</button>
-					</form>
+						
+					
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
+					<!-- Save changes button-->
+					<button class="btn btn-primary" type="submit">Guardar</button>
 				</div>
 			</div>
 		</div>
 	</div>	   
-	
+	</form>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/js/scripts.js"></script>
