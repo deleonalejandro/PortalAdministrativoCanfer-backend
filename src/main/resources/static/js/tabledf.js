@@ -605,6 +605,9 @@
 						
 						 delhttp.open("GET", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
 					 	 delhttp.send();
+						
+						table.ajax.reload();
+			
 					});	
 					
 				});
@@ -667,6 +670,9 @@
 						
 						 delhttp.open("GET", '/documentosFiscalesClient/deleteMultipleFacturas?ids='+ids, true);
 					 	 delhttp.send();
+				
+						table.ajax.reload();
+						
 					});	
 					
 					
@@ -859,6 +865,7 @@
 				document.getElementById("divLog").hidden = false;
 				table3.columns.adjust();
 				
+				table3.ajax.reload();
 				
 			});
 			 
