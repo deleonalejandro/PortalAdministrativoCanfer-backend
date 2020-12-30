@@ -131,14 +131,11 @@ public class DocumentosNacionalesFunctionalityController {
 			
 	}
 	
-	@GetMapping(value = "/delete/{id}")
-	public void deleteComprobanteFiscal(@PathVariable Long id,
-			RedirectAttributes ra) {
-		
+	@PostMapping(value = "/delete/{id}")
+    @ResponseBody
+	public boolean deleteComprobanteFiscal(@PathVariable Long id) {
 			
-			ra.addFlashAttribute("delete", actioner.delete(id));
-			
-			
+			return actioner.delete(id);
 			
 	}
 	

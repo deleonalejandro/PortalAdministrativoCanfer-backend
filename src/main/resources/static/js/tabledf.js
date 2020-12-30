@@ -601,9 +601,24 @@
 					var jsonData = JSON.parse(modData);
 					
 					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(){
+					$('.deleteForm .delBtn').on('click', function(event){
 						
-						 delhttp.open("GET", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
+						event.preventDefault();
+					
+					  delhttp.onreadystatechange = function() {
+					    if (this.readyState == 4 && this.status == 200) {
+					    
+					      $('#deletePermission').val(this.responseText);
+
+							if($("#deletePermission").text() == 'false') {
+							 $('#toastDeletefalse').toast('show')
+							}
+					    }
+					    
+							delhttp.onreadystatechange=null
+					  };
+			
+						 delhttp.open("POST", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
 					 	 delhttp.send();
 				
 						table.ajax.url(myUrlWithParams.href).load(null, false);
@@ -673,6 +688,7 @@
 				
 						table.ajax.url(myUrlWithParams.href).load(null, false);
 			
+						
 						
 					});	
 					
@@ -873,14 +889,11 @@
 			  if($("#upload").text() == 'true') {
 		          $('#toastUploadtrue').toast('show')
 		     }
-
+			
 			if($("#upload").text() == 'false') {
-		          $('#toastUploadfalse').toast('show')
-		     }
-
-			if($("#deletePermission").text() == 'false') {
-		          $('#toastDeletefalse').toast('show')
-		     }
+				 $('#toastUploadfalse').toast('show')
+			}
+			
 				
 	});
 	
