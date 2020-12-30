@@ -605,8 +605,8 @@
 						
 						 delhttp.open("GET", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
 					 	 delhttp.send();
-						
-						table.ajax.reload();
+				
+						table.ajax.url(myUrlWithParams.href).load(null, false);
 			
 					});	
 					
@@ -671,7 +671,8 @@
 						 delhttp.open("GET", '/documentosFiscalesClient/deleteMultipleFacturas?ids='+ids, true);
 					 	 delhttp.send();
 				
-						table.ajax.reload();
+						table.ajax.url(myUrlWithParams.href).load(null, false);
+			
 						
 					});	
 					
