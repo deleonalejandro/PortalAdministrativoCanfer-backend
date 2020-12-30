@@ -158,6 +158,15 @@ $(document).ready(function() {
 		],
 		"order": [[3, 'asc']],
 	});
+	
+	// Tabla de empresa
+	var tableEmpresa = $('#empresaTable').DataTable({
+		scrollX: true,
+		"language": {
+			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		}
+		
+	});
 
 	/****** Funciones para las tablas: elimar, editar *******/
 
