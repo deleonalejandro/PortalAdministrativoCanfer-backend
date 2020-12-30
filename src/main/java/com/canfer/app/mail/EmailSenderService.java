@@ -152,7 +152,7 @@ public class EmailSenderService {
 		   
 	        emailSenderProperties.send(message);
 	        
-	    } catch (MessagingException e) {
+	    } catch (MessagingException | MailException e) {
 
 	    	Log.activity("No se pudo enviar correo a " + to + " con la confirmación de recepción de documento fiscal: "  
 	        		+ comprobante.getUuid() + ".", comprobante.getEmpresaNombre() ,"ERROR_CONNECTION");
