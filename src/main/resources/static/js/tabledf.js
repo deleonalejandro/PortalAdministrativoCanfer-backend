@@ -600,17 +600,10 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal+"?rfc=" + $("#selectedCompany").text())
 					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(){
-						
-						 delhttp.open("GET", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
-					 	 delhttp.send();
-						
-						table.ajax.reload();
-			
-					});	
-					
 				});
+				
 				
 				//Funcion para seleccionar
 				
@@ -664,21 +657,10 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids+"&rfc="+$("#selectedCompany").text())
 					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(){
-						
-						 delhttp.open("GET", '/documentosFiscalesClient/deleteMultipleFacturas?ids='+ids, true);
-					 	 delhttp.send();
-				
-						table.ajax.reload();
-						
-					});	
-					
-					
 					}
 				});
-				
 				
 				// Boton de descargar varios
 				    $('#xml').on('click', function(){
