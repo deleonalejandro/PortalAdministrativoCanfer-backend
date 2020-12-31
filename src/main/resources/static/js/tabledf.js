@@ -600,30 +600,9 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
-					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(event){
-						
-						event.preventDefault();
-					
-					  delhttp.onreadystatechange = function() {
-					    if (this.readyState == 4 && this.status == 200) {
-					    
-					      $('#deletePermission').val(this.responseText);
-
-							if($("#deletePermission").text() == 'false') {
-							 $('#toastDeletefalse').toast('show')
-							}
-					    }
-					    
-							delhttp.onreadystatechange=null
-					  };
-			
-						 delhttp.open("POST", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
-					 	 delhttp.send();
-				
-						table.ajax.url(myUrlWithParams.href).load(null, false);
-			
-					});	
+					$('.deleteForm .delBtn').attr("href", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal)
+					$('#deleteModal').modal("show");
+					 	 
 					
 				});
 				
@@ -680,18 +659,9 @@
 				 		  }
 				       });
 					
-					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(){
+						$('.deleteForm .delBtn').attr("href",'/documentosFiscalesClient/deleteMultipleFacturas?ids='+ids);
+						$('#deleteModal').modal("show");
 						
-						 delhttp.open("GET", '/documentosFiscalesClient/deleteMultipleFacturas?ids='+ids, true);
-					 	 delhttp.send();
-				
-						table.ajax.url(myUrlWithParams.href).load(null, false);
-			
-						
-						
-					});	
-					
 					
 					}
 				});
