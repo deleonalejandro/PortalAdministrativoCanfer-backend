@@ -714,17 +714,10 @@
 					var modData = JSON.stringify(data);
 					var jsonData = JSON.parse(modData);
 					
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/delete/"+jsonData.idComprobanteFiscal+"?rfc=" + $("#selectedCompany").text())
 					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(){
-						
-						 delhttp.open("GET", '/documentosFiscalesClient/delete/'+jsonData.idComprobanteFiscal, true);
-					 	 delhttp.send();
-						
-						table.ajax.reload();
-			
-					});	
-					
 				});
+				
 				
 				//Funcion para seleccionar
 				
@@ -778,21 +771,10 @@
 									ids.push(jsonData);
 				 		  }
 				       });
-					
+					$('.deleteForm .delBtn').attr("href","/documentosFiscalesClient/deleteMultipleFacturas?ids="+ids+"&rfc="+$("#selectedCompany").text())
 					$('#deleteModal').modal('show');
-					$('.deleteForm .delBtn').on('click', function(){
-						
-						 delhttp.open("GET", '/documentosFiscalesClient/deleteMultipleFacturas?ids='+ids, true);
-					 	 delhttp.send();
-				
-						table.ajax.reload();
-						
-					});	
-					
-					
 					}
 				});
-				
 				
 				// Boton de descargar varios
 				    $('#xml').on('click', function(){
@@ -911,6 +893,8 @@
 					    .columns( 10 )
 					    .search( 'I' )
 					    .draw();
+	
+				table.ajax.reload();
 				
 			});
 			
@@ -926,6 +910,8 @@
 					    .columns( 10 )
 					    .search( '' )
 					    .draw();
+	
+				table.ajax.reload();
 			});
 			
 			$("#pestañaCompl").on( "click", function() {
@@ -940,6 +926,8 @@
 					    .columns( 10 )
 					    .search( 'P' )
 					    .draw();
+	
+				table.ajax.reload();
 			});
 
 		       $("#pestañaNotas").on( "click", function() {
@@ -954,6 +942,8 @@
 					    .columns( 10 )
 					    .search( 'E' )
 					    .draw();
+	
+				table.ajax.reload();
 			});
 			
 			 $("#pestañaAvisos").on( "click", function() {
@@ -965,6 +955,7 @@
 				table2.columns.adjust();
 				document.getElementById("divAvisos").hidden = false;
 				table2.columns.adjust();
+				
 				
 				
 			});

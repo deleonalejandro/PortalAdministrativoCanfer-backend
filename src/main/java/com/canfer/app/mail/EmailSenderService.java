@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Pago;
 import com.canfer.app.model.Proveedor;
@@ -25,6 +26,7 @@ import com.canfer.app.model.Usuario.UsuarioProveedor;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.UsuarioCanferRepository;
 import com.canfer.app.service.RepositoryService;
+import com.canfer.app.storage.StorageProperties;
 
 /**
  * 
@@ -51,6 +53,8 @@ public class EmailSenderService {
     private TemplateEngine htmlTemplateEngine;
     @Autowired
     private EmailSenderProperties emailSenderProperties;
+    @Autowired
+    private StorageProperties storageProperties; 
     
 	// ==============
 	// PUBLIC METHODS
@@ -65,29 +69,83 @@ public class EmailSenderService {
 	
 	
 	public void sendEmailAvisoPago(Pago pago){
-
+		final String EMAIL_TEMPLATE_NAME = "emailNewAviso.html";
+		
 		//Obtener correo de contadores y de proveedor
 		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
 				empresaRep.findByRfc(pago.getRfcEmpresa()));
-		
 		String to = pago.getCorreo();
+		
 		for(UsuarioCanfer contador:contadores) {
 			
 			to=to+","+contador.getCorreo();
 			
 		}
+	
 		
-	    MimeMessage message = emailSenderProperties.createMimeMessage();
-	    
+		//Obtener cfdi que se pago
+		ComprobanteFiscal comprobante = superRepo.findFacturaByPago(pago);
+	    //Obtener la empresa del pago
+		Empresa empresa = superRepo.findEmpresaByRFC(pago.getRfcEmpresa());
+		//Obtener la empresa del pago
+		Proveedor proveedor = superRepo.findOneProveedorByRFC(pago.getRfcProveedor());
+		
 	    try {
 	    	
-	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	    	 // Prepare the evaluation context
+	        final Context ctx = new Context();
 	        
-	        helper.setTo(InternetAddress.parse(to));
-	        helper.setSubject("Aviso de Pago");
-	        helper.setFrom(emailSenderProperties.getUsername());
-	        helper.setText("Se ha realizado el pago de una factura.");
-	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
+	        if (comprobante != null) {
+			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
+			ctx.setVariable("serie",comprobante.getSerie()); 
+			ctx.setVariable("uuid",comprobante.getUuid()); 
+			ctx.setVariable("folio",comprobante.getFolio()); 
+			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento());
+			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
+			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
+	        }
+	        
+	        if (proveedor != null) {
+	        	ctx.setVariable("nombreProveedor", proveedor.getNombre());
+	        } else {
+	        	ctx.setVariable("nombreProveedor", pago.getRfcProveedor());
+	        }
+			ctx.setVariable("empresa",empresa.getNombre());
+			ctx.setVariable("rfcEmisor",pago.getRfcProveedor()); 
+			ctx.setVariable("rfcReceptor",pago.getRfcEmpresa()); 
+			ctx.setVariable("folioPago",pago.getIdNumPago()); 
+			ctx.setVariable("fechaPago",pago.getFecMvto()); 
+			ctx.setVariable("montoPago",pago.getTotalPago()); 
+			ctx.setVariable("moneda",pago.getMoneda()); 
+			ctx.setVariable("totalFactura",pago.getTotalFactura()); 
+			ctx.setVariable("totalParcialidad",pago.getTotalParcialidad()); 
+			
+	    	
+			// Prepare message using a Spring helper
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+	        
+	         // Create the HTML body using Thymeleaf
+		     final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
+		     helper.setText(htmlContent, true /* isHtml */);
+		     helper.addInline("logoEmpresa",
+		             new File(storageProperties.getLogoLocation().resolve(empresa.getProfilePictureName()).toString()));
+		     helper.addInline("logoCanfer",
+		             new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
+		    helper.setTo(InternetAddress.parse(to));
+		    helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Generación de Aviso de Pago.");
+	        
+	        if (pago.getDocumento() != null) {
+	        	
+		        try {	
+		        	helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
+		        } catch (Exception e) {
+		        	Log.falla("No se pudo adjuntar aviso de pago al correo a " + to + ".", "ERROR_FILE");;
+			    }
+	        
+	        } 
 	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {
@@ -142,9 +200,9 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        helper.setText(htmlContent, true /* isHtml */);
 	        helper.addInline("logoEmpresa",
-	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
+	                new File(storageProperties.getLogoLocation().resolve(comprobante.getEmpresa().getProfilePictureName()).toString()));
 	        helper.addInline("logoCanfer",
-	                new File("C:\\Users\\aadministrador\\PortalProveedores\\logos\\canfer.gif"));
+	                new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
 	        helper.setTo(InternetAddress.parse(to));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Recepción de Documento Fiscal.");
@@ -205,9 +263,9 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        helper.setText(htmlContent, true /* isHtml */);
 	        helper.addInline("logoEmpresa",
-	                new File("C:\\PortalProveedores\\pruebas\\logos\\"+comprobante.getEmpresa().getProfilePictureName()));
+	                new File(storageProperties.getLogoLocation().resolve(comprobante.getEmpresa().getProfilePictureName()).toString()));
 	        helper.addInline("logoCanfer",
-	                new File("C:\\PortalProveedores\\pruebas\\logos\\CANFER-logo-transparente.png"));
+	                new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
 	        helper.setTo(InternetAddress.parse(to));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Actualización de  un Documento Fiscal.");
@@ -241,7 +299,7 @@ public class EmailSenderService {
 	        final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 	        helper.setText(htmlContent, true /* isHtml */);
 	        helper.addInline("logoCanfer",
-	                new File("C:\\PortalProveedores\\pruebas\\logos\\CANFER-logo-transparente.png"));
+	                new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
 	        helper.setTo(InternetAddress.parse(usuario.getCorreo()));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");

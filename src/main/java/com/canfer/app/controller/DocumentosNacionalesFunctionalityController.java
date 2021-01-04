@@ -123,21 +123,24 @@ public class DocumentosNacionalesFunctionalityController {
 	
 
 	@GetMapping(value = "/deleteMultipleFacturas")
-	public void deleteMultipleComprobanteFiscal(@RequestParam List<Long> ids) {
+	public String deleteMultipleComprobanteFiscal(@RequestParam List<Long> ids, @RequestParam String rfc) {
 		
 		actioner.deleteAll(ids);
 		
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 			
 			
 	}
 	
 	@GetMapping(value = "/delete/{id}")
-	public void deleteComprobanteFiscal(@PathVariable Long id,
+	public String deleteComprobanteFiscal(@PathVariable Long id, @RequestParam String rfc,
 			RedirectAttributes ra) {
 		
 			
 			ra.addFlashAttribute("delete", actioner.delete(id));
 			
+	
+		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 			
 			
 	}

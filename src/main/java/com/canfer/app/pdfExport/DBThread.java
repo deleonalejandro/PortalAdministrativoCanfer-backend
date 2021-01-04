@@ -11,8 +11,8 @@ public class DBThread implements Runnable {
 	
 	@Autowired
 	private DbObserver dbObserver;
-	private boolean doStop = true;
-	private boolean syncPayments;
+	private boolean doStop = false;
+	private boolean syncPayments = true;
 	
 	
 	public DBThread() {
