@@ -85,31 +85,41 @@ public class EmailSenderService {
 		
 		//Obtener cfdi que se pago
 		ComprobanteFiscal comprobante = superRepo.findFacturaByPago(pago);
-	    
+	    //Obtener la empresa del pago
+		Empresa empresa = superRepo.findEmpresaByRFC(pago.getRfcEmpresa());
+		//Obtener la empresa del pago
+		Proveedor proveedor = superRepo.findOneProveedorByRFC(pago.getRfcProveedor());
+		
 	    try {
 	    	
 	    	 // Prepare the evaluation context
 	        final Context ctx = new Context();
-			ctx.setVariable("nombreProveedor", comprobante.getProveedorNombre());
-			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
+	        
+	        if (comprobante != null) {
+			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
+			ctx.setVariable("serie",comprobante.getSerie()); 
+			ctx.setVariable("uuid",comprobante.getUuid()); 
+			ctx.setVariable("folio",comprobante.getFolio()); 
+			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento());
+			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
+			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
+	        }
+	        
+	        if (proveedor != null) {
+	        	ctx.setVariable("nombreProveedor", proveedor.getNombre());
+	        } else {
+	        	ctx.setVariable("nombreProveedor", pago.getRfcProveedor());
+	        }
+			ctx.setVariable("empresa",empresa.getNombre());
+			ctx.setVariable("rfcEmisor",pago.getRfcProveedor()); 
+			ctx.setVariable("rfcReceptor",pago.getRfcEmpresa()); 
 			ctx.setVariable("folioPago",pago.getIdNumPago()); 
 			ctx.setVariable("fechaPago",pago.getFecMvto()); 
 			ctx.setVariable("montoPago",pago.getTotalPago()); 
 			ctx.setVariable("moneda",pago.getMoneda()); 
 			ctx.setVariable("totalFactura",pago.getTotalFactura()); 
 			ctx.setVariable("totalParcialidad",pago.getTotalParcialidad()); 
-			
-
-			ctx.setVariable("uuid",comprobante.getUuid()); 
-			ctx.setVariable("rfcEmisor",comprobante.getRfcProveedor()); 
-			ctx.setVariable("rfcReceptor",comprobante.getRfcEmpresa()); 
-			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
-			ctx.setVariable("serie",comprobante.getSerie()); 
-			ctx.setVariable("folio",comprobante.getFolio()); 
-			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento());
-			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
-			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
-			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
 			
 	    	
 			// Prepare message using a Spring helper
@@ -120,7 +130,7 @@ public class EmailSenderService {
 		     final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
 		     helper.setText(htmlContent, true /* isHtml */);
 		     helper.addInline("logoEmpresa",
-		             new File(storageProperties.getLogoLocation().resolve(comprobante.getEmpresa().getProfilePictureName()).toString()));
+		             new File(storageProperties.getLogoLocation().resolve(empresa.getProfilePictureName()).toString()));
 		     helper.addInline("logoCanfer",
 		             new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
 		    helper.setTo(InternetAddress.parse(to));

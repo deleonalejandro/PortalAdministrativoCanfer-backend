@@ -415,4 +415,12 @@ public class RepositoryService {
 	public ComprobanteFiscal findFacturaByPago(Pago pago) {
 		return facturaRepo.findByPago(pago);
 	}
+
+
+	public Proveedor findOneProveedorByRFC(String rfcProveedor) {
+		List<Proveedor> proveedores = proveedorRepo.findAllByRfc(rfcProveedor);
+		return proveedores.get(0);
+		
+		
+	}
 }

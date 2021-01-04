@@ -20,6 +20,7 @@ import com.canfer.app.model.Pago;
 import com.canfer.app.repository.ArchivoRepository;
 import com.canfer.app.repository.DocumentoRepository;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.storage.StorageProperties;
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
 import com.crystaldecisions.sdk.occa.report.lib.*;
@@ -43,7 +44,9 @@ public class CrystalReportService {
 	@Autowired
 	private ArchivoRepository archivoRepository; 
 	@Autowired
-	private EmpresaRepository empresaRepository; 
+	private EmpresaRepository empresaRepository;
+	@Autowired
+	private StorageProperties storageProperties;
 	@Autowired
 	private Environment env;
 	
@@ -51,9 +54,9 @@ public class CrystalReportService {
 
 		Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 		
-		String REPORT_NAME = "/resources/static/crystalReport/AVISO_PAGO_PAECRSAP-JDBC .rpt";
+		String REPORT_NAME =  env.getProperty("storage.crystalPayment");
 		String EXPORT_FILE = "C:\\Users\\aadministrador\\PortalProveedores\\ExportedPDFs";
-		String path = EXPORT_FILE + File.separator + empresa.getRfc() + File.separator + pago.getIdNumPago() + ".pdf";
+		String path = EXPORT_FILE + "_" + empresa.getRfc() + "_" + pago.getIdNumPago() + ".pdf";
 		
 		
 		try {
@@ -115,7 +118,7 @@ public class CrystalReportService {
 		
 		catch(ReportSDKException ex) {
 		
-			Log.activity("No se pudo generar el Crystal Report para el Pago: " + pago, empresa.getNombre(), "ERROR_FILE" );
+			Log.activity("No se pudo generar el Crystal Report para el Pago: " + pago.getIdNumPago(), empresa.getNombre(), "ERROR_FILE" );
 			return null; 
 		}
 		

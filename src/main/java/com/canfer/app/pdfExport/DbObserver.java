@@ -47,7 +47,6 @@ public class DbObserver {
 			if (exportedFile == null) {
 				
 				Log.falla("No se pudo exportar el pago "+ pago.getIdNumPago()+ " a PDF.", "ERROR");
-				continue; 
 				
 			}
 			
