@@ -114,6 +114,7 @@ public class ExcelService {
     		  sheet.setColumnView(c, cell);
     		 }
     	
+    	
     	WritableCellFormat cellFormatWrap = new WritableCellFormat();
     	cellFormatWrap.setWrap(true);
     	cellFormatWrap.setAlignment(Alignment.CENTRE);
@@ -174,6 +175,9 @@ public class ExcelService {
     	count = count+ 1; 
     	
     	}
+    	
+		  sheet.setColumnView(9,9);
+		  sheet.setColumnView(15,30);
     	
     	WritableCellFormat cellFormatF = new WritableCellFormat();
     	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
