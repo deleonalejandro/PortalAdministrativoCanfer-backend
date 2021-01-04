@@ -404,4 +404,15 @@ public class RepositoryService {
 		
 		return usuarioRepo.findByUsername(username);
 	}
+
+	public ComprobanteFiscal findFacturaByRfcEmpresaAndRfcProveedorAndIdNumSap(String rfcEmpresa, String rfcProveedor,
+			Long idNumSap) {
+		
+		return facturaRepo.findByRfcEmpresaAndRfcProveedorAndIdNumSap(rfcEmpresa, 
+				rfcProveedor, idNumSap);
+	}
+
+	public ComprobanteFiscal findFacturaByPago(Pago pago) {
+		return facturaRepo.findByPago(pago);
+	}
 }

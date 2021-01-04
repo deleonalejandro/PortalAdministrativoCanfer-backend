@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.canfer.app.model.ComprobanteFiscal;
+import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Pago;
 import com.canfer.app.model.Proveedor;
@@ -68,29 +69,73 @@ public class EmailSenderService {
 	
 	
 	public void sendEmailAvisoPago(Pago pago){
-
+		final String EMAIL_TEMPLATE_NAME = "emailNewAviso.html";
+		
 		//Obtener correo de contadores y de proveedor
 		List<UsuarioCanfer> contadores = usuarioCanferRep.findAllByEmpresas(
 				empresaRep.findByRfc(pago.getRfcEmpresa()));
-		
 		String to = pago.getCorreo();
+		
 		for(UsuarioCanfer contador:contadores) {
 			
 			to=to+","+contador.getCorreo();
 			
 		}
+	
 		
-	    MimeMessage message = emailSenderProperties.createMimeMessage();
+		//Obtener cfdi que se pago
+		ComprobanteFiscal comprobante = superRepo.findFacturaByPago(pago);
 	    
 	    try {
 	    	
-	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+	    	 // Prepare the evaluation context
+	        final Context ctx = new Context();
+			ctx.setVariable("nombreProveedor", comprobante.getProveedorNombre());
+			ctx.setVariable("empresa",comprobante.getEmpresaNombre()); 
+			ctx.setVariable("folioPago",pago.getIdNumPago()); 
+			ctx.setVariable("fechaPago",pago.getFecMvto()); 
+			ctx.setVariable("montoPago",pago.getTotalPago()); 
+			ctx.setVariable("moneda",pago.getMoneda()); 
+			ctx.setVariable("totalFactura",pago.getTotalFactura()); 
+			ctx.setVariable("totalParcialidad",pago.getTotalParcialidad()); 
+			
+
+			ctx.setVariable("uuid",comprobante.getUuid()); 
+			ctx.setVariable("rfcEmisor",comprobante.getRfcProveedor()); 
+			ctx.setVariable("rfcReceptor",comprobante.getRfcEmpresa()); 
+			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
+			ctx.setVariable("serie",comprobante.getSerie()); 
+			ctx.setVariable("folio",comprobante.getFolio()); 
+			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento());
+			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
+			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
+			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
+			
+	    	
+			// Prepare message using a Spring helper
+			 MimeMessage message = emailSenderProperties.createMimeMessage();
+	         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 	        
-	        helper.setTo(InternetAddress.parse(to));
-	        helper.setSubject("Aviso de Pago");
-	        helper.setFrom(emailSenderProperties.getUsername());
-	        helper.setText("Se ha realizado el pago de una factura.");
-	        helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
+	         // Create the HTML body using Thymeleaf
+		     final String htmlContent = this.htmlTemplateEngine.process(EMAIL_TEMPLATE_NAME, ctx);
+		     helper.setText(htmlContent, true /* isHtml */);
+		     helper.addInline("logoEmpresa",
+		             new File(storageProperties.getLogoLocation().resolve(comprobante.getEmpresa().getProfilePictureName()).toString()));
+		     helper.addInline("logoCanfer",
+		             new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
+		    helper.setTo(InternetAddress.parse(to));
+		    helper.setFrom(emailSenderProperties.getUsername());
+	        helper.setSubject("Generación de Aviso de Pago.");
+	        
+	        if (pago.getDocumento() != null) {
+	        	
+		        try {	
+		        	helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
+		        } catch (Exception e) {
+		        	Log.falla("No se pudo adjuntar aviso de pago al correo a " + to + ".", "ERROR_FILE");;
+			    }
+	        
+	        } 
 	        emailSenderProperties.send(message);
 	        
 	    } catch (MessagingException | MailException e) {

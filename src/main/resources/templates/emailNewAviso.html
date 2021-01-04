@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Canfer Email Design</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin: 0; padding: 0;">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+			<td style="padding: 10px 0 30px 0;">
+				<table align="center" border="0" cellpadding="0" cellspacing="0"
+					width="90%"
+					style="border: 1px solid #cccccc; border-collapse: collapse;">
+					<tr>
+						<td align="center" bgcolor="#fcb603"
+							style="padding: 40px 0 30px 0; color: rgb(0, 0, 0); font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+							<img src='cid:logoCanfer' style='float: left; height: 70px;' />
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%">
+								<tr>
+									<td
+										style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+										<b>Se generó un aviso de pago.</b>
+									</td>
+								</tr>
+								<tr>
+									<td
+										style="padding: 20px 0 30px 0; color: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+										<table style="width: 800px; border-style: solid;">
+											<tr>
+												<td colspan="4"
+													style="background-color: #EEEEEE; color: #000000; text-align: center; font-weight: bold; font-size: larger;"
+													th:text="${empresa}"></td>
+											</tr>
+											<tr>
+												<td
+													style="font-weight: bold; width: 150px; background-color: #EEEEEE;">Dirigido
+													a:</td>
+												<td colspan="3" th:text="${nombreProveedor}"></td>
+											</tr>
+											<tr>
+												<td
+													style="font-weight: bold; width: 150px; background-color: #EEEEEE;">Folio
+													Pago:</td>
+												<td colspan="3" th:text="${folioPago}"></td>
+											</tr>
+											<tr>
+												<td
+													style="font-weight: bold; width: 150px; background-color: #EEEEEE;">Total de la Factura:</td>
+												<td colspan="3" th:text="${totalFactura}"></td> <td th:text="${moneda}"></td>
+												<td
+													style="font-weight: bold; width: 150px; background-color: #EEEEEE;">Total de Parcialidad:</td>
+												<td colspan="3" th:text="${totalParcialidad}"></td> <td th:text="${moneda}"></td>
+											</tr>
+											<tr>
+												<td
+													style="font-weight: bold; width: 150px; background-color: #EEEEEE;">Fecha
+													Pago:</td>
+												<td th:text="${fechaPago}"></td>
+												<td
+													style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 140px;">Monto pagado:</td>
+												<td style="font-weight: bold; color: #AA0000;"
+													th:text="${montoPago}"></td> <td style="font-weight: bold; color: #AA0000;"
+													th:text="${moneda}"></td>
+											</tr>
+											<tr style="height: 200px;" valign="top">
+												<td colspan="4">
+													<!--Tabla de contenido de factura-->
+													<table style="width: 800px;">
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; text-align: center; font-size: 15px;"
+																colspan="6">DATOS DE CFDI PAGADO</td>
+														</tr>
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;">UUID:</td>
+															<td colspan="3" th:text="${uuid}"></td>
+														</tr>
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;">RFC
+																Emisor:</td>
+															<td style="width: 100px;" th:text="${rfcEmisor}"></td>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;">RFC
+																Receptor:</td>
+															<td style="width: 60px;" th:text="${rfcReceptor}"></td>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 140px;">Fecha
+																Emisión:</td>
+															<td th:text="${fechaEmision}"></td>
+														</tr>
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;">Serie:</td>
+															<td style="width: 100px;" th:text="${serie}"></td>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;">Folio:</td>
+															<td style="width: 60px;" th:text="${folio}"></td>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 140px;">Tipo
+																Comprobante:</td>
+															<td th:text="${tipoComprobante}"></td>
+														</tr>
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;"
+																colspan="2">ESTATUS COMERCIAL:</td>
+															<td colspan="4" style="width: 100px;"
+																th:text="${estatusPago}"></td>
+														</tr>
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;"
+																colspan="2">ESTATUS FISCAL:</td>
+															<td colspan="4" style="width: 60px;"
+																th:text="${estatusSAT}"></td>
+														</tr>
+														<tr>
+															<td
+																style="font-weight: bold; background-color: #EEEEEE; color: #000000; width: 110px;"
+																colspan="2">Fecha de Carga XML:</td>
+															<td style="width: 60px;" th:text="${fechaCarga}"></td>
+														</tr>
+													</table> <!--Fin de contenido de factura-->
+												</td>
+											</tr>
+											<tr>
+												<td colspan="4"
+													style="font-size: 11px; text-align: justify; color: #000000; font-weight: bold; text-align: center;">
+													Este mensaje ha sido generado de manera automática por el
+													sistema de Canfer.</td>
+											</tr>
+										</table>
+
+										<div
+											style="padding-top: 25px; color: rgb(0, 0, 0); font-size: 12px;">Atentamente,</div>
+										<div>
+											<img src='cid:logoEmpresa'
+												style='padding-top: 25px; float: left; height: 50px;' />
+										</div>
+										<div
+											style="padding-top: 25px; font-size: 12px; color: rgb(0, 0, 0);"
+											th:text="${empresa}"></div>
+
+										<div
+											style="padding-top: 25px; font-size: 12px; color: rgb(0, 0, 0);">
+											Para más información o aclaraciones favor de acceder al <a
+												href="http://www.twitter.com/"> Portal de Proveedores.</a>
+										</div>
+										<div
+											style="padding-top: 25px; font-size: 12px; color: rgb(0, 0, 0);">
+											Favor de no responder a este mail. Esta cuenta de correo es
+											una distribución automática de notificaciones.</div>
+									</td>
+								</tr>
+								<tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td
+							style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;"
+							width="75%">&reg; Canfer Grupo Empresarial<br />
+						</td>
+						<td align="right" width="25%">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td
+										style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+
+									</td>
+
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</td>
+	</tr>
+	</table>
+</body>
+</html>
