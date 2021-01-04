@@ -1,5 +1,5 @@
 $(function () {
-	
+
     var start = moment().startOf('day');
     var end = moment().endOf('day');
 
@@ -8,9 +8,6 @@ $(function () {
         $("#reportrangeCarga span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 		$("#uploadAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 		$("#uploadBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-			
-			
-		
     }
 
     $("#reportrangeCarga").daterangepicker(
@@ -74,7 +71,6 @@ $(function () {
         cb
     );
 
-    cb(start, end);
 
   $("#reportrangeCarga").on('cancel.daterangepicker', function(ev, picker) {
       $("#reportrangeCarga span").html('');
@@ -97,7 +93,7 @@ $(function () {
 		        "format": "DD/MM/YYYY",
 		        "separator": " - ",
 		        "applyLabel": "Aplicar",
-		        "cancelLabel": "Cancelar",
+		        "cancelLabel": "Limpiar",
 		        "fromLabel": "Desde",
 		        "toLabel": "Hasta",
 		        "customRangeLabel": "Personalizado",
@@ -150,5 +146,16 @@ $(function () {
         $("#reportrangeEmision span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 		$("#registeredAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 		$("#registeredBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+		
     });
+
+
+$("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) { 
+	
+  	$("#reportrangeEmision span").html('');
+  	$("#registeredAfter").text('');
+  	$("#registeredBefore").text('');
+
+  });
+
 });

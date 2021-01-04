@@ -27,14 +27,102 @@
 			var getUrl = window.location;
 			var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 			var myUrlWithParams;
-			var start = moment().startOf("day");
-    		var end = moment().endOf("day");
 			
-		  	myUrlWithParams = new URL("/documentosFiscalesApi", baseUrl);
-	
-			myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
-			myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-			myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+			if(Cookies.get('fltr_on')){
+				
+				$("#collapseExample").addClass('show');
+				$("#inputFiltroProveedor").val(Cookies.get('fltr_proveedor'));
+				$("#inputFiltroIdSap").val(Cookies.get('fltr_idNumSap'));
+				$("#inputFiltroUUID").val(Cookies.get('fltr_uuid'));
+				$("#inputFiltroEstatus").val(Cookies.get('fltr_estatusPago'));
+				$("#inputFiltroFolioInicial").val(Cookies.get('fltr_sequenceAfter'));
+				$("#inputFiltroFolioFinal").val(Cookies.get('fltr_sequenceBefore'));
+				$("#inputFiltroImporteDesde").val(Cookies.get('fltr_totalAfter'));
+				$("#inputFiltroImporteHasta").val(Cookies.get('fltr_totalBefore')); 
+				$("#uploadAfter").text(Cookies.get('fltr_uploadAfter'));
+				$("#uploadBefore").text(Cookies.get('fltr_uploadBefore')); 	
+				$("#reportrangeCarga span").html(Cookies.get('fltr_upload'));
+				$("#registeredAfter").text(Cookies.get('fltr_registeredAfter'));
+				$("#registeredBefore").text(Cookies.get('fltr_registeredBefore')); 	
+				$("#reportrangeEmision span").html(Cookies.get('fltr_register'));
+			
+		
+				
+				
+				//checkbox values (check them later)
+				if(Cookies.get('fltr_checkSap') == 'true') {
+					$("#checkRS").prop('checked', true);
+				} else {
+					$("#checkRS").prop('checked', false);
+				}
+				
+				if(Cookies.get('fltr_hasComplemento') == 'true') {
+					$("#checkComplemento").prop('checked', true);
+				} else {
+					$("#checkComplemento").prop('checked', false);
+				}
+				
+				if(Cookies.get('fltr_generico') == "PROVEEDOR GENÉRICO") {
+					$("#checkGenerico").prop('checked', true);
+				} else {
+					$("#checkGenerico").prop('checked', false);
+				}
+				
+				// loading the URL
+				if($("#checkComplemento").is(":checked")){
+					
+					myUrlWithParams = new URL("/documentosFiscalesApi/facturas", baseUrl);
+					
+				} else {
+					
+					myUrlWithParams = new URL("/documentosFiscalesApi", baseUrl);
+				}
+
+				// setting URL parameters
+				myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
+				myUrlWithParams.searchParams.append("proveedor", $("#inputFiltroProveedor").val());
+				myUrlWithParams.searchParams.append("idNumSap", $("#inputFiltroIdSap").val());
+				myUrlWithParams.searchParams.append("uuid", $("#inputFiltroUUID").val());
+				myUrlWithParams.searchParams.append("estatusPago", $("#inputFiltroEstatus").val());
+				myUrlWithParams.searchParams.append("uploadAfter", $("#uploadAfter").text());
+				myUrlWithParams.searchParams.append("uploadBefore", $("#uploadBefore").text());
+				myUrlWithParams.searchParams.append("registeredAfter", $("#registeredAfter").text());
+				myUrlWithParams.searchParams.append("registeredBefore", $("#registeredBefore").text());
+				myUrlWithParams.searchParams.append("sequenceAfter", $("#inputFiltroFolioInicial").val());
+				myUrlWithParams.searchParams.append("sequenceBefore", $("#inputFiltroFolioFinal").val());
+				myUrlWithParams.searchParams.append("totalAfter", $("#inputFiltroImporteDesde").val());
+				myUrlWithParams.searchParams.append("totalBefore", $("#inputFiltroImporteHasta").val());
+				
+				if($("#checkGenerico").is(":checked")){
+					myUrlWithParams.searchParams.append("generico", "PROVEEDOR GENÉRICO");
+				}
+				
+				if($("#checkRS").is(":checked")){
+					myUrlWithParams.searchParams.append("checkSap", true);
+				}
+				
+				if($("#checkComplemento").is(":checked")){
+					myUrlWithParams.searchParams.append("hasComplemento", true);
+				}
+				
+			} else {
+				
+				var start = moment().startOf("day");
+	    		var end = moment().endOf("day");
+				
+			  	myUrlWithParams = new URL("/documentosFiscalesApi", baseUrl);
+		
+				myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
+				myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				
+				// setting the initial values on daterange picker
+				$("#reportrangeCarga span").html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+				$("#uploadAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+				$("#uploadBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+			}
+			
+			
 			
 			
 			return myUrlWithParams.href;
@@ -391,7 +479,7 @@
 	
 		
  			
-			// Filters
+			// Filters action and refresh cookies
 			$('#reloadTableBtn').on('click', function() { 
 				
 
@@ -408,6 +496,7 @@
 					myUrlWithParams = new URL("/documentosFiscalesApi", baseUrl);
 				}
 
+				// setting URL parameters
 				myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
 				myUrlWithParams.searchParams.append("proveedor", $("#inputFiltroProveedor").val());
 				myUrlWithParams.searchParams.append("idNumSap", $("#inputFiltroIdSap").val());
@@ -422,19 +511,44 @@
 				myUrlWithParams.searchParams.append("totalAfter", $("#inputFiltroImporteDesde").val());
 				myUrlWithParams.searchParams.append("totalBefore", $("#inputFiltroImporteHasta").val());
 				
+				// saving values into cookies
+				Cookies.set('fltr_proveedor', $("#inputFiltroProveedor").val());
+				Cookies.set('fltr_idNumSap', $("#inputFiltroIdSap").val());
+				Cookies.set('fltr_uuid', $("#inputFiltroUUID").val())
+				Cookies.set('fltr_estatusPago', $("#inputFiltroEstatus").val());
+				Cookies.set('fltr_uploadAfter', $("#uploadAfter").text());
+				Cookies.set('fltr_uploadBefore', $("#uploadBefore").text());
+				Cookies.set('fltr_upload', $('#reportrangeCarga span').html())
+				Cookies.set('fltr_registeredAfter', $("#registeredAfter").text());
+				Cookies.set('fltr_registeredBefore', $("#registeredBefore").text());
+				Cookies.set('fltr_register', $('#reportrangeEmision span').html());
+				Cookies.set('fltr_sequenceAfter', $("#inputFiltroFolioInicial").val());
+				Cookies.set('fltr_sequenceBefore', $("#inputFiltroFolioFinal").val());
+				Cookies.set('fltr_totalAfter', $("#inputFiltroImporteDesde").val());
+				Cookies.set('fltr_totalBefore', $("#inputFiltroImporteHasta").val());
+				Cookies.set('fltr_generico', ""); 
+				Cookies.set('fltr_checkSap', false);
+				Cookies.set('fltr_hasComplemento', false); 
+
+				
+				
 				if($("#checkGenerico").is(":checked")){
-					myUrlWithParams.searchParams.append("generico", "PROVEEDOR GENÉRICO"); 
+					myUrlWithParams.searchParams.append("generico", "PROVEEDOR GENÉRICO");
+					Cookies.set('fltr_generico', "PROVEEDOR GENÉRICO"); 
 				}
 				if($("#checkRS").is(":checked")){
-					myUrlWithParams.searchParams.append("checkSap", true); 
+					myUrlWithParams.searchParams.append("checkSap", true);
+					Cookies.set('fltr_checkSap', true); 
 				}
 				if($("#checkComplemento").is(":checked")){
 					myUrlWithParams.searchParams.append("hasComplemento", true);  
+					Cookies.set('fltr_hasComplemento', true); 
 					table.ajax.url(myUrlWithParams.href).load();
 				}else {
 					table.ajax.url(myUrlWithParams.href).load();
 				}
 				
+				Cookies.set('fltr_on', true);
 		
 			});
 			
