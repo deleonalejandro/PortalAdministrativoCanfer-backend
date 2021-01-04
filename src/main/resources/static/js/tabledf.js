@@ -779,6 +779,8 @@
 					    .columns( 10 )
 					    .search( 'I' )
 					    .draw();
+	
+				table.ajax.reload();
 				
 			});
 			
@@ -794,6 +796,8 @@
 					    .columns( 10 )
 					    .search( '' )
 					    .draw();
+	
+				table.ajax.reload();
 			});
 			
 			$("#pestañaCompl").on( "click", function() {
@@ -808,6 +812,8 @@
 					    .columns( 10 )
 					    .search( 'P' )
 					    .draw();
+	
+				table.ajax.reload();
 			});
 
 		       $("#pestañaNotas").on( "click", function() {
@@ -822,6 +828,8 @@
 					    .columns( 10 )
 					    .search( 'E' )
 					    .draw();
+	
+				table.ajax.reload();
 			});
 			
 			 $("#pestañaAvisos").on( "click", function() {
@@ -833,6 +841,7 @@
 				table2.columns.adjust();
 				document.getElementById("divAvisos").hidden = false;
 				table2.columns.adjust();
+				
 				
 				
 			});
