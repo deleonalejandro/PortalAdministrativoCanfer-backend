@@ -3,6 +3,7 @@ package com.canfer.app.pdfExport;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.mail.EmailSenderService;
@@ -29,10 +30,12 @@ public class DbObserver {
 	@Autowired 
 	CrystalReportService crService; 
 	
+	@Value("${canfer.pagos.username}")
+	private String user;
+	@Value("${canfer.pagos.password}")
+	private String psswd;
+	
 	public void checkPago() {
-
-		String user = "sa"; 
-		String psswd = "q2y72-m9t9q"; 
 		
 		//Busca pagos que no hayan sido procesados
 		List<Pago> pagos = pagoRepository.findByBitProcesadoAndNuevoEstatusFactura(false,"Pagado");
