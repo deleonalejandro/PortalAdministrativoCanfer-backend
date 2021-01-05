@@ -122,7 +122,7 @@ public class PaymentStorageService implements StorageService {
 		}
 	}
 	
-	public String init(Pago pago) {
+	public Path init(Pago pago) {
 		
 		LocalDateTime today = LocalDateTime.now();
 		
@@ -141,7 +141,7 @@ public class PaymentStorageService implements StorageService {
 			throw new StorageException("No fue posible inicializar los directorios: " + route);
 		}
 		
-		return rootLocation.resolve(route).toString();
+		return rootLocation.resolve(route);
 		
 	}
 	

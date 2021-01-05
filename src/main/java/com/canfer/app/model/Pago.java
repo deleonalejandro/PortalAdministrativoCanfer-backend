@@ -222,6 +222,11 @@ public class Pago implements IModuleEntity {
 	public void setDocumento(Documento documento) {
 		this.documento = documento;
 	}
+	
+	public String createName () {
+		
+		return "PAGO_"+this.idNumPago+"_"+this.rfcProveedor+".pdf";
+	}
 
 
 	@Override

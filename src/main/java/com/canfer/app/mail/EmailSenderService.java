@@ -283,7 +283,6 @@ public class EmailSenderService {
 	public void sendEmailNewAccount(UsuarioProveedor usuario, String pass){
 		final String EMAIL_TEMPLATE_NAME = "emailUsuarioProv.html";
 		
-        
 	    try {
 	        
 	        // Prepare the evaluation context

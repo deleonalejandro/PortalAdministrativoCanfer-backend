@@ -20,6 +20,8 @@ import com.canfer.app.model.Pago;
 import com.canfer.app.repository.ArchivoRepository;
 import com.canfer.app.repository.DocumentoRepository;
 import com.canfer.app.repository.EmpresaRepository;
+import com.canfer.app.storage.PaymentStorageService;
+import com.canfer.app.storage.StorageException;
 import com.canfer.app.storage.StorageProperties;
 //Crystal Java Reporting Component (JRC) imports.
 import com.crystaldecisions.reports.sdk.*;
@@ -46,7 +48,7 @@ public class CrystalReportService {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 	@Autowired
-	private StorageProperties storageProperties;
+	private PaymentStorageService paymentStorage;
 	@Autowired
 	private Environment env;
 	
@@ -55,11 +57,12 @@ public class CrystalReportService {
 		Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 		
 		String REPORT_NAME =  env.getProperty("storage.crystalPayment");
-		String EXPORT_FILE = "C:\\Users\\aadministrador\\PortalProveedores\\ExportedPDFs";
-		String path = EXPORT_FILE + "_" + empresa.getRfc() + "_" + pago.getIdNumPago() + ".pdf";
-		
+	
 		
 		try {
+			
+			String path = paymentStorage.init(pago).resolve(pago.createName()).toString();
+			
 
 			//Open report.			
 			ReportClientDocument reportClientDoc = new ReportClientDocument();			
@@ -105,7 +108,7 @@ public class CrystalReportService {
 			
 			//Guardamos el Crystal
 			
- 			ArchivoPDF archivo = new ArchivoPDF(path,"pdf", pago.getIdNumPago() + ".pdf");
+ 			ArchivoPDF archivo = new ArchivoPDF(path,"pdf", pago.createName());
  			archivoRepository.save(archivo);
  			
  			Documento doc = pago.getDocumento();
@@ -116,15 +119,22 @@ public class CrystalReportService {
 			
 		}
 		
+		catch (StorageException ex) {
+			
+			Log.activity("No se pudo generar un PDF Crystal Report para el Pago: " + pago.createName()+ ", por " + ex.getMessage(), empresa.getNombre(), "ERROR_FILE" );
+			return null; 
+			
+		}
+		
 		catch(ReportSDKException ex) {
 		
-			Log.activity("No se pudo generar un PDF Crystal Report para el Pago: " + pago.getIdNumPago(), empresa.getNombre(), "ERROR_FILE" );
+			Log.activity("No se pudo generar un PDF para el Pago: " + pago.createName()+ ", por un error con Crystal Report.", empresa.getNombre(), "ERROR_FILE" );
 			return null; 
 		}
 		
 		catch(Exception ex) {
 			
-			Log.activity("Ocurrió un error al exportar el aviso de Pago: "+ pago+".", empresa.getNombre(), "ERROR");
+			Log.activity("Ocurrió un error al exportar el aviso de Pago: "+ pago.createName()+".", empresa.getNombre(), "ERROR");
 			return null; 	
 		}
 		
@@ -156,9 +166,8 @@ public class CrystalReportService {
 
 			//Open report.			
 			ReportClientDocument reportClientDoc = new ReportClientDocument();	
-			System.out.println(CRYSTAL_REPORT);
+			
 			reportClientDoc.open(CRYSTAL_REPORT, 0);
-			System.out.println("Ya hice el report");
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
 			if (comprobante.getFolio() != null) {
@@ -193,7 +202,6 @@ public class CrystalReportService {
 			String sello = comprobante.getSelloCfdTfd();
 			String ultimosDig = sello.substring(sello.length() - 8);
 			
-			System.out.println("Ya lo llenet");
 			
 			//save QR
 			String urlSAT = "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?id="+comprobante.getUuidTfd()+
