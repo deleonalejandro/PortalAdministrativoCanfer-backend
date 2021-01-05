@@ -56,7 +56,7 @@ public class ExcelService {
     	
     	WritableCellFormat headerFormat = new WritableCellFormat();
     	WritableFont font
-    	  = new WritableFont(WritableFont.ARIAL, 12, WritableFont.BOLD);
+    	  = new WritableFont(WritableFont.ARIAL, 11, WritableFont.BOLD);
     	headerFormat.setFont(font);
     	headerFormat.setWrap(true);
 
@@ -176,7 +176,7 @@ public class ExcelService {
     	
     	}
     	
-		  sheet.setColumnView(9,9);
+		  sheet.setColumnView(9,30);
 		  sheet.setColumnView(15,30);
     	
     	WritableCellFormat cellFormatF = new WritableCellFormat();

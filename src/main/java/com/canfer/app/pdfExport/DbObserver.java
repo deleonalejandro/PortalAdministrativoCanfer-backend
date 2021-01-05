@@ -50,11 +50,6 @@ public class DbObserver {
 				
 			}
 			
-			if(pago.getBitEnviarCorreo()) {
-				
-				eSenderService.sendEmailAvisoPago(pago);
-			}
-			
 			//Guardamos el bit procesado en la bd
 			pago.setBitProcesado(true);
 			pagoRepository.save(pago);
@@ -67,6 +62,11 @@ public class DbObserver {
 			
 			Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 			String nombre = "NA"; 
+			
+			if(pago.getBitEnviarCorreo()) {
+				
+				eSenderService.sendEmailAvisoPago(pago);
+			}
 			
 			if(empresa == null) {
 				
