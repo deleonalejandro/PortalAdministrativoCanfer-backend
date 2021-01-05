@@ -44,12 +44,6 @@ public class DbObserver {
 			//TODO poner la contraseña en un lugar seguro
 			ArchivoPDF exportedFile = crService.exportPDF(pago, user, psswd);
 			
-			if (exportedFile == null) {
-				
-				Log.falla("No se pudo exportar el pago "+ pago.getIdNumPago()+ " a PDF.", "ERROR");
-				
-			}
-			
 			//Guardamos el bit procesado en la bd
 			pago.setBitProcesado(true);
 			pagoRepository.save(pago);
@@ -58,6 +52,7 @@ public class DbObserver {
 					pago.getRfcProveedor(), pago.getIdNumSap());
 			
 			factura.setPago(pago);
+			factura.setEstatusPago(pago.getNuevoEstatusFactura().toUpperCase());
 			facturaRepository.save(factura);
 			
 			Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
