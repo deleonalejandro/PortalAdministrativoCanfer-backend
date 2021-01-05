@@ -117,6 +117,22 @@ public class StorageProperties {
 		rutasRepo.save(this.rutaObject);
 	}
 	
+	public Path getPaymentLocation() {
+		
+		this.rutaObject = rutasRepo.findByDescripcion("payments");
+		
+		return Paths.get(this.rutaObject.getRuta());
+		
+	}
+	
+	public void setPaymentLocation(Path paymentLocation) {
+		
+		this.rutaObject = rutasRepo.findByDescripcion("payments");
+		this.rutaObject.setRuta(paymentLocation.toString());
+		
+		rutasRepo.save(this.rutaObject);
+	}
+	
 	
 
 	
