@@ -76,7 +76,7 @@ public class DbObserver {
 				 nombre = empresa.getNombre();
 			}
 			
-			Log.activity("Se ha agregado el Aviso de Pago Número " + pago.getIdNumPago(), nombre, "PAYMENT");
+			Log.activity("Se ha procesado el Pago:  " + pago.getIdNumPago() + " para " + pago.getRfcProveedor()+ ".", nombre, "PAYMENT");
 			
 			}
 	}
