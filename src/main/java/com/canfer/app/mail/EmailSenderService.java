@@ -43,6 +43,13 @@ public class EmailSenderService {
 	// ==============
 	// PRIVATE FIELDS
 	// ==============
+	
+	//Booleanos para detener y activar las notificaciones 
+	//desde el CPanel
+	private boolean booleanEmailAvisoPago = true;
+	private boolean booleanEmailNewDoc = true;
+	private boolean booleanEmailUpdateDoc = true;
+	private boolean booleanEmailNewAccount = true;
 
 	@Autowired
 	private UsuarioCanferRepository usuarioCanferRep; 
@@ -70,6 +77,10 @@ public class EmailSenderService {
 	
 	
 	public void sendEmailAvisoPago(Pago pago){
+		
+		//Checar el booleanos de mandar notificacion
+		if(!booleanEmailAvisoPago){ return;}
+		
 		final String EMAIL_TEMPLATE_NAME = "emailNewAviso.html";
 		
 		//Obtener correo de contadores y de proveedor
@@ -156,6 +167,10 @@ public class EmailSenderService {
 	}
 
 	public void sendEmailNewDoc(ComprobanteFiscal comprobante){
+		
+		//Checar el booleanos de mandar notificacion
+		if(!booleanEmailNewDoc){ return;}
+				
 		final String EMAIL_TEMPLATE_NAME = "emailNewDoc.html";
         
 		//Obtener correo de contadores y de proveedor
@@ -219,6 +234,10 @@ public class EmailSenderService {
 	}
 	
 	public void sendEmailUpdateDoc(ComprobanteFiscal comprobante){
+		
+		//Checar el booleanos de mandar notificacion
+		if(!booleanEmailUpdateDoc){ return;}
+				
 		final String EMAIL_TEMPLATE_NAME = "emailUpdateDoc.html";
         
 		//Obtener correo de contadores y de proveedor
@@ -281,6 +300,10 @@ public class EmailSenderService {
 	}
 	
 	public void sendEmailNewAccount(UsuarioProveedor usuario, String pass){
+		
+		//Checar el booleanos de mandar notificacion
+		if(!booleanEmailNewAccount){ return;}
+				
 		final String EMAIL_TEMPLATE_NAME = "emailUsuarioProv.html";
 		
 	    try {
@@ -313,6 +336,58 @@ public class EmailSenderService {
 	        		+ usuario.getUsername() + "." ,"ERROR_CONNECTION");
 	    }
 	}
+	
+	
+	//Metodos para detener y prender envio de mails 
+	
+	public void startEmailAvisoPago() {
+		
+		this.booleanEmailAvisoPago = true;
+		
+	}
+	
+	public void stopEmailAvisoPago() {
+		
+		this.booleanEmailAvisoPago = false; 
+		
+	}
+	
+	public void startEmailNewDoc() {
+		
+		this.booleanEmailNewDoc = true;
+		
+	}
+	
+	public void stopEmailNewDoc() {
+		
+		this.booleanEmailNewDoc = false; 
+		
+	}
+	
+	public void startEmailUpdateDoc() {
+		
+		this.booleanEmailUpdateDoc = true;
+		
+	}
+	
+	public void stopEmailUpdateDoc() {
+		
+		this.booleanEmailUpdateDoc = false; 
+		
+	}
+	
+	public void startEmailNewAccount() {
+		
+		this.booleanEmailNewAccount = true;
+		
+	}
+	
+	public void stopEmailNewAccount() {
+		
+		this.booleanEmailNewAccount = false; 
+		
+	}
+	
 	
 	
 }
