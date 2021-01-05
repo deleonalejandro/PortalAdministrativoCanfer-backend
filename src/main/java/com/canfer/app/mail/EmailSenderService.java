@@ -4,6 +4,7 @@ package com.canfer.app.mail;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -281,13 +282,14 @@ public class EmailSenderService {
 	
 	public void sendEmailNewAccount(UsuarioProveedor usuario, String pass){
 		final String EMAIL_TEMPLATE_NAME = "emailUsuarioProv.html";
-        
 		
+        
 	    try {
 	        
 	        // Prepare the evaluation context
 	        final Context ctx = new Context();
 			ctx.setVariable("usuario", "Nombre de usuario: "+ usuario.getUsername());
+			ctx.setVariable("rfc", "RFC asociado: "+ usuario.getRfcProveedor());
 			ctx.setVariable("nombre", "¡Bienvenido "+ usuario.getNombre()+ " " + usuario.getApellido()+"!");
 			ctx.setVariable("psss", "Contraseña: "+ pass);
 
@@ -300,7 +302,7 @@ public class EmailSenderService {
 	        helper.setText(htmlContent, true /* isHtml */);
 	        helper.addInline("logoCanfer",
 	                new File(storageProperties.getLogoLocation().resolve("CANFER-logo-transparente.png").toString()));
-	        helper.setTo(InternetAddress.parse(usuario.getCorreo()));
+	        helper.setTo(InternetAddress.parse(usuario.getProveedores().get(0).getCorreo()));
 	        helper.setFrom(emailSenderProperties.getUsername());
 	        helper.setSubject("Nueva Cuenta en Portal de Proveedores Canfer.");
 		    
