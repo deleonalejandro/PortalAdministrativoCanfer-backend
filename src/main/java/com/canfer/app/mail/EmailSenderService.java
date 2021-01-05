@@ -142,7 +142,7 @@ public class EmailSenderService {
 		        try {	
 		        	helper.addAttachment("AvisoDePago.pdf", new File(pago.getDocumento().getArchivoPDF().getRuta()));
 		        } catch (Exception e) {
-		        	Log.falla("No se pudo adjuntar aviso de pago al correo a " + to + ".", "ERROR_FILE");;
+		        	Log.activity("No se pudo adjuntar aviso de pago al correo a " + to +" con un aviso de pago: "+ pago.getIdNumPago()+".", empresa.getNombre(), "ERROR_FILE");;
 			    }
 	        
 	        } 
@@ -150,7 +150,7 @@ public class EmailSenderService {
 	        
 	    } catch (MessagingException | MailException e) {
 
-	        Log.falla("No se pudo enviar correo a " + to + " con un aviso de pago.", "ERROR_CONNECTION");;
+	        Log.activity("No se pudo enviar correo a " + to + " con un aviso de pago: "+ pago.getIdNumPago()+".",empresa.getNombre(), "ERROR_CONNECTION");;
 	    }
 	}
 

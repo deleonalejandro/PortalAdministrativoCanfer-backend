@@ -218,14 +218,17 @@
 						{ data : "moneda" },
 						{ data: "estatusPago",
 		                    "render": function(data) {
-		                        if(data == 'EN PROCESO') {
+		                        if(data.toUpperCase() == 'EN PROCESO') {
 		                            return '<span class="badge badge-orange">En Proceso</span>';
 		                        }
-		                        if(data == 'PAGADO') {
+		                        if(data.toUpperCase() == 'PAGADO') {
 		                            return '<span class="badge badge-green">Pagado</span>';
 		                        }
-								if(data == 'CANCELADO') {
+								if(data.toUpperCase() == 'CANCELADO') {
 								    return '<span class="badge badge-red">Cancelado</span>';
+								}
+								else{
+									return '<span class="badge badge-blue">N/A</span>';
 								}
 						     }
 						},
@@ -265,14 +268,17 @@
 		                { data : "moneda" },
 						{ data: "nuevoEstatusFactura",
 		                    "render": function(data) {
-		                        if(data == 'EN PROCESO') {
+		                        if(data.toUpperCase() == 'EN PROCESO') {
 		                            return '<span class="badge badge-orange">En Proceso</span>';
 		                        }
-		                        if(data == 'PAGADO') {
+		                        if(data.toUpperCase() == 'PAGADO') {
 		                            return '<span class="badge badge-green">Pagado</span>';
 		                        }
-								if(data == 'CANCELADO') {
+								if(data.toUpperCase() == 'CANCELADO') {
 								    return '<span class="badge badge-red">Cancelado</span>';
+								}
+								else{
+									return '<span class="badge badge-blue">N/A</span>';
 								}
 						     }
 						},
@@ -956,7 +962,7 @@
 				document.getElementById("divAvisos").hidden = false;
 				table2.columns.adjust();
 				
-				
+				table2.ajax.reload();
 				
 			});
 			

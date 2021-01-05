@@ -118,7 +118,7 @@ public class CrystalReportService {
 		
 		catch(ReportSDKException ex) {
 		
-			Log.activity("No se pudo generar el Crystal Report para el Pago: " + pago.getIdNumPago(), empresa.getNombre(), "ERROR_FILE" );
+			Log.activity("No se pudo generar un PDF Crystal Report para el Pago: " + pago.getIdNumPago(), empresa.getNombre(), "ERROR_FILE" );
 			return null; 
 		}
 		
