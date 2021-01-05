@@ -11,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.RutaAlmacenamientoDTO;
+import com.canfer.app.mail.EmailSenderService;
 import com.canfer.app.mail.EmailThread;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.RutaAlmacenamiento;
@@ -45,6 +47,9 @@ public class ControlPanelController {
 	@Autowired
 	private LogoStorageService logoStorage;
 	
+	@Autowired
+	private EmailSenderService emailSenderService;
+	
 	@GetMapping(value = "/cpanel")
 	public String getCPanel(Model model) {
 		
@@ -61,6 +66,10 @@ public class ControlPanelController {
 		/* adding attributes to the model */
 		model.addAttribute("emailStatus", emailThread.getStatus());
 		model.addAttribute("syncPaymentStatus", dbThread.getStatus());
+		model.addAttribute("newDocStatus", emailSenderService.isBooleanEmailNewDoc());
+		model.addAttribute("avisoPagoStatus", emailSenderService.isBooleanEmailAvisoPago());
+		model.addAttribute("updateDocStatus", emailSenderService.isBooleanEmailUpdateDoc());
+		model.addAttribute("newAccountStatus", emailSenderService.isBooleanEmailNewAccount());
 		model.addAllAttributes(rutas);
 		
 		
@@ -103,6 +112,74 @@ public class ControlPanelController {
 		
 	}
 	
+	@GetMapping("/notificationavisopago")
+	public String notiAvisoPago(@RequestParam String bit) {
+		
+		if (bit.equalsIgnoreCase("on")) {
+			
+			emailSenderService.startEmailAvisoPago();
+			
+		} else if (bit.equalsIgnoreCase("off")) {
+			
+			emailSenderService.stopEmailAvisoPago();
+			
+		}
+		
+		return "redirect:/admin/cpanel";
+		
+	}
+	
+	@GetMapping("/notificationnewdoc")
+	public String notiNewDoc(@RequestParam String bit) {
+		
+		if (bit.equalsIgnoreCase("on")) {
+			
+			emailSenderService.startEmailNewDoc();
+			
+		} else if (bit.equalsIgnoreCase("off")) {
+			
+			emailSenderService.stopEmailNewDoc();
+			
+		}
+		
+		return "redirect:/admin/cpanel";
+		
+	}
+	
+	@GetMapping("/notificationupdatedoc")
+	public String notiUpdateDoc(@RequestParam String bit) {
+		
+		if (bit.equalsIgnoreCase("on")) {
+			
+			emailSenderService.startEmailUpdateDoc();
+			
+		} else if (bit.equalsIgnoreCase("off")) {
+			
+			emailSenderService.stopEmailUpdateDoc();
+			
+		}
+		
+		return "redirect:/admin/cpanel";
+		
+	}
+	
+	@GetMapping("/notificationnewaccount")
+	public String notiNewAccount(@RequestParam String bit) {
+		
+		if (bit.equalsIgnoreCase("on")) {
+			
+			emailSenderService.startEmailNewAccount();
+			
+		} else if (bit.equalsIgnoreCase("off")) {
+			
+			emailSenderService.stopEmailNewAccount();
+			
+		}
+		
+		return "redirect:/admin/cpanel";
+	}
+	
+	
 	//TODO consider that more storage paths are likely to be added into the system. Consider making one method for each storage path.
 	@PostMapping("/updatePath")
 	public String updateStoragePath(RutaAlmacenamientoDTO newPath, RedirectAttributes ra) {
@@ -118,7 +195,7 @@ public class ControlPanelController {
 			
 			rutasRepo.saveAndFlush(updatePath);
 			
-			// update storage services
+			// TODO PROBLEM HERE; update storage services
 			logoStorage.updatePaths();
 			comprobanteStorage.updatePaths();
 			
@@ -133,10 +210,9 @@ public class ControlPanelController {
 		ra.addFlashAttribute("success", false);
 		
 		return "redirect:/admin/cpanel";
-		
-		
-		
+	
 	}
+	
 	
 	private boolean isPathValid(String path) {
 		

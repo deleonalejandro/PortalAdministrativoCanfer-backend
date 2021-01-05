@@ -425,25 +425,50 @@
 											
                                             <!-- Dashboard Tab Pane 2-->
                                             <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="activities-pill">
-                                                <form> 
-		                                            <!-- Form Group (email updates checkboxes)-->
-		                                            <div class="form-group mb-2">
-		                                                <label class="small mb-1">Configura las notificaciones que emite el sistema por correo.</label>
-		                                                <div class="custom-control custom-checkbox">
-		                                                    <input class="custom-control-input" id="checkAccountChanges" type="checkbox" checked />
-		                                                    <label class="custom-control-label" for="checkAccountChanges">Recepción de nuevo comprobante fiscal</label>
-		                                                </div>
-		                                                <div class="custom-control custom-checkbox">
-		                                                    <input class="custom-control-input" id="checkAccountGroups" type="checkbox" checked />
-		                                                    <label class="custom-control-label" for="checkAccountGroups">Modificación de comprobante fiscal</label>
-		                                                </div>
-		                                                <div class="custom-control custom-checkbox">
-		                                                    <input class="custom-control-input" id="checkProductUpdates" type="checkbox" checked />
-		                                                    <label class="custom-control-label" for="checkProductUpdates">Creación de aviso de apago</label>
-		                                                </div> 
-		                                            </div>
-		                                            <button class="btn btn-primary mb-3" type="button">Guardar</button>
-		                                        </form>
+                                                <h4 class="mb-1" for="service-section">Notificaciones</h4>
+                                               	<label class="small mb-2" for="service-description">Configura las notificaciones que emite el sistema.</label>
+
+                                               	<div class="row mb-1">
+                                               		<div class="col-lg-10"> 
+												      	<b>Recepción de documento fiscal</b>
+												      	<p id=email-thread-active>El servicio envía una notificación al proveedor cuando se recibe un documento fiscal.</p>
+												    </div>
+												    <div class="col-lg-2"> 
+												    	<a class="btn" th:href="@{notificationnewdoc(bit='on')}" th:unless="${newDocStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
+												    	<a class="btn" th:href="@{notificationnewdoc(bit='off')}" th:if="${newDocStatus}"><button class="btn btn-outline-danger" type="button">Detener</button></a>
+												      	
+												    </div> 
+                                               	</div>
+                                               	<div class="row mb-1">
+                                               		<div class="col-lg-10"> 
+												      	<b>Envío de aviso de pago</b>
+												      	<p>El servicio envía una notificación con el aviso de pago al proveedor.</p>
+												    </div>
+												    <div class="col-lg-2"> 
+												    	<a class= btn th:href="@{notificationavisopago(bit='on')}" th:unless="${avisoPagoStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
+												      	<a class= btn th:href="@{notificationavisopago(bit='off')}" th:if="${avisoPagoStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
+												    </div> 
+                                               	</div>
+                                               	<div class="row mb-1">
+                                               		<div class="col-lg-10"> 
+												      	<b>Actualización de documento fiscal</b>
+												      	<p>El servicio envía una notificación al proveedor cuando surge una modificación en su documento fiscal.</p>
+												    </div>
+												    <div class="col-lg-2"> 
+												    	<a class= btn th:href="@{notificationupdatedoc(bit='on')}" th:unless="${updateDocStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
+												      	<a class= btn th:href="@{notificationupdatedoc(bit='off')}" th:if="${updateDocStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
+												    </div> 
+                                               	</div>
+                                               	<div class="row mb-1">
+                                               		<div class="col-lg-10"> 
+												      	<b>Creación de cuenta proveedor</b>
+												      	<p>El servicio envía una notificación al proveedor con las credenciales para el portal de proveedores.</p>
+												    </div>
+												    <div class="col-lg-2"> 
+												    	<a class= btn th:href="@{notificationnewaccount(bit='on')}" th:unless="${newAccountStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
+												      	<a class= btn th:href="@{notificationnewaccount(bit='off')}" th:if="${newAccountStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
+												    </div> 
+                                               	</div>
                                             </div>
                                             
                                             <!-- Dashboard Tab Pane 3-->
