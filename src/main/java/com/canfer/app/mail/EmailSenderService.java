@@ -387,6 +387,25 @@ public class EmailSenderService {
 		this.booleanEmailNewAccount = false; 
 		
 	}
+
+	//Getters 
+	
+	public boolean isBooleanEmailAvisoPago() {
+		return booleanEmailAvisoPago;
+	}
+
+	public boolean isBooleanEmailNewDoc() {
+		return booleanEmailNewDoc;
+	}
+
+	public boolean isBooleanEmailUpdateDoc() {
+		return booleanEmailUpdateDoc;
+	}
+
+
+	public boolean isBooleanEmailNewAccount() {
+		return booleanEmailNewAccount;
+	}
 	
 	
 	
