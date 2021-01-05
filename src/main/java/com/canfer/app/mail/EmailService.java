@@ -29,6 +29,7 @@ import com.canfer.app.model.DocumentosNacionalesActions;
 import com.canfer.app.model.Log;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageException;
+import com.canfer.app.storage.StorageProperties;
 
 import javassist.NotFoundException;
 
@@ -41,6 +42,9 @@ public class EmailService {
 	@Autowired
 	@Qualifier("DocumentosNacionalesActions")
 	private DocumentosNacionalesActions actioner;
+	
+	@Autowired
+	private StorageProperties storageProperties;
 
 	public EmailService() {
 		// Constructor vacio
@@ -155,7 +159,7 @@ public class EmailService {
 		
 		for (Archivo file : files) {
 			
-			file.discard();
+			file.discard(storageProperties.getErrorLocation());
 		}
 		
 		return true; 

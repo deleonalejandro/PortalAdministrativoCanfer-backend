@@ -19,6 +19,9 @@ public class StorageProperties {
 	
 	private RutaAlmacenamiento rutaObject;
 	
+	public StorageProperties() {
+		// default constructor
+	}
 	
 	public Path getFacturasLocation() {
 		

@@ -105,11 +105,11 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 		} else {
 			
-			fileXML.discard();
+			fileXML.discard(storageProperties.getErrorLocation());
 			
 			if (filePDF != null) {
 
-				filePDF.discard();
+				filePDF.discard(storageProperties.getErrorLocation());
 
 			} 
 			
@@ -507,18 +507,18 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				}
 			}
 			
+			if (proveedores.isEmpty() || proveedores.size() > 1) {
+				
+				emisor = superRepo.findProveedorByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
+				
+			} else {
+				
+				emisor = proveedores.get(0);
+			}
+			
 		}
 		
-		// get the proper provider, look for more than one
-		if (proveedores.size() > 1) {
-			// more than one found in the query for PROVEEDOR, use PROVEEDOR GENERICO
-			// instead.
-			emisor = superRepo.findProveedorByEmpresasAndNombre(receptor, "PROVEEDOR GENÉRICO");
-			
-		} else {
-			
-			emisor = proveedores.get(0);
-		}
+		
 
 		// use the proper sequence for the company and module
 		consecutivo = superRepo.findConsecutivoByEmpresaAndModulo(receptor, "Documentos Fiscales");

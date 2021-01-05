@@ -171,7 +171,7 @@ public abstract class Archivo {
  		
  	}
  	
- 	public abstract void discard();
+ 	public abstract void discard(Path discardLocation);
  	
 	
 	public String getRuta() {
@@ -298,9 +298,9 @@ public abstract class Archivo {
 		
 
 		@Override
-		public void discard() {
+		public void discard(Path discardLocation) {
 			
-			move(String.valueOf(storageProperties.getErrorLocation().resolve(this.nombre)));
+			move(String.valueOf(discardLocation.resolve(this.nombre)));
 			
 		}
 
@@ -344,9 +344,9 @@ public abstract class Archivo {
 		}
 
 		@Override
-		public void discard() {
+		public void discard(Path discardLocation) {
 
-			move(String.valueOf(storageProperties.getErrorLocation().resolve(this.nombre)));
+			move(String.valueOf(discardLocation.resolve(this.nombre)));
 			
 		}
 	}

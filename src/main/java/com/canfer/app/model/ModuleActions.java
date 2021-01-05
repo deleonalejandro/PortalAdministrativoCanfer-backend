@@ -14,6 +14,7 @@ import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.service.RepositoryService;
 import com.canfer.app.storage.ComprobanteStorageService;
+import com.canfer.app.storage.StorageProperties;
 
 import javassist.NotFoundException;
 
@@ -30,6 +31,9 @@ public abstract class ModuleActions {
 	
 	@Autowired
 	protected EmailSenderService emailSender;
+	
+	@Autowired
+	protected StorageProperties storageProperties;
 
 
 	protected abstract boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException;
