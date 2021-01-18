@@ -900,7 +900,7 @@
 					    .search( 'I' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 				
 			});
 			
@@ -917,7 +917,7 @@
 					    .search( '' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 			});
 			
 			$("#pestañaCompl").on( "click", function() {
@@ -933,7 +933,7 @@
 					    .search( 'P' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 			});
 
 		       $("#pestañaNotas").on( "click", function() {
@@ -949,7 +949,7 @@
 					    .search( 'E' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 			});
 			
 			 $("#pestañaAvisos").on( "click", function() {
@@ -962,7 +962,7 @@
 				document.getElementById("divAvisos").hidden = false;
 				table2.columns.adjust();
 				
-				table2.ajax.reload();
+				table2.ajax.reload(null,false);
 				
 			});
 			
