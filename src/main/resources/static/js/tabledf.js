@@ -685,8 +685,14 @@
 					      $('.detailsForm #estatusSAT').val(this.responseText);
 					    }
 					    
-						$('#toastSAT').toast('show')
-						xhr.onreadystatechange=null
+				  		$('#toastSAT').toast('show')
+				  		$('#toastSAT').toggleClass('ew-toast-show')
+				          setTimeout(function(){
+							    $('#toastSAT').toggleClass('ew-toast-show')
+							}, 10000);
+		     
+				
+						xhttp.onreadystatechange=null
 					  };
 					  xhttp.open("POST", '/documentosFiscalesApi/getVigencia/'+jsonData.idComprobanteFiscal, true);
 					  xhttp.send();
@@ -981,15 +987,32 @@
 			});
 			 
 			  if($("#upload").text() == 'true') {
-		          $('#toastUploadtrue').toast('show')
+			  	  $('#toastUploadtrue').toggleClass('ew-toast-show')
+			  	  
+			  	  $('#toastUploadtrue').toast('show')
+		          
+		          setTimeout(function(){
+					    $('#toastUploadtrue').toggleClass('ew-toast-show')
+					}, 6000);
 		     }
 
 			if($("#upload").text() == 'false') {
+				  $('#toastUploadfalse').toggleClass('ew-toast-show')
+				  
 		          $('#toastUploadfalse').toast('show')
+		          setTimeout(function(){
+					    $('#toastUploadfalse').toggleClass('ew-toast-show')
+					}, 6000);
+		          
 		     }
 
 			if($("#deletePermission").text() == 'false') {
+				  $('#toastDeletefalse').toggleClass('ew-toast-show')
+				  
 		          $('#toastDeletefalse').toast('show')
+		          setTimeout(function(){
+					    $('#toastDeletefalse').toggleClass('ew-toast-show')
+					}, 6000);
 		     }
 				
 	});
