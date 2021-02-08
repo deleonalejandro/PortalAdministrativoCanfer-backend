@@ -137,6 +137,10 @@
 			var delhttp = new XMLHttpRequest();
 			
 		         var table = $('#facturas').DataTable({
+					"drawCallback": function( settings, json ) {
+						document.getElementById("reloadTableBtn").hidden = false;
+						document.getElementById("reloadTableLoading").hidden = true; 
+					 },
 					stateSave: true,
 					ajax: {
 		            url: getInitUrl(),
@@ -488,6 +492,8 @@
 			// Filters action and refresh cookies
 			$('#reloadTableBtn').on('click', function() { 
 				
+				document.getElementById("reloadTableBtn").hidden = true;
+				document.getElementById("reloadTableLoading").hidden = false; 
 
 				var getUrl = window.location;
 				var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
@@ -555,7 +561,7 @@
 				}
 				
 				Cookies.set('fltr_on', true);
-		
+			
 			});
 			
 			// Clear filters
