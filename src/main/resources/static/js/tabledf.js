@@ -187,12 +187,12 @@
 		                 },
 		
 		                { data : "idNumSap" },
-		                { data : "bitRS" ,
-		                    "render": function(data) {
-		                        if(data == false) {
+		                { data : null,
+		                    "render": function(row) {
+		                        if(row.bitRS == false && row.bitRSusuario == false) {
 		                            return '<i class="far fa-square" ></i>';
 		                        }
-		                        if(data == true) {
+		                        if(row.bitRS == true || row.bitRSusuario == true) {
 		                            return '<i class="far fa-check-square" ></i>';
 		                        }
 							}
@@ -635,11 +635,11 @@
 					$('.detailsForm #tipoDocumento').val(jsonData.tipoDocumento)
 					$('.detailsForm #estatusPago').val(jsonData.estatusPago)
 					$('.detailsForm #newSuppliers').val(jsonData.proveedorClaveProv)
-					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT)
+					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT + ' al '+ jsonData.fechaValidacionSat)
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
-					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
 					$('.detailsForm #comentario').val(jsonData.comentario)
 					$('.detailsForm #idComprobanteFiscal').val(jsonData.idComprobanteFiscal)
+					$('.detailsForm #validacionFiscal').val(jsonData.validacionFiscal)
 					         
 			        $('.detailsForm #bitRSusuario').prop("checked", jsonData.bitRSusuario);
 			        $('.detailsForm #bitRS').prop("checked", jsonData.bitRS);
@@ -667,7 +667,7 @@
 						         .text(value.claveProv)); 
 						});
 							if(jsonData.proveedorNombre =='PROVEEDOR GENÉRICO') {
-								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text(jsonData.proveedorClaveProv));
+								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text('Proveedor Genérico - ' + jsonData.proveedorClaveProv));
 							}
 							
 							$('#newSuppliers').val(jsonData.proveedorIdProveedor);
@@ -682,17 +682,18 @@
 					  xhttp.onreadystatechange = function() {
 					    if (this.readyState == 4 && this.status == 200) {
 					    
-					      $('.detailsForm #estatusSAT').val(this.responseText);
-					    }
-					    
-				  		$('#toastSAT').toast('show')
-				  		$('#toastSAT').toggleClass('ew-toast-show')
+					      let today = new Date().toISOString().slice(0, 10)
+					      
+					      $('.detailsForm #estatusSAT').val(this.responseText + ' al ' + today);
+					   	  $('#toastSAT').toggleClass('ew-toast-show')
+			  	  
+					  	  $('#toastSAT').toast('show')
+				          
 				          setTimeout(function(){
 							    $('#toastSAT').toggleClass('ew-toast-show')
-							}, 10000);
-		     
-				
-						xhttp.onreadystatechange=null
+							}, 6000);
+					    }
+					    
 					  };
 					  xhttp.open("POST", '/documentosFiscalesApi/getVigencia/'+jsonData.idComprobanteFiscal, true);
 					  xhttp.send();
@@ -995,6 +996,7 @@
 					    $('#toastUploadtrue').toggleClass('ew-toast-show')
 					}, 6000);
 		     }
+		     
 
 			if($("#upload").text() == 'false') {
 				  $('#toastUploadfalse').toggleClass('ew-toast-show')

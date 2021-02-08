@@ -213,7 +213,7 @@
 					</div>
 					<div class="col-10">
 						<!-- TOAST PARA REFRESH DE SAT -->
-						<div class="toast" role="alert" id="toastSAT" data-autohide="false"
+						<div class="toast" role="alert" id="toastSAT" data-autohide=false
 							data-delay="6000"
 							style="z-index:7000; position: fixed; right: 2.5rem;"
 							aria-live="assertive" aria-atomic="true">
@@ -911,6 +911,19 @@
 													</div>
 													<div class="row pt-1">
 														<div class="col-3">
+															<label for="validacionFiscal"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Validación Fiscal: </small>
+															</label>
+														</div>
+														<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																class="form-control text-danger form-control-sm bg-white" 
+																 id="validacionFiscal" value="">
+														</div>
+													</div>
+													<div class="row pt-1">
+														<div class="col-3">
 															<label for="respuestaValidacion"
 																class="form-control-label mb-0 font-weight-bold">
 																<small>Respuesta Validación: </small>
@@ -923,19 +936,7 @@
 														
 														</div>
 													</div>
-													<div class="row pt-1">
-														<div class="col-3">
-															<label for="errorValidacion"
-																class="form-control-label mb-0 font-weight-bold">
-																<small>Error Validación: </small>
-															</label>
-														</div>
-														<div class="col-9">
-															<input type="text" style="height: 20px" readonly
-																class="text-danger form-control form-control-sm bg-white"
-																id="errorValidacion" value="" />
-														</div>
-													</div>
+													
 													<div class="row pt-1">
 														<div class="col-3">
 															<label for="docsRelacionados"

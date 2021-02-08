@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -123,12 +124,19 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	private Boolean bitValidoSAT; 
 	
 	@Column
-	@CsvBindByName(column = "Validación SAT")
+	@CsvBindByName(column = "Validación Fiscal")
 	private String respuestaValidacion; 
 	
 	@Column
-	@CsvBindByName(column = "Vigencia")
+	@CsvBindByName(column = "Vigencia SAT")
 	private String estatusSAT;
+	
+	@Column
+	@CsvBindByName(column = "Vigencia Fiscal")
+	private String validacionFiscal;
+	
+	@Column
+	private LocalDate fechaValidacionSat;
 	
 	@Column(nullable = false)
 	@CsvBindByName(column = "Estatus de Pago")
@@ -483,6 +491,23 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	public void setEstatusPago(String estatusPago) {
 		this.estatusPago = estatusPago;
 	}
+	
+
+	public String getValidacionFiscal() {
+		return validacionFiscal;
+	}
+
+	public void setValidacionFiscal(String validacionFiscal) {
+		this.validacionFiscal = validacionFiscal;
+	}
+
+	public LocalDate getFechaValidacionSat() {
+		return fechaValidacionSat;
+	}
+
+	public void setFechaValidacionSat(LocalDate fechaValidacionFiscal) {
+		this.fechaValidacionSat = fechaValidacionFiscal;
+	}
 
 	public Boolean getBitRS() {
 		return bitRS;
@@ -551,6 +576,9 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 						 "id=" + this.uuid;
 			
 			String respuestaSat =  service.validaVerifica(msg);
+			this.setEstatusSAT(respuestaSat);
+			this.setFechaValidacionSat(LocalDate.now());
+			
 			return respuestaSat; 
 			
 		} catch(Exception e) {
@@ -572,7 +600,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		// Update information with the responses from validation service.
 		this.setBitValidoSAT(Boolean.valueOf(respuestas.get(0)));
 		this.setRespuestaValidacion(respuestas.get(1));
-		this.setEstatusSAT(respuestas.get(2));
+		this.setValidacionFiscal(respuestas.get(2));
 		
 		return true; 
 		

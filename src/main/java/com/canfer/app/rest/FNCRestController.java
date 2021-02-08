@@ -1,5 +1,6 @@
 package com.canfer.app.rest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,7 +119,7 @@ public class FNCRestController {
 			docFiscal = comprobante.get(); 
 			String response = docFiscal.verificaSat(); 
 			docFiscal.setEstatusSAT(response);
-			
+			docFiscal.setFechaValidacionSat(LocalDate.now());
 			//save new response
 			superRepo.save(docFiscal);
 			return response; 
