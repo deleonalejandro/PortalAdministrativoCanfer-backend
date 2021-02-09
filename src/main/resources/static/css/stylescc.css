@@ -20167,9 +20167,9 @@ i-feather svg {
     overflow: visible;
   }
 }
-.datatable table.dataTable thead,
-.datatable table.dataTable tfoot {
-  color: purple;
+table.dataTable thead th,
+table.dataTable tfoot th{
+  color: purple !important;
 }
 .datatable table.dataTable thead th,
 .datatable table.dataTable tfoot th {
