@@ -12,28 +12,37 @@ import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Pago;
+import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.PagoRepository;
+import com.canfer.app.repository.ProveedorRepository;
 
 @Service
 public class DbObserver {
 
 	@Autowired
-	PagoRepository pagoRepository; 
+	private PagoRepository pagoRepository; 
 	@Autowired
-	EmailSenderService eSenderService;
+	private EmailSenderService eSenderService;
 	@Autowired
-	EmpresaRepository empresaRepository; 
+	private EmpresaRepository empresaRepository; 
 	@Autowired
-	FacturaRepository facturaRepository; 
+	private FacturaRepository facturaRepository; 
 	@Autowired 
-	CrystalReportService crService; 
+	private CrystalReportService crService; 
+	@Autowired
+	private ComprobanteFiscalRespository cfRepo;
+	@Autowired
+	private ProveedorRepository provRepo;
+	
 	
 	@Value("${canfer.pagos.username}")
 	private String user;
 	@Value("${canfer.pagos.password}")
 	private String psswd;
+	@Value("${sap.server.ip}")
+	private String sapServer;
 	
 	public void checkPago() {
 		
@@ -79,5 +88,47 @@ public class DbObserver {
 			Log.activity("Se ha procesado el Pago:  " + pago.getIdNumPago() + " para " + pago.getRfcProveedor()+ ".", nombre, "PAYMENT");
 			
 			}
+	}
+	
+	public void checkSapBitRs() {
+		
+		String pServidor;
+		String pBaseDatos;
+		Long pIdEmpresa;
+		List<Empresa> companies;
+		
+		companies = empresaRepository.findAll();
+		pServidor = this.sapServer;
+		
+		for (Empresa empresa : companies) {
+
+			// take the values of DB name and ID from database.
+			pBaseDatos = empresa.getDbName();
+			pIdEmpresa = empresa.getidEmpresa();
+			
+			cfRepo.actualizaBitRs(pServidor, pBaseDatos, pIdEmpresa);
+		}
+		
+	}
+	
+	public void checkSapSuppliers() {
+		
+		String pServidor;
+		String pBaseDatos;
+		Long pIdEmpresa;
+		List<Empresa> companies;
+		
+		companies = empresaRepository.findAll();
+		pServidor = this.sapServer;
+		
+		for (Empresa empresa : companies) {
+
+			// take the values of DB name and ID from database.
+			pBaseDatos = empresa.getDbName();
+			pIdEmpresa = empresa.getidEmpresa();
+			
+			provRepo.updateSuppliersFromSap(pServidor, pBaseDatos, pIdEmpresa);
+		}
+		
 	}
 }
