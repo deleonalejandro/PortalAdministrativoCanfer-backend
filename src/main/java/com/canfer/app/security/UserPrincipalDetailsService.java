@@ -15,7 +15,6 @@ import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.repository.UsuarioRepository;
 
 @Service
-@PropertySource("classpath:mail.properties")
 public class UserPrincipalDetailsService implements UserDetailsService {
 
 	//We take the users from our database using its repository
@@ -26,7 +25,7 @@ public class UserPrincipalDetailsService implements UserDetailsService {
 	
 	
 	//Definition from the constructor class.
-	public UserPrincipalDetailsService(UsuarioRepository usuarioRepository, @Value("${user}") String user, @Value("${pass}") String pass) {
+	public UserPrincipalDetailsService(UsuarioRepository usuarioRepository, @Value("${portal.su.user}") String user, @Value("${portal.su.password}") String pass) {
 		this.usuarioRepository = usuarioRepository;
 		this.user = user;
 		this.pass = pass;
