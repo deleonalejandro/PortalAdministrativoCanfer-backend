@@ -1,9 +1,6 @@
 package com.canfer.app.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 	
@@ -27,33 +27,28 @@ public class FormularioCajaChica {
     @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
     private Proveedor proveedor;
 	
-	@Column(nullable = false)
-	private Integer folio;
+	private Long folio;
 	
-	@Column(nullable = false)
-	private String fecha; 
+	@CreationTimestamp
+	private LocalDateTime fecha; 
 	
-	@Column(nullable = false)
+	@UpdateTimestamp
+	private LocalDateTime fechaMod;
+	
 	private String estatus; 
 	
-	@Column(nullable = true)
 	private String comentario; 
 	
-	@Column(nullable = false)
 	private Float total;
 
 	//Constructor
-	public FormularioCajaChica(Proveedor proveedor, Integer folio, String estatus) {
+	public FormularioCajaChica(Proveedor proveedor, Long folio) {
 		
-		super();
-		Date date = Calendar.getInstance().getTime();  
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
-        String strDate = dateFormat.format(date); 
-		
+		super(); 
 		this.proveedor = proveedor;
 		this.folio = folio;
-		this.fecha = strDate;
-		this.estatus = "Abierto";
+		this.estatus = "ABIERTO";
+		this.total = 0F;
 	}
 	
 	public FormularioCajaChica() {
@@ -79,19 +74,19 @@ public class FormularioCajaChica {
 		this.proveedor = proveedor;
 	}
 
-	public Integer getFolio() {
+	public Long getFolio() {
 		return folio;
 	}
 
-	public void setFolio(Integer folio) {
+	public void setFolio(Long folio) {
 		this.folio = folio;
 	}
 
-	public String getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 
@@ -118,6 +113,10 @@ public class FormularioCajaChica {
 	public void setTotal(Float total) {
 		this.total = total;
 	} 
+	
+	public boolean isOpen() {
+		return this.estatus.equalsIgnoreCase("ABIERTO");
+	}
 	
 	
 	
