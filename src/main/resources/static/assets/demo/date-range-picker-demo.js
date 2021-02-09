@@ -73,8 +73,8 @@ $(function () {
 
   $('#reportrangeCarga').on('apply.daterangepicker', function(ev, picker) {
 	  $("#reportrangeCarga span").html(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-	  $("#uploadAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-	  $("#uploadBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+	  $("#uploadAfter").text(picker.startDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+	  $("#uploadBefore").text(picker.endDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
   });
 
   $("#reportrangeCarga").on('cancel.daterangepicker', function(ev, picker) {
@@ -158,8 +158,8 @@ $(function () {
 
 $('#reportrangeEmision').on('apply.daterangepicker', function(ev, picker) {
 	  $("#reportrangeEmision span").html(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-	  $("#registeredAfter").text(start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-	  $("#registeredBefore").text(end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+	  $("#registeredAfter").text(picker.startDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+	  $("#registeredBefore").text(picker.endDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
   });
 
 $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) { 
