@@ -7,21 +7,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.model.Archivo;
+import com.canfer.app.model.ClasificacionCajaChica;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.ComprobanteFiscal.ComplementoPago;
 import com.canfer.app.model.ComprobanteFiscal.Factura;
 import com.canfer.app.model.Consecutivo;
+import com.canfer.app.model.DetFormularioCajaChica;
 import com.canfer.app.model.Documento;
 import com.canfer.app.model.Empresa;
+import com.canfer.app.model.FormularioCajaChica;
 import com.canfer.app.model.Pago;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Archivo.ArchivoPDF;
+import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.repository.ArchivoRepository;
+import com.canfer.app.repository.ClasificacionCCRepository;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.ConsecutivoRepository;
+import com.canfer.app.repository.DetFormularioCCRepository;
 import com.canfer.app.repository.DocumentoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.FacturaRepository;
+import com.canfer.app.repository.FormularioCajaChicaRepository;
 import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.UsuarioRepository;
@@ -47,6 +55,12 @@ public class RepositoryService {
 	private ConsecutivoRepository consecutivoRepo;
 	@Autowired
 	private FacturaRepository facturaRepo;
+	@Autowired 
+	private DetFormularioCCRepository detFormCCRepo;
+	@Autowired
+	private FormularioCajaChicaRepository formCCRepo;
+	@Autowired
+	private ClasificacionCCRepository clasificacionCCRepo;
 
 	// SAVE METHODS
 
@@ -97,6 +111,22 @@ public class RepositoryService {
 		return consecutivoRepo.save(consecutivo);
 
 	}
+	
+	public DetFormularioCajaChica save(DetFormularioCajaChica dfcc) {
+		
+		return detFormCCRepo.save(dfcc);
+		
+	}
+	
+	public ClasificacionCajaChica save(ClasificacionCajaChica ccc) {
+		
+		return clasificacionCCRepo.save(ccc);
+	}
+	
+	public FormularioCajaChica save(FormularioCajaChica formularioCajaChica) {
+		
+		return formCCRepo.save(formularioCajaChica);
+	}
 
 	// MULTIPLE SAVE METHODS
 
@@ -146,7 +176,24 @@ public class RepositoryService {
 		
 		facturaRepo.saveAll(list);
 	}
+	
+	public void saveAllDetFormularioCC(List<DetFormularioCajaChica> list) {
+		
+		detFormCCRepo.saveAll(list);
+	}
 
+	public void saveAllFormularioCC(List<FormularioCajaChica> list) {
+		
+		formCCRepo.saveAll(list);
+	}
+	
+	public void saveAllClasificacionCC(List<ClasificacionCajaChica> list) {
+		
+		clasificacionCCRepo.saveAll(list);
+	}
+	
+	
+	
 	// DELETE METHODS
 
 	public void delete(ComprobanteFiscal comprobante) {
@@ -195,7 +242,21 @@ public class RepositoryService {
 
 		consecutivoRepo.delete(consecutivo);
 	}
+	
+	public void delete(DetFormularioCajaChica detFormularioCajaChica) {
+		
+		detFormCCRepo.delete(detFormularioCajaChica);
+	}
+	
+	public void delete(FormularioCajaChica formularioCajaChica) {
+		
+		formCCRepo.delete(formularioCajaChica);
+	}
 
+	public void delete(ClasificacionCajaChica clasificacionCajaChica) {
+		
+		clasificacionCCRepo.delete(clasificacionCajaChica);
+	}
 	// MULTIPLE DELETE METHODS
 
 	public void deleteAllComprobante(List<ComprobanteFiscal> list) {
@@ -238,6 +299,21 @@ public class RepositoryService {
 
 		pagoRepo.deleteAll(list);
 
+	}
+	
+	public void deleteAllDetFormularioCC(List<DetFormularioCajaChica> list) {
+		
+		detFormCCRepo.deleteAll(list);
+	}
+	
+	public void deleteAllFormularioCC(List<FormularioCajaChica> list) {
+		
+		formCCRepo.deleteAll(list);
+	}
+	
+	public void deleteAllClasificacionCC(List<ClasificacionCajaChica> list) {
+		
+		clasificacionCCRepo.deleteAll(list);
 	}
 
 	// FIND By ID METHODS
@@ -289,8 +365,30 @@ public class RepositoryService {
 		return consecutivoRepo.findById(id);
 
 	}
+	
+	public Optional<DetFormularioCajaChica> findDetFormularioCCById(Long id) {
+		
+		return detFormCCRepo.findById(id);
+		
+	}
+	
+	public Optional<FormularioCajaChica> findFormularioCCById(Long id) {
+		
+		return formCCRepo.findById(id);
+	}
+	
+	public Optional<ClasificacionCajaChica> findClasificacionCCById(Long id) {
+		
+		return clasificacionCCRepo.findById(id);
+	}
 
 	// FIND ALL By ID METHODS
+
+	public List<Archivo> findAllArchivoById(List<Long> ids) {
+	
+		return archivoRepo.findAllById(ids);
+	
+	}
 
 	public List<ComprobanteFiscal> findAllComprobanteById(List<Long> ids) {
 
@@ -301,12 +399,6 @@ public class RepositoryService {
 	public List<Documento> findAllDocumentoById(List<Long> ids) {
 
 		return documentoRepo.findAllById(ids);
-
-	}
-
-	public List<Archivo> findArchivoById(List<Long> ids) {
-
-		return archivoRepo.findAllById(ids);
 
 	}
 
@@ -334,6 +426,10 @@ public class RepositoryService {
 
 	}
 
+	public List<ClasificacionCajaChica> findAllClasificacionCCById(List<Long> ids) {
+		
+		return clasificacionCCRepo.findAllById(ids);
+	}
 	// Find Methods
 
 	public Empresa findEmpresaByRFC(String rfc) {
@@ -422,5 +518,20 @@ public class RepositoryService {
 		return proveedores.get(0);
 		
 		
+	}
+	
+	public Optional<Documento> findDocumentoByArchivoXML(ArchivoXML archivoXML) {
+		
+		return documentoRepo.findByArchivoXML(archivoXML);
+	}
+	
+	public Optional<Documento> findDocumentoByArchivoPDF(ArchivoPDF archivoPDF) {
+		
+		return documentoRepo.findByArchivoPDF(archivoPDF);
+	}
+	
+	public Consecutivo findConsecutivoBySucursal(Proveedor proveedor) {
+		
+		return consecutivoRepo.findBySucursal(proveedor);
 	}
 }
