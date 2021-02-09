@@ -213,9 +213,9 @@
 					</div>
 					<div class="col-10">
 						<!-- TOAST PARA REFRESH DE SAT -->
-						<div class="toast" role="alert" id="toastSAT" data-autohide="true"
+						<div class="toast" role="alert" id="toastSAT" data-autohide=false
 							data-delay="6000"
-							style="z-index: 7000; position: fixed; bottom: 3rem; right: 2.5rem;"
+							style="z-index:7000; position: fixed; right: 2.5rem;"
 							aria-live="assertive" aria-atomic="true">
 							<div class="toast-header bg-primary text-white">
 								<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
@@ -224,9 +224,9 @@
 							<div class="toast-body">Se procesó la petición ante el SAT.</div>
 						</div>
 						<!-- TOAST PARA UPLOAD -->
-						<div class="toast" role="alert" id="toastUploadtrue" data-autohide=true
+						<div class="toast" role="alert" id="toastUploadtrue" data-autohide=false
 							data-delay="6000"
-							style="z-index: 7000; position: fixed; bottom: 3rem; right: 2.5rem;"
+							style="z-index:7000; position: fixed; right: 2.5rem;"
 							aria-live="assertive" aria-atomic="true">
 							<div class="toast-header bg-success text-white">
 								<i data-feather="check-circle"></i> <strong class="mr-auto">Nuevo
@@ -235,9 +235,9 @@
 							<div class="toast-body">Carga de documento fiscal exitosa.</div>
 						</div>
 						<!-- TOAST PARA UPLOAD FALSE -->
-						<div class="toast" role="alert" id="toastUploadfalse" data-autohide=true
+						<div class="toast" role="alert" id="toastUploadfalse" data-autohide=false
 							data-delay="6000"
-							style="z-index: 7000; position: fixed; bottom: 3rem; right: 2.5rem;"
+							style="z-index:7000; position: fixed; right: 2.5rem;"
 							aria-live="assertive" aria-atomic="true">
 							<div class="toast-header bg-danger text-white">
 								<i data-feather="x-circle"></i> <strong class="mr-auto">Nuevo
@@ -246,9 +246,9 @@
 							<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
 						</div>
 						<!-- TOAST PARA DELETE FALSE -->
-						<div class="toast" role="alert" id="toastDeletefalse" data-autohide=true
+						<div class="toast" role="alert" id="toastDeletefalse" data-autohide=false
 							data-delay="6000"
-							style="z-index: 7000; position: fixed; bottom: 3rem; right: 2.5rem;"
+							style="z-index:7000; position: fixed; right: 2.5rem;"
 							aria-live="assertive" aria-atomic="true">
 							<div class="toast-header bg-danger text-white">
 								<i data-feather="x-circle"></i> <strong class="mr-auto">Error</strong> <small class="text-white-50 ml-2">Ahora</small>
@@ -533,6 +533,10 @@
 														<button class="btn btn-blue float-right" type="button"
 															id="reloadTableBtn">
 															Buscar<i class="ml-2" data-feather="search"></i>
+														</button>
+														<button class="btn btn-primary float-right" type="button" disabled hidden="true" id="reloadTableLoading">
+															<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+															Buscando...
 														</button>
 														<button class="btn btn-blue float-right mr-2"
 															type="button" id="clearFilters">Limpiar</button>
@@ -911,30 +915,32 @@
 													</div>
 													<div class="row pt-1">
 														<div class="col-3">
+															<label for="validacionFiscal"
+																class="form-control-label mb-0 font-weight-bold">
+																<small>Validación Fiscal: </small>
+															</label>
+														</div>
+														<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																class="form-control text-danger form-control-sm bg-white" 
+																 id="validacionFiscal" value="">
+														</div>
+													</div>
+													<div class="row pt-1">
+														<div class="col-3">
 															<label for="respuestaValidacion"
 																class="form-control-label mb-0 font-weight-bold">
 																<small>Respuesta Validación: </small>
 															</label>
 														</div>
 														<div class="col-9">
-															<input type="text" style="height: 20px" readonly
-																class="text-danger form-control form-control-sm bg-white"
-																id="respuestaValidacion" value="" />
+																<textarea type="text" style="height: 50px" readonly
+																class="form-control text-danger form-control-sm bg-white" cols="40"
+																rows="5" id="respuestaValidacion" value=""></textarea>
+														
 														</div>
 													</div>
-													<div class="row pt-1">
-														<div class="col-3">
-															<label for="errorValidacion"
-																class="form-control-label mb-0 font-weight-bold">
-																<small>Error Validación: </small>
-															</label>
-														</div>
-														<div class="col-9">
-															<input type="text" style="height: 20px" readonly
-																class="text-danger form-control form-control-sm bg-white"
-																id="errorValidacion" value="" />
-														</div>
-													</div>
+													
 													<div class="row pt-1">
 														<div class="col-3">
 															<label for="docsRelacionados"

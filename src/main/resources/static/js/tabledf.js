@@ -137,6 +137,10 @@
 			var delhttp = new XMLHttpRequest();
 			
 		         var table = $('#facturas').DataTable({
+					"drawCallback": function( settings, json ) {
+						document.getElementById("reloadTableBtn").hidden = false;
+						document.getElementById("reloadTableLoading").hidden = true; 
+					 },
 					stateSave: true,
 					ajax: {
 		            url: getInitUrl(),
@@ -187,12 +191,12 @@
 		                 },
 		
 		                { data : "idNumSap" },
-		                { data : "bitRS" ,
-		                    "render": function(data) {
-		                        if(data == false) {
+		                { data : null,
+		                    "render": function(row) {
+		                        if(row.bitRS == false && row.bitRSusuario == false) {
 		                            return '<i class="far fa-square" ></i>';
 		                        }
-		                        if(data == true) {
+		                        if(row.bitRS == true || row.bitRSusuario == true) {
 		                            return '<i class="far fa-check-square" ></i>';
 		                        }
 							}
@@ -488,6 +492,8 @@
 			// Filters action and refresh cookies
 			$('#reloadTableBtn').on('click', function() { 
 				
+				document.getElementById("reloadTableBtn").hidden = true;
+				document.getElementById("reloadTableLoading").hidden = false; 
 
 				var getUrl = window.location;
 				var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
@@ -555,7 +561,7 @@
 				}
 				
 				Cookies.set('fltr_on', true);
-		
+			
 			});
 			
 			// Clear cookies before when changing company
@@ -661,11 +667,11 @@
 					$('.detailsForm #tipoDocumento').val(jsonData.tipoDocumento)
 					$('.detailsForm #estatusPago').val(jsonData.estatusPago)
 					$('.detailsForm #newSuppliers').val(jsonData.proveedorClaveProv)
-					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT)
+					$('.detailsForm #estatusSAT').val(jsonData.estatusSAT + ' al '+ jsonData.fechaValidacionSat)
 					$('.detailsForm #respuestaValidacion').val(jsonData.respuestaValidacion)
-					$('.detailsForm #errorValidacion').val(jsonData.errorValidacion)
 					$('.detailsForm #comentario').val(jsonData.comentario)
 					$('.detailsForm #idComprobanteFiscal').val(jsonData.idComprobanteFiscal)
+					$('.detailsForm #validacionFiscal').val(jsonData.validacionFiscal)
 					         
 			        $('.detailsForm #bitRSusuario').prop("checked", jsonData.bitRSusuario);
 			        $('.detailsForm #bitRS').prop("checked", jsonData.bitRS);
@@ -693,7 +699,7 @@
 						         .text(value.claveProv)); 
 						});
 							if(jsonData.proveedorNombre =='PROVEEDOR GENÉRICO') {
-								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text(jsonData.proveedorClaveProv));
+								$('#newSuppliers').append($("<option selected/>").val(jsonData.proveedorIdProveedor).text('Proveedor Genérico - ' + jsonData.proveedorClaveProv));
 							}
 							
 							$('#newSuppliers').val(jsonData.proveedorIdProveedor);
@@ -708,11 +714,18 @@
 					  xhttp.onreadystatechange = function() {
 					    if (this.readyState == 4 && this.status == 200) {
 					    
-					      $('.detailsForm #estatusSAT').val(this.responseText);
+					      let today = new Date().toISOString().slice(0, 10)
+					      
+					      $('.detailsForm #estatusSAT').val(this.responseText + ' al ' + today);
+					   	  $('#toastSAT').toggleClass('ew-toast-show')
+			  	  
+					  	  $('#toastSAT').toast('show')
+				          
+				          setTimeout(function(){
+							    $('#toastSAT').toggleClass('ew-toast-show')
+							}, 6000);
 					    }
 					    
-						$('#toastSAT').toast('show')
-						xhr.onreadystatechange=null
 					  };
 					  xhttp.open("POST", '/documentosFiscalesApi/getVigencia/'+jsonData.idComprobanteFiscal, true);
 					  xhttp.send();
@@ -926,7 +939,7 @@
 					    .search( 'I' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 				
 			});
 			
@@ -943,7 +956,7 @@
 					    .search( '' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 			});
 			
 			$("#pestañaCompl").on( "click", function() {
@@ -959,7 +972,7 @@
 					    .search( 'P' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 			});
 
 		       $("#pestañaNotas").on( "click", function() {
@@ -975,7 +988,7 @@
 					    .search( 'E' )
 					    .draw();
 	
-				table.ajax.reload();
+				table.ajax.reload(null,false);
 			});
 			
 			 $("#pestañaAvisos").on( "click", function() {
@@ -988,7 +1001,7 @@
 				document.getElementById("divAvisos").hidden = false;
 				table2.columns.adjust();
 				
-				table2.ajax.reload();
+				table2.ajax.reload(null,false);
 				
 			});
 			
@@ -1007,15 +1020,33 @@
 			});
 			 
 			  if($("#upload").text() == 'true') {
-		          $('#toastUploadtrue').toast('show')
+			  	  $('#toastUploadtrue').toggleClass('ew-toast-show')
+			  	  
+			  	  $('#toastUploadtrue').toast('show')
+		          
+		          setTimeout(function(){
+					    $('#toastUploadtrue').toggleClass('ew-toast-show')
+					}, 6000);
 		     }
+		     
 
 			if($("#upload").text() == 'false') {
+				  $('#toastUploadfalse').toggleClass('ew-toast-show')
+				  
 		          $('#toastUploadfalse').toast('show')
+		          setTimeout(function(){
+					    $('#toastUploadfalse').toggleClass('ew-toast-show')
+					}, 6000);
+		          
 		     }
 
 			if($("#deletePermission").text() == 'false') {
+				  $('#toastDeletefalse').toggleClass('ew-toast-show')
+				  
 		          $('#toastDeletefalse').toast('show')
+		          setTimeout(function(){
+					    $('#toastDeletefalse').toggleClass('ew-toast-show')
+					}, 6000);
 		     }
 
 			

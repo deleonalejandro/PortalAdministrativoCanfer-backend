@@ -76,6 +76,15 @@
   box-sizing: border-box;
 }
 
+.toast {
+  position: fixed;
+  bottom: -110px;
+  transition: transform 0.5s;
+}
+
+.ew-toast-show {
+  transform: translateY(-130px);
+}
 
 tr.selected td.select-control svg {
 

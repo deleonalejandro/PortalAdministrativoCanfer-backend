@@ -82,6 +82,8 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			// use the PAC to validate the CFD
 			cfd.validateInvoiceOne();
 			
+			cfd.verificaSat();
+			
 			// prepare the new route for the accepted file
 			ruta = comprobanteStorageService.init(Paths.get(cfd.createRoute()));
 			
