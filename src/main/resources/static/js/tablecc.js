@@ -7,7 +7,7 @@
 			var start = moment().subtract(3, "month").startOf("month");
     		var end = moment().endOf("day");
 			
-		  	myUrlWithParams = new URL("/proveedorApi", baseUrl);
+		  	myUrlWithParams = new URL("/cajaChicaApi", baseUrl);
 	
 			myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
 			myUrlWithParams.searchParams.append("proveedor", $("#selectedClave").text());
@@ -24,21 +24,29 @@
 		
 		$(document).ready(function () {
 				
-				//Initial Values
-				$('#antiguedad').val(moment().subtract(3, "month").startOf("month"))
-				
-		         var table = $('#facturas').DataTable({
+		         var table = $('#formularios').DataTable({
+					"paging":   false,
+			        "ordering": false,
+			        "info": false,
+			        "searching": 	false,
 					ajax: {
-		            url: getInitUrl(),
 					dataSrc:""
 		        	},
 					scrollX:true,
 					"language": {
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			        },
-			             "columns": [
-			            
+			        "columns": [
 					        {
+			                "className":      'details-control', 
+			                "orderable":      false,
+			                "data":           null,
+			                "defaultContent": '',
+							"render": function () {
+		                        return '<a class="btn btn-datatable btn-icon btn-chevrons btn-transparent-dark m-0"><i data-feather="chevrons-down"></i><script> feather.replace()</script></a>' ;
+		                     },
+			            },
+							{
 		                     "className": 'modal-control',
 		                     "orderable": false,
 							"bSortable": false,
@@ -48,71 +56,39 @@
 		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
 							 },
 		                 },
-						
-						{  "className": 'pago-control',
-							data: "estatusPago",
-						 	"orderable": false,
-							"bSortable": false,
+						{
+		                     "className": 'delete-control',
+		                     "orderable": false,
+							 "bSortable": false,
+		                     "data": null,
+		                     "defaultContent": '',
+		                     "render": function () {
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>' ;
+		                     },
+		                 },
+		
+		                { data : "fecha" },
+		                { data : "folio" },
+						{ data: "estatus",
 		                    "render": function(data) {
-		                        if(data == 'PAGADO') {
-		                            return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="active" data-feather="dollar-sign"></i><script> feather.replace()</script></a>';
-		                        }else{
-								    return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0 disabled"><i data-feather="dollar-sign"></i><script> feather.replace()</script></a>';
-								}
-						     }
-						},
-						{ "className": 'comment-control',
-							data: "comentario",
-						 	"orderable": false,
-							"bSortable": false,
-		                    "render": function(data) {
-		                        if(data == "") {
-		                            return '<a class="btn btn-datatable btn-icon btn-transparent-dark disabled  m-0"><i data-feather="message-square"></i><script> feather.replace()</script></a>';
-		                        }else{
-								    return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="active" data-feather="message-square"></i><script> feather.replace()</script></a>';
-								}
-						     }
-						},
-		                
-		                { data : "serie" },
-						{ data : "folio" },
-						{ data : "total" },
-						{ data : "pagoTotalPago"},
-						{ data : "pagoFecmvto"},
-						{ data : "pagoIdNumPago"},
-						{ data : "fechaCarga" },
-						{ data : "fechaEmision" },
-						{ data : "tipoDocumento",
-		                    "render": function(data) {
-		                        if(data == 'I') {
-		                            return '<button class="btn btn-pink btn-icon btn-xs" type="button">I</button>';
+		                        if(data.toUpperCase() == 'EN PROCESO') {
+		                            return '<span class="badge badge-orange">En Proceso</span>';
 		                        }
-		                        if(data == 'E') {
-		                            return '<button class="btn btn-indigo btn-icon btn-xs" type="button">E</button>';
-		                        }
-								if(data == 'P') {
-								    return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
-								}
-						     }
-						},
-						{ data: "estatusPago",
-		                    "render": function(data) {
-		                        if(data == 'EN PROCESO') {
-		                            return '<span class="badge badge-orange">Pendiente Pago</span>';
-		                        }
-		                        if(data == 'PAGADO') {
+		                        if(data.toUpperCase() == 'PAGADO') {
 		                            return '<span class="badge badge-green">Pagado</span>';
 		                        }
-								if(data == 'CANCELADO') {
+								if(data.toUpperCase() == 'CANCELADO') {
 								    return '<span class="badge badge-red">Cancelado</span>';
 								}
-								if(data == 'RECHAZADO') {
-								    return '<span class="badge badge-red">Rechazado</span>';
+								else{
+									return '<span class="badge badge-blue">N/A</span>';
 								}
 						     }
 						},
+						{ data : "total" }
 		             ],
-					"order": [[ 10, "desc" ]]
+			           
+					"order": [[ 3, "desc" ]]
 		 });
 		 
  			
@@ -160,24 +136,28 @@
 				
 		
 			});
-			
-			
 				
-				//PASTEÑAS DEL SIDE NAV BAR
-			
-			$("#pestañaFormulario").on( "click", function() {
-				$("#pestañFormulario").addClass("active")
-				document.getElementById("divFormulario").hidden = false;
-				document.getElementById("divEntradas").hidden = true;
-				$("#pestañaEntradas").removeClass("active") 
+			// Filters
+			$('#btn-add-form').on('click', function() {
+				 var table2 = $('#detallesNuevoCajaChica').DataTable({
+					"paging":   false,
+			        "ordering": false,
+			        "info": false,
+			        "searching": 	false,
+					ajax: {
+					dataSrc:""
+		        	},
+					scrollX:true,
+					"language": {
+			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			        },
+			           
+					"order": [[ 0, "asc" ]]
+					
+				 });
+				 
+				 table2.columns.adjust();
+				 
 			});
-			
-			 $("#pestañaEntradas").on( "click", function() {
-				$("#pestañaEntradas").addClass("active")
-				document.getElementById("divEntradas").hidden = false;
-				document.getElementById("divFormulario").hidden = true;
-				$("#pestañaFormulario").removeClass("active") 
-			});
-			
-				
+			table2.columns.adjust();
 		});
