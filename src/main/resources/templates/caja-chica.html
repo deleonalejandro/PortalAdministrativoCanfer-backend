@@ -227,10 +227,6 @@
 										</div>
 									</div>
 
-
-									<!-- MODAL PARA NUEVA FACTURA -->
-
-
 									<!-- FILTROS DE BUSQUEDA -->
 
 									<div class="collapse" id="collapseExample">
@@ -336,7 +332,7 @@
 									<!-- MODAL-->
 									<form class="newForm" method="post"
 										enctype="multipart/form-data">
-										<div class="modal fade" id="newFormModal" tabindex="-1"
+										<div class="modal fade" data-backdrop="static" id="newFormModal" tabindex="-1"
 											role="dialog" aria-labelledby="myLargeModalLabel"
 											aria-hidden="true">
 											<div class="modal-dialog modal-dialog-scrollable modal-xl"
@@ -352,14 +348,9 @@
 																<div class="font-weight-bold"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold pr-4"
+																<div class="font-weight-bold pr-4" id="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
-																	72486689</div>
-
-																<button type="button" class="close" data-dismiss="modal"
-																	aria-label="Close">
-																	<span aria-hidden="true">&times;</span>
-																</button>
+																	</div>
 															</div>
 															<div class="row pr-4">
 
@@ -371,7 +362,7 @@
 																	<!-- INPUT IMPORTE ESTATUS -->
 																	<select class="form-control form-control-solid"
 																		style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-																		id="inputFiltroEstatus">
+																		id="estatusNewForm">
 																		<option value="ABIERTO">ABIERTO</option>
 																		<option value="CERRADO">CERRADO</option>
 																		<option value="PAGADO">PAGADO</option>
@@ -384,54 +375,64 @@
 															<!-- Atributos del Formulario -->
 															<div class="row">
 																<div class="col-2">
-																	<label for="idCajaChica"
+																	<label for="idCajaChicaNew"
 																		class="form-control-label mb-0 font-weight-bold">
 																		ID Caja Chica: </label>
 																</div>
 																<div class="col-2">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		name="idCajaChica" id="idCajaChica" value="" />
+																		name="idCajaChica" id="idCajaChicaNew" value="" />
 																</div>
 															</div>
 															<div class="row pt-1">
 																<div class="col-2">
-																	<label for="sucursal"
+																	<label for="sucursalNew"
 																		class="form-control-label mb-0 font-weight-bold">
 																		Sucursal: </label>
 																</div>
 																<div class="col-2">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		id="sucursal" value="" />
+																		id="sucursalNew" value="" />
 																</div>
 															</div>
 															<div class="row pt-1 pb-4">
 																<div class="col-2">
-																	<label for="fecha"
+																	<label for="fechaNew"
 																		class="form-control-label mb-0 font-weight-bold">
 																		Fecha: </label>
 																</div>
 																<div class="col-2">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		id="fecha" value="" />
+																		id="fechaNew" value="" />
 																</div>
 																<!-- Hidden fields (informative only) -->
 																<div class="col-2" hidden>
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		id="rfcEmpresa" value="" />
-																</div>
-																<div class="col-2" hidden>
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="idForm" value="" />
+																		id="idFormNew" value="" />
 																</div>
 															</div>
 
 															<div>
-																<button class="btn btn-outline-secondary">Nuevo Detalle</button>
+																<button type="button" id="btn-add-det"
+																class="btn btn-outline-secondary" data-toggle="modal"
+																data-target="#newDetModal">Nuevo Detalle</button>
+															</div>
+															 
+															<!-- MODAL PARA NUEVO DETALLE -->															 <!-- Modal -->
+															<div class="modal fade" id="newDetModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+															    <div class="modal-dialog" role="document">
+															        <div class="modal-content">
+															            <div class="modal-header">
+															                <h5 class="modal-title" id="staticBackdropLabel">Static Backdrop Modal</h5>
+															            </div>
+															            <div class="modal-body">...</div>
+															            <div class="modal-footer"><button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Understood</button></div>
+															        </div>
+															    </div>
 															</div>
 															
 															<!-- TABLA Detalles en Nuevo Formulario-->
@@ -481,31 +482,30 @@
 																<div class="col-3">
 																	<div class="row">
 																		<div class="col-6 pt-5">
-																			<button class="btn btn-secondary" type="submit">Guardar</button>
+																			<button class="btn btn-secondary" id="submitNewForm" type="submit">Guardar</button>
 																		</div>
 																		<div class="col-6 pt-5">
-																			<button class="btn btn-danger" data-dismiss="modal"
-																				type="button">Cancelar</button>
+																			<button class="btn btn-danger" id="cancelarNewForm" type="button">Cancelar</button>
 																		</div>
 																	</div>
 																</div>
 																<div class="col-1"></div>
 																<div class="col-4">
 																	<div class="row">
-																		<label for="comentario"
+																		<label for="comentarioNew"
 																			class="form-control-label mb-0 font-weight-bold">
 																			Comentarios: </label>
 																	</div>
 																	<div class="row">
 																		<textarea type="text" style="height: 50px"
 																			class="form-control form-control-sm bg-white"
-																			cols="40" rows="5" id="comentario" name="comentario"
+																			cols="40" rows="5" id="comentarioNew" name="comentario"
 																			value=""></textarea>
 																	</div>
 																</div>
 																<div class="col-2"></div>
 																<div class="col-2">
-																	<label for="total"
+																	<label for="totalNew"
 																		class="form-control-label mb-0 pull-right font-weight-bold">
 																		Total: </label>
 																	<div class="input-group">
@@ -516,7 +516,7 @@
 																		</div>
 																		<input type="text" style="height: 20px;" readonly
 																			class="form-control form-control-sm bg-white text-success"
-																			id="total" value="" />
+																			id="totalNew" value="" />
 																	</div>
 																</div>
 															</div>

@@ -28,7 +28,7 @@
 					"paging":   false,
 			        "ordering": false,
 			        "info": false,
-			        "searching": 	false,
+			        "searching": false,
 					ajax: {
 					dataSrc:""
 		        	},
@@ -138,12 +138,34 @@
 			});
 				
 			// Filters
-			$('#btn-add-form').on('click', function() {
+			$('#btn-add-form').on('click', function(event) {
+				event.preventdefault(); 
+				
+				//Llena los parametros del formulario 
+				var href = $(this).attr('href');
+				
+				$.get(href, function(formulario, status){
+					$("#folioFormularioNew").val(formulario.folio);
+					$("#estatusNewForm").val(formulario.estatus);
+					$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
+					$("#sucursalNew").val(formulario.proveedor.nombre);
+					$("#fechaNew").val(formulario.fecha);
+					$("#idFormNew").val(formulario.idFormularioCajaChica);
+					$("#comentarioNew").val(formulario.comentario);
+					$("#totalNew").val(formulario.total);
+				});
+				
+				
+				//Muestra el modal 
+				$('#newFormModal').modal('show');	
+				
+				
+				//Crea la tabla de los detalles
 				 var table2 = $('#detallesNuevoCajaChica').DataTable({
 					"paging":   false,
 			        "ordering": false,
 			        "info": false,
-			        "searching": 	false,
+			        "searching":false,
 					ajax: {
 					dataSrc:""
 		        	},
@@ -158,6 +180,14 @@
 				 
 				 table2.columns.adjust();
 				 
+				 // Darle Cancelar a New Formulario
+				$('#cancelarNewForm').on('click', function() {
+				 
+				 	$('#newFormModal').modal('hide');
+				 
+				 });
+				 
 			});
-			table2.columns.adjust();
+			
+			
 		});
