@@ -129,7 +129,7 @@ public class ComprobanteStorageService implements StorageService {
 		}
 
 		catch (IOException e) {
-			throw new StorageException("Error al guardar el archivo " + filename, e);
+			throw new StorageException("Error al guardar el archivo " + filename + ". " + e.getMessage(), e);
 		}
 
 		if(extension.equalsIgnoreCase("pdf")) {
