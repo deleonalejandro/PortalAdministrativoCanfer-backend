@@ -145,7 +145,7 @@
 				var href = $(this).attr('href');
 				
 				$.get(href, function(formulario, status){
-					$("#folioFormularioNew").val(formulario.folio);
+					$("#folioFormularioNew").text(formulario.folio);
 					$("#estatusNewForm").val(formulario.estatus);
 					$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
 					$("#sucursalNew").val(formulario.proveedor.nombre);
