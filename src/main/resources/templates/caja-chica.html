@@ -418,8 +418,9 @@
 
 															<div>
 																<button type="button" id="btn-add-det"
-																	class="btn btn-outline-secondary" data-toggle="modal"
-																	data-target="#newDetModal">Nuevo Detalle</button>
+																	class="btn btn-outline-secondary mb-3"
+																	data-toggle="modal" data-target="#newDetModal">Nuevo
+																	Detalle</button>
 															</div>
 
 															<!-- MODAL PARA NUEVO DETALLE -->
@@ -461,11 +462,11 @@
 																				<div class="tab-content" id="cardTabContent">
 																					<!-- Wizard tab pane item 1-->
 																					<div
-																						class="tab-pane py-5 py-xl-10 fade show active"
+																						class="tab-pane fade show active"
 																						id="wizard1" role="tabpanel"
 																						aria-labelledby="wizard1-tab">
 																						<div class="row justify-content-center">
-																							<div class="col-xxl-6 col-xl-8">
+																							<div>
 																								<h5 class="card-title">Adjunta los archivos
 																									relacionados al detalle:</h5>
 																								<form>
@@ -491,32 +492,52 @@
 																										<input class="form-control" id="pdfNewDet"
 																											type="file" accept=".pdf" name="pdf" />
 																									</div>
+																									<hr class="my-4" />
+																									<div class="d-flex justify-content-between">
+																										<button class="btn btn-light"
+																											type="button" id="cancelarNewDet">Cancelar</button>
+																										<button class="btn btn-secondary" type="button"
+																											id="siguienteNewDet">Siguiente</button>
+																									</div>
 																								</form>
 																							</div>
 																						</div>
 																					</div>
 																					<!-- Wizard tab pane item 2-->
-																					<div class="tab-pane py-5 py-xl-10 fade"
+																					<div class="tab-pane fade"
 																						id="wizard2" role="tabpanel"
 																						aria-labelledby="wizard2-tab">
 																						<div class="row justify-content-center">
-																							<div class="col-xxl-6 col-xl-8">
+																							<div>
 																								<h5 class="card-title">Llena la información
 																									del detalle</h5>
 																								<form>
 																									<!-- Content del new detalle modal -->
-																									<input type="text" name="dateNewDet" value="" />
+																									
 																									<div class="modal-body">
-																										<div class="col-2"
-																											style="text-align: right; color: black; font-weight: 200;">
-																											Clasificación:</div>
-																										<div class="col-2">
-																											<!-- INPUT IMPORTE ESTATUS -->
-																											<select
-																												class="form-control form-control-solid"
-																												style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-																												id="clasificacionNewDet">
-																											</select>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="dateNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Fecha del documento: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" name="dateNewDet" value="" />
+																											</div>
+																										</div>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="clasificacionNewDet" class="form-control-label mb-0 font-weight-bold">
+																												Clasificación:</label>
+																											</div>
+																											<div class="col-6">
+																												<!-- INPUT IMPORTE ESTATUS -->
+																												<select
+																													class="form-control form-control-solid"
+																													style="font-size: 12px; height: 20px; text-align: left; color: black; font-weight: 200;"
+																													id="clasificacionNewDet">
+																												</select>
+																											</div>
 																										</div>
 																										<div class="row pt-1">
 																											<div class="col-4">
@@ -554,6 +575,13 @@
 																													id="responsableNewDet" value="" />
 																											</div>
 																										</div>
+																										<hr class="my-4" />
+																										<div class="d-flex justify-content-between">
+																											<button class="btn btn-light"
+																												type="button" id="anteriorNewDet">Anterior</button>
+																											<button class="btn btn-secondary" type="button"
+																												id="submitNewDet">Guardar</button>
+																										</div>
 																								</form>
 																							</div>
 																						</div>
@@ -561,14 +589,6 @@
 																				</div>
 																			</div>
 																		</div>
-																	</div>
-
-																	<div class="modal-footer"
-																		style="position: absolute; bottom: 0;">
-																		<button class="btn btn-secondary" type="button"
-																			id="cancelarNewDet">Cancelar</button>
-																		<button class="btn btn-primary" type="button"
-																			id="submitNewDet">Guardar</button>
 																	</div>
 																</div>
 															</div>
@@ -618,22 +638,20 @@
 														<!-- Botones, comentarios y total  -->
 
 														<div class="row pt-2">
-															<div class="col-3"></div>
-															<div class="col-1"></div>
-															<div class="col-4">
+															<div class="col-5">
 																<div class="row">
 																	<label for="comentarioNew"
-																		class="form-control-label mb-0 font-weight-bold">
+																		class="form-control-label ml-3 font-weight-bold">
 																		Comentarios: </label>
 																</div>
 																<div class="row">
 																	<textarea type="text" style="height: 50px"
-																		class="form-control form-control-sm bg-white"
+																		class="form-control form-control-sm bg-white ml-3"
 																		cols="40" rows="5" id="comentarioNew"
 																		name="comentario" value=""></textarea>
 																</div>
 															</div>
-															<div class="col-2"></div>
+															<div class="col-5"></div>
 															<div class="col-2">
 																<label for="totalNew"
 																	class="form-control-label mb-0 pull-right font-weight-bold">
@@ -651,11 +669,12 @@
 															</div>
 														</div>
 
-														<div class="modal-footer">
-																<button class="btn btn-secondary" id="submitNewForm"
-																	type="submit">Guardar</button>
-																<button class="btn btn-danger" id="cancelarNewForm"
-																	type="button">Cancelar</button>
+														<div class="modal-footer"
+															style="border-radius: 0; bottom: 0px; position: absolute; width: 95%">
+															<button class="btn btn-secondary" id="submitNewForm"
+																type="submit">Guardar</button>
+															<button class="btn btn-danger" id="cancelarNewForm"
+																type="button">Cancelar</button>
 														</div>
 
 													</div>
