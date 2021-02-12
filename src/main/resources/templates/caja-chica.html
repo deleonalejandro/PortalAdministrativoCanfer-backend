@@ -410,10 +410,10 @@
 																		id="fechaNew" value="" />
 																</div>
 																<!-- Hidden fields (informative only) -->
-																<div class="col-2" hidden>
-																	<input type="text" style="height: 20px" readonly
+																<div class="col-2">
+																	<input type="hidden" style="height: 20px"
 																		class="form-control form-control-sm bg-white"
-																		id="idFormNew" value="" />
+																		id="idFormNew" name="idFormNew"/>
 																</div>
 															</div>
 
@@ -566,8 +566,8 @@
 
 																	<div class="modal-footer"
 																		style="position: absolute; bottom: 0;">
-																		<button class="btn btn-secondary" type="button"
-																			id="cancelarNewDet">Cancelar</button>
+																		<a class="btn btn-secondary" type="button"
+																			id="cancelarNewDet">Cancelar</a>
 																		<button class="btn btn-primary" type="button"
 																			id="submitNewDet">Guardar</button>
 																	</div>
@@ -655,8 +655,8 @@
 														<div class="modal-footer">
 																<button class="btn btn-secondary" id="submitNewForm"
 																	type="submit">Guardar</button>
-																<button class="btn btn-danger" id="cancelarNewForm"
-																	type="button">Cancelar</button>
+																<a class="btn btn-danger" id="cancelarNewForm"
+																	type="button">Cancelar</a>
 														</div>
 
 													</div>

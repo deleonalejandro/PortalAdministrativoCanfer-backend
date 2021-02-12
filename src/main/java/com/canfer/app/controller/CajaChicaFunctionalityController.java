@@ -55,7 +55,7 @@ public class CajaChicaFunctionalityController {
 	 * @param id
 	 */
 	@GetMapping("/deleteformcc")
-	public void deleteFormCC(Long id) {
+	public void deleteFormCC(@RequestParam Long id) {
 		
 		actioner.deleteForm(id);
 	}
