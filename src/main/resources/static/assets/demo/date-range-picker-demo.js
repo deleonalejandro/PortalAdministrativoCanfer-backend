@@ -158,4 +158,18 @@ $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) {
 
   });
 
+	$(function () {
+	    $('input[name="dateNewDet"]').daterangepicker(
+	        {
+	         locale: {
+		      format: "DD/MM/YYYY"
+		    },
+	            singleDatePicker: true,
+	            showDropdowns: true,
+	            minYear: 2000,
+	            maxYear: parseInt(moment().format("YYYY"), 10),
+	        }
+	    );
+	});
+	
 });
