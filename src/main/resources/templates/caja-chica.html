@@ -216,9 +216,8 @@
 											<a type="button" id="btn-add-form"
 												th:href="@{/cajachicaclient/newformcc(rfc=${selectedCompany}, clv=${selectedClave})}"
 												class="btn btn-outline-secondary mr-2" data-toggle="modal"
-												data-target="#newFormModal">Nuevo</a>
-											<a type="button" id="btn-csv"
-												class="btn btn-outline-secondary mr-2"
+												data-target="#newFormModal">Nuevo</a> <a type="button"
+												id="btn-csv" class="btn btn-outline-secondary mr-2"
 												th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}">CSV</a>
 											<button class="btn btn-secondary" type="button"
 												data-toggle="collapse" data-target="#collapseExample"
@@ -228,106 +227,7 @@
 										</div>
 									</div>
 
-									<!-- FILTROS DE BUSQUEDA -->
-
-									<div class="collapse" id="collapseExample">
-										<div class="card shadow-none mb-3">
-											<div class="card-header" style="color: purple">
-												<i class="mr-2 text-purple" data-feather="search"></i>
-												Filtros de Busqueda
-
-											</div>
-											<div class="card-body">
-
-												<div class="row pb-1">
-													<div class="col">
-														<label class="form-check-label" for="reportrangeEmision">Fecha
-															de Emisión:</label>
-													</div>
-													<div class="col">
-														<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
-													</div>
-													<div class="col"></div>
-													<div class="col"></div>
-												</div>
-												<div class="row pb-1">
-													<div class="col">
-														<!-- Date Range Picker EMISION-->
-														<button
-															class="btn btn-light btn-sm line-height-normal p-2"
-															id="reportrangeEmision">
-															<i class="mr-2 text-purple" data-feather="calendar"></i>
-															<span></span>
-															<div id="registeredBefore" hidden></div>
-															<div id="registeredAfter" hidden></div>
-															<i class="ml-1" data-feather="chevron-down"></i>
-														</button>
-													</div>
-													<div class="col">
-														<!-- INPUT IMPORTE ESTATUS -->
-														<select class="form-control form-control-solid"
-															style="height: 30px; font-size: 14px"
-															id="inputFiltroEstatus">
-															<option>EN PROCESO</option>
-															<option>PAGADO</option>
-															<option>CANCELADO</option>
-															<option>RECHAZADO</option>
-														</select>
-													</div>
-													<div class="col"></div>
-													<div class="col"></div>
-												</div>
-												<div class="row pb-1">
-													<div class="col">
-														<label class="form-check-label" for="inputFiltroSerie">Serie:</label>
-													</div>
-													<div class="col">
-														<label class="form-check-label"
-															for="inputFiltroFolioInicial">Folio:</label>
-													</div>
-													<div class="col">
-														<label class="form-check-label"
-															for="inputFiltroFolioFinal">Folio:</label>
-													</div>
-													<div class="col"></div>
-													<div class="col">
-														<button class="btn btn-purple float-right mr-2"
-															type="button" id="clearFilters">Limpiar</button>
-													</div>
-												</div>
-												<div class="row pb-1">
-													<div class="col">
-														<!-- INPUT SERIE -->
-														<input class="form-control form-control-solid"
-															style="height: 30px; font-size: 14px"
-															id="inputFiltroSerie" type="text" placeholder="Serie">
-													</div>
-													<div class="col">
-														<!-- INPUT FOLIO INICIAL -->
-														<input class="form-control form-control-solid"
-															style="height: 30px; font-size: 14px"
-															id="inputFiltroFolioInicial" type="text"
-															placeholder="Inicial">
-													</div>
-													<div class="col">
-														<!-- INPUT FOLIO FINAL -->
-														<input class="form-control form-control-solid"
-															style="height: 30px; font-size: 14px"
-															id="inputFiltroFolioFinal" type="text"
-															placeholder="Final">
-													</div>
-													<div class="col"></div>
-													<div class="col">
-														<button class="btn btn-purple float-right mr-2"
-															type="button" id="reloadTableBtn">
-															Buscar<i class="ml-2" data-feather="search"></i>
-														</button>
-													</div>
-												</div>
-
-											</div>
-										</div>
-									</div>
+									
 
 									<!-- NUEVO FORMULARIO Main Content Formulario -->
 									<!-- MODAL-->
@@ -348,8 +248,7 @@
 																<div class="font-weight-bold"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold"
-																	id="folioFormularioNew"
+																<div class="font-weight-bold" id="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
 																</div>
 															</div>
@@ -377,10 +276,10 @@
 															<div class="row">
 																<div class="col-2">
 																	<label for="idCajaChicaNew"
-																		class="form-control-label mb-0 font-weight-bold">
+																		class="form-control-label mb-0 font-weight-bold" style="color:black">
 																		ID Caja Chica: </label>
 																</div>
-																<div class="col-2">
+																<div class="col-4">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
 																		name="idCajaChica" id="idCajaChicaNew" value="" />
@@ -389,10 +288,10 @@
 															<div class="row pt-1">
 																<div class="col-2">
 																	<label for="sucursalNew"
-																		class="form-control-label mb-0 font-weight-bold">
+																		class="form-control-label mb-0 font-weight-bold" style="color:black">
 																		Sucursal: </label>
 																</div>
-																<div class="col-2">
+																<div class="col-4">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
 																		id="sucursalNew" value="" />
@@ -401,10 +300,10 @@
 															<div class="row pt-1 pb-4">
 																<div class="col-2">
 																	<label for="fechaNew"
-																		class="form-control-label mb-0 font-weight-bold">
+																		class="form-control-label mb-0 font-weight-bold" style="color:black">
 																		Fecha: </label>
 																</div>
-																<div class="col-2">
+																<div class="col-4">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
 																		id="fechaNew" value="" />
@@ -419,8 +318,9 @@
 
 															<div>
 																<button type="button" id="btn-add-det"
-																	class="btn btn-outline-secondary" data-toggle="modal"
-																	data-target="#newDetModal">Nuevo Detalle</button>
+																	class="btn btn-outline-secondary mb-3"
+																	data-toggle="modal" data-target="#newDetModal">Nuevo
+																	Detalle</button>
 															</div>
 
 															<!-- MODAL PARA NUEVO DETALLE -->
@@ -439,7 +339,7 @@
 																					id="cardTab" role="tablist">
 																					<!-- Wizard navigation item 1-->
 																					<a class="nav-item nav-link active"
-																						id="wizard1-tab" href="#wizard1" data-toggle="tab"
+																						id="wizard1-tab"
 																						role="tab" aria-controls="wizard1"
 																						aria-selected="true">
 																						<div class="wizard-step-icon">1</div>
@@ -449,7 +349,7 @@
 																					</a>
 																					<!-- Wizard navigation item 2-->
 																					<a class="nav-item nav-link" id="wizard2-tab"
-																						href="#wizard2" data-toggle="tab" role="tab"
+																						role="tab"
 																						aria-controls="wizard2" aria-selected="true">
 																						<div class="wizard-step-icon">2</div>
 																						<div class="wizard-step-text">
@@ -461,12 +361,10 @@
 																			<div class="card-body">
 																				<div class="tab-content" id="cardTabContent">
 																					<!-- Wizard tab pane item 1-->
-																					<div
-																						class="tab-pane py-5 py-xl-10 fade show active"
-																						id="wizard1" role="tabpanel"
-																						aria-labelledby="wizard1-tab">
+																					<div class="tab-pane fade show active" id="wizard1"
+																						role="tabpanel" aria-labelledby="wizard1-tab">
 																						<div class="row justify-content-center">
-																							<div class="col-xxl-6 col-xl-8">
+																							<div>
 																								<h5 class="card-title">Adjunta los archivos
 																									relacionados al detalle:</h5>
 																								<form>
@@ -492,55 +390,86 @@
 																										<input class="form-control" id="pdfNewDet"
 																											type="file" accept=".pdf" name="pdf" />
 																									</div>
+																									<hr class="my-4" />
+																									<div class="d-flex justify-content-between">
+																										<button class="btn btn-light" type="button"
+																											id="cancelarNewDet">Cancelar</button>
+																										<a class="btn btn-secondary" href="#wizard2"
+																											data-toggle="tab" role="tab" type="button" id="siguienteNewDet">Siguiente</a>
+																									</div>
 																								</form>
 																							</div>
 																						</div>
 																					</div>
 																					<!-- Wizard tab pane item 2-->
-																					<div class="tab-pane py-5 py-xl-10 fade"
-																						id="wizard2" role="tabpanel"
-																						aria-labelledby="wizard2-tab">
+																					<div class="tab-pane fade" id="wizard2"
+																						role="tabpanel" aria-labelledby="wizard2-tab">
 																						<div class="row justify-content-center">
-																							<div class="col-xxl-6 col-xl-8">
+																							<div>
 																								<h5 class="card-title">Llena la información
 																									del detalle</h5>
 																								<form>
 																									<!-- Content del new detalle modal -->
-																									<input type="text" name="dateNewDet" value="" />
-																									<div class="modal-body">
-																										<div class="col-2"
-																											style="text-align: right; color: black; font-weight: 200;">
-																											Clasificación:</div>
-																										<div class="col-2">
-																											<!-- INPUT IMPORTE ESTATUS -->
-																											<select
-																												class="form-control form-control-solid"
-																												style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-																												id="clasificacionNewDet">
-																											</select>
+
+																								
+																										<div class="row pt-1" id="dateNewDiv" hidden="false">
+																											<div class="col-4">
+																												<label for="dateNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Fecha del documento: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" name="dateNewDet" style="height:25px"
+																													value="" />
+																											</div>
 																										</div>
 																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="clasificacionNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Clasificación:</label>
+																											</div>
+																											<div class="col-6">
+																												<!-- INPUT IMPORTE ESTATUS -->
+																												<select
+																													class="form-control form-control-solid"
+																													style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																													id="clasificacionNewDet">
+																												</select>
+																											</div>
+																										</div>
+																										<div class="row pt-1" id="montoNewDiv" hidden="false">
 																											<div class="col-4">
 																												<label for="montoNewDet"
 																													class="form-control-label mb-0 font-weight-bold">
 																													Monto: </label>
 																											</div>
+
 																											<div class="col-6">
-																												<input type="text" style="height: 20px"
-																													class="form-control form-control-sm bg-white"
-																													id="montoNewDet" value="" />
+																												<div class="input-group">
+																													<div class="input-group-prepend ">
+																														<div class="input-group-text"
+																															style="height: 20px">
+																															<i data-feather="dollar-sign"
+																																style="color: gray"></i>
+																														</div>
+																													</div>
+																													<input type="number" min="0" step="0.01" style="height: 20px"
+																														class="form-control form-control-sm bg-white"
+																														id="montoNewDet" value="" />
+																												</div>
 																											</div>
 																										</div>
-																										<div class="row pt-1">
+																										<div class="row pt-1" id="folioNewDiv" hidden="false">
 																											<div class="col-4">
-																												<label for="fechaNewDet"
+																												<label for="folioNewDet"
 																													class="form-control-label mb-0 font-weight-bold">
-																													Fecha: </label>
+																													Folio: </label>
 																											</div>
 																											<div class="col-6">
 																												<input type="text" style="height: 20px"
 																													class="form-control form-control-sm bg-white"
-																													id="fechaNewDet" value="" />
+																													id="folioNewDet" value="" />
 																											</div>
 																										</div>
 																										<div class="row pt-1">
@@ -555,6 +484,13 @@
 																													id="responsableNewDet" value="" />
 																											</div>
 																										</div>
+																										<hr class="my-4" />
+																										<div class="d-flex justify-content-between">
+																											<a class="btn btn-light" type="button"
+																												href="#wizard1" data-toggle="tab" role="tab" id="anteriorNewDet">Anterior</a>
+																											<button class="btn btn-secondary"
+																												type="button" id="submitNewDet">Guardar</button>
+																										</div>
 																								</form>
 																							</div>
 																						</div>
@@ -563,6 +499,7 @@
 																			</div>
 																		</div>
 																	</div>
+<<<<<<< HEAD
 
 																	<div class="modal-footer"
 																		style="position: absolute; bottom: 0;">
@@ -571,9 +508,11 @@
 																		<button class="btn btn-primary" type="button"
 																			id="submitNewDet">Guardar</button>
 																	</div>
+=======
+>>>>>>> branch 'development-v2' of https://github.com/deleonalejandro/PortalAdministrativoCanfer-backend.git
 																</div>
 															</div>
-														</div>
+														
 
 														<!-- TABLA Detalles en Nuevo Formulario-->
 														<div class="row">
@@ -619,25 +558,23 @@
 														<!-- Botones, comentarios y total  -->
 
 														<div class="row pt-2">
-															<div class="col-3"></div>
-															<div class="col-1"></div>
-															<div class="col-4">
+															<div class="col-5">
 																<div class="row">
 																	<label for="comentarioNew"
-																		class="form-control-label mb-0 font-weight-bold">
+																		class="form-control-label ml-3 font-weight-bold" style="color:black">
 																		Comentarios: </label>
 																</div>
 																<div class="row">
 																	<textarea type="text" style="height: 50px"
-																		class="form-control form-control-sm bg-white"
+																		class="form-control form-control-sm bg-white ml-3"
 																		cols="40" rows="5" id="comentarioNew"
 																		name="comentario" value=""></textarea>
 																</div>
 															</div>
-															<div class="col-2"></div>
+															<div class="col-5"></div>
 															<div class="col-2">
 																<label for="totalNew"
-																	class="form-control-label mb-0 pull-right font-weight-bold">
+																	class="form-control-label mb-0 pull-right font-weight-bold" style="color:black">
 																	Total: </label>
 																<div class="input-group">
 																	<div class="input-group-prepend ">
@@ -652,15 +589,22 @@
 															</div>
 														</div>
 
-														<div class="modal-footer">
+														<div class="modal-footer"
+															style="border-radius: 0; bottom: 0px; position: absolute; width: 95%">
+															<button class="btn btn-danger" id="cancelarNewForm"
+																type="button">Cancelar</button>
 																<button class="btn btn-secondary" id="submitNewForm"
+<<<<<<< HEAD
 																	type="submit">Guardar</button>
 																<a class="btn btn-danger" id="cancelarNewForm"
 																	type="button">Cancelar</a>
+=======
+																type="submit">Guardar</button>
+>>>>>>> branch 'development-v2' of https://github.com/deleonalejandro/PortalAdministrativoCanfer-backend.git
 														</div>
 
 													</div>
-													<!-- End del card del modal -->
+													<!-- End del modal -->
 												</div>
 											</div>
 										</div>
@@ -694,6 +638,7 @@
 										</tr>
 									</tfoot>
 								</table>
+								</div>
 							</div>
 						</div>
 

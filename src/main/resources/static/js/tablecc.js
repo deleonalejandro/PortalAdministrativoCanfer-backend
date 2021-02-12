@@ -183,12 +183,48 @@
 				 });
 				 
 
-				 
 				table2.columns.adjust();
 			});
 			
 				 
-			 // Darle Cancelar a New Formulario
+			 // Darle Cancelar a New Det
+			$('#cancelarNewDet').on('click', function() {
+			 
+			 	$('#newDetModal').modal('hide');
+			 
+			 });
+			 // Darle Siguiente a New Det
+			$('#siguienteNewDet').on('click', function() {
+			 	if(document.getElementById("xmlNewDet").value != "") {
+				   document.getElementById("dateNewDiv").hidden = true
+				   document.getElementById("montoNewDiv").hidden = true
+				   document.getElementById("folioNewDiv").hidden = true 
+				}
+				if(document.getElementById("xmlNewDet").value = "") {
+				   document.getElementById("dateNewDiv").hidden = false
+				   document.getElementById("montoNewDiv").hidden = false
+				   document.getElementById("folioNewDiv").hidden = false 
+				}
+			 	$( '#wizard1-tab' ).removeClass( 'active' );
+			 	$( '#wizard1' ).removeClass( 'active' );
+			 	$( '#wizard2-tab' ).addClass( 'active' );
+			 	$( '#wizard2' ).addClass( 'active' );
+			 });
+			 // Darle Anterior a New Det
+			 $('#anteriorNewDet').on('click', function() {
+			 	$( '#wizard2-tab' ).removeClass( 'active' );
+			 	$( '#wizard2' ).removeClass( 'active' );
+			 	$( '#wizard1-tab' ).addClass( 'active' );
+			 	$( '#wizard1' ).addClass( 'active' );
+			 });
+			 // Darle Cancelar a New Det
+			$('#cancelarNewDet').on('click', function() {
+			 
+			 	$('#newDetModal').modal('hide');
+			 
+			 });
+			 
+			 // Darle Submit a New Formulario
 			$('#cancelarNewForm').on('click', function(event) {
 				
 				event.preventDefault();
@@ -196,14 +232,13 @@
 				var href = $(this).attr('href');
 				
 				$.get(href);
-			 
+			 	
 			 	$('#newFormModal').modal('hide');
 			 
 			 });
-				 
-			 // Darle Submit a New Formulario
+			 // Darle Cancelar a New Formulario
 			$('#submitNewForm').on('click', function() {
-			 
+			 	
 			 	$('#newFormModal').modal('hide');
 			 
 			 });
