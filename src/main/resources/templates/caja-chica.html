@@ -205,17 +205,18 @@
 
 						<!-- Main Content Entradas Caja Chica-->
 						<div class="card mb-0" id="divEntradas">
-							<div id="selectedCompany">PAE920709D75</div>
-							<div id="selectedClave">A-0080</div>
+							<div id="selectedCompany" th:text="${selectedCompany}">PAE920709D75</div>
+							<div id="selectedClave" th:text="${selectedClave}">A-0080</div>
 							<div class="card-body">
 								<div class="datatable">
 
 									<div class="row">
 										<!-- BOTON NUEVO FORMULARIO -->
 										<div class="col-6 pb-3 pl-3">
-											<button type="button" id="btn-add-form"
+											<a type="button" id="btn-add-form"
+												th:href="@{/cajachicaclient/newformcc(rfc=${selectedCompany}, clv=${selectedClave})}"
 												class="btn btn-outline-secondary mr-2" data-toggle="modal"
-												data-target="#newFormModal">Nuevo</button>
+												data-target="#newFormModal">Nuevo</a>
 											<a type="button" id="btn-csv"
 												class="btn btn-outline-secondary mr-2"
 												th:href="@{/documentosFiscalesClient/csvProveedor(rfc=${selectedCompany},clave=${selectedClave})}">CSV</a>
@@ -347,7 +348,7 @@
 																<div class="font-weight-bold"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold pr-4"
+																<div class="font-weight-bold"
 																	id="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
 																</div>

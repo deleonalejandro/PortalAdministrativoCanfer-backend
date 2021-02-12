@@ -41,8 +41,11 @@ public class CajaChicaController {
 	
 
 	@GetMapping(value = "/cajachicaclient")
-	public String getModuloCajaChica(@RequestParam String rfc, Model model, RedirectAttributes ra) {
+	public String getModuloCajaChica(Model model) {
 		
+		model.addAttribute("selectedCompany", "PAE920709D75");
+		model.addAttribute("selectedClave", "A-0080");
+		/*
 		// getting the authenticated user
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
 		Empresa company = empresaRepo.findByRfc(rfc);
@@ -74,7 +77,9 @@ public class CajaChicaController {
 			ra.addFlashAttribute("errorCompany", true);
 			
 			return "redirect:/dashboard";
-		}
+		}*/
+		
+		return "caja-chica";
 
 	}
 	

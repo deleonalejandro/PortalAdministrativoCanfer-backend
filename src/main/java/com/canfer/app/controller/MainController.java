@@ -101,13 +101,6 @@ public class MainController {
 	}
 	
 
-	
-	@GetMapping(value = "/cajaChicaClient")
-	public String getModuloCajaChica() {
-		
-		return "caja-chica";
-	}
-	
 	/* TODO ERASE THIS METHOD AFTER TESTINS SP
 	 * 
 	 * --------------------------------------

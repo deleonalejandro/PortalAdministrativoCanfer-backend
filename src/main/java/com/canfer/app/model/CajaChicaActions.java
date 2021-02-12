@@ -187,7 +187,8 @@ public class CajaChicaActions extends ModuleActions{
 		
 		if (sucursal.isPresent()) {
 			 
-			sucursalConsecutivo = superRepo.findConsecutivoBySucursal(sucursal.get());
+			sucursalConsecutivo = superRepo.findConsecutivoById(2L).get();
+			//sucursalConsecutivo = superRepo.findConsecutivoBySucursal(sucursal.get());
 			
 			superRepo.save(sucursalConsecutivo);
 			
