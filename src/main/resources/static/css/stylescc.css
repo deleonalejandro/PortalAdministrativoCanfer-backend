@@ -90,6 +90,18 @@ tr td.pago-control svg.active {
 	color:purple;
 }
 
+.modal-fullscreen {
+    max-width: 95%;
+    margin: 0;
+    top: 2.5%;
+    bottom: 0;
+    position: fixed;
+	left: 2.5%;
+    right: 0;
+    height: 95vh;
+    display: flex;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;

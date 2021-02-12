@@ -332,11 +332,10 @@
 									<!-- MODAL-->
 									<form class="newForm" method="post"
 										enctype="multipart/form-data">
-										<div class="modal fade" data-backdrop="static" id="newFormModal" tabindex="-1"
-											role="dialog" aria-labelledby="myLargeModalLabel"
-											aria-hidden="true">
-											<div class="modal-dialog modal-dialog-scrollable modal-xl"
-												role="document">
+										<div class="modal fade" data-backdrop="static"
+											id="newFormModal" tabindex="-1" role="dialog"
+											aria-labelledby="myLargeModalLabel" aria-hidden="true">
+											<div class="modal-fullscreen" role="document">
 												<div class="modal-content">
 													<div class="modal-body">
 														<div class="form-group">
@@ -348,9 +347,10 @@
 																<div class="font-weight-bold"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold pr-4" id="folioFormularioNew"
+																<div class="font-weight-bold pr-4"
+																	id="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
-																	</div>
+																</div>
 															</div>
 															<div class="row pr-4">
 
@@ -418,503 +418,638 @@
 
 															<div>
 																<button type="button" id="btn-add-det"
-																class="btn btn-outline-secondary" data-toggle="modal"
-																data-target="#newDetModal">Nuevo Detalle</button>
-															</div>
-															 
-															<!-- MODAL PARA NUEVO DETALLE -->															 <!-- Modal -->
-															<div class="modal fade" id="newDetModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-															    <div class="modal-dialog" role="document">
-															        <div class="modal-content">
-															            <div class="modal-header">
-															                <h5 class="modal-title" id="staticBackdropLabel">Static Backdrop Modal</h5>
-															            </div>
-															            <div class="modal-body">...</div>
-															            <div class="modal-footer"><button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Understood</button></div>
-															        </div>
-															    </div>
-															</div>
-															
-															<!-- TABLA Detalles en Nuevo Formulario-->
-															<div class="row">
-																<div class="col-12">
-																	<table class="compact table-hover"
-																		id="detallesNuevoCajaChica"
-																		style="text-align: center; width: 100%">
-																		<thead>
-																			<tr>
-																				<th>#</th>
-																				<th>Clasificación</th>
-																				<th>PDF<i
-																					class="far fa-file-pdf float-left fa-lg"
-																					style="color: purple"></i></th>
-																				<th>XML<i
-																					class="far fa-file-code float-left fa-lg"
-																					style="color: purple"></i></th>
-																				<th>Folio</th>
-																				<th>Nombre Proveedor</th>
-																				<th>Fecha</th>
-																				<th>Responsable</th>
-																				<th>Monto</th>
-																			</tr>
-																		</thead>
-																		<tfoot>
-																			<tr>
-																				<th>#</th>
-																				<th>Clasificación</th>
-																				<th>PDF</th>
-																				<th>XML</th>
-																				<th>Folio</th>
-																				<th>Nombre Proveedor</th>
-																				<th>Fecha</th>
-																				<th>Responsable</th>
-																				<th>Monto</th>
-																			</tr>
-																		</tfoot>
-																	</table>
-																</div>
+																	class="btn btn-outline-secondary" data-toggle="modal"
+																	data-target="#newDetModal">Nuevo Detalle</button>
 															</div>
 
-
-															<!-- Botones, comentarios y total  -->
-
-															<div class="row pt-2">
-																<div class="col-3">
-																	<div class="row">
-																		<div class="col-6 pt-5">
-																			<button class="btn btn-secondary" id="submitNewForm" type="submit">Guardar</button>
-																		</div>
-																		<div class="col-6 pt-5">
-																			<button class="btn btn-danger" id="cancelarNewForm" type="button">Cancelar</button>
-																		</div>
-																	</div>
-																</div>
-																<div class="col-1"></div>
-																<div class="col-4">
-																	<div class="row">
-																		<label for="comentarioNew"
-																			class="form-control-label mb-0 font-weight-bold">
-																			Comentarios: </label>
-																	</div>
-																	<div class="row">
-																		<textarea type="text" style="height: 50px"
-																			class="form-control form-control-sm bg-white"
-																			cols="40" rows="5" id="comentarioNew" name="comentario"
-																			value=""></textarea>
-																	</div>
-																</div>
-																<div class="col-2"></div>
-																<div class="col-2">
-																	<label for="totalNew"
-																		class="form-control-label mb-0 pull-right font-weight-bold">
-																		Total: </label>
-																	<div class="input-group">
-																		<div class="input-group-prepend ">
-																			<div class="input-group-text" style="height: 20px">
-																				<i data-feather="dollar-sign" style="color: green"></i>
+															<!-- MODAL PARA NUEVO DETALLE -->
+															<!-- Modal -->
+															<div class="modal fade" id="newDetModal"
+																data-backdrop="static" tabindex="-1" role="dialog"
+																aria-labelledby="staticBackdropLabel" aria-hidden="true">
+																<div class="modal-dialog modal-lg" role="document">
+																	<div class="modal-content">
+																		<!-- Wizard card example with navigation-->
+																		<div class="card">
+																			<div class="card-header border-bottom">
+																				<!-- Wizard navigation-->
+																				<div
+																					class="nav nav-pills nav-justified flex-column flex-sm-row nav-wizard"
+																					id="cardTab" role="tablist">
+																					<!-- Wizard navigation item 1-->
+																					<a class="nav-item nav-link active"
+																						id="wizard1-tab" href="#wizard1" data-toggle="tab"
+																						role="tab" aria-controls="wizard1"
+																						aria-selected="true">
+																						<div class="wizard-step-icon">1</div>
+																						<div class="wizard-step-text">
+																							<div class="wizard-step-text-name">Archivos</div>
+																						</div>
+																					</a>
+																					<!-- Wizard navigation item 2-->
+																					<a class="nav-item nav-link" id="wizard2-tab"
+																						href="#wizard2" data-toggle="tab" role="tab"
+																						aria-controls="wizard2" aria-selected="true">
+																						<div class="wizard-step-icon">2</div>
+																						<div class="wizard-step-text">
+																							<div class="wizard-step-text-name">Información</div>
+																						</div>
+																					</a>
+																				</div>
+																			</div>
+																			<div class="card-body">
+																				<div class="tab-content" id="cardTabContent">
+																					<!-- Wizard tab pane item 1-->
+																					<div
+																						class="tab-pane py-5 py-xl-10 fade show active"
+																						id="wizard1" role="tabpanel"
+																						aria-labelledby="wizard1-tab">
+																						<div class="row justify-content-center">
+																							<div class="col-xxl-6 col-xl-8">
+																								<h5 class="card-title">Adjunta los archivos
+																									relacionados al detalle:</h5>
+																								<form>
+																									<div>Adjuntar un XML:</div>
+																									<div class="input-group mb-2">
+																										<div class="input-group-prepend">
+																											<div class="input-group-text">
+																												<i class="far fa-file-code float-left fa-lg"
+																													style="color: green"></i>
+																											</div>
+																										</div>
+																										<input class="form-control" id="xmlNewDet"
+																											accept=".xml" type="file" name="xml" />
+																									</div>
+																									<div>Adjuntar un PDF:</div>
+																									<div class="input-group mb-2">
+																										<div class="input-group-prepend">
+																											<div class="input-group-text">
+																												<i class="far fa-file-pdf float-left fa-lg"
+																													style="color: red"></i>
+																											</div>
+																										</div>
+																										<input class="form-control" id="pdfNewDet"
+																											type="file" accept=".pdf" name="pdf" />
+																									</div>
+																								</form>
+																							</div>
+																						</div>
+																					</div>
+																					<!-- Wizard tab pane item 2-->
+																					<div class="tab-pane py-5 py-xl-10 fade"
+																						id="wizard2" role="tabpanel"
+																						aria-labelledby="wizard2-tab">
+																						<div class="row justify-content-center">
+																							<div class="col-xxl-6 col-xl-8">
+																								<h5 class="card-title">Llena la información
+																									del detalle</h5>
+																								<form>
+																									<!-- Content del new detalle modal -->
+																									<input type="text" name="dateNewDet" value="" />
+																									<div class="modal-body">
+																										<div class="col-2"
+																											style="text-align: right; color: black; font-weight: 200;">
+																											Clasificación:</div>
+																										<div class="col-2">
+																											<!-- INPUT IMPORTE ESTATUS -->
+																											<select
+																												class="form-control form-control-solid"
+																												style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
+																												id="clasificacionNewDet">
+																											</select>
+																										</div>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="montoNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Monto: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" style="height: 20px"
+																													class="form-control form-control-sm bg-white"
+																													id="montoNewDet" value="" />
+																											</div>
+																										</div>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="fechaNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Fecha: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" style="height: 20px"
+																													class="form-control form-control-sm bg-white"
+																													id="fechaNewDet" value="" />
+																											</div>
+																										</div>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="responsableNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Responsable: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" style="height: 20px"
+																													class="form-control form-control-sm bg-white"
+																													id="responsableNewDet" value="" />
+																											</div>
+																										</div>
+																								</form>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
 																			</div>
 																		</div>
-																		<input type="text" style="height: 20px;" readonly
-																			class="form-control form-control-sm bg-white text-success"
-																			id="totalNew" value="" />
+																	</div>
+
+																	<div class="modal-footer"
+																		style="position: absolute; bottom: 0;">
+																		<button class="btn btn-secondary" type="button"
+																			id="cancelarNewDet">Cancelar</button>
+																		<button class="btn btn-primary" type="button"
+																			id="submitNewDet">Guardar</button>
 																	</div>
 																</div>
 															</div>
-
-
-
 														</div>
-														<!-- End del card del modal -->
+
+														<!-- TABLA Detalles en Nuevo Formulario-->
+														<div class="row">
+															<div class="col-12">
+																<table class="compact table-hover"
+																	id="detallesNuevoCajaChica"
+																	style="text-align: center; width: 100%">
+																	<thead>
+																		<tr>
+																			<th>#</th>
+																			<th>Clasificación</th>
+																			<th>PDF<i
+																				class="far fa-file-pdf float-left fa-lg"
+																				style="color: purple"></i></th>
+																			<th>XML<i
+																				class="far fa-file-code float-left fa-lg"
+																				style="color: purple"></i></th>
+																			<th>Folio</th>
+																			<th>Nombre Proveedor</th>
+																			<th>Fecha</th>
+																			<th>Responsable</th>
+																			<th>Monto</th>
+																		</tr>
+																	</thead>
+																	<tfoot>
+																		<tr>
+																			<th>#</th>
+																			<th>Clasificación</th>
+																			<th>PDF</th>
+																			<th>XML</th>
+																			<th>Folio</th>
+																			<th>Nombre Proveedor</th>
+																			<th>Fecha</th>
+																			<th>Responsable</th>
+																			<th>Monto</th>
+																		</tr>
+																	</tfoot>
+																</table>
+															</div>
+														</div>
+
+
+														<!-- Botones, comentarios y total  -->
+
+														<div class="row pt-2">
+															<div class="col-3"></div>
+															<div class="col-1"></div>
+															<div class="col-4">
+																<div class="row">
+																	<label for="comentarioNew"
+																		class="form-control-label mb-0 font-weight-bold">
+																		Comentarios: </label>
+																</div>
+																<div class="row">
+																	<textarea type="text" style="height: 50px"
+																		class="form-control form-control-sm bg-white"
+																		cols="40" rows="5" id="comentarioNew"
+																		name="comentario" value=""></textarea>
+																</div>
+															</div>
+															<div class="col-2"></div>
+															<div class="col-2">
+																<label for="totalNew"
+																	class="form-control-label mb-0 pull-right font-weight-bold">
+																	Total: </label>
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: green"></i>
+																		</div>
+																	</div>
+																	<input type="text" style="height: 20px;" readonly
+																		class="form-control form-control-sm bg-white text-success"
+																		id="totalNew" value="" />
+																</div>
+															</div>
+														</div>
+
+														<div class="modal-footer">
+																<button class="btn btn-secondary" id="submitNewForm"
+																	type="submit">Guardar</button>
+																<button class="btn btn-danger" id="cancelarNewForm"
+																	type="button">Cancelar</button>
+														</div>
+
 													</div>
+													<!-- End del card del modal -->
 												</div>
 											</div>
 										</div>
-
-									</form>
-									<!-- TABLA -->
-
-									<table class="compact table-hover" id="formularios"
-										style="text-align: center; width: 100%">
-										<thead>
-											<tr>
-												<th></th>
-												<th></th>
-												<th></th>
-												<th>Fecha</th>
-												<th>Folio</th>
-												<th>Estatus</th>
-												<th>Total</th>
-											</tr>
-										</thead>
-										<tfoot>
-											<tr>
-												<th></th>
-												<th></th>
-												<th></th>
-												<th>Fecha</th>
-												<th>Folio</th>
-												<th>Estatus</th>
-												<th>Total</th>
-											</tr>
-										</tfoot>
-									</table>
 								</div>
+
+								</form>
+								<!-- TABLA -->
+
+								<table class="compact table-hover" id="formularios"
+									style="text-align: center; width: 100%">
+									<thead>
+										<tr>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th>Fecha</th>
+											<th>Folio</th>
+											<th>Estatus</th>
+											<th>Total</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th>Fecha</th>
+											<th>Folio</th>
+											<th>Estatus</th>
+											<th>Total</th>
+										</tr>
+									</tfoot>
+								</table>
 							</div>
+						</div>
 
 
 
-							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
-							<div class="modal" id="detailsModal" tabindex="-1" role="dialog">
-								<div class="modal-dialog modal-xl" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="headerValue"></h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<!-- Card inside modal -->
-											<div class="card p-0 m-0">
-												<div class="card-header border-bottom">
-													<ul class="nav nav-tabs card-header-tabs" id="cardTab"
-														role="tablist">
-														<li class="nav-item"><a class="nav-link"
-															id="detallesFacturaTab" href="#detallesFactura"
-															data-toggle="tab" role="tab" aria-controls="overview">Detalles</a>
-														</li>
-														<li class="nav-item"><a class="nav-link"
-															id="pagoFacturaTab" href="#pagoFactura" data-toggle="tab"
-															role="tab">Pago</a></li>
-														<li class="nav-item"><a class="nav-link"
-															id="comentarioFacturaTab" href="#comentarioFactura"
-															data-toggle="tab" role="tab" tabindex="-1">Comentario</a>
-														</li>
-													</ul>
-												</div>
-												<div class="card-body">
-													<div class="tab-content" id="cardTabContent">
-														<div class="tab-pane fade " id="detallesFactura"
-															role="tabpanel">
-															<h5 class="card-title">Detalles</h5>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>UUID: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		name="uuid" id="uuid" value="" />
-																</div>
+						<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
+						<div class="modal" id="detailsModal" tabindex="-1" role="dialog">
+							<div class="modal-dialog modal-xl" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="headerValue"></h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<!-- Card inside modal -->
+										<div class="card p-0 m-0">
+											<div class="card-header border-bottom">
+												<ul class="nav nav-tabs card-header-tabs" id="cardTab"
+													role="tablist">
+													<li class="nav-item"><a class="nav-link"
+														id="detallesFacturaTab" href="#detallesFactura"
+														data-toggle="tab" role="tab" aria-controls="overview">Detalles</a>
+													</li>
+													<li class="nav-item"><a class="nav-link"
+														id="pagoFacturaTab" href="#pagoFactura" data-toggle="tab"
+														role="tab">Pago</a></li>
+													<li class="nav-item"><a class="nav-link"
+														id="comentarioFacturaTab" href="#comentarioFactura"
+														data-toggle="tab" role="tab" tabindex="-1">Comentario</a>
+													</li>
+												</ul>
+											</div>
+											<div class="card-body">
+												<div class="tab-content" id="cardTabContent">
+													<div class="tab-pane fade " id="detallesFactura"
+														role="tabpanel">
+														<h5 class="card-title">Detalles</h5>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>UUID: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Razón Social: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="empresa" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	name="uuid" id="uuid" value="" />
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>RFC Emisor: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="rfcProveedor" value="" />
-																</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Razón Social: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Emisión: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="fechaEmision" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="empresa" value="" />
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Serie: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="serie" value="" />
-																</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>RFC Emisor: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Folio: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="folio" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="rfcProveedor" value="" />
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Timbre: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="timbre" value="" />
-																</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Emisión: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Tipo de Documento: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="tipoDocumento" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="fechaEmision" value="" />
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Estatus: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="estatusPago" value="" />
-																</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Serie: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Fecha Carga: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="fechaCarga" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="serie" value="" />
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Remitente: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="remitente" value="" />
-																</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Folio: </small>
+																</label>
 															</div>
-															<div class="row pt-1">
-																<div class="col-3">
-																	<label for="respuestaValidacion"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Validación: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="text-secondary form-control form-control-sm bg-white"
-																		id="respuestaValidacion" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="folio" value="" />
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="errorValidacion"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Error Validación: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="text-secondary form-control form-control-sm bg-white"
-																		id="errorValidacion" value="" />
-																</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Timbre: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Vigencia: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="estatusSAT" value="" />
-																</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="timbre" value="" />
 															</div>
-															<div class="row">
-																<div class="col-6"></div>
-																<div class="col-6">
-																	<label for="total"
-																		class="form-control-label mb-0 pull-right font-weight-bold">
-																		<small>Total: </small>
-																	</label>
-																	<div class="input-group">
-																		<div class="input-group-prepend ">
-																			<div class="input-group-text" style="height: 20px">
-																				<i data-feather="dollar-sign" style="color: green"></i>
-																			</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Tipo de Documento: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="tipoDocumento" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Estatus: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="estatusPago" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Fecha Carga: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="fechaCarga" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Remitente: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="remitente" value="" />
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-3">
+																<label for="respuestaValidacion"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Validación: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="text-secondary form-control form-control-sm bg-white"
+																	id="respuestaValidacion" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="errorValidacion"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Error Validación: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="text-secondary form-control form-control-sm bg-white"
+																	id="errorValidacion" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Vigencia: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="estatusSAT" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-6"></div>
+															<div class="col-6">
+																<label for="total"
+																	class="form-control-label mb-0 pull-right font-weight-bold">
+																	<small>Total: </small>
+																</label>
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: green"></i>
 																		</div>
-																		<input type="text" style="height: 20px; width: 90px"
-																			readonly
-																			class="form-control form-control-sm bg-white text-success"
-																			id="total" value="" /> <input type="text"
-																			style="height: 20px; width: 50px" readonly
-																			class="form-control form-control-sm bg-white text-green"
-																			id="moneda" value="" />
 																	</div>
+																	<input type="text" style="height: 20px; width: 90px"
+																		readonly
+																		class="form-control form-control-sm bg-white text-success"
+																		id="total" value="" /> <input type="text"
+																		style="height: 20px; width: 50px" readonly
+																		class="form-control form-control-sm bg-white text-green"
+																		id="moneda" value="" />
 																</div>
 															</div>
 														</div>
-														<div class="tab-pane fade " id="pagoFactura"
-															role="tabpanel">
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Aviso de Pago: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<a
-																		class="btn btn-datatable btn-icon btn-transparent-dark m-0"
-																		id="pdfDetails"><i
-																		class="far fa-file-pdf float-left fa-lg"
-																		style="color: purple"></i></a>
-																</div>
+													</div>
+													<div class="tab-pane fade " id="pagoFactura"
+														role="tabpanel">
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Aviso de Pago: </small>
+																</label>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Número Pago: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="numPago" value="" />
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Fecha: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="fechaPago" value="" />
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Total Parcialidad: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="parcialidad" value="" />
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Total Factura: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="totalFactura" value="" />
-																</div>
+															<div class="col-9">
+																<a
+																	class="btn btn-datatable btn-icon btn-transparent-dark m-0"
+																	id="pdfDetails"><i
+																	class="far fa-file-pdf float-left fa-lg"
+																	style="color: purple"></i></a>
 															</div>
 														</div>
-														<div class="tab-pane fade " id="comentarioFactura"
-															role="tabpanel">
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Comentario: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="comentario" value="" />
-																</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Número Pago: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="numPago" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Fecha: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="fechaPago" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Total Parcialidad: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="parcialidad" value="" />
+															</div>
+														</div>
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Total Factura: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="totalFactura" value="" />
+															</div>
+														</div>
+													</div>
+													<div class="tab-pane fade " id="comentarioFactura"
+														role="tabpanel">
+														<div class="row">
+															<div class="col-3">
+																<label for="uuid"
+																	class="form-control-label mb-0 font-weight-bold">
+																	<small>Comentario: </small>
+																</label>
+															</div>
+															<div class="col-9">
+																<input type="text" style="height: 20px" readonly
+																	class="form-control form-control-sm bg-white"
+																	id="comentario" value="" />
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Close</button>
-										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
 									</div>
 								</div>
 							</div>
-
-
-
-
 						</div>
-						<!-- Arriba de esto acaba el modal -->
-
-
 
 
 
 
 					</div>
+					<!-- Arriba de esto acaba el modal -->
+
+
+
+
+
+
 				</div>
+			</div>
 		</main>
 		<footer class="footer mt-auto footer-light">
 			<div class="container">

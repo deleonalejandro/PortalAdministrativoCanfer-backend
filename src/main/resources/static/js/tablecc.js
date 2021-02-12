@@ -187,6 +187,15 @@
 				 
 				 });
 				 
+				 // Darle Submit a New Formulario
+				$('#submitNewForm').on('click', function() {
+				 
+				 	$('#newFormModal').modal('hide');
+				 
+				 });
+				 
+				 
+				 
 			});
 			
 			
