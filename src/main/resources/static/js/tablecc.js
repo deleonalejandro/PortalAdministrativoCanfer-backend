@@ -150,7 +150,7 @@
 					$("#estatusNewForm").val(formulario.estatus);
 					$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
 					$("#sucursalNew").val(formulario.proveedor.nombre);
-					$("#fechaNew").val(formulario.fecha);
+					$("#fechaNew").val(formulario.fecha.split("T")[0]);
 					$("#idFormNew").val(formulario.idFormularioCajaChica);
 					$("#comentarioNew").val(formulario.comentario);
 					$("#totalNew").val(formulario.total);
