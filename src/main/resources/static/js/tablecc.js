@@ -139,13 +139,14 @@
 				
 			// Filters
 			$('#btn-add-form').on('click', function(event) {
-				event.preventdefault(); 
+				
+				event.preventDefault(); 
 				
 				//Llena los parametros del formulario 
 				var href = $(this).attr('href');
 				
 				$.get(href, function(formulario, status){
-					$("#folioFormularioNew").val(formulario.folio);
+					$("#folioFormularioNew").text(formulario.folio);
 					$("#estatusNewForm").val(formulario.estatus);
 					$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
 					$("#sucursalNew").val(formulario.proveedor.nombre);
@@ -178,25 +179,24 @@
 					
 				 });
 				 
+				 
 				 table2.columns.adjust();
-				 
-				 // Darle Cancelar a New Formulario
-				$('#cancelarNewForm').on('click', function() {
-				 
-				 	$('#newFormModal').modal('hide');
-				 
-				 });
-				 
-				 // Darle Submit a New Formulario
-				$('#submitNewForm').on('click', function() {
-				 
-				 	$('#newFormModal').modal('hide');
-				 
-				 });
-				 
-				 
-				 
 			});
 			
+				 
+			 // Darle Cancelar a New Formulario
+			$('#cancelarNewForm').on('click', function() {
+			 
+			 	$('#newFormModal').modal('hide');
+			 
+			 });
+				 
+			 // Darle Submit a New Formulario
+			$('#submitNewForm').on('click', function() {
+			 
+			 	$('#newFormModal').modal('hide');
+			 
+			 });
+				 
 			
 		});

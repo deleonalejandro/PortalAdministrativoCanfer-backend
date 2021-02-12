@@ -42,7 +42,7 @@ public class CajaChicaFunctionalityController {
 	 */
 	@GetMapping("/newformcc")
 	@ResponseBody
-	public FormularioCajaChica newFormCC(@RequestParam String claveProv, @RequestParam String rfcEmpresa) {
+	public FormularioCajaChica newFormCC(@RequestParam("clv") String claveProv, @RequestParam("rfc") String rfcEmpresa) {
 		
 		return actioner.newForm(claveProv, rfcEmpresa);
 		
