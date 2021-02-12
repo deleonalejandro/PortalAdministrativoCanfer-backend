@@ -1,5 +1,7 @@
 package com.canfer.app.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity(name = "DetFormularioCajaChica")
 public class DetFormularioCajaChica {
@@ -16,8 +22,9 @@ public class DetFormularioCajaChica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idDetFormularioCajaChica; 
 	
-	@Column(nullable = false)
-	private Long idDocumento; 
+	@JoinColumn(name = "idDocumento")
+	@OneToOne
+	private Documento documento; 
 	
     @JoinColumn(name = "idFormulario")
     @ManyToOne(targetEntity = FormularioCajaChica.class, fetch = FetchType.LAZY)
@@ -27,16 +34,15 @@ public class DetFormularioCajaChica {
 	@ManyToOne(targetEntity = ClasificacionCajaChica.class, fetch = FetchType.LAZY)
 	private ClasificacionCajaChica clasificacion;
 	
-	@Column(nullable = false)
 	private Float monto; 
 	
-	@Column(nullable = false)
-	private String fecha; 
+	private LocalDateTime fecha; 
 	
-	@Column(nullable = false)
+	@UpdateTimestamp
+	private LocalDateTime fechaMod;
+	
 	private String responsable; 
 	
-	@Column(nullable = false)
 	private String folio;
 
 	//Constructor
@@ -59,12 +65,12 @@ public class DetFormularioCajaChica {
 		this.idDetFormularioCajaChica = idDetFormularioCajaChica;
 	}
 
-	public Long getIdDocumento() {
-		return idDocumento;
+	public Documento getDocumento() {
+		return documento;
 	}
 
-	public void setIdDocumento(Long idDocumento) {
-		this.idDocumento = idDocumento;
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	}
 
 	public FormularioCajaChica getFormularioCajaChica() {
@@ -91,11 +97,11 @@ public class DetFormularioCajaChica {
 		this.monto = monto;
 	}
 
-	public String getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 

@@ -79,6 +79,8 @@ public class Empresa {
 	
 	private String profilePictureName;
 
+	private String dbName;
+	
 	//Constructor
 
 	public Empresa(String nombre, String rfc) {
@@ -263,6 +265,18 @@ public class Empresa {
 	public void setProfilePictureName(String profilePictureName) {
 		this.profilePictureName = profilePictureName;
 	}
+
+
+	public String getDbName() {
+		return dbName;
+	}
+
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+	
+	
 	
 	
 	

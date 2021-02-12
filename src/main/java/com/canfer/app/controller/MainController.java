@@ -9,7 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.canfer.app.repository.ComprobanteFiscalRespository;
+import com.canfer.app.repository.EstadoRepository;
 import com.canfer.app.security.AuthenticationFacade;
 
 @Controller
@@ -17,6 +20,9 @@ public class MainController {
 
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
+	
+	@Autowired
+	private ComprobanteFiscalRespository cfRepo;
 	
 
 	public MainController() {
@@ -101,6 +107,32 @@ public class MainController {
 		
 		return "caja-chica";
 	}
+	
+	/* TODO ERASE THIS METHOD AFTER TESTINS SP
+	 * 
+	 * --------------------------------------
+	 * CHECK FOR THE PARAMETER'S NAMES MOST BE
+	 * EXACTLY THE SAME.
+	 * 
+	 */
+	
+	@GetMapping(value = "/testsp")
+	@ResponseBody
+	public String testSp(@RequestParam String n) {
+		
+		String pServidor = "192.168.1.132";
+		String pBaseDatos = "PAEPRODUCCION";
+		Long pIdEmpresa = 8L;
+		
+		cfRepo.actualizaBitRs(pServidor, pBaseDatos, pIdEmpresa);
+		
+		return "true";
+	}
+	
+	/*
+	 * ENDLINE 
+	 * ---------------------------------------
+	 */
 
 	
 
@@ -112,6 +144,8 @@ public class MainController {
 			    }
 	    return authentication.isAuthenticated();
 	}
+	
+	
 
 
 

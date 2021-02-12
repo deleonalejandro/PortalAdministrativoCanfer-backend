@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.canfer.app.model.Log;
+import com.crystaldecisions12.reports.common.RenderingHintSetter;
 
 
 @Component
@@ -13,7 +14,8 @@ public class DBThread implements Runnable {
 	private DbObserver dbObserver;
 	private boolean doStop = false;
 	private boolean syncPayments = true;
-	
+	private boolean syncRsBit = false;
+	private boolean syncSapSuppliers = false;
 	
 	public DBThread() {
 		//Constructor
@@ -39,6 +41,13 @@ public class DBThread implements Runnable {
     	this.syncPayments = true;
     }
 	
+    public synchronized void stopSyncRsBit() {
+    	this.syncRsBit = false;
+    }
+    
+    public synchronized void runSyncRsBit() {
+    	this.syncRsBit = true;
+    }
 
 	@Override
 	public void run() {
@@ -53,8 +62,34 @@ public class DBThread implements Runnable {
 				
 			} else {
 				
-				System.out.println("Sincronizacion con tabla de pagos detenida.");
+				Log.general("Sincronizacion con tabla de pagos detenida.");
 			}
+			
+			
+			
+			if (syncRsBit) {
+				
+				System.out.println("Checare la tabla de SAP para actualizar Bit RS");
+				
+				dbObserver.checkSapBitRs();
+				
+			} else {
+				
+				Log.general("Sincronizacion de revisado Sap detenida.");
+				
+			}
+			
+			if (syncSapSuppliers) {
+				
+				System.out.println("Checare la tabla de SAP para sincronizar proveedores.");
+				
+				dbObserver.checkSapSuppliers();
+				
+			} else {
+
+				Log.general("Sincronizacion de tabla proveedores Sap detenida.");
+			}
+			
 			
 			try {
 				System.out.println("DB Thread running... ya me fui a dormir");

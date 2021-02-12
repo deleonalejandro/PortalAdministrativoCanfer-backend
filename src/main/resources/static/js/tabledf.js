@@ -564,6 +564,32 @@
 			
 			});
 			
+			// Clear cookies before when changing company
+			$("#dashboardButton").on( "click", function() {
+				
+				Cookies.remove('fltr_on');
+				
+				Cookies.remove('fltr_proveedor');
+				Cookies.remove('fltr_idNumSap');
+				Cookies.remove('fltr_uuid');
+				Cookies.remove('fltr_estatusPago');
+				Cookies.remove('fltr_uploadAfter');
+				Cookies.remove('fltr_uploadBefore');
+				Cookies.remove('fltr_upload');
+				Cookies.remove('fltr_registeredAfter');
+				Cookies.remove('fltr_registeredBefore');
+				Cookies.remove('fltr_register');
+				Cookies.remove('fltr_sequenceAfter');
+				Cookies.remove('fltr_sequenceBefore');
+				Cookies.remove('fltr_totalAfter');
+				Cookies.remove('fltr_totalBefore');
+				Cookies.remove('fltr_generico');
+				Cookies.remove('fltr_checkSap');
+				Cookies.remove('fltr_hasComplemento');
+				
+				
+			});
+			
 			// Clear filters
 			$('#clearFilters').on('click', function() { 
 				
@@ -1022,6 +1048,8 @@
 					    $('#toastDeletefalse').toggleClass('ew-toast-show')
 					}, 6000);
 		     }
+
+			
 				
 	});
 	

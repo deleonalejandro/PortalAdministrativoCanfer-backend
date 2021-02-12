@@ -44,6 +44,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		http
+				.sessionManagement()
+				.invalidSessionUrl("/sessionexpired");
 
 		http	
 				.formLogin()
@@ -73,6 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.csrf().disable();
 		http
 				.headers().frameOptions().disable();
+		
 	}
 	
 	

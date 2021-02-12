@@ -68,5 +68,45 @@
     "name": "canfer.pagos.password",
     "type": "java.lang.String",
     "description": "A description for 'canfer.pagos.password'"
+  },
+  {
+    "name": "portal.su.user",
+    "type": "java.lang.String",
+    "description": "A description for 'portal.su.user'"
+  },
+  {
+    "name": "portal.su.password",
+    "type": "java.lang.String",
+    "description": "A description for 'portal.su.password'"
+  },
+  {
+    "name": "receiver.mail.hostname",
+    "type": "java.lang.String",
+    "description": "A description for 'receiver.mail.hostname'"
+  },
+  {
+    "name": "receiver.mail.email",
+    "type": "java.lang.String",
+    "description": "A description for 'receiver.mail.email'"
+  },
+  {
+    "name": "receiver.mail.password",
+    "type": "java.lang.String",
+    "description": "A description for 'receiver.mail.password'"
+  },
+  {
+    "name": "receiver.mail.port",
+    "type": "java.lang.String",
+    "description": "A description for 'receiver.mail.port'"
+  },
+  {
+    "name": "receiver.mail.protocol",
+    "type": "java.lang.String",
+    "description": "A description for 'receiver.mail.protocol'"
+  },
+  {
+    "name": "sap.server.ip",
+    "type": "java.lang.String",
+    "description": "A description for 'sap.server.ip'"
   }
 ]}

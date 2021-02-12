@@ -38,6 +38,9 @@ public abstract class ModuleActions {
 
 	protected abstract boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws FileExistsException, NotFoundException;
 	
+	protected abstract boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal)
+			throws FileExistsException, NotFoundException;
+
 	protected abstract boolean delete(Long id);
 	
 	protected abstract boolean deleteAll(List<Long> ids);
@@ -53,6 +56,8 @@ public abstract class ModuleActions {
 		dowloadManager.downloadComprobanteFiscalCsv(comprobantes, response);
 		
 	}
+
+
 
 
 
