@@ -10,9 +10,10 @@ import java.util.Optional;
 
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.stereotype.Service;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -20,15 +21,17 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 
 import javassist.NotFoundException;
 
+@Service("CajaChicaActions")
 public class CajaChicaActions extends ModuleActions{
 	
 	@Autowired
+	@Qualifier("DocumentosNacionalesActions")
 	private DocumentosNacionalesActions docNacActions;
 	
 	
 
 	@Override
-	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal) throws FileExistsException, NotFoundException {
+	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal) throws NotFoundException {
 		
 		String ruta;
 		
@@ -127,14 +130,14 @@ public class CajaChicaActions extends ModuleActions{
 	}
 	
 	
-	public boolean saveDet(Long idForm, Long idClasificacion, DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile) {
+	public boolean saveDet(DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile) {
 		
 		Optional<FormularioCajaChica> formularioCajaChica;
 		Optional<ClasificacionCajaChica> clasificacionCajaChica;
 		Optional<Documento> documento;
 		
-		formularioCajaChica = superRepo.findFormularioCCById(idForm);
-		clasificacionCajaChica = superRepo.findClasificacionCCById(idClasificacion);
+		formularioCajaChica = superRepo.findFormularioCCById(detFormCCDto.getIdFormulario());
+		clasificacionCajaChica = superRepo.findClasificacionCCById(detFormCCDto.getIdClasificacion());
 		
 		documento = superRepo.findDocumentoByArchivoXML(xmlFile);
 		
@@ -177,6 +180,7 @@ public class CajaChicaActions extends ModuleActions{
 		Empresa empresa;
 		Optional<Proveedor> sucursal;
 		Consecutivo sucursalConsecutivo;
+		FormularioCajaChica formCC;
 		
 		empresa = superRepo.findEmpresaByRFC(rfcEmpresa);
 		sucursal = superRepo.findProveedorByEmpresaAndClaveProv(empresa, claveProv);
@@ -185,7 +189,11 @@ public class CajaChicaActions extends ModuleActions{
 			 
 			sucursalConsecutivo = superRepo.findConsecutivoBySucursal(sucursal.get());
 			
-			return new FormularioCajaChica(sucursal.get(), sucursalConsecutivo.getNext());
+			superRepo.save(sucursalConsecutivo);
+			
+			formCC = new FormularioCajaChica(sucursal.get(), sucursalConsecutivo.getNext());
+			
+			return superRepo.save(formCC); 		
 
 		}
 		
