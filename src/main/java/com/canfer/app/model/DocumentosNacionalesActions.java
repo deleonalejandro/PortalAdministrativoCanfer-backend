@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
 
+import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -632,6 +633,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	private boolean exist(String uuid) {
 		return (superRepo.findComprobanteByUUID(uuid) != null);
+	}
+
+	@Override
+	protected boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal)
+			throws FileExistsException, NotFoundException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 
