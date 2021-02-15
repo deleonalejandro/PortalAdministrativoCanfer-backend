@@ -642,13 +642,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		return false;
 	}
 	
-	// Methods not used by this class
 
-	@Override
-	protected boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal)
-			throws FileExistsException, NotFoundException {
-		return false;
-	}
 	
 
 
