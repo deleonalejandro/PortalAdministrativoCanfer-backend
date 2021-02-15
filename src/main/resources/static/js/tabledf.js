@@ -215,6 +215,8 @@
 		                        }
 								if(data == 'P') {
 								    return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
+								}else{
+									return '<span class="badge badge-blue">'+data+'</span>';
 								}
 						     }
 						},
@@ -232,7 +234,7 @@
 								    return '<span class="badge badge-red">Cancelado</span>';
 								}
 								else{
-									return '<span class="badge badge-blue">N/A</span>';
+									return '<span class="badge badge-blue">'+data+'</span>';
 								}
 						     }
 						},

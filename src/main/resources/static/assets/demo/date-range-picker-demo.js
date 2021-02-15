@@ -176,10 +176,11 @@ $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) {
 	         locale: {
 		      format: "DD/MM/YYYY"
 		    },
+				startDate: moment().startOf("day"),
 	            singleDatePicker: true,
 	            showDropdowns: true,
 	            minYear: 2000,
-	            maxYear: parseInt(moment().format("YYYY"), 10),
+	            maxYear: parseInt(moment().format("YYYY"), 10)+1,
 	        }
 	    );
 	});
