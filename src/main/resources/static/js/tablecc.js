@@ -166,6 +166,9 @@
 				
 				//Crea la tabla de los detalles
 				 var table2 = $('#detallesNuevoCajaChica').DataTable({
+					"drawCallback": function( settings ) {
+				        table2.columns.adjust();
+				    },
 					"paging":   false,
 			        "ordering": false,
 			        "info": false,
@@ -182,8 +185,8 @@
 					
 				 });
 				 
+				 table2.columns.adjust();
 
-				table2.columns.adjust();
 			});
 			
 				 
