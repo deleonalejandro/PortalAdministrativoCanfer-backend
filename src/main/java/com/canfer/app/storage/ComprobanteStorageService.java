@@ -1,5 +1,7 @@
 package com.canfer.app.storage;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -136,9 +138,13 @@ public class ComprobanteStorageService implements StorageService {
 			
 			return new ArchivoPDF(fileLocation.toString() , "pdf" , filename);
 		
-		} else {
+		} else if (extension.equalsIgnoreCase("xml")){
 			
 			return new ArchivoXML(fileLocation.toString() , "xml" , filename);
+			
+		} else {
+			
+			return null;
 		}
 	}
 
