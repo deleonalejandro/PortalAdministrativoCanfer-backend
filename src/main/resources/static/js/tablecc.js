@@ -150,10 +150,13 @@
 					$("#estatusNewForm").val(formulario.estatus);
 					$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
 					$("#sucursalNew").val(formulario.proveedor.nombre);
-					$("#fechaNew").val(formulario.fecha);
+					$("#fechaNew").val(formulario.fecha.split("T")[0]);
 					$("#idFormNew").val(formulario.idFormularioCajaChica);
 					$("#comentarioNew").val(formulario.comentario);
 					$("#totalNew").val(formulario.total);
+					
+					//prepare cancel button too
+					$("#cancelarNewForm").attr("href", "/cajachicaclient/deleteformcc?id=" + formulario.idFormularioCajaChica);
 				});
 				
 				
@@ -180,7 +183,7 @@
 				 });
 				 
 
-				 table2.columns.adjust();
+				table2.columns.adjust();
 			});
 			
 				 
@@ -255,7 +258,13 @@
 			 });
 			 
 			 // Darle Submit a New Formulario
-			$('#cancelarNewForm').on('click', function() {
+			$('#cancelarNewForm').on('click', function(event) {
+				
+				event.preventDefault();
+				
+				var href = $(this).attr('href');
+				
+				$.get(href);
 			 	
 			 	$('#newFormModal').modal('hide');
 			 

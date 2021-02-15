@@ -635,18 +635,17 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		return (superRepo.findComprobanteByUUID(uuid) != null);
 	}
 
-	@Override
-	protected boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal)
-			throws FileExistsException, NotFoundException {
-		// TODO Auto-generated method stub
-		return false;
+	// Methods not used by this class
+
+		@Override
+		protected boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF, Long idSucursal)
+				throws FileExistsException, NotFoundException {
+			return false;
+		}
+		
+
+
+
+		
+
 	}
-	
-
-	
-
-
-
-	
-
-}
