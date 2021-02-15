@@ -574,6 +574,8 @@
 																								style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
 																								id="clasificacionNewDet"
 																								name="clasificacionNewDet">
+																									<option th:each="clasificacion : ${clasificaciones}" th:value="${clasificacion.idClasificacionCajaChica}" th:text="${clasificion.clasificacion}">
+                                            														</option>
 																							</select>
 																						</div>
 																					</div>
