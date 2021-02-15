@@ -166,6 +166,9 @@
 				
 				//Crea la tabla de los detalles
 				 var table2 = $('#detallesNuevoCajaChica').DataTable({
+					"drawCallback": function( settings ) {
+				        table2.columns.adjust();
+				    },
 					"paging":   false,
 			        "ordering": false,
 			        "info": false,
@@ -182,45 +185,78 @@
 					
 				 });
 				 
+				 table2.columns.adjust();
 
-				table2.columns.adjust();
 			});
 			
 				 
-			 // Darle Cancelar a New Det
-			$('#cancelarNewDet').on('click', function() {
+			 // Darle submit a New Det
+			$('#submitNewDet').on('click', function() {
 			 
 			 	$('#newDetModal').modal('hide');
-			 
+			 	$( '#wizard2-tab' ).removeClass( 'active' );
+			 	$( '#wizard1-tab' ).addClass( 'active' );
+			 	document.getElementById("wizard2").hidden= true;
+			 	document.getElementById("btns-next").hidden= false;
+			 	document.getElementById("btns-prev").hidden= true;
+			 	$('#siguienteNewDet').prop("disabled",true);
+			 	document.getElementById("div-add-xml").hidden= true;
+			 	document.getElementById("div-btn-add-xml").hidden= false;
+			  	document.getElementById("div-add-pdf").hidden= true;
+			 	document.getElementById("div-btn-add-pdf").hidden= false;
+			 	
+			  	document.getElementById("dateNewDiv").hidden = false;
+			 	document.getElementById("montoNewDiv").hidden = false;
+			  	document.getElementById("folioNewDiv").hidden = false;
 			 });
 			 // Darle Siguiente a New Det
 			$('#siguienteNewDet').on('click', function() {
-			 	if(document.getElementById("xmlNewDet").value != "") {
-				   document.getElementById("dateNewDiv").hidden = true
-				   document.getElementById("montoNewDiv").hidden = true
-				   document.getElementById("folioNewDiv").hidden = true 
-				}
-				if(document.getElementById("xmlNewDet").value = "") {
-				   document.getElementById("dateNewDiv").hidden = false
-				   document.getElementById("montoNewDiv").hidden = false
-				   document.getElementById("folioNewDiv").hidden = false 
-				}
+			 	
 			 	$( '#wizard1-tab' ).removeClass( 'active' );
-			 	$( '#wizard1' ).removeClass( 'active' );
 			 	$( '#wizard2-tab' ).addClass( 'active' );
-			 	$( '#wizard2' ).addClass( 'active' );
+			 	document.getElementById("wizard2").hidden= false;
+			 	document.getElementById("btns-next").hidden= true;
+			 	document.getElementById("btns-prev").hidden= false;
+			 	
+			 	
 			 });
 			 // Darle Anterior a New Det
 			 $('#anteriorNewDet').on('click', function() {
 			 	$( '#wizard2-tab' ).removeClass( 'active' );
-			 	$( '#wizard2' ).removeClass( 'active' );
 			 	$( '#wizard1-tab' ).addClass( 'active' );
-			 	$( '#wizard1' ).addClass( 'active' );
+			 	$('#siguienteNewDet').prop("disabled",true);
+			 	document.getElementById("wizard2").hidden= true;
+			 	document.getElementById("btns-next").hidden= false;
+			 	document.getElementById("btns-prev").hidden= true;
+			 	
+			 	document.getElementById("div-add-xml").hidden= true;
+			 	document.getElementById("div-btn-add-xml").hidden= false;
+			  	document.getElementById("div-add-pdf").hidden= true;
+			 	document.getElementById("div-btn-add-pdf").hidden= false;
+			 	
+			  	document.getElementById("dateNewDiv").hidden = false;
+			 	document.getElementById("montoNewDiv").hidden = false;
+			  	document.getElementById("folioNewDiv").hidden = false;
 			 });
 			 // Darle Cancelar a New Det
 			$('#cancelarNewDet').on('click', function() {
-			 
+			 	
 			 	$('#newDetModal').modal('hide');
+			 	$('#siguienteNewDet').prop("disabled",true);
+			 	$( '#wizard2-tab' ).removeClass( 'active' );
+			 	$( '#wizard1-tab' ).addClass( 'active' );
+			 	document.getElementById("wizard2").hidden= true;
+			 	document.getElementById("btns-next").hidden= false;
+			 	document.getElementById("btns-prev").hidden= true;
+			 	
+			 	document.getElementById("div-add-xml").hidden= true;
+			 	document.getElementById("div-btn-add-xml").hidden= false;
+			  	document.getElementById("div-add-pdf").hidden= true;
+			 	document.getElementById("div-btn-add-pdf").hidden= false;
+			 	
+			  	document.getElementById("dateNewDiv").hidden = false;
+			 	document.getElementById("montoNewDiv").hidden = false;
+			  	document.getElementById("folioNewDiv").hidden = false;
 			 
 			 });
 			 
@@ -241,6 +277,24 @@
 			 	
 			 	$('#newFormModal').modal('hide');
 			 
+			 });
+			 
+			  // Adjuntar un pdf
+			$('#btn-add-pdf').on('click', function() {
+			 document.getElementById("div-add-pdf").hidden= false;
+			 document.getElementById("div-btn-add-pdf").hidden= true;
+			 
+			 $('#siguienteNewDet').prop("disabled",false);
+			 });
+			  // adjuntar un xml
+			$('#btn-add-xml').on('click', function() {
+			 document.getElementById("div-add-xml").hidden= false;
+			 document.getElementById("div-btn-add-xml").hidden= true;
+			 
+			  document.getElementById("dateNewDiv").hidden = true
+			  document.getElementById("montoNewDiv").hidden = true
+			  document.getElementById("folioNewDiv").hidden = true 
+			  $('#siguienteNewDet').prop("disabled",false);
 			 });
 				 
 			

@@ -70,6 +70,7 @@ public class CajaChicaFunctionalityController {
 	 * @param mFilePDF - MultipartFile for PDF.
 	 * @param ra - RedirectAttributes for HTTP request.
 	 */
+	@PostMapping("/savedetformcc")
 	public void saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, MultipartFile mFileXML, MultipartFile mFilePDF, RedirectAttributes ra) {
 		
 		ArchivoXML fileXML = null;
@@ -122,6 +123,13 @@ public class CajaChicaFunctionalityController {
 		}
 		
 		actioner.saveDet(detFormCCDto, fileXML, filePDF);
+		
+	}
+	
+	@GetMapping("/deletedetformcc")
+	public void deleteDetalleFormCC(Long id) {
+		
+		actioner.delete(id);
 		
 	}
 	
