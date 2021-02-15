@@ -238,7 +238,7 @@
 											<div class="modal-fullscreen" role="document">
 												<div class="modal-content">
 													<div class="modal-body">
-														<div class="alert alert-success alert-icon" role="alert">
+														<div class="alert alert-success alert-icon" role="alert" th:if="${success}==true">
 															<button class="close" type="button" data-dismiss="alert"
 																aria-label="Close">
 																<span aria-hidden="true">×</span>
@@ -246,12 +246,12 @@
 															<div class="alert-icon-aside">
 																<i class="fas fa-check"></i>
 															</div>
-															<div class="alert-icon-content" th:if="${success}==true">
+															<div class="alert-icon-content">
 																<h6 class="alert-heading">Detalle:</h6>
 																Se ha procesado correctamente el detalle de formulario.
 															</div>
 														</div>
-														<div class="alert alert-danger alert-icon" role="alert">
+														<div class="alert alert-danger alert-icon" role="alert" th:if="${success}==false">
 															<button class="close" type="button" data-dismiss="alert"
 																aria-label="Close">
 																<span aria-hidden="true">×</span>
@@ -270,10 +270,10 @@
 
 																<div class="col-9 font-weight-bold"
 																	style="color: black; font-size: large">CAJA CHICA</div>
-																<div class="font-weight-bold"
+																<div class="font-weight-bold pull-right"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold" id="folioFormularioNew"
+																<div class="font-weight-bold pull-right" id="folioFormularioNew"
 																	name="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
 																</div>
