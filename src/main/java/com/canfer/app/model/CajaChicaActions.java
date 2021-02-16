@@ -6,6 +6,7 @@ package com.canfer.app.model;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,7 +165,7 @@ public class CajaChicaActions extends ModuleActions{
 			detFormCC.setFormularioCajaChica(formularioCajaChica.get());
 			detFormCC.setClasificacion(clasificacionCajaChica.get());
 			detFormCC.setDocumento(documento.get());
-			detFormCC.setFecha(detFormCCDto.getFecha());
+			detFormCC.setFecha(detFormCCDto.getFechaDet());
 			detFormCC.setFolio(detFormCCDto.getFolio());
 			detFormCC.setMonto(detFormCCDto.getMonto());
 			detFormCC.setResponsable(detFormCCDto.getResponsable());
@@ -238,6 +239,19 @@ public class CajaChicaActions extends ModuleActions{
 				
 		return false;
 		
+		
+	}
+	
+	public List<DetFormularioCajaChica> showDetFormularioCajaChica(Long id) {
+		
+		Optional<FormularioCajaChica> formCC = superRepo.findFormularioCCById(id);
+		
+		if (formCC.isPresent()) {
+			
+			return superRepo.findAllDetFormularioCajaChicaByFormCC(formCC.get());
+		}
+		
+		return Collections.emptyList();
 		
 	}
 	

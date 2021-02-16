@@ -1,5 +1,7 @@
 package com.canfer.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.model.CajaChicaActions;
+import com.canfer.app.model.DetFormularioCajaChica;
 import com.canfer.app.model.FormularioCajaChica;
 import com.canfer.app.model.Log;
 import com.canfer.app.storage.ComprobanteStorageService;
@@ -131,6 +134,14 @@ public class CajaChicaFunctionalityController {
 	public void deleteDetalleFormCC(Long id) {
 		
 		actioner.delete(id);
+		
+	}
+	
+	@GetMapping("/loadformdetails")
+	@ResponseBody
+	public List<DetFormularioCajaChica> showDetalleFormularioCC(@RequestParam("id") Long idFormCC) {
+		
+		return actioner.showDetFormularioCajaChica(idFormCC);
 		
 	}
 	
