@@ -174,7 +174,7 @@
 			        "info": false,
 			        "searching":false,
 					ajax: {
-					dataSrc:""
+					dataSrc:"/cajachicaclient/loadformdetails?id="+formulario.idFormularioCajaChica
 		        	},
 					scrollX:true,
 					"language": {
