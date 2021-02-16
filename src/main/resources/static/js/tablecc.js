@@ -154,6 +154,7 @@
 					$("#idFormNew").val(formulario.idFormularioCajaChica);
 					$("#comentarioNew").val(formulario.comentario);
 					$("#totalNew").val(formulario.total);
+					$("#idFormulario").val(formulario.idFormularioCajaChica);
 					
 					//prepare cancel button too
 					$("#cancelarNewForm").attr("href", "/cajachicaclient/deleteformcc?id=" + formulario.idFormularioCajaChica);
@@ -208,6 +209,9 @@
 			  	document.getElementById("dateNewDiv").hidden = false;
 			 	document.getElementById("montoNewDiv").hidden = false;
 			  	document.getElementById("folioNewDiv").hidden = false;
+		
+				table2.ajax.reload();
+				
 			 });
 			 // Darle Siguiente a New Det
 			$('#siguienteNewDet').on('click', function() {

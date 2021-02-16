@@ -311,7 +311,7 @@
 																<div class="col-2" hidden>
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		id="idFormNew" value="" />
+																		id="idFormNew" name="idFormNew" value="" />
 																</div>
 															</div>
 
@@ -325,7 +325,7 @@
 
 															<!-- MODAL PARA NUEVO DETALLE -->
 															<!-- Modal -->
-															<form>
+															<form th:action="@{/cajachicaclient/savedetformcc}" action="#" method="post" enctype="multipart/form-data">
 																<div class="modal fade" id="newDetModal"
 																	data-backdrop="static" tabindex="-1" role="dialog"
 																	aria-labelledby="staticBackdropLabel"
@@ -394,8 +394,8 @@
 																																style="color: green"></i>
 																														</div>
 																													</div>
-																													<input class="form-control" id="xmlNewDet"
-																														accept=".xml" type="file" name="xml" />
+																													<input class="form-control" id="mFileXML"
+																														accept=".xml" type="file" name="mFileXML" />
 																												</div>
 																											</div>
 																											<div class="d-flex justify-content-center">Adjuntar
@@ -422,8 +422,8 @@
 																																style="color: red"></i>
 																														</div>
 																													</div>
-																													<input class="form-control" id="pdfNewDet"
-																														type="file" accept=".pdf" name="pdf" />
+																													<input class="form-control" id="mFilePDF"
+																														type="file" accept=".pdf" name="mFilePDF" />
 																												</div>
 																											</div>
 
@@ -434,6 +434,12 @@
 																							<div class="col-6">
 																								<!-- Wizard tab pane item 2-->
 																								<div id="wizard2" hidden="true">
+																									<!-- Hidden fields (informative only) -->
+																									<div hidden>
+																										<input type="text" style="height: 20px" 
+																											class="form-control form-control-sm bg-white"
+																											id="idFormulario" name="idFormulario" />
+																									</div>
 																									<div class="row justify-content-center">
 																										<div>
 																											<h5 class="card-title">Llena la
@@ -448,7 +454,7 @@
 																														Fecha del documento: </label>
 																												</div>
 																												<div class="col-6">
-																													<input type="text" name="dateNewDet"
+																													<input type="text" id= "fechaDet" name="fechaDet"
 																														style="height: 25px" value="" />
 																												</div>
 																											</div>
@@ -463,7 +469,7 @@
 																													<select
 																														class="form-control form-control-solid"
 																														style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																														id="clasificacionNewDet">
+																														id="idClasificacion" name="idClasificacion">
 																													</select>
 																												</div>
 																											</div>
@@ -486,7 +492,7 @@
 																														<input type="number" min="0" step="0.01"
 																															style="height: 20px"
 																															class="form-control form-control-sm bg-white"
-																															id="montoNewDet" value="" />
+																															id="monto" name="monto" value="" />
 																													</div>
 																												</div>
 																											</div>
@@ -499,7 +505,7 @@
 																												<div class="col-6">
 																													<input type="text" style="height: 20px"
 																														class="form-control form-control-sm bg-white"
-																														id="folioNewDet" value="" />
+																														id="folio" name="folio" value="" />
 																												</div>
 																											</div>
 																											<div class="row pt-1">
@@ -511,7 +517,7 @@
 																												<div class="col-6">
 																													<input type="text" style="height: 20px"
 																														class="form-control form-control-sm bg-white"
-																														id="responsableNewDet" value="" />
+																														id="responsable" name="responsable" value="" />
 																												</div>
 																											</div>
 
@@ -537,7 +543,7 @@
 																								hidden="true">
 																								<a class="btn btn-light" type="button"
 																									id="anteriorNewDet">Anterior</a>
-																								<button class="btn btn-secondary" type="button"
+																								<button class="btn btn-secondary" type="submit"
 																									id="submitNewDet">Guardar</button>
 																							</div>
 																						</div>
