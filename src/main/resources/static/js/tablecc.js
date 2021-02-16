@@ -185,7 +185,7 @@
 					
 				 });
 				 
-				 table2.columns.adjust();
+			 table2.columns.adjust();
 
 			});
 			
@@ -263,13 +263,13 @@
 			 // Darle Submit a New Formulario
 			$('#cancelarNewForm').on('click', function(event) {
 				
-				event.preventDefault();
 				
 				var href = $(this).attr('href');
 				
 				$.get(href);
+				
+				$('#newFormModal').modal('hide');
 			 	
-			 	$('#newFormModal').modal('hide');
 			 
 			 });
 			 // Darle Cancelar a New Formulario

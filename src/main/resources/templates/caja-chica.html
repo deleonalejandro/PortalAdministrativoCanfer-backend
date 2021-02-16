@@ -227,60 +227,27 @@
 										</div>
 									</div>
 
-									
 
 									<!-- NUEVO FORMULARIO Main Content Formulario -->
 									<!-- MODAL-->
-
-									<div class="modal fade" data-backdrop="static"
-										id="newFormModal" tabindex="-1" role="dialog"
-										aria-labelledby="myLargeModalLabel" aria-hidden="true">
-										<div class="modal-dialog" role="document">
-
-											<div class="modal-content">
-												<form class="newForm" method="post"
-													enctype="multipart/form-data">
+									<form class="newForm" method="post"
+										enctype="multipart/form-data">
+										<div class="modal fade" data-backdrop="static"
+											id="newFormModal" tabindex="-1" role="dialog"
+											aria-labelledby="myLargeModalLabel" aria-hidden="true">
+											<div class="modal-fullscreen" role="document">
+												<div class="modal-content">
 													<div class="modal-body">
-														<div class="alert alert-success alert-icon" role="alert"
-															th:if="${success}==true">
-															<button class="close" type="button" data-dismiss="alert"
-																aria-label="Close">
-																<span aria-hidden="true">×</span>
-															</button>
-															<div class="alert-icon-aside">
-																<i class="fas fa-check"></i>
-															</div>
-															<div class="alert-icon-content">
-																<h6 class="alert-heading">Detalle:</h6>
-																Se ha procesado correctamente el detalle de formulario.
-															</div>
-														</div>
-														<div class="alert alert-danger alert-icon" role="alert"
-															th:if="${success}==false">
-															<button class="close" type="button" data-dismiss="alert"
-																aria-label="Close">
-																<span aria-hidden="true">×</span>
-															</button>
-															<div class="alert-icon-aside">
-																<i class="fas fa-times"></i>
-															</div>
-															<div class="alert-icon-content" th:if="${success}==false">
-																<h6 class="alert-heading">Error:</h6>
-																No se ha procesado correctamente el detalle de
-																formulario.
-															</div>
-														</div>
 														<div class="form-group">
 															<!-- Card del modal -->
 															<div class="row">
 
 																<div class="col-9 font-weight-bold"
 																	style="color: black; font-size: large">CAJA CHICA</div>
-																<div class="font-weight-bold pull-right"
+																<div class="font-weight-bold"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold pull-right"
-																	id="folioFormularioNew" name="folioFormularioNew"
+																<div class="font-weight-bold" id="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
 																</div>
 															</div>
@@ -294,7 +261,7 @@
 																	<!-- INPUT IMPORTE ESTATUS -->
 																	<select class="form-control form-control-solid"
 																		style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-																		id="estatusNewForm" name="estatusNewForm">
+																		id="estatusNewForm">
 																		<option value="ABIERTO">ABIERTO</option>
 																		<option value="CERRADO">CERRADO</option>
 																		<option value="PAGADO">PAGADO</option>
@@ -326,7 +293,7 @@
 																<div class="col-4">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		name="sucursalNew" id="sucursalNew" value="" />
+																		id="sucursalNew" value="" />
 																</div>
 															</div>
 															<div class="row pt-1 pb-4">
@@ -338,13 +305,13 @@
 																<div class="col-4">
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		name="fechaNew" id="fechaNew" value="" />
+																		id="fechaNew" value="" />
 																</div>
 																<!-- Hidden fields (informative only) -->
 																<div class="col-2" hidden>
 																	<input type="text" style="height: 20px" readonly
 																		class="form-control form-control-sm bg-white"
-																		name="idFormNew" id="idFormNew" value="" />
+																		id="idFormNew" value="" />
 																</div>
 															</div>
 
@@ -353,6 +320,223 @@
 																	class="btn btn-outline-secondary mb-3"
 																	data-toggle="modal" data-target="#newDetModal">Nuevo
 																	Detalle</button>
+															</div>
+
+															<!-- MODAL PARA NUEVO DETALLE -->
+															<!-- Modal -->
+															<div class="modal fade" id="newDetModal"
+																data-backdrop="static" tabindex="-1" role="dialog"
+																aria-labelledby="staticBackdropLabel" aria-hidden="true">
+																<div class="modal-dialog modal-lg" role="document">
+																	<div class="modal-content">
+																		<!-- Wizard card example with navigation-->
+																		<div class="card">
+																			<div class="card-header border-bottom">
+																				<!-- Wizard navigation-->
+																				<div
+																					class="nav nav-pills nav-justified flex-column flex-sm-row nav-wizard"
+																					id="cardTab" role="tablist">
+																					<!-- Wizard navigation item 1-->
+																					<a class="nav-item nav-link active"
+																						id="wizard1-tab" role="tab"
+																						aria-controls="wizard1" aria-selected="true">
+																						<div class="wizard-step-icon">1</div>
+																						<div class="wizard-step-text">
+																							<div class="wizard-step-text-name">Archivos</div>
+																						</div>
+																					</a>
+																					<!-- Wizard navigation item 2-->
+																					<a class="nav-item nav-link" id="wizard2-tab"
+																						role="tab" aria-controls="wizard2"
+																						aria-selected="true">
+																						<div class="wizard-step-icon">2</div>
+																						<div class="wizard-step-text">
+																							<div class="wizard-step-text-name">Información</div>
+																						</div>
+																					</a>
+																				</div>
+																			</div>
+																			<div class="card-body">
+																				<div class="tab-content" id="cardTabContent">
+																					<!-- TWO WIZARD TABS -->
+																					<div class="row">
+																						<div class="col-6">
+																							<!-- Wizard tab pane item 1-->
+																							<div id="wizard1">
+																								<div class="row justify-content-center">
+																									<div>
+																										<h5 class="card-title">Adjunta los
+																											archivos relacionados al detalle:</h5>
+																										<div class="d-flex justify-content-center">Adjuntar un XML</div>
+																										<!-- Boton para activar adjuntar xml -->
+																										<div id="div-btn-add-xml">
+																											<div class="d-flex justify-content-center">
+																												<button id="btn-add-xml" class="btn btn-outline-green"
+																															type="button">
+																															<i class="far fa-file-code float-left fa-2x"
+																															style="color: green"></i>
+																														</button>
+																											</div>
+																										</div>
+																										<!-- Adjuntar xml -->
+																										<div id="div-add-xml" hidden="true">
+																											<div class="input-group mb-2" >
+																												<div class="input-group-prepend">
+																													<div class="input-group-text">
+																														<i class="far fa-file-code float-left fa-lg"
+																															style="color: green"></i>
+																													</div>
+																												</div>
+																												<input class="form-control" id="xmlNewDet"
+																													accept=".xml" type="file" name="xml" />
+																											</div>
+																										</div>
+																										<div class="d-flex justify-content-center">Adjuntar un PDF </div>
+																										<!-- Boton para activar adjuntar pdf -->
+																										<div id="div-btn-add-pdf">
+																											<div id="btn-add-pdf" class="d-flex justify-content-center">
+																												<button class="btn btn-outline-red"
+																															type="button">
+																															<i
+																															class="far fa-file-pdf float-left fa-2x"
+																															style="color: red"></i>
+																														</button>
+																											</div>
+																										</div>
+																										<!-- Adjuntar pdf -->
+																										<div id="div-add-pdf" hidden="true">
+																											<div class="input-group mb-2">
+																												<div class="input-group-prepend">
+																													<div class="input-group-text">
+																														<i
+																															class="far fa-file-pdf float-left fa-lg"
+																															style="color: red"></i>
+																													</div>
+																												</div>
+																												<input class="form-control" id="pdfNewDet"
+																													type="file" accept=".pdf" name="pdf" />
+																											</div>
+																										</div>
+
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																						<div class="col-6">
+																							<!-- Wizard tab pane item 2-->
+																							<div id="wizard2" hidden="true">
+																								<div class="row justify-content-center">
+																									<div>
+																										<h5 class="card-title">Llena la
+																											información del detalle</h5>
+																										<!-- Content del new detalle modal -->
+
+
+																										<div class="row pt-1" id="dateNewDiv">
+																											<div class="col-4">
+																												<label for="dateNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Fecha del documento: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" name="dateNewDet"
+																													style="height: 25px" value="" />
+																											</div>
+																										</div>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="clasificacionNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Clasificación:</label>
+																											</div>
+																											<div class="col-6">
+																												<!-- INPUT IMPORTE ESTATUS -->
+																												<select
+																													class="form-control form-control-solid"
+																													style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																													id="clasificacionNewDet">
+																												</select>
+																											</div>
+																										</div>
+																										<div class="row pt-1" id="montoNewDiv">
+																											<div class="col-4">
+																												<label for="montoNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Monto: </label>
+																											</div>
+
+																											<div class="col-6">
+																												<div class="input-group">
+																													<div class="input-group-prepend ">
+																														<div class="input-group-text"
+																															style="height: 20px">
+																															<i data-feather="dollar-sign"
+																																style="color: gray"></i>
+																														</div>
+																													</div>
+																													<input type="number" min="0" step="0.01"
+																														style="height: 20px"
+																														class="form-control form-control-sm bg-white"
+																														id="montoNewDet" value="" />
+																												</div>
+																											</div>
+																										</div>
+																										<div class="row pt-1" id="folioNewDiv">
+																											<div class="col-4">
+																												<label for="folioNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Folio: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" style="height: 20px"
+																													class="form-control form-control-sm bg-white"
+																													id="folioNewDet" value="" />
+																											</div>
+																										</div>
+																										<div class="row pt-1">
+																											<div class="col-4">
+																												<label for="responsableNewDet"
+																													class="form-control-label mb-0 font-weight-bold">
+																													Responsable: </label>
+																											</div>
+																											<div class="col-6">
+																												<input type="text" style="height: 20px"
+																													class="form-control form-control-sm bg-white"
+																													id="responsableNewDet" value="" />
+																											</div>
+																										</div>
+
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<!-- FUERA DE LAS WIZARD TABS -->
+																					<!-- BOTONES DE FLUJO WIZARD 1-->
+																					<hr class="my-4" />
+																					<div id="btns-next">
+																						<div class="d-flex justify-content-between">
+																							<button class="btn btn-light" type="button"
+																								id="cancelarNewDet">Cancelar</button>
+																							<button class="btn btn-secondary" type="button"
+																								id="siguienteNewDet" disabled>Siguiente</button>
+																						</div>
+																					</div>
+																					<!-- BOTONES DE FLUJO WIZARD 2-->
+																					<div id="btns-prev" hidden="true">
+																						<div class="d-flex justify-content-between"
+																							hidden="true">
+																							<a class="btn btn-light" type="button"
+																								id="anteriorNewDet">Anterior</a>
+																							<button class="btn btn-secondary" type="button"
+																								id="submitNewDet">Guardar</button>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 															</div>
 
 
@@ -410,7 +594,7 @@
 																		<textarea type="text" style="height: 50px"
 																			class="form-control form-control-sm bg-white ml-3"
 																			cols="40" rows="5" id="comentarioNew"
-																			name="comentarioNew" value=""></textarea>
+																			name="comentario" value=""></textarea>
 																	</div>
 																</div>
 																<div class="col-5"></div>
@@ -426,15 +610,15 @@
 																		</div>
 																		<input type="text" style="height: 20px;" readonly
 																			class="form-control form-control-sm bg-white text-success"
-																			name="totalNew" id="totalNew" value="" />
+																			id="totalNew" value="" />
 																	</div>
 																</div>
 															</div>
 
-															<div
+															<div class="modal-footer"
 																style="border-radius: 0; bottom: 0px; position: absolute; width: 95%">
-																<button class="btn btn-light" type="button"
-																			id="cancelarNewForm" data-dismiss="modal">Cancelar</button>
+																<button class="btn btn-danger" id="cancelarNewForm"
+																	type="button">Cancelar</button>
 																<button class="btn btn-secondary" id="submitNewForm"
 																	type="submit">Guardar</button>
 															</div>
@@ -442,251 +626,11 @@
 														</div>
 														<!-- End del modal -->
 													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-
-
-									<!-- MODAL PARA NUEVO DETALLE -->
-									<!-- Modal -->
-									<div class="modal fade" id="newDetModal" data-backdrop="static"
-										tabindex="-1" role="dialog"
-										aria-labelledby="staticBackdropLabel" aria-hidden="true">
-										<div class="modal-dialog modal-lg" role="document">
-											<div class="modal-content">
-												<!-- Wizard card example with navigation-->
-												<div class="card">
-													<div class="card-header border-bottom">
-														<!-- Wizard navigation-->
-														<div
-															class="nav nav-pills nav-justified flex-column flex-sm-row nav-wizard"
-															id="cardTab" role="tablist">
-															<!-- Wizard navigation item 1-->
-															<a class="nav-item nav-link active" id="wizard1-tab"
-																role="tab" aria-controls="wizard1" aria-selected="true">
-																<div class="wizard-step-icon">1</div>
-																<div class="wizard-step-text">
-																	<div class="wizard-step-text-name">Archivos</div>
-																</div>
-															</a>
-															<!-- Wizard navigation item 2-->
-															<a class="nav-item nav-link" id="wizard2-tab" role="tab"
-																aria-controls="wizard2" aria-selected="true">
-																<div class="wizard-step-icon">2</div>
-																<div class="wizard-step-text">
-																	<div class="wizard-step-text-name">Información</div>
-																</div>
-															</a>
-														</div>
-													</div>
-													<form>
-														<div class="card-body">
-															<div class="tab-content" id="cardTabContent">
-																<!-- TWO WIZARD TABS -->
-																<div class="row">
-																	<div class="col-6">
-																		<!-- Wizard tab pane item 1-->
-																		<div id="wizard1">
-																			<div class="row justify-content-center">
-																				<div>
-																					<h5 class="card-title">Adjunta los archivos
-																						relacionados al detalle:</h5>
-																					<div class="d-flex justify-content-center">Adjuntar
-																						un XML</div>
-																					<!-- Boton para activar adjuntar xml -->
-																					<div id="div-btn-add-xml">
-																						<div class="d-flex justify-content-center">
-																							<button id="btn-add-xml"
-																								class="btn btn-outline-green" type="button">
-																								<i class="far fa-file-code float-left fa-2x"
-																									style="color: green"></i>
-																							</button>
-																						</div>
-																					</div>
-																					<!-- Adjuntar xml -->
-																					<div id="div-add-xml" hidden="true">
-																						<div class="input-group mb-2">
-																							<div class="input-group-prepend">
-																								<div class="input-group-text">
-																									<i class="far fa-file-code float-left fa-lg"
-																										style="color: green"></i>
-																								</div>
-																							</div>
-																							<input class="form-control" id="xmlNewDet"
-																								accept=".xml" type="file" name="xmlNewDet" />
-																						</div>
-																					</div>
-																					<div class="d-flex justify-content-center">Adjuntar
-																						un PDF</div>
-																					<!-- Boton para activar adjuntar pdf -->
-																					<div id="div-btn-add-pdf">
-																						<div id="btn-add-pdf"
-																							class="d-flex justify-content-center">
-																							<button class="btn btn-outline-red" type="button">
-																								<i class="far fa-file-pdf float-left fa-2x"
-																									style="color: red"></i>
-																							</button>
-																						</div>
-																					</div>
-																					<!-- Adjuntar pdf -->
-																					<div id="div-add-pdf" hidden="true">
-																						<div class="input-group mb-2">
-																							<div class="input-group-prepend">
-																								<div class="input-group-text">
-																									<i class="far fa-file-pdf float-left fa-lg"
-																										style="color: red"></i>
-																								</div>
-																							</div>
-																							<input class="form-control" id="pdfNewDet"
-																								type="file" accept=".pdf" name="pdfNewDet" />
-																						</div>
-																					</div>
-
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														
-																	<div class="col-6">
-																		<!-- Wizard tab pane item 2-->
-																		<div id="wizard2" hidden="true">
-																			<div class="row justify-content-center">
-																				<div>
-																					<h5 class="card-title">Llena la información
-																						del detalle</h5>
-																					<!-- Content del new detalle modal -->
-
-
-																					<div class="row pt-1" id="dateNewDiv">
-																						<div class="col-4">
-																							<label for="dateNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Fecha del documento: </label>
-																						</div>
-																						<div class="col-6">
-																							<input type="text" name="dateNewDet"
-																								id="dateNewDet" style="height: 25px" value="" />
-																						</div>
-																					</div>
-																					<div class="row pt-1">
-																						<div class="col-4">
-																							<label for="clasificacionNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Clasificación:</label>
-																						</div>
-																						<div class="col-6">
-																							<!-- INPUT IMPORTE ESTATUS -->
-																							<select class="form-control form-control-solid"
-																								style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																								id="clasificacionNewDet"
-																								name="clasificacionNewDet">
-																								<option
-																									th:each="clasificacion : ${clasificaciones}"
-																									th:value="${clasificacion.idClasificacionCajaChica}"
-																									th:text="${clasificion.clasificacion}">
-																								</option>
-																							</select>
-																						</div>
-																					</div>
-																					<div class="row pt-1" id="montoNewDiv">
-																						<div class="col-4">
-																							<label for="montoNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Monto: </label>
-																						</div>
-
-																						<div class="col-6">
-																							<div class="input-group">
-																								<div class="input-group-prepend ">
-																									<div class="input-group-text"
-																										style="height: 20px">
-																										<i data-feather="dollar-sign"
-																											style="color: gray"></i>
-																									</div>
-																								</div>
-																								<input type="number" min="0" step="0.01"
-																									style="height: 20px"
-																									class="form-control form-control-sm bg-white"
-																									id="montoNewDet" name="montoNewDet" value="" />
-																							</div>
-																						</div>
-																					</div>
-																					<div class="row pt-1" id="folioNewDiv">
-																						<div class="col-4">
-																							<label for="folioNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Folio: </label>
-																						</div>
-																						<div class="col-6">
-																							<input type="text" style="height: 20px"
-																								class="form-control form-control-sm bg-white"
-																								id="folioNewDet" name="folioNewDet" value="" />
-																						</div>
-																					</div>
-																					<div class="row pt-1">
-																						<div class="col-4">
-																							<label for="responsableNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Responsable: </label>
-																						</div>
-																						<div class="col-6">
-																							<input type="text" style="height: 20px"
-																								class="form-control form-control-sm bg-white"
-																								id="responsableNewDet" name="responsableNewDet"
-																								value="" />
-																						</div>
-																					</div>
-
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<!-- FUERA DE LAS WIZARD TABS -->
-																<!-- BOTONES DE FLUJO WIZARD 1-->
-																<hr class="my-4" />
-																<div id="btns-next">
-																	<div class="d-flex justify-content-between">
-																		<button class="btn btn-light" type="button"
-																			id="cancelarNewDet">Cancelar</button>
-																		<button class="btn btn-secondary" type="button"
-																			id="siguienteNewDet" disabled>Siguiente</button>
-																	</div>
-																</div>
-																<!-- BOTONES DE FLUJO WIZARD 2-->
-																<div id="btns-prev" hidden="true">
-																	<div class="d-flex justify-content-between"
-																		hidden="true">
-																		<a class="btn btn-light" type="button"
-																			id="anteriorNewDet">Anterior</a>
-																		<button class="btn btn-secondary" type="submit"
-																			id="submitNewDet">Guardar</button>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="modal-footer"
-															style="border-radius: 0; bottom: 0px; position: absolute; width: 95%">
-															<button class="btn btn-danger" id="cancelarNewForm"
-																type="button">Cancelar</button>
-																<button class="btn btn-secondary" id="submitNewForm"
-																	type="submit">Guardar</button>
-
-														</div>
-
-													</div>
-													<!-- End del modal -->
-													</form>
 												</div>
 											</div>
 										</div>
-									</div>
 
-
+									</form>
 									<!-- TABLA -->
 
 									<table class="compact table-hover" id="formularios"
