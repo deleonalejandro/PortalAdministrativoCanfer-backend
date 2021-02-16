@@ -171,6 +171,16 @@ public abstract class Archivo {
  		
  	}
  	
+ 	public void rename(String nombre) {
+ 		
+ 		Path ruta = Paths.get(this.ruta);
+ 		
+ 		this.nombre = nombre + '.' + this.extension;
+ 		
+ 		this.ruta = ruta.getParent().resolve(this.nombre).toString();
+ 		
+ 	}
+ 	
  	public abstract void discard(Path discardLocation);
  	
 	

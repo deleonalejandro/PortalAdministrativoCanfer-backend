@@ -2,6 +2,8 @@ package com.canfer.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,20 +48,29 @@ public class CajaChicaFunctionalityController {
 		
 		return actioner.newForm(claveProv, rfcEmpresa);
 		
-		
 	}
 	
-	/**********************************
+	/*******************************
 	 * BORRAR FORMULARIO CAJA CHICA
 	 * 
-	 * @param id
+	 * @param id - FormularioCajaChica object id.
 	 */
 	@GetMapping("/deleteformcc")
-	public void deleteFormCC(@RequestParam Long id) {
+	public ResponseEntity<Object> deleteFormCC(@RequestParam Long id) {
 		
 		actioner.deleteForm(id);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	/*********************************************
+	 * GUARDAR NUEVO DETALLE FORMULARIO CAJA CHICA
+	 * 
+	 * @param detFormCCDto - DTO DetFormularioCajaChica.
+	 * @param mFileXML - MultipartFile for XML.
+	 * @param mFilePDF - MultipartFile for PDF.
+	 * @param ra - RedirectAttributes for HTTP request.
+	 */
 	@PostMapping("/savedetformcc")
 	public void saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, MultipartFile mFileXML, MultipartFile mFilePDF, RedirectAttributes ra) {
 		
@@ -89,26 +100,26 @@ public class CajaChicaFunctionalityController {
 					
 				}
 				
-			} catch (StorageException e) {
-				
-				Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
-				
-				ra.addFlashAttribute("upload", false);
-			}
-			
-			
-			try {
-				
 				boolean value = actioner.upload(fileXML, filePDF, detFormCCDto.getIdFormulario());
 				
 				ra.addFlashAttribute("upload", value);
+				
+				
+			} catch (StorageException e) {
+				
+				Log.falla(e.getMessage(), "ERROR_DB");
+				
+				ra.addFlashAttribute("upload", false);
 				
 			} catch (NotFoundException e) {
 				
 				Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
 				
 				ra.addFlashAttribute("upload", false);
+				
 			}
+			
+			
 			
 		}
 		

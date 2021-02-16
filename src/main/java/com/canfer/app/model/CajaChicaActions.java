@@ -2,6 +2,7 @@ package com.canfer.app.model;
 
 
 
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -49,7 +50,8 @@ public class CajaChicaActions extends ModuleActions{
 			Documento doc = new Documento(filePDF);
 			
 			//create route
-			ruta  = comprobanteStorageService.init(createRoute(idSucursal));
+			ruta = comprobanteStorageService.init(createRoute(idSucursal));
+			
 			//create name
 			
 			//accept the document
@@ -71,6 +73,7 @@ public class CajaChicaActions extends ModuleActions{
 		return false;
 	}
 
+	
 	@Override
 	public boolean delete(Long id) {
 		
@@ -138,19 +141,26 @@ public class CajaChicaActions extends ModuleActions{
 		
 		formularioCajaChica = superRepo.findFormularioCCById(detFormCCDto.getIdFormulario());
 		clasificacionCajaChica = superRepo.findClasificacionCCById(detFormCCDto.getIdClasificacion());
+		DetFormularioCajaChica detFormCC = new DetFormularioCajaChica();
 		
-		documento = superRepo.findDocumentoByArchivoXML(xmlFile);
-		
-		if (documento.isEmpty()) {
+		if (xmlFile != null) {
 			
-			documento = superRepo.findDocumentoByArchivoPDF(pdfFile);
-					
+			documento = superRepo.findDocumentoByArchivoPDF(pdfFile); 
+			
+		} else if (pdfFile != null) {
+			
+			documento = superRepo.findDocumentoByArchivoXML(xmlFile);
+			
+			pdfFile.rename(formularioCajaChica.get().getFolio() + '_' + detFormCCDto.getFolio());
+		
+		} else {
+			
+			throw new NullPointerException("Ambos archivos del detalle se ecuentran vacios.");
 		}
 		
+		
 		if (formularioCajaChica.isPresent() && clasificacionCajaChica.isPresent()) {
-			
-			DetFormularioCajaChica detFormCC = new DetFormularioCajaChica();
-			
+				
 			detFormCC.setFormularioCajaChica(formularioCajaChica.get());
 			detFormCC.setClasificacion(clasificacionCajaChica.get());
 			detFormCC.setDocumento(documento.get());
@@ -158,6 +168,12 @@ public class CajaChicaActions extends ModuleActions{
 			detFormCC.setFolio(detFormCCDto.getFolio());
 			detFormCC.setMonto(detFormCCDto.getMonto());
 			detFormCC.setResponsable(detFormCCDto.getResponsable());
+			
+			
+			superRepo.save(documento.get());
+
+			superRepo.save(detFormCC);
+			
 			
 			return true;
 		}
@@ -245,8 +261,7 @@ public class CajaChicaActions extends ModuleActions{
 		
 		
 	}
-
-
+	
 	
 
 }
