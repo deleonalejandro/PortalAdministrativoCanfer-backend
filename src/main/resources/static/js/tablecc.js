@@ -32,6 +32,10 @@
 					ajax: {
 					dataSrc:""
 		        	},
+					drawCallback: function () {
+					        var sum = $('#formularios').DataTable().column(6).data().sum();
+					        $('#total').html(sum);
+					      }	,
 					scrollX:true,
 					"language": {
 			            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -160,9 +164,8 @@
 					$("#cancelarNewForm").attr("href", "/cajachicaclient/deleteformcc?id=" + formulario.idFormularioCajaChica);
 				});
 				
-				
-				//Muestra el modal 
-				$('#newFormModal').modal('show');	
+					document.getElementById("divTabla").hidden= true;
+					document.getElementById("divNuevo").hidden= false;
 				
 				
 				//Crea la tabla de los detalles
@@ -272,14 +275,18 @@
 				
 				$.get(href);
 				
-				$('#newFormModal').modal('hide');
+				document.getElementById("divTabla").hidden= false;
+				document.getElementById("divNuevo").hidden= true;
+				
 			 	
 			 
 			 });
 			 // Darle Cancelar a New Formulario
 			$('#submitNewForm').on('click', function() {
 			 	
-			 	$('#newFormModal').modal('hide');
+			 	document.getElementById("divTabla").hidden= false;
+				document.getElementById("divNuevo").hidden= true;
+			
 			 
 			 });
 			 
