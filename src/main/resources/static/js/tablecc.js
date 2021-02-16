@@ -159,9 +159,8 @@
 					$("#cancelarNewForm").attr("href", "/cajachicaclient/deleteformcc?id=" + formulario.idFormularioCajaChica);
 				});
 				
-				
-				//Muestra el modal 
-				$('#newFormModal').modal('show');	
+					document.getElementById("divTabla").hidden= true;
+					document.getElementById("divNuevo").hidden= false;
 				
 				
 				//Crea la tabla de los detalles
@@ -268,14 +267,18 @@
 				
 				$.get(href);
 				
-				$('#newFormModal').modal('hide');
+				document.getElementById("divTabla").hidden= false;
+				document.getElementById("divNuevo").hidden= true;
+				
 			 	
 			 
 			 });
 			 // Darle Cancelar a New Formulario
 			$('#submitNewForm').on('click', function() {
 			 	
-			 	$('#newFormModal').modal('hide');
+			 	document.getElementById("divTabla").hidden= false;
+				document.getElementById("divNuevo").hidden= true;
+			
 			 
 			 });
 			 
