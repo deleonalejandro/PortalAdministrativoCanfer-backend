@@ -230,15 +230,18 @@
 
 									<!-- NUEVO FORMULARIO Main Content Formulario -->
 									<!-- MODAL-->
-									<form class="newForm" method="post"
-										enctype="multipart/form-data">
-										<div class="modal fade" data-backdrop="static"
-											id="newFormModal" tabindex="-1" role="dialog"
-											aria-labelledby="myLargeModalLabel" aria-hidden="true">
-											<div class="modal-fullscreen" role="document">
-												<div class="modal-content">
+
+									<div class="modal fade" data-backdrop="static"
+										id="newFormModal" tabindex="-1" role="dialog"
+										aria-labelledby="myLargeModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+
+											<div class="modal-content">
+												<form class="newForm" method="post"
+													enctype="multipart/form-data">
 													<div class="modal-body">
-														<div class="alert alert-success alert-icon" role="alert" th:if="${success}==true">
+														<div class="alert alert-success alert-icon" role="alert"
+															th:if="${success}==true">
 															<button class="close" type="button" data-dismiss="alert"
 																aria-label="Close">
 																<span aria-hidden="true">×</span>
@@ -251,7 +254,8 @@
 																Se ha procesado correctamente el detalle de formulario.
 															</div>
 														</div>
-														<div class="alert alert-danger alert-icon" role="alert" th:if="${success}==false">
+														<div class="alert alert-danger alert-icon" role="alert"
+															th:if="${success}==false">
 															<button class="close" type="button" data-dismiss="alert"
 																aria-label="Close">
 																<span aria-hidden="true">×</span>
@@ -261,7 +265,8 @@
 															</div>
 															<div class="alert-icon-content" th:if="${success}==false">
 																<h6 class="alert-heading">Error:</h6>
-																No se ha procesado correctamente el detalle de formulario.
+																No se ha procesado correctamente el detalle de
+																formulario.
 															</div>
 														</div>
 														<div class="form-group">
@@ -273,8 +278,8 @@
 																<div class="font-weight-bold pull-right"
 																	style="text-align: right; color: black; font-size: large">
 																	FORMULARIO #</div>
-																<div class="font-weight-bold pull-right" id="folioFormularioNew"
-																	name="folioFormularioNew"
+																<div class="font-weight-bold pull-right"
+																	id="folioFormularioNew" name="folioFormularioNew"
 																	style="text-align: right; color: black; font-size: large">
 																</div>
 															</div>
@@ -425,10 +430,10 @@
 																</div>
 															</div>
 
-															<div class="modal-footer"
+															<div
 																style="border-radius: 0; bottom: 0px; position: absolute; width: 95%">
-																<button class="btn btn-danger" id="cancelarNewForm"
-																	type="button">Cancelar</button>
+																<button class="btn btn-light" type="button"
+																			id="cancelarNewForm" data-dismiss="modal">Cancelar</button>
 																<button class="btn btn-secondary" id="submitNewForm"
 																	type="submit">Guardar</button>
 															</div>
@@ -436,11 +441,11 @@
 														</div>
 														<!-- End del modal -->
 													</div>
-												</div>
+												</form>
 											</div>
 										</div>
+									</div>
 
-									</form>
 
 									<!-- MODAL PARA NUEVO DETALLE -->
 									<!-- Modal -->
@@ -574,8 +579,11 @@
 																								style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
 																								id="clasificacionNewDet"
 																								name="clasificacionNewDet">
-																									<option th:each="clasificacion : ${clasificaciones}" th:value="${clasificacion.idClasificacionCajaChica}" th:text="${clasificion.clasificacion}">
-                                            														</option>
+																								<option
+																									th:each="clasificacion : ${clasificaciones}"
+																									th:value="${clasificacion.idClasificacionCajaChica}"
+																									th:text="${clasificion.clasificacion}">
+																								</option>
 																							</select>
 																						</div>
 																					</div>
