@@ -17,10 +17,10 @@ $(document).ready(function() {
 			{
 				"className": 'xls-control',
 				"orderable": false,
-				data: idFormularioCajaChica,
+				"data": null,
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id='+ data+'"><i class="fas fa-file-excel"></i></a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id='+idFormularioCajaChica +'"><i class="fas fa-file-excel"></i></a>'
 				},
 			},
 			{
@@ -80,8 +80,8 @@ $(document).ready(function() {
 		$.get(href, function(formulario, status) {
 			$("#folioFormularioNew").text(formulario.folio);
 			$("#estatusNewForm").val(formulario.estatus);
-			$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
-			$("#sucursalNew").val(formulario.proveedor.nombre);
+			$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
+			$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
 			$("#fechaNew").val(formulario.fecha.split("T")[0]);
 			$("#idFormNew").val(formulario.idFormularioCajaChica);
 			$("#comentarioNew").val(formulario.comentario);
@@ -129,10 +129,10 @@ $(document).ready(function() {
 					"className": 'deletedet-control',
 					"orderable": false,
 					"bSortable": false,
-					data: "idDetFormularioCajaChica",
+					"data": null,
 					"defaultContent": '',
 					"render": function() {
-						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + data + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
 				},
 				{ data: "clasificacion" },
@@ -155,7 +155,7 @@ $(document).ready(function() {
 					}
 				},
 				{ data: "folio" },
-				{ data: "proveedor" },
+				{ data: "sucursal" },
 				{ data: "fecha" },
 				{ data: "responsable" },
 				{ data: "monto" }
@@ -353,8 +353,8 @@ $(document).ready(function() {
 		//Llena los parametros del formulario 
 		$("#folioFormularioNew").text(formulario.folio);
 		$("#estatusNewForm").val(formulario.estatus);
-		$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
-		$("#sucursalNew").val(formulario.proveedor.nombre);
+		$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
+		$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
 		$("#comentarioNew").val(formulario.comentario);
@@ -401,10 +401,10 @@ $(document).ready(function() {
 					"className": 'deletedet-control',
 					"orderable": false,
 					"bSortable": false,
-					data: "idDetFormularioCajaChica",
+					"data": null,
 					"defaultContent": '',
 					"render": function() {
-						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + data + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
 				},
 				{ data: "clasificacion" },
@@ -427,7 +427,7 @@ $(document).ready(function() {
 					}
 				},
 				{ data: "folio" },
-				{ data: "proveedor" },
+				{ data: "sucursal" },
 				{ data: "fecha" },
 				{ data: "responsable" },
 				{ data: "monto" }
@@ -443,6 +443,7 @@ $(document).ready(function() {
 
 
 	});
+	
 
 
 
