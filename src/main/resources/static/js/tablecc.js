@@ -42,12 +42,12 @@
 			        },
 			        "columns": [
 					        {
-			                "className":      'details-control', 
+			                "className":      'xls-control', 
 			                "orderable":      false,
 			                "data":           null,
 			                "defaultContent": '',
 							"render": function () {
-		                        return '<a class="btn btn-datatable btn-icon btn-chevrons btn-transparent-dark m-0"><i data-feather="chevrons-down"></i><script> feather.replace()</script></a>' ;
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
 		                     },
 			            },
 							{
