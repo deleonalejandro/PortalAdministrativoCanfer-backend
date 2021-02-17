@@ -17,10 +17,10 @@ $(document).ready(function() {
 			{
 				"className": 'xls-control',
 				"orderable": false,
-				"data": null,
+				data: idFormularioCajaChica,
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="fas fa-file-excel"></i></a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id='+ data+'"><i class="fas fa-file-excel"></i></a>'
 				},
 			},
 			{
