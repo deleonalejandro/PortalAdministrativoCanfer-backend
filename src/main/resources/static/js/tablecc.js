@@ -195,7 +195,7 @@
 			
 				 
 			 // Darle submit a New Det
-			$('#submitNewDet').on('click', function() {
+			$('#submitNewDet').on('click', function(event) {
 			 
 			 	$('#newDetModal').modal('hide');
 			 	$( '#wizard2-tab' ).removeClass( 'active' );
@@ -212,8 +212,8 @@
 			  	document.getElementById("dateNewDiv").hidden = false;
 			 	document.getElementById("montoNewDiv").hidden = false;
 			  	document.getElementById("folioNewDiv").hidden = false;
-		
 				table2.ajax.reload();
+				
 				
 			 });
 			 // Darle Siguiente a New Det
@@ -244,6 +244,8 @@
 			  	document.getElementById("dateNewDiv").hidden = false;
 			 	document.getElementById("montoNewDiv").hidden = false;
 			  	document.getElementById("folioNewDiv").hidden = false;
+				
+				document.getElementById("formNewDet").reset();
 			 });
 			 // Darle Cancelar a New Det
 			$('#cancelarNewDet').on('click', function() {

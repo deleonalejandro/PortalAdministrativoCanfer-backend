@@ -218,7 +218,7 @@
 											<a type="button" id="btn-add-form"
 												th:href="@{/cajachicaclient/newformcc(rfc=${selectedCompany}, clv=${selectedClave})}"
 												class="btn btn-outline-secondary mr-2" data-toggle="modal"
-												data-target="#newFormModal">Nuevo</a> 
+												data-target="#newFormModal">Nuevo</a>
 											</button>
 										</div>
 									</div>
@@ -440,7 +440,8 @@
 
 									<!-- MODAL PARA NUEVO DETALLE -->
 									<!-- Modal -->
-									<form>
+									<form method="post" enctype="multipart/form-data" action="#"
+										th:action="@{/cajachicaclient/savedetformcc}" id="formNewDet">
 										<div class="modal fade" id="newDetModal"
 											data-backdrop="static" tabindex="-1" role="dialog"
 											aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -503,8 +504,8 @@
 																										style="color: green"></i>
 																								</div>
 																							</div>
-																							<input class="form-control" id="xmlNewDet"
-																								accept=".xml" type="file" name="xml" />
+																							<input class="form-control" id="mFileXML"
+																								accept=".xml" type="file" name="mFileXML" />
 																						</div>
 																					</div>
 																					<div class="d-flex justify-content-center">Adjuntar
@@ -528,8 +529,8 @@
 																										style="color: red"></i>
 																								</div>
 																							</div>
-																							<input class="form-control" id="pdfNewDet"
-																								type="file" accept=".pdf" name="pdf" />
+																							<input class="form-control" id="mFilePDF"
+																								type="file" accept=".pdf" name="mFilePDF" />
 																						</div>
 																					</div>
 
@@ -554,7 +555,7 @@
 																								Fecha del documento: </label>
 																						</div>
 																						<div class="col-6">
-																							<input type="text" name="dateNewDet"
+																							<input type="text" name="fechaDet"
 																								style="height: 25px" value="" />
 																						</div>
 																					</div>
@@ -568,7 +569,8 @@
 																							<!-- INPUT IMPORTE ESTATUS -->
 																							<select class="form-control form-control-solid"
 																								style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																								id="clasificacionNewDet">
+																								id="clasificacion" name="clasificacion">
+																								<option th:each="clasificacion : ${clasificaciones}" th:value="${clasificacion.idClasificacionCajaChica}" th:text="${clasificacion.clasificacion}"></option>
 																							</select>
 																						</div>
 																					</div>
@@ -591,7 +593,7 @@
 																								<input type="number" min="0" step="0.01"
 																									style="height: 20px"
 																									class="form-control form-control-sm bg-white"
-																									id="montoNewDet" value="" />
+																									id="monto" name="monto" value="" />
 																							</div>
 																						</div>
 																					</div>
@@ -604,7 +606,7 @@
 																						<div class="col-6">
 																							<input type="text" style="height: 20px"
 																								class="form-control form-control-sm bg-white"
-																								id="folioNewDet" value="" />
+																								id="folio" name="folio" value="" />
 																						</div>
 																					</div>
 																					<div class="row pt-1">
@@ -616,7 +618,7 @@
 																						<div class="col-6">
 																							<input type="text" style="height: 20px"
 																								class="form-control form-control-sm bg-white"
-																								id="responsableNewDet" value="" />
+																								id="responsable" name="responsanble" value="" />
 																						</div>
 																					</div>
 
@@ -630,7 +632,7 @@
 																<hr class="my-4" />
 																<div id="btns-next">
 																	<div class="d-flex justify-content-between">
-																		<button class="btn btn-light" type="button"
+																		<button class="btn btn-light" type="reset"
 																			id="cancelarNewDet">Cancelar</button>
 																		<button class="btn btn-secondary" type="button"
 																			id="siguienteNewDet" disabled>Siguiente</button>
@@ -640,9 +642,9 @@
 																<div id="btns-prev" hidden="true">
 																	<div class="d-flex justify-content-between"
 																		hidden="true">
-																		<a class="btn btn-light" type="button"
+																		<a class="btn btn-light" type="reset"
 																			id="anteriorNewDet">Anterior</a>
-																		<button class="btn btn-secondary" type="button"
+																		<button class="btn btn-secondary" type="submit"
 																			id="submitNewDet">Guardar</button>
 																	</div>
 																</div>
@@ -658,7 +660,7 @@
 								</div>
 
 
-							
+
 
 
 
