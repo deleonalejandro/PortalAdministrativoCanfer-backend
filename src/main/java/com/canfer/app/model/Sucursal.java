@@ -1,13 +1,20 @@
 package com.canfer.app.model;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import com.canfer.app.model.Usuario.UsuarioCanfer;
 
 @Entity(name = "sucursal")
 public class Sucursal {
@@ -25,6 +32,14 @@ public class Sucursal {
 	private Proveedor proveedor;
 	
 	private String claveProv;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "sucursal_usuario",
+			joinColumns = @JoinColumn(name = "id_sucursal"),
+			inverseJoinColumns = @JoinColumn(name = "id_usuario_canfer")
+			)
+	private Set<UsuarioCanfer> usuariosCanfer;
 	
 	public Sucursal() {
 		// TODO Auto-generated constructor stub
@@ -61,6 +76,25 @@ public class Sucursal {
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
+
+	public String getClaveProv() {
+		return claveProv;
+	}
+
+	public void setClaveProv(String claveProv) {
+		this.claveProv = claveProv;
+	}
+
+	public Set<UsuarioCanfer> getUsuariosCanfer() {
+		return usuariosCanfer;
+	}
+
+	public void setUsuariosCanfer(Set<UsuarioCanfer> usuariosCanfer) {
+		this.usuariosCanfer = usuariosCanfer;
+	}
+	
+	
+	
 	
 	
 

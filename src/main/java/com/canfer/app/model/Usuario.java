@@ -4,6 +4,7 @@ package com.canfer.app.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -232,6 +233,9 @@ public abstract class Usuario {
 		@ManyToMany(fetch = FetchType.LAZY)
 		private List<Proveedor> proveedores;
 		
+		@ManyToMany(mappedBy = "usuariosCanfer")
+		private Set<Sucursal> sucursales;
+		
 		
 		public UsuarioProveedor(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
 			super(username, password, nombre, apellido, correo, rol, permisos);
@@ -241,6 +245,15 @@ public abstract class Usuario {
 			// default constructor
 		}
 
+
+		
+		public Set<Sucursal> getSucursales() {
+			return sucursales;
+		}
+
+		public void setSucursales(Set<Sucursal> sucursales) {
+			this.sucursales = sucursales;
+		}
 
 		public List<Proveedor> getProveedores() {
 			return proveedores;
