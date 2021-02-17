@@ -173,6 +173,7 @@ $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) {
 	$(function () {
 	    $('input[name="fechaDet"]').daterangepicker(
 	        {
+			 autoUpdateInput: true,
 	         locale: {
 		      format: "DD/MM/YYYY"
 		    },

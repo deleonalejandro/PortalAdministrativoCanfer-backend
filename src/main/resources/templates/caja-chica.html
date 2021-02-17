@@ -219,7 +219,7 @@
 												th:href="@{/cajachicaclient/newformcc(rfc=${selectedCompany}, clv=${selectedClave})}"
 												class="btn btn-outline-secondary mr-2" data-toggle="modal"
 												data-target="#newFormModal">Nuevo</a>
-											</button>
+
 										</div>
 									</div>
 									<!-- TABLA -->
@@ -258,413 +258,589 @@
 								<div id="divNuevo" hidden>
 									<form class="newForm" method="post"
 										enctype="multipart/form-data">
-										<div>
+										<div class="form-group">
+											<!-- Card del modal -->
+											<div class="row">
+
+												<div class="col-9 font-weight-bold"
+													style="color: black; font-size: large">CAJA CHICA</div>
+												<div class="font-weight-bold"
+													style="text-align: right; color: black; font-size: large">
+													FORMULARIO #</div>
+												<div class="font-weight-bold" id="folioFormularioNew"
+													style="text-align: right; color: black; font-size: large">
+												</div>
+											</div>
+											<div class="row pr-4">
+
+												<div class="col-8"></div>
+												<div class="col-2"
+													style="text-align: right; color: black; font-weight: 200;">
+													ESTADO</div>
+												<div class="col-2">
+													<!-- INPUT IMPORTE ESTATUS -->
+													<select class="form-control form-control-solid"
+														style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
+														id="estatusNewForm">
+														<option value="ABIERTO">ABIERTO</option>
+														<option value="CERRADO">CERRADO</option>
+														<option value="PAGADO">PAGADO</option>
+														<option value="CANCELADO">CANCELADO</option>
+													</select>
+												</div>
+											</div>
+											<div class="alert alert-success alert-icon" role="alert"
+												th:if="${success}==true">
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-check"></i>
+												</div>
+												<div class="alert-icon-content">Se procesó
+													correctamente el nuevo detalle del fomulario.</div>
+											</div>
+											<div class="alert alert-danger alert-icon" role="alert"
+												th:if="${success}==false">
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">No se pudo procesar
+													correctamente el nuevo detalle de formulario.</div>
+											</div>
+											<hr>
+											<!-- Atributos del Formulario -->
+											<div class="row">
+												<div class="col-2">
+													<label for="idCajaChicaNew"
+														class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> ID Caja Chica: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														name="idCajaChica" id="idCajaChicaNew" value="" />
+												</div>
+											</div>
+											<div class="row pt-1">
+												<div class="col-2">
+													<label for="sucursalNew"
+														class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Sucursal: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="sucursalNew" value="" />
+												</div>
+											</div>
+											<div class="row pt-1 pb-4">
+												<div class="col-2">
+													<label for="fechaNew"
+														class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Fecha: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="fechaNew" value="" />
+												</div>
+												<!-- Hidden fields (informative only) -->
+												<div class="col-2" hidden>
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="idFormNew" name="idFormNew" value="" />
+												</div>
+											</div>
+
 											<div>
-												<div>
-													<div>
-														<div class="form-group">
-															<!-- Card del modal -->
-															<div class="row">
+												<button type="button" id="btn-add-det"
+													class="btn btn-outline-secondary mb-3" data-toggle="modal"
+													data-target="#newDetModal">Nuevo Detalle</button>
+											</div>
 
-																<div class="col-9 font-weight-bold"
-																	style="color: black; font-size: large">CAJA CHICA</div>
-																<div class="font-weight-bold"
-																	style="text-align: right; color: black; font-size: large">
-																	FORMULARIO #</div>
-																<div class="font-weight-bold" id="folioFormularioNew"
-																	style="text-align: right; color: black; font-size: large">
-																</div>
+
+
+											<div class="row">
+												<div class="col-12">
+													<table class="compact table-hover"
+														id="detallesNuevoCajaChica"
+														style="text-align: center; width: 100%">
+														<thead>
+															<tr>
+																<th></th>
+																<th></th>
+																<th>Clasificación</th>
+																<th>PDF<i class="far fa-file-pdf float-left fa-lg"
+																	style="color: purple"></i></th>
+																<th>XML<i class="far fa-file-code float-left fa-lg"
+																	style="color: purple"></i></th>
+																<th>Folio</th>
+																<th>Nombre Proveedor</th>
+																<th>Fecha</th>
+																<th>Responsable</th>
+																<th>Monto</th>
+															</tr>
+														</thead>
+														<tfoot>
+															<tr>
+																<th></th>
+																<th></th>
+																<th>Clasificación</th>
+																<th>PDF</th>
+																<th>XML</th>
+																<th>Folio</th>
+																<th>Nombre Proveedor</th>
+																<th>Fecha</th>
+																<th>Responsable</th>
+																<th>Monto</th>
+															</tr>
+														</tfoot>
+													</table>
+												</div>
+											</div>
+
+
+											<!-- Botones, comentarios y total  -->
+
+											<div class="row pt-2">
+												<div class="col-5">
+													<div class="row">
+														<label for="comentarioNew"
+															class="form-control-label ml-3 font-weight-bold"
+															style="color: black"> Comentarios: </label>
+													</div>
+													<div class="row">
+														<textarea type="text" style="height: 50px"
+															class="form-control form-control-sm bg-white ml-3"
+															cols="40" rows="5" id="comentarioNew" name="comentario"
+															value=""></textarea>
+													</div>
+												</div>
+												<div class="col-5"></div>
+												<div class="col-2">
+													<label for="totalNew"
+														class="form-control-label mb-0 pull-right font-weight-bold"
+														style="color: black"> Total: </label>
+													<div class="input-group">
+														<div class="input-group-prepend ">
+															<div class="input-group-text" style="height: 20px">
+																<i data-feather="dollar-sign" style="color: green"></i>
 															</div>
-															<div class="row pr-4">
-
-																<div class="col-8"></div>
-																<div class="col-2"
-																	style="text-align: right; color: black; font-weight: 200;">
-																	ESTADO</div>
-																<div class="col-2">
-																	<!-- INPUT IMPORTE ESTATUS -->
-																	<select class="form-control form-control-solid"
-																		style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-																		id="estatusNewForm">
-																		<option value="ABIERTO">ABIERTO</option>
-																		<option value="CERRADO">CERRADO</option>
-																		<option value="PAGADO">PAGADO</option>
-																		<option value="CANCELADO">CANCELADO</option>
-																	</select>
-																</div>
-															</div>
-
-															<hr>
-															<!-- Atributos del Formulario -->
-															<div class="row">
-																<div class="col-2">
-																	<label for="idCajaChicaNew"
-																		class="form-control-label mb-0 font-weight-bold"
-																		style="color: black"> ID Caja Chica: </label>
-																</div>
-																<div class="col-4">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		name="idCajaChica" id="idCajaChicaNew" value="" />
-																</div>
-															</div>
-															<div class="row pt-1">
-																<div class="col-2">
-																	<label for="sucursalNew"
-																		class="form-control-label mb-0 font-weight-bold"
-																		style="color: black"> Sucursal: </label>
-																</div>
-																<div class="col-4">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="sucursalNew" value="" />
-																</div>
-															</div>
-															<div class="row pt-1 pb-4">
-																<div class="col-2">
-																	<label for="fechaNew"
-																		class="form-control-label mb-0 font-weight-bold"
-																		style="color: black"> Fecha: </label>
-																</div>
-																<div class="col-4">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="fechaNew" value="" />
-																</div>
-																<!-- Hidden fields (informative only) -->
-																<div class="col-2" hidden>
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="idFormNew" name="idFormNew" value="" />
-																</div>
-															</div>
-
-															<div>
-																<button type="button" id="btn-add-det"
-																	class="btn btn-outline-secondary mb-3"
-																	data-toggle="modal" data-target="#newDetModal">Nuevo
-																	Detalle</button>
-															</div>
-
-
-
-															<div class="row">
-																<div class="col-12">
-																	<table class="compact table-hover"
-																		id="detallesNuevoCajaChica"
-																		style="text-align: center; width: 100%">
-																		<thead>
-																			<tr>
-																				<th>#</th>
-																				<th>Clasificación</th>
-																				<th>PDF<i
-																					class="far fa-file-pdf float-left fa-lg"
-																					style="color: purple"></i></th>
-																				<th>XML<i
-																					class="far fa-file-code float-left fa-lg"
-																					style="color: purple"></i></th>
-																				<th>Folio</th>
-																				<th>Nombre Proveedor</th>
-																				<th>Fecha</th>
-																				<th>Responsable</th>
-																				<th>Monto</th>
-																			</tr>
-																		</thead>
-																		<tfoot>
-																			<tr>
-																				<th>#</th>
-																				<th>Clasificación</th>
-																				<th>PDF</th>
-																				<th>XML</th>
-																				<th>Folio</th>
-																				<th>Nombre Proveedor</th>
-																				<th>Fecha</th>
-																				<th>Responsable</th>
-																				<th>Monto</th>
-																			</tr>
-																		</tfoot>
-																	</table>
-																</div>
-															</div>
-
-
-															<!-- Botones, comentarios y total  -->
-
-															<div class="row pt-2">
-																<div class="col-5">
-																	<div class="row">
-																		<label for="comentarioNew"
-																			class="form-control-label ml-3 font-weight-bold"
-																			style="color: black"> Comentarios: </label>
-																	</div>
-																	<div class="row">
-																		<textarea type="text" style="height: 50px"
-																			class="form-control form-control-sm bg-white ml-3"
-																			cols="40" rows="5" id="comentarioNew"
-																			name="comentario" value=""></textarea>
-																	</div>
-																</div>
-																<div class="col-5"></div>
-																<div class="col-2">
-																	<label for="totalNew"
-																		class="form-control-label mb-0 pull-right font-weight-bold"
-																		style="color: black"> Total: </label>
-																	<div class="input-group">
-																		<div class="input-group-prepend ">
-																			<div class="input-group-text" style="height: 20px">
-																				<i data-feather="dollar-sign" style="color: green"></i>
-																			</div>
-																		</div>
-																		<input type="text" style="height: 20px;" readonly
-																			class="form-control form-control-sm bg-white text-success"
-																			id="totalNew" value="" />
-																	</div>
-																</div>
-															</div>
-
-															<div>
-																<button class="btn btn-danger mt-5" id="cancelarNewForm"
-																	type="button">Cancelar</button>
-																<button class="btn btn-secondary mt-5"
-																	id="submitNewForm" type="submit">Guardar</button>
-															</div>
-
 														</div>
-														<!-- End del modal -->
+														<input type="text" style="height: 20px;" readonly
+															class="form-control form-control-sm bg-white text-success"
+															id="totalNew" value="" />
 													</div>
 												</div>
 											</div>
-										</div>
 
-									</form>
-
-									<!-- MODAL PARA NUEVO DETALLE -->
-									<!-- Modal -->
-									<form method="post" enctype="multipart/form-data" action="#"
-										th:action="@{/cajachicaclient/savedetformcc}" id="formNewDet">
-										<div class="modal fade" id="newDetModal"
-											data-backdrop="static" tabindex="-1" role="dialog"
-											aria-labelledby="staticBackdropLabel" aria-hidden="true">
-											<div class="modal-dialog modal-lg" role="document">
-												<div class="modal-content">
-													<!-- Wizard card example with navigation-->
-													<div class="card">
-														<div class="card-header border-bottom">
-															<!-- Wizard navigation-->
-															<div
-																class="nav nav-pills nav-justified flex-column flex-sm-row nav-wizard"
-																id="cardTab" role="tablist">
-																<!-- Wizard navigation item 1-->
-																<a class="nav-item nav-link active" id="wizard1-tab"
-																	role="tab" aria-controls="wizard1" aria-selected="true">
-																	<div class="wizard-step-icon">1</div>
-																	<div class="wizard-step-text">
-																		<div class="wizard-step-text-name">Archivos</div>
-																	</div>
-																</a>
-																<!-- Wizard navigation item 2-->
-																<a class="nav-item nav-link" id="wizard2-tab" role="tab"
-																	aria-controls="wizard2" aria-selected="true">
-																	<div class="wizard-step-icon">2</div>
-																	<div class="wizard-step-text">
-																		<div class="wizard-step-text-name">Información</div>
-																	</div>
-																</a>
-															</div>
-														</div>
-														<div class="card-body">
-															<div class="tab-content" id="cardTabContent">
-																<!-- TWO WIZARD TABS -->
-																<div class="row">
-																	<div class="col-6">
-																		<!-- Wizard tab pane item 1-->
-																		<div id="wizard1">
-																			<div class="row justify-content-center">
-																				<div>
-																					<h5 class="card-title">Adjunta los archivos
-																						relacionados al detalle:</h5>
-																					<div class="d-flex justify-content-center">Adjuntar
-																						un XML</div>
-																					<!-- Boton para activar adjuntar xml -->
-																					<div id="div-btn-add-xml">
-																						<div class="d-flex justify-content-center">
-																							<button id="btn-add-xml"
-																								class="btn btn-outline-green" type="button">
-																								<i class="far fa-file-code float-left fa-2x"
-																									style="color: green"></i>
-																							</button>
-																						</div>
-																					</div>
-																					<!-- Adjuntar xml -->
-																					<div id="div-add-xml" hidden="true">
-																						<div class="input-group mb-2">
-																							<div class="input-group-prepend">
-																								<div class="input-group-text">
-																									<i class="far fa-file-code float-left fa-lg"
-																										style="color: green"></i>
-																								</div>
-																							</div>
-																							<input class="form-control" id="xml"
-																								accept=".xml" type="file" name="xml" />
-																						</div>
-																					</div>
-																					<div class="d-flex justify-content-center">Adjuntar
-																						un PDF</div>
-																					<!-- Boton para activar adjuntar pdf -->
-																					<div id="div-btn-add-pdf">
-																						<div id="btn-add-pdf"
-																							class="d-flex justify-content-center">
-																							<button class="btn btn-outline-red" type="button">
-																								<i class="far fa-file-pdf float-left fa-2x"
-																									style="color: red"></i>
-																							</button>
-																						</div>
-																					</div>
-																					<!-- Adjuntar pdf -->
-																					<div id="div-add-pdf" hidden="true">
-																						<div class="input-group mb-2">
-																							<div class="input-group-prepend">
-																								<div class="input-group-text">
-																									<i class="far fa-file-pdf float-left fa-lg"
-																										style="color: red"></i>
-																								</div>
-																							</div>
-																							<input class="form-control" id="pdf"
-																								type="file" accept=".pdf" name="pdf" />
-																						</div>
-																					</div>
-
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="col-6">
-																		<!-- Wizard tab pane item 2-->
-																		<div id="wizard2" hidden="true">
-																			<div class="row justify-content-center">
-																				<div>
-																					<h5 class="card-title">Llena la información
-																						del detalle</h5>
-																					<!-- Content del new detalle modal -->
-																					<!-- Hidden fields (informative only) -->
-																					<div class="col-2" hidden>
-																						<input type="text" style="height: 20px" readonly
-																							class="form-control form-control-sm bg-white"
-																							id="idFormulario" name="idFormulario" value="" />
-																					</div>
-																					<div class="row pt-1" id="dateNewDiv">
-																						<div class="col-4">
-																							<label for="dateNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Fecha del documento: </label>
-																						</div>
-																						<div class="col-6">
-																							<input type="text" id="fechaDet" name="fechaDet"
-																								style="height: 25px" value="" />
-																						</div>
-																					</div>
-																					<div class="row pt-1">
-																						<div class="col-4">
-																							<label for="clasificacionNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Clasificación:</label>
-																						</div>
-																						<div class="col-6">
-																							<!-- INPUT IMPORTE ESTATUS -->
-																							<select class="form-control form-control-solid"
-																								style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																								id="clasificacion" name="clasificacion">
-																								<option th:each="clasificacion : ${clasificaciones}" th:value="${clasificacion.idClasificacionCajaChica}" th:text="${clasificacion.clasificacion}"></option>
-																							</select>
-																						</div>
-																					</div>
-																					<div class="row pt-1" id="montoNewDiv">
-																						<div class="col-4">
-																							<label for="montoNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Monto: </label>
-																						</div>
-
-																						<div class="col-6">
-																							<div class="input-group">
-																								<div class="input-group-prepend ">
-																									<div class="input-group-text"
-																										style="height: 20px">
-																										<i data-feather="dollar-sign"
-																											style="color: gray"></i>
-																									</div>
-																								</div>
-																								<input type="number" min="0" step="0.01"
-																									style="height: 20px"
-																									class="form-control form-control-sm bg-white"
-																									id="monto" name="monto"/>
-																							</div>
-																						</div>
-																					</div>
-																					<div class="row pt-1" id="folioNewDiv">
-																						<div class="col-4">
-																							<label for="folioNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Folio: </label>
-																						</div>
-																						<div class="col-6">
-																							<input type="text" style="height: 20px"
-																								class="form-control form-control-sm bg-white"
-																								id="folio" name="folio"/>
-																						</div>
-																					</div>
-																					<div class="row pt-1">
-																						<div class="col-4">
-																							<label for="responsableNewDet"
-																								class="form-control-label mb-0 font-weight-bold">
-																								Responsable: </label>
-																						</div>
-																						<div class="col-6">
-																							<input type="text" style="height: 20px"
-																								class="form-control form-control-sm bg-white"
-																								id="responsable" name="responsable" />
-																						</div>
-																					</div>
-
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<!-- FUERA DE LAS WIZARD TABS -->
-																<!-- BOTONES DE FLUJO WIZARD 1-->
-																<hr class="my-4" />
-																<div id="btns-next">
-																	<div class="d-flex justify-content-between">
-																		<button class="btn btn-light" type="reset"
-																			id="cancelarNewDet">Cancelar</button>
-																		<button class="btn btn-secondary" type="button"
-																			id="siguienteNewDet" disabled>Siguiente</button>
-																	</div>
-																</div>
-																<!-- BOTONES DE FLUJO WIZARD 2-->
-																<div id="btns-prev" hidden="true">
-																	<div class="d-flex justify-content-between"
-																		hidden="true">
-																		<a class="btn btn-light" type="reset"
-																			id="anteriorNewDet">Anterior</a>
-																		<button class="btn btn-secondary" type="submit"
-																			id="submitNewDet">Guardar</button>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
+											<div class="float-right">
+												<button class="btn btn-danger mt-5" id="cancelarNewForm"
+													type="button">Cancelar</button>
+												<button class="btn btn-secondary mt-5" id="submitNewForm"
+													type="submit">Guardar</button>
 											</div>
+
 										</div>
+										<!-- End del modal -->
+
 
 									</form>
 
 								</div>
 
+								<!-- MODAL PARA NUEVO DETALLE -->
+								<!-- Modal -->
+								<form method="post" enctype="multipart/form-data" action="#"
+									th:action="@{/cajachicaclient/savedetformcc}" id="formNewDet">
+									<div class="modal fade" id="newDetModal" data-backdrop="static"
+										tabindex="-1" role="dialog"
+										aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<!-- Wizard card example with navigation-->
+												<div class="card">
+													<div class="card-header border-bottom">
+														<!-- Wizard navigation-->
+														<div
+															class="nav nav-pills nav-justified flex-column flex-sm-row nav-wizard"
+															id="cardTab" role="tablist">
+															<!-- Wizard navigation item 1-->
+															<a class="nav-item nav-link active" id="wizard1-tab"
+																role="tab" aria-controls="wizard1" aria-selected="true">
+																<div class="wizard-step-icon">1</div>
+																<div class="wizard-step-text">
+																	<div class="wizard-step-text-name">Archivos</div>
+																</div>
+															</a>
+															<!-- Wizard navigation item 2-->
+															<a class="nav-item nav-link" id="wizard2-tab" role="tab"
+																aria-controls="wizard2" aria-selected="true">
+																<div class="wizard-step-icon">2</div>
+																<div class="wizard-step-text">
+																	<div class="wizard-step-text-name">Información</div>
+																</div>
+															</a>
+														</div>
+													</div>
+													<div class="card-body">
+														<div class="tab-content" id="cardTabContent">
+															<!-- TWO WIZARD TABS -->
+															<div class="row">
+																<div class="col-6">
+																	<!-- Wizard tab pane item 1-->
+																	<div id="wizard1">
+																		<div class="row justify-content-center">
+
+																			<h5 class="card-title">Adjunta los archivos
+																				relacionados al detalle:</h5>
+
+																			<div>
+																				<div class="d-flex justify-content-center">Adjuntar
+																					un XML</div>
+																				<!-- Boton para activar adjuntar xml -->
+																				<div id="div-btn-add-xml">
+																					<div class="d-flex justify-content-center">
+																						<button id="btn-add-xml"
+																							class="btn btn-outline-green" type="button">
+																							<i class="far fa-file-code float-left fa-2x"
+																								style="color: green"></i>
+																						</button>
+																					</div>
+																				</div>
+																				<!-- Adjuntar xml -->
+																				<div id="div-add-xml" hidden="true">
+																					<div class="input-group mb-2">
+																						<div class="input-group-prepend">
+																							<div class="input-group-text">
+																								<i class="far fa-file-code float-left fa-lg"
+																									style="color: green"></i>
+																							</div>
+																						</div>
+																						<input class="form-control" id="xml" accept=".xml"
+																							type="file" name="xml" />
+																						<button class="close" type="button" id="closexml"
+																							aria-label="Close">
+																							<span aria-hidden="true">×</span>
+																						</button>
+																					</div>
+																				</div>
 
 
+																				<div class="d-flex justify-content-center">Adjuntar
+																					un PDF</div>
+																				<!-- Boton para activar adjuntar pdf -->
+																				<div id="div-btn-add-pdf">
+																					<div id="btn-add-pdf"
+																						class="d-flex justify-content-center">
+																						<button class="btn btn-outline-red" type="button">
+																							<i class="far fa-file-pdf float-left fa-2x"
+																								style="color: red"></i>
+																						</button>
+																					</div>
+																				</div>
+																				<!-- Adjuntar pdf -->
+																				<div id="div-add-pdf" hidden="true">
+																					<div class="input-group mb-2">
+																						<div class="input-group-prepend">
+																							<div class="input-group-text">
+																								<i class="far fa-file-pdf float-left fa-lg"
+																									style="color: red"></i>
+																							</div>
+																						</div>
+																						<input class="form-control" id="pdf" type="file"
+																							accept=".pdf" name="pdf" />
+																						<button class="close" type="button" id="closepdf"
+																							aria-label="Close">
+																							<span aria-hidden="true">×</span>
+																						</button>
+																					</div>
+																				</div>
+																			</div>
+
+
+																		</div>
+																	</div>
+																</div>
+																<div class="col-6">
+																	<!-- Wizard tab pane item 2-->
+																	<div id="wizard2" hidden="true">
+																		<div class="row justify-content-center">
+
+																			<h5 class="card-title">Llena la información del
+																				detalle</h5>
+																			<!-- Content del new detalle modal -->
+																			<!-- Hidden fields (informative only) -->
+																			<div class="col-2" hidden>
+																				<input type="text" style="height: 20px" readonly
+																					class="form-control form-control-sm bg-white"
+																					id="idFormulario" name="idFormulario" value="" />
+																			</div>
+																		</div>
+																		<div>
+																			<div class="row pt-1" id="dateNewDiv">
+																				<div class="col-4">
+																					<label for="dateNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Fecha del documento: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" id="fechaDet" name="fechaDet"
+																						style="height: 25px" value="" />
+																				</div>
+																			</div>
+																			<div class="row pt-1">
+																				<div class="col-4">
+																					<label for="clasificacionNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Clasificación:</label>
+																				</div>
+																				<div class="col-6">
+																					<!-- INPUT IMPORTE ESTATUS -->
+																					<select class="form-control form-control-solid"
+																						style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																						id="clasificacion" name="clasificacion">
+																						<option
+																							th:each="clasificacion : ${clasificaciones}"
+																							th:value="${clasificacion.idClasificacionCajaChica}"
+																							th:text="${clasificacion.clasificacion}"></option>
+																					</select>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="montoNewDiv">
+																				<div class="col-4">
+																					<label for="montoNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Monto: </label>
+																				</div>
+
+																				<div class="col-6">
+																					<div class="input-group">
+																						<div class="input-group-prepend ">
+																							<div class="input-group-text"
+																								style="height: 20px">
+																								<i data-feather="dollar-sign"
+																									style="color: gray"></i>
+																							</div>
+																						</div>
+																						<input type="number" min="0" step="0.01"
+																							style="height: 20px"
+																							class="form-control form-control-sm bg-white"
+																							id="monto" name="monto" />
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="folioNewDiv">
+																				<div class="col-4">
+																					<label for="folioNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Folio: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" style="height: 20px"
+																						class="form-control form-control-sm bg-white"
+																						id="folio" name="folio" />
+																				</div>
+																			</div>
+																			<div class="row pt-1">
+																				<div class="col-4">
+																					<label for="responsableNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Responsable: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" style="height: 20px"
+																						class="form-control form-control-sm bg-white"
+																						id="responsable" name="responsable" />
+																				</div>
+																			</div>
+
+
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<!-- FUERA DE LAS WIZARD TABS -->
+															<!-- BOTONES DE FLUJO WIZARD 1-->
+															<hr class="my-4" />
+															<div id="btns-next">
+																<div class="d-flex justify-content-between">
+																	<button class="btn btn-light" type="reset"
+																		id="cancelarNewDet">Cancelar</button>
+																	<button class="btn btn-secondary" type="button"
+																		id="siguienteNewDet" disabled>Siguiente</button>
+																</div>
+															</div>
+															<!-- BOTONES DE FLUJO WIZARD 2-->
+															<div id="btns-prev" hidden="true">
+																<div class="d-flex justify-content-between"
+																	hidden="true">
+																	<a class="btn btn-light" type="reset"
+																		id="anteriorNewDet">Anterior</a>
+																	<button class="btn btn-secondary" type="submit"
+																		id="submitNewDet">Guardar</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</form>
+
+
+
+
+								<!-- MODAL PARA MAS INFORMACION DE DETALLE-->
+								<form class="detailsForm" method="post"
+									enctype="multipart/form-data">
+									<div class="modal fade" id="detailsModal" tabindex="-1"
+										role="dialog" aria-labelledby="myLargeModalLabel"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-scrollable"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="headerValue"></h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="form-group">
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="dateNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Fecha del documento: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" id="detail-fechaDet"
+																	name="detail-fechaDet" style="height: 25px" value="" />
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="clasificacionNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Clasificación:</label>
+															</div>
+															<div class="col-6">
+																<!-- INPUT IMPORTE ESTATUS -->
+																<select class="form-control form-control-solid"
+																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																	id="detail-clasificacion" name="detail-clasificacion">
+																	<option th:each="clasificacion : ${clasificaciones}"
+																		th:value="${clasificacion.idClasificacionCajaChica}"
+																		th:text="${clasificacion.clasificacion}"></option>
+																</select>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="montoNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Monto: </label>
+															</div>
+
+															<div class="col-6">
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: gray"></i>
+																		</div>
+																	</div>
+																	<input type="number" min="0" step="0.01"
+																		style="height: 20px"
+																		class="form-control form-control-sm bg-white"
+																		id="detail-monto" name="detail-monto" />
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="folioNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Folio: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-folio" name="detail-folio" />
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="responsableNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Responsable: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-responsable" name="detail-responsable" />
+															</div>
+														</div>
+
+
+														<div>Adjuntar un PDF:</div>
+														<div class="input-group mb-2">
+															<div class="input-group-prepend">
+																<div class="input-group-text">
+																	<i class="far fa-file-pdf float-left fa-lg"
+																		style="color: red"></i>
+																</div>
+															</div>
+															<input class="form-control" id="detail-pdf" type="file"
+																accept=".pdf" name="detail-pdf" />
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button class="btn btn-secondary" type="submit">Guardar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+
+								<!-- MODAL PARA CONFIRMAR BORRAR -->
+								<div class="deleteForm">
+									<div class="modal fade" id="deleteModal" tabindex="-1"
+										role="dialog" aria-labelledby="exampleModalCenterTitle"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalCenterTitle">Eliminar
+														Formulario</h5>
+													<button class="close" type="button" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+												</div>
+												<div class="modal-body">¿Está seguro que desea
+													eliminar el formulario?</div>
+												<div class="modal-footer">
+													<button class="btn btn-primary" type="button"
+														data-dismiss="modal">Cancelar</button>
+													<a class="btn btn-danger delBtn" id="confirmDelete"
+														type="button">Eliminar</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 
 
 
