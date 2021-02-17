@@ -504,8 +504,8 @@
 																										style="color: green"></i>
 																								</div>
 																							</div>
-																							<input class="form-control" id="mFileXML"
-																								accept=".xml" type="file" name="mFileXML" />
+																							<input class="form-control" id="xml"
+																								accept=".xml" type="file" name="xml" />
 																						</div>
 																					</div>
 																					<div class="d-flex justify-content-center">Adjuntar
@@ -529,8 +529,8 @@
 																										style="color: red"></i>
 																								</div>
 																							</div>
-																							<input class="form-control" id="mFilePDF"
-																								type="file" accept=".pdf" name="mFilePDF" />
+																							<input class="form-control" id="pdf"
+																								type="file" accept=".pdf" name="pdf" />
 																						</div>
 																					</div>
 
@@ -546,8 +546,12 @@
 																					<h5 class="card-title">Llena la información
 																						del detalle</h5>
 																					<!-- Content del new detalle modal -->
-
-
+																					<!-- Hidden fields (informative only) -->
+																					<div class="col-2" hidden>
+																						<input type="text" style="height: 20px" readonly
+																							class="form-control form-control-sm bg-white"
+																							id="idFormNew" name="idFormNew" value="" />
+																					</div>
 																					<div class="row pt-1" id="dateNewDiv">
 																						<div class="col-4">
 																							<label for="dateNewDet"
@@ -555,7 +559,7 @@
 																								Fecha del documento: </label>
 																						</div>
 																						<div class="col-6">
-																							<input type="text" name="fechaDet"
+																							<input type="text" id="fechaDet" name="fechaDet"
 																								style="height: 25px" value="" />
 																						</div>
 																					</div>
@@ -593,7 +597,7 @@
 																								<input type="number" min="0" step="0.01"
 																									style="height: 20px"
 																									class="form-control form-control-sm bg-white"
-																									id="monto" name="monto" value="" />
+																									id="monto" name="monto"/>
 																							</div>
 																						</div>
 																					</div>
@@ -606,7 +610,7 @@
 																						<div class="col-6">
 																							<input type="text" style="height: 20px"
 																								class="form-control form-control-sm bg-white"
-																								id="folio" name="folio" value="" />
+																								id="folio" name="folio"/>
 																						</div>
 																					</div>
 																					<div class="row pt-1">
@@ -618,7 +622,7 @@
 																						<div class="col-6">
 																							<input type="text" style="height: 20px"
 																								class="form-control form-control-sm bg-white"
-																								id="responsable" name="responsanble" value="" />
+																								id="responsable" name="responsable" />
 																						</div>
 																					</div>
 
