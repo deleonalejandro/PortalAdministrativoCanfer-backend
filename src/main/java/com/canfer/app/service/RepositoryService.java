@@ -18,6 +18,7 @@ import com.canfer.app.model.Empresa;
 import com.canfer.app.model.FormularioCajaChica;
 import com.canfer.app.model.Pago;
 import com.canfer.app.model.Proveedor;
+import com.canfer.app.model.Sucursal;
 import com.canfer.app.model.Usuario;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
@@ -32,6 +33,7 @@ import com.canfer.app.repository.FacturaRepository;
 import com.canfer.app.repository.FormularioCajaChicaRepository;
 import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.repository.ProveedorRepository;
+import com.canfer.app.repository.SucursalRepository;
 import com.canfer.app.repository.UsuarioRepository;
 
 @Service
@@ -61,6 +63,8 @@ public class RepositoryService {
 	private FormularioCajaChicaRepository formCCRepo;
 	@Autowired
 	private ClasificacionCCRepository clasificacionCCRepo;
+	@Autowired
+	private SucursalRepository sucursalRepo;
 
 	// SAVE METHODS
 
@@ -127,6 +131,11 @@ public class RepositoryService {
 		
 		return formCCRepo.save(formularioCajaChica);
 	}
+	
+	public Sucursal save(Sucursal sucursal) {
+		
+		return sucursalRepo.save(sucursal);
+	}
 
 	// MULTIPLE SAVE METHODS
 
@@ -190,6 +199,12 @@ public class RepositoryService {
 	public void saveAllClasificacionCC(List<ClasificacionCajaChica> list) {
 		
 		clasificacionCCRepo.saveAll(list);
+	}
+	
+	public void saveAllSucursales(List<Sucursal> list) {
+		
+		sucursalRepo.saveAll(list);
+		
 	}
 	
 	
@@ -257,6 +272,12 @@ public class RepositoryService {
 		
 		clasificacionCCRepo.delete(clasificacionCajaChica);
 	}
+	
+	public void delete(Sucursal sucursal) {
+		
+		sucursalRepo.delete(sucursal);
+	}
+	
 	// MULTIPLE DELETE METHODS
 
 	public void deleteAllComprobante(List<ComprobanteFiscal> list) {
@@ -314,6 +335,11 @@ public class RepositoryService {
 	public void deleteAllClasificacionCC(List<ClasificacionCajaChica> list) {
 		
 		clasificacionCCRepo.deleteAll(list);
+	}
+	
+	public void deleteAllSucursal(List<Sucursal> sucursals) {
+		
+		sucursalRepo.saveAll(sucursals);
 	}
 
 	// FIND By ID METHODS
@@ -380,6 +406,11 @@ public class RepositoryService {
 	public Optional<ClasificacionCajaChica> findClasificacionCCById(Long id) {
 		
 		return clasificacionCCRepo.findById(id);
+	}
+	
+	public Optional<Sucursal> findSucursalById(Long id) {
+		
+		return sucursalRepo.findById(id);
 	}
 
 	// FIND ALL By ID METHODS
