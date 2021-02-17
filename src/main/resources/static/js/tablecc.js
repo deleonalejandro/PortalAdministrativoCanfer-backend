@@ -80,8 +80,8 @@ $(document).ready(function() {
 		$.get(href, function(formulario, status) {
 			$("#folioFormularioNew").text(formulario.folio);
 			$("#estatusNewForm").val(formulario.estatus);
-			$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
-			$("#sucursalNew").val(formulario.proveedor.nombre);
+			$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
+			$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
 			$("#fechaNew").val(formulario.fecha.split("T")[0]);
 			$("#idFormNew").val(formulario.idFormularioCajaChica);
 			$("#comentarioNew").val(formulario.comentario);
@@ -155,7 +155,7 @@ $(document).ready(function() {
 					}
 				},
 				{ data: "folio" },
-				{ data: "proveedor" },
+				{ data: "sucursal" },
 				{ data: "fecha" },
 				{ data: "responsable" },
 				{ data: "monto" }
@@ -353,8 +353,8 @@ $(document).ready(function() {
 		//Llena los parametros del formulario 
 		$("#folioFormularioNew").text(formulario.folio);
 		$("#estatusNewForm").val(formulario.estatus);
-		$("#idCajaChicaNew").val(formulario.proveedor.claveProv);
-		$("#sucursalNew").val(formulario.proveedor.nombre);
+		$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
+		$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
 		$("#comentarioNew").val(formulario.comentario);
@@ -427,7 +427,7 @@ $(document).ready(function() {
 					}
 				},
 				{ data: "folio" },
-				{ data: "proveedor" },
+				{ data: "sucursal" },
 				{ data: "fecha" },
 				{ data: "responsable" },
 				{ data: "monto" }
