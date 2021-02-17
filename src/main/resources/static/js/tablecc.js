@@ -443,6 +443,15 @@ $(document).ready(function() {
 
 
 	});
+	
+	// Funcion para  crear la cookie
+
+	$('.card').click(function() {
+
+		Cookies.set('suc', $(this).id); 
+
+	});
+
 
 
 
