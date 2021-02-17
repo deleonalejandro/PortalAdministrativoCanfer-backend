@@ -1020,6 +1020,8 @@
 				table3.ajax.reload();
 				
 			});
+			
+			//TOASTS
 			 
 			  if($("#upload").text() == 'true') {
 			  	  $('#toastUploadtrue').toggleClass('ew-toast-show')

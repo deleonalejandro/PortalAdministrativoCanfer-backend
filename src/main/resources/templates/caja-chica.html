@@ -293,7 +293,31 @@
 																	</select>
 																</div>
 															</div>
-
+															<div class="alert alert-success alert-icon" role="alert" th:if="${success}==true">
+																<button class="close" type="button" data-dismiss="alert"
+																	aria-label="Close">
+																	<span aria-hidden="true">×</span>
+																</button>
+																<div class="alert-icon-aside">
+																	<i class="fa fa-check"></i>
+																</div>
+																<div class="alert-icon-content">
+																	Se procesó correctamente el nuevo detalle del fomulario.
+																</div>
+															</div>
+															<div class="alert alert-danger alert-icon"
+																role="alert" th:if="${success}==false">
+																<button class="close" type="button" data-dismiss="alert"
+																	aria-label="Close">
+																	<span aria-hidden="true">×</span>
+																</button>
+																<div class="alert-icon-aside">
+																	<i class="fa fa-times"></i>
+																</div>
+																<div class="alert-icon-content">
+																	No se pudo procesar correctamente el nuevo detalle de formulario.
+																</div>
+															</div>
 															<hr>
 															<!-- Atributos del Formulario -->
 															<div class="row">
@@ -529,8 +553,8 @@
 																										style="color: red"></i>
 																								</div>
 																							</div>
-																							<input class="form-control" id="pdf"
-																								type="file" accept=".pdf" name="pdf" />
+																							<input class="form-control" id="pdf" type="file"
+																								accept=".pdf" name="pdf" />
 																						</div>
 																					</div>
 
@@ -574,7 +598,10 @@
 																							<select class="form-control form-control-solid"
 																								style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
 																								id="clasificacion" name="clasificacion">
-																								<option th:each="clasificacion : ${clasificaciones}" th:value="${clasificacion.idClasificacionCajaChica}" th:text="${clasificacion.clasificacion}"></option>
+																								<option
+																									th:each="clasificacion : ${clasificaciones}"
+																									th:value="${clasificacion.idClasificacionCajaChica}"
+																									th:text="${clasificacion.clasificacion}"></option>
 																							</select>
 																						</div>
 																					</div>
@@ -597,7 +624,7 @@
 																								<input type="number" min="0" step="0.01"
 																									style="height: 20px"
 																									class="form-control form-control-sm bg-white"
-																									id="monto" name="monto"/>
+																									id="monto" name="monto" />
 																							</div>
 																						</div>
 																					</div>
@@ -610,7 +637,7 @@
 																						<div class="col-6">
 																							<input type="text" style="height: 20px"
 																								class="form-control form-control-sm bg-white"
-																								id="folio" name="folio"/>
+																								id="folio" name="folio" />
 																						</div>
 																					</div>
 																					<div class="row pt-1">

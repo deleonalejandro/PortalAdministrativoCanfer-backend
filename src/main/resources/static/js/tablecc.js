@@ -1,28 +1,5 @@
-// this function creates the url with parameters to initialize the table
-		function getInitUrl() {
-			
-			var getUrl = window.location;
-			var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-			var myUrlWithParams;
-			var start = moment().subtract(3, "month").startOf("month");
-    		var end = moment().endOf("day");
-			
-		  	myUrlWithParams = new URL("/cajaChicaApi", baseUrl);
-	
-			myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
-			myUrlWithParams.searchParams.append("proveedor", $("#selectedClave").text());
-			myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-			myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-			
-			alert(myUrlWithParams.href);
-			
-			return myUrlWithParams.href;
 
-		}
-		  
-        //Tabla en si
-		
-		$(document).ready(function () {
+	$(document).ready(function () {
 				
 		         var table = $('#formularios').DataTable({
 					"paging":   false,
@@ -47,11 +24,11 @@
 			                "data":           null,
 			                "defaultContent": '',
 							"render": function () {
-		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
+		                        return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="fas fa-file-excel"></i></a>'
 		                     },
 			            },
 							{
-		                     "className": 'modal-control',
+		                     "className": 'details-control',
 		                     "orderable": false,
 							"bSortable": false,
 		                     "data": null,
@@ -96,52 +73,7 @@
 		 });
 		 
  			
-			// Filters
-			$('#reloadTableBtn').on('click', function() { 
-				
-
-				var getUrl = window.location;
-				var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-				var myUrlWithParams;
-				
-				var start = moment().subtract(3, "month").startOf("month");
-    			var end = moment().endOf("day");
-    			
-				myUrlWithParams = new URL("/proveedorApi", baseUrl);
-				myUrlWithParams.searchParams.append("uploadAfter", start.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-				myUrlWithParams.searchParams.append("uploadBefore", end.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
-				myUrlWithParams.searchParams.append("empresa", $("#selectedCompany").text());
-				myUrlWithParams.searchParams.append("proveedor", $("#selectedClave").text());
-				myUrlWithParams.searchParams.append("estatusPago", $("#inputFiltroEstatus").val());
-				myUrlWithParams.searchParams.append("registeredAfter", $("#registeredAfter").text());
-				myUrlWithParams.searchParams.append("registeredBefore", $("#registeredBefore").text());
-				myUrlWithParams.searchParams.append("sequenceAfter", $("#inputFiltroFolioInicial").val());
-				myUrlWithParams.searchParams.append("sequenceBefore", $("#inputFiltroFolioFinal").val());
-				myUrlWithParams.searchParams.append("serie", $("#inputFiltroSerie").val());
-				  
-				table.ajax.url(myUrlWithParams.href).load();
-				
-				 
-				alert(myUrlWithParams.href);
-		
-			});
-			
-			// Clear filters
-			$('#clearFilters').on('click', function() { 
-				
-				var start = moment();
-    			var end = moment();
-
-				$("#inputFiltroEstatus").val(""); 
-				$("#inputFiltroFolioInicial").val('');
-				$("#inputFiltroFolioFinal").val('');
-				$("#inputFiltroSerie").val(''); 
-				$("#reportrangeEmision span").text("");
-				
-		
-			});
-				
-			// Filters
+		//Nueva Form
 			$('#btn-add-form').on('click', function(event) {
 				
 				event.preventDefault(); 
@@ -292,14 +224,14 @@
 			 
 			 });
 			 
-			  // Adjuntar un pdf
+			  // Adjuntar un pdf al new details
 			$('#btn-add-pdf').on('click', function() {
 			 document.getElementById("div-add-pdf").hidden= false;
 			 document.getElementById("div-btn-add-pdf").hidden= true;
 			 
 			 $('#siguienteNewDet').prop("disabled",false);
 			 });
-			  // adjuntar un xml
+			  // adjuntar un xml al new details
 			$('#btn-add-xml').on('click', function() {
 			 document.getElementById("div-add-xml").hidden= false;
 			 document.getElementById("div-btn-add-xml").hidden= true;
@@ -311,4 +243,33 @@
 			 });
 				 
 			
-		});
+			// Funcion para delete formulario
+					
+		         $('#formularios tbody').on('click', 'td.delete-control', 'tr', function (event) {
+			
+					event.preventDefault();
+					
+					var tr = $(this).closest('tr');
+		            var data = table.row($(this).parents(tr)).data();
+					var modData = JSON.stringify(data);
+					var jsonData = JSON.parse(modData);
+					
+					$('.deleteForm .delBtn').attr("href","/cajachicaclient/deleteformcc?id="+jsonData.idFormularioCajaChica);
+					$('#deleteModal').modal('show');
+				});
+				
+			// Funcion para detalles del Formulario
+					
+		         $('#formularios tbody').on('click', 'td.details-control', function () {
+					var tr = $(this).closest('tr');
+		            var data = table.row($(this).parents(tr)).data();
+					var modData = JSON.stringify(data);
+					var jsonData = JSON.parse(modData);
+					
+					
+					
+			});
+				
+		
+			
+	});
