@@ -18,7 +18,7 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css"/>
 		<link rel="icon" type="image/x-icon" href="/assets/img/logosEmpresas/canfer.gif" />
-        <link href="css/stylescc.css" rel="stylesheet" />
+        <link href="/css/stylescc.css" rel="stylesheet" />
     </head>
     
     <!-- TOP NAV BAR -->
@@ -84,10 +84,10 @@
 						    </button>
 						</div>
                         <div class="row">
-                        	<div th:each="mapEntry: ${claves}"  class="col-xxl-4 col-xl-6 mb-4">
+                        	<div th:each="mapEntry: ${suco}"  class="col-xxl-4 col-xl-6 mb-4">
                                 
                                 <!-- TARJETAS POR EMPRESA -->
-                                <a class="card lift h-100" id="${mapEntry.key}" th:href="@{/cajachicaclient}">
+                                <a class="card lift h-100" th:id="${mapEntry.key.idSucursal}" th:href="@{/cajachicaclient}">
                                 	
                                 	<div class="text-center mt-5">
                                 	<img class="card-img-top" th:src="@{'company/profile/' + ${mapEntry.value.profilePictureName}}" alt="logo" style="width: 10rem;">
@@ -96,7 +96,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="mr-3"> 
                                                 <h5>Clave de Sucursal</h5>
-                                                <div class="text-muted" th:text="${mapEntry.key}"></div>
+                                                <div class="text-muted" th:text="${mapEntry.key.claveProv}"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -121,13 +121,13 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-        <script src="js/dashboardcc.js"></script>
+        <script src="/js/scripts.js"></script>
+        <script src="/js/dashboardcc.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-pie-demo.js"></script>
+        <script src="/assets/demo/chart-area-demo.js"></script>
+        <script src="/assets/demo/chart-pie-demo.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/datatables-demo.js"></script>
+        <script src="/assets/demo/datatables-demo.js"></script>
     </body>
 </html>
