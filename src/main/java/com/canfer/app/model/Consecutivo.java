@@ -20,9 +20,9 @@ public class Consecutivo {
     @ManyToOne(targetEntity = Empresa.class, fetch = FetchType.LAZY)
     private Empresa empresa;
 	
-	@JoinColumn(name = "Sucursal")
-    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
-    private Proveedor sucursal;
+	@JoinColumn(name = "id_sucursal")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sucursal sucursal;
 	
 	@Column(nullable = false)
 	private String modulo;
@@ -40,7 +40,7 @@ public class Consecutivo {
 	public Consecutivo() {
 		// Constructor vacio
 	}
-	public Consecutivo(Empresa empresa, Proveedor sucursal, String modulo, Long initialNum, Long finalNum,
+	public Consecutivo(Empresa empresa, Sucursal sucursal, String modulo, Long initialNum, Long finalNum,
 			Long currentNum) {
 		super();
 		this.empresa = empresa;
@@ -67,11 +67,11 @@ public class Consecutivo {
 		this.empresa = empresa;
 	}
 
-	public Proveedor getSucursal() {
+	public Sucursal getSucursal() {
 		return sucursal;
 	}
 
-	public void setSucursal(Proveedor sucursal) {
+	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
 

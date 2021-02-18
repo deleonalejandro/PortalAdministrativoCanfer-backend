@@ -20,6 +20,7 @@ import com.canfer.app.model.Pago;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Sucursal;
 import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.repository.ArchivoRepository;
@@ -561,13 +562,18 @@ public class RepositoryService {
 		return documentoRepo.findByArchivoPDF(archivoPDF);
 	}
 	
-	public Consecutivo findConsecutivoBySucursal(Proveedor proveedor) {
+	public Consecutivo findConsecutivoBySucursal(Sucursal sucursal) {
 		
-		return consecutivoRepo.findBySucursal(proveedor);
+		return consecutivoRepo.findBySucursal(sucursal);
 	}
 	
 	public List<DetFormularioCajaChica> findAllDetFormularioCajaChicaByFormCC(FormularioCajaChica formularioCajaChica){
 		
 		return detFormCCRepo.findAllByFormularioCajaChica(formularioCajaChica);
+	}
+	
+	public List<Sucursal> findAllSucursalByUsuario(UsuarioCanfer usuarioCanfer) {
+		
+		return sucursalRepo.findAllByUsuariosCanfer(usuarioCanfer); 
 	}
 }
