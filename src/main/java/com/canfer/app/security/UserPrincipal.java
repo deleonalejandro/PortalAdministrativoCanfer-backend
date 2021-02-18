@@ -19,7 +19,12 @@ import com.canfer.app.model.Usuario.UsuarioProveedor;
 
 public class UserPrincipal implements UserDetails {
 	
-	private Usuario usuario;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private final Usuario usuario;
 	
 	public UserPrincipal(Usuario usuario) {
 		this.usuario = usuario;
@@ -40,6 +45,12 @@ public class UserPrincipal implements UserDetails {
 		authorities.add(authority);
 		
 		return authorities;
+	}
+	
+	
+
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
 	@Override

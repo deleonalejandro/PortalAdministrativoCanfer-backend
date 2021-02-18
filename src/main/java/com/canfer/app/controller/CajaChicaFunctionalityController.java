@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,15 +43,14 @@ public class CajaChicaFunctionalityController {
 	/***********************************
 	 * CREAR NUEVO FORMULARIO CAJA CHICA
 	 * 
-	 * @param claveProv
-	 * @param rfcEmpresa
+	 * @param id - Sucursal id
 	 * @return FormularioCajaChica
 	 */
 	@GetMapping("/newformcc")
 	@ResponseBody
-	public FormularioCajaChica newFormCC(@RequestParam("clv") String claveProv, @RequestParam("rfc") String rfcEmpresa) {
+	public FormularioCajaChica newFormCC(@CookieValue("suc") Long idSucursal) {
 		
-		return actioner.newForm(claveProv, rfcEmpresa);
+		return actioner.newForm(idSucursal);
 		
 	}
 	
@@ -75,7 +76,7 @@ public class CajaChicaFunctionalityController {
 	 * @param ra - RedirectAttributes for HTTP request.
 	 */
 	@PostMapping("/savedetformcc")
-	public void saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, MultipartFile mFileXML, MultipartFile mFilePDF, RedirectAttributes ra) {
+	public void saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, RedirectAttributes ra) {
 		
 		ArchivoXML fileXML = null;
 		ArchivoPDF filePDF = null;
@@ -103,7 +104,7 @@ public class CajaChicaFunctionalityController {
 					
 				}
 				
-				boolean value = actioner.upload(fileXML, filePDF, detFormCCDto.getIdFormulario());
+				boolean value = actioner.upload(fileXML, filePDF, detFormCCDto.getIdSucursal());
 				
 				ra.addFlashAttribute("upload", value);
 				
@@ -142,6 +143,13 @@ public class CajaChicaFunctionalityController {
 	public List<DetFormularioCajaChica> showDetalleFormularioCC(@RequestParam("id") Long idFormCC) {
 		
 		return actioner.showDetFormularioCajaChica(idFormCC);
+		
+	}
+	
+	@GetMapping("/excel")
+	public ResponseEntity<Resource> downloadExcel(@RequestParam Long id) {
+		
+		return actioner.downloadXls(id);
 		
 	}
 	

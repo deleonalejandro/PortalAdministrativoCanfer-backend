@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.canfer.app.model.Usuario.UsuarioCanfer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "sucursal")
 public class Sucursal {
@@ -23,16 +24,21 @@ public class Sucursal {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idSucursal;
 	
+	@JsonIgnore
 	@JoinColumn(name = "idEmpresa")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Empresa empresa;
 	
+	@JsonIgnore
 	@JoinColumn(name = "idProveedor")
 	@OneToOne
 	private Proveedor proveedor;
 	
 	private String claveProv;
 	
+	private String nombreSucursal;
+	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "sucursal_usuario",
@@ -50,6 +56,7 @@ public class Sucursal {
 		this.empresa = empresa;
 		this.proveedor = proveedor;
 		this.claveProv = proveedor.getClaveProv();
+		this.nombreSucursal = proveedor.getNombre();
 		
 	}
 
@@ -91,6 +98,14 @@ public class Sucursal {
 
 	public void setUsuariosCanfer(Set<UsuarioCanfer> usuariosCanfer) {
 		this.usuariosCanfer = usuariosCanfer;
+	}
+
+	public String getNombreSucursal() {
+		return nombreSucursal;
+	}
+
+	public void setNombreSucursal(String nombreSucursal) {
+		this.nombreSucursal = nombreSucursal;
 	}
 	
 	

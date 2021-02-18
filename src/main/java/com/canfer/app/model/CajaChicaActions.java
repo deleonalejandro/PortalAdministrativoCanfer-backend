@@ -3,9 +3,11 @@ package com.canfer.app.model;
 
 
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -14,14 +16,17 @@ import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
+import com.canfer.app.service.ExcelService;
 
 import javassist.NotFoundException;
+import jxl.write.WriteException;
 
 @Service("CajaChicaActions")
 public class CajaChicaActions extends ModuleActions{
@@ -29,6 +34,12 @@ public class CajaChicaActions extends ModuleActions{
 	@Autowired
 	@Qualifier("DocumentosNacionalesActions")
 	private DocumentosNacionalesActions docNacActions;
+	
+	@Autowired
+	private Downloader downloader;
+	
+	@Autowired
+	private ExcelService excelService;
 	
 	
 
@@ -165,7 +176,7 @@ public class CajaChicaActions extends ModuleActions{
 			detFormCC.setFormularioCajaChica(formularioCajaChica.get());
 			detFormCC.setClasificacion(clasificacionCajaChica.get());
 			detFormCC.setDocumento(documento.get());
-			detFormCC.setFecha(detFormCCDto.getFechaDet());
+			detFormCC.setFecha(detFormCCDto.getFormattedFechaDet());
 			detFormCC.setFolio(detFormCCDto.getFolio());
 			detFormCC.setMonto(detFormCCDto.getMonto());
 			detFormCC.setResponsable(detFormCCDto.getResponsable());
@@ -192,21 +203,19 @@ public class CajaChicaActions extends ModuleActions{
 		
 	}
 	
-	public FormularioCajaChica newForm(String claveProv, String rfcEmpresa) {
+	public FormularioCajaChica newForm(Long idSucursal) {
 		
-		Empresa empresa;
-		Optional<Proveedor> sucursal;
+		Optional<Sucursal> sucursal;
 		Consecutivo sucursalConsecutivo;
 		FormularioCajaChica formCC;
 		
-		empresa = superRepo.findEmpresaByRFC(rfcEmpresa);
-		sucursal = superRepo.findProveedorByEmpresaAndClaveProv(empresa, claveProv);
+		sucursal = superRepo.findSucursalById(idSucursal);
 		
 		if (sucursal.isPresent()) {
 			 
-			sucursalConsecutivo = superRepo.findConsecutivoById(2L).get();
-			//sucursalConsecutivo = superRepo.findConsecutivoBySucursal(sucursal.get());
+			sucursalConsecutivo = superRepo.findConsecutivoBySucursal(sucursal.get());
 			
+			/* potential issue with consecutivo not found*/
 			superRepo.save(sucursalConsecutivo);
 			
 			formCC = new FormularioCajaChica(sucursal.get(), sucursalConsecutivo.getNext());
@@ -255,6 +264,30 @@ public class CajaChicaActions extends ModuleActions{
 		
 	}
 	
+	
+	public ResponseEntity<Resource> downloadXls(Long id) {
+		
+		Optional<FormularioCajaChica> formCC = superRepo.findFormularioCCById(id); 
+		
+		try {
+			
+			if (formCC.isPresent()) {
+				
+				Archivo file = excelService.makeExcel(formCC.get());
+				
+				return downloader.download(file,"d");
+				
+			}
+			
+		} catch (WriteException | IOException e) {
+			
+			Log.activity("Error al intentar generar un reporte de Excel. ", formCC.get().getSucursal().getProveedor().getNombreEmpresa(), "ERROR_FILE"); 
+		}
+
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		
+	}
+	
 	private Path createRoute(Long idSucursal) {
 		
 		Optional<Proveedor> sucursal = superRepo.findProveedorById(idSucursal);
@@ -275,7 +308,6 @@ public class CajaChicaActions extends ModuleActions{
 		
 		
 	}
-	
 	
 
 }

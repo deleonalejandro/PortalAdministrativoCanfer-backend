@@ -1,6 +1,8 @@
 package com.canfer.app.controller;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.businessobjects.reports.jdbinterface.common.SideOfNode;
+import com.canfer.app.model.Sucursal;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
 import com.canfer.app.repository.EstadoRepository;
 import com.canfer.app.security.AuthenticationFacade;
+import com.canfer.app.service.RepositoryService;
 
 @Controller
 public class MainController {
@@ -23,6 +28,9 @@ public class MainController {
 	
 	@Autowired
 	private ComprobanteFiscalRespository cfRepo;
+	
+	@Autowired
+	private RepositoryService superRepo;
 	
 
 	public MainController() {
@@ -127,6 +135,14 @@ public class MainController {
 	 * ---------------------------------------
 	 */
 
+	@GetMapping("/sucursal")
+	@ResponseBody
+	public Sucursal testSucursal() {
+		
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(1L);
+		
+		return sucursal.get();
+	}
 	
 
 
