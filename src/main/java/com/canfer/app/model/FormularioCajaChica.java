@@ -2,7 +2,6 @@ package com.canfer.app.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,8 +23,8 @@ public class FormularioCajaChica {
 	private long idFormularioCajaChica; 
 	
     @JoinColumn(name = "SocioNegocio")
-    @ManyToOne(targetEntity = Proveedor.class, fetch = FetchType.LAZY)
-    private Proveedor proveedor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Sucursal sucursal;
 	
 	private Long folio;
 	
@@ -42,10 +41,10 @@ public class FormularioCajaChica {
 	private Float total;
 
 	//Constructor
-	public FormularioCajaChica(Proveedor proveedor, Long folio) {
+	public FormularioCajaChica(Sucursal sucursal, Long folio) {
 		
 		super(); 
-		this.proveedor = proveedor;
+		this.sucursal = sucursal;
 		this.folio = folio;
 		this.estatus = "ABIERTO";
 		this.total = 0F;
@@ -66,12 +65,12 @@ public class FormularioCajaChica {
 		this.idFormularioCajaChica = idFormularioCajaChica;
 	}
 
-	public Proveedor getProveedor() {
-		return proveedor;
+	public Sucursal getSucursal() {
+		return sucursal;
 	}
 
-	public void setProveedor(Proveedor proveedor) {
-		this.proveedor = proveedor;
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
 	}
 
 	public Long getFolio() {

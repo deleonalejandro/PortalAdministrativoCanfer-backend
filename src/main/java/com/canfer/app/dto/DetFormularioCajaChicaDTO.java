@@ -1,13 +1,15 @@
 package com.canfer.app.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DetFormularioCajaChicaDTO {
 	
+	private Long idSucursal;
 	private Long idFormulario;
 	private Long idClasificacion;
 	private Float monto; 
-	private LocalDateTime fechaDet;
+	private String fechaDet;
 	private String responsable;
 	private String folio;
 	
@@ -38,11 +40,11 @@ public class DetFormularioCajaChicaDTO {
 		this.monto = monto;
 	}
 
-	public LocalDateTime getFechaDet() {
+	public String getFechaDet() {
 		return fechaDet;
 	}
 
-	public void setFechaDet(LocalDateTime fechaDet) {
+	public void setFechaDet(String fechaDet) {
 		this.fechaDet = fechaDet;
 	}
 
@@ -60,6 +62,19 @@ public class DetFormularioCajaChicaDTO {
 
 	public void setFolio(String folio) {
 		this.folio = folio;
+	}
+	
+	public Long getIdSucursal() {
+		return idSucursal;
+	}
+
+	public void setIdSucursal(Long idSucursal) {
+		this.idSucursal = idSucursal;
+	}
+
+	public LocalDateTime getFormattedFechaDet() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("DD/MM/YYYY");
+		return LocalDateTime.parse(fechaDet, formatter);
 	}
 	
 	
