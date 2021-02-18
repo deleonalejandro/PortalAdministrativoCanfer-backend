@@ -8,7 +8,7 @@ public class DetFormularioCajaChicaDTO {
 	private Long idClasificacion;
 	private Float monto; 
 	private LocalDateTime fechaDet;
-	private String responsable;
+	private String beneficiario;
 	private String folio;
 	
 	public DetFormularioCajaChicaDTO() {
@@ -46,12 +46,12 @@ public class DetFormularioCajaChicaDTO {
 		this.fechaDet = fechaDet;
 	}
 
-	public String getResponsable() {
-		return responsable;
+	public String getBeneficiario() {
+		return beneficiario;
 	}
 
-	public void setResponsable(String responsable) {
-		this.responsable = responsable;
+	public void setBeneficiario(String responsable) {
+		this.beneficiario = responsable;
 	}
 
 	public String getFolio() {

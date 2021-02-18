@@ -234,6 +234,7 @@
 												<th>Fecha</th>
 												<th>Folio</th>
 												<th>Estatus</th>
+												<th>Responsable</th>
 												<th>Total</th>
 											</tr>
 										</thead>
@@ -245,6 +246,7 @@
 												<th>Fecha</th>
 												<th>Folio</th>
 												<th>Estatus</th>
+												<th>Responsable</th>
 												<th>Total</th>
 											</tr>
 										</tfoot>
@@ -339,6 +341,18 @@
 														id="sucursalNew" value="" />
 												</div>
 											</div>
+											<div class="row pt-1">
+												<div class="col-2">
+													<label for="responsable"
+														class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Responsable: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="responsableNew" value="" />
+												</div>
+											</div>
 											<div class="row pt-1 pb-4">
 												<div class="col-2">
 													<label for="fechaNew"
@@ -383,7 +397,7 @@
 																<th>Folio</th>
 																<th>Nombre Proveedor</th>
 																<th>Fecha</th>
-																<th>Responsable</th>
+																<th>Beneficiario</th>
 																<th>Monto</th>
 															</tr>
 														</thead>
@@ -397,7 +411,7 @@
 																<th>Folio</th>
 																<th>Nombre Proveedor</th>
 																<th>Fecha</th>
-																<th>Responsable</th>
+																<th>Beneficiario</th>
 																<th>Monto</th>
 															</tr>
 														</tfoot>
@@ -648,16 +662,28 @@
 																						id="folio" name="folio" />
 																				</div>
 																			</div>
-																			<div class="row pt-1">
+																			<div class="row pt-1" id="provNewDiv">
 																				<div class="col-4">
 																					<label for="responsableNewDet"
 																						class="form-control-label mb-0 font-weight-bold">
-																						Responsable: </label>
+																						Nombre de Proveedor: </label>
 																				</div>
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="responsable" name="responsable" />
+																						id="nombreProveedor" name="nombreProveedor" />
+																				</div>
+																			</div>
+																			<div class="row pt-1">
+																				<div class="col-4">
+																					<label for="responsableNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Beneficiario: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" style="height: 20px"
+																						class="form-control form-control-sm bg-white"
+																						id="beneficiario" name="beneficiario" />
 																				</div>
 																			</div>
 
@@ -782,12 +808,24 @@
 															<div class="col-4">
 																<label for="responsableNewDet"
 																	class="form-control-label mb-0 font-weight-bold">
-																	Responsable: </label>
+																	Nombre de Proveedor: </label>
 															</div>
 															<div class="col-6">
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-responsable" name="detail-responsable" />
+																	id="detail-nombreProveedor" name="detail-nombreProveedor" />
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="responsableNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Beneficiario: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-beneficiario" name="detail-beneficiario" />
 															</div>
 														</div>
 

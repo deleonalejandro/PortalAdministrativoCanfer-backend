@@ -37,6 +37,8 @@ public class FormularioCajaChica {
 	
 	private String estatus; 
 	
+	private String responsable; 
+	
 	private String comentario; 
 	
 	private Float total;
@@ -72,6 +74,14 @@ public class FormularioCajaChica {
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
+	}
+	
+	public String getResponsable() {
+		return responsable;
+	}
+
+	public void setProveedor(String responsable) {
+		this.responsable = responsable;
 	}
 
 	public Long getFolio() {

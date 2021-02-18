@@ -41,10 +41,12 @@ public class DetFormularioCajaChica {
 	@UpdateTimestamp
 	private LocalDateTime fechaMod;
 	
-	private String responsable; 
+	private String beneficiario; 
 	
 	private String folio;
-
+	
+	private String nombreProveedor;
+	
 	//Constructor
 	public DetFormularioCajaChica() {
 		super();
@@ -89,6 +91,14 @@ public class DetFormularioCajaChica {
 		this.clasificacion = clasificacion;
 	}
 
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
+	}
+	
 	public Float getMonto() {
 		return monto;
 	}
@@ -105,12 +115,12 @@ public class DetFormularioCajaChica {
 		this.fecha = fecha;
 	}
 
-	public String getResponsable() {
-		return responsable;
+	public String getBeneficiario() {
+		return beneficiario;
 	}
 
-	public void setResponsable(String responsable) {
-		this.responsable = responsable;
+	public void setBeneficiario(String responsable) {
+		this.beneficiario = responsable;
 	}
 
 	public String getFolio() {
