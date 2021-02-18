@@ -179,7 +179,7 @@ public class CajaChicaActions extends ModuleActions{
 			detFormCC.setFecha(detFormCCDto.getFormattedFechaDet());
 			detFormCC.setFolio(detFormCCDto.getFolio());
 			detFormCC.setMonto(detFormCCDto.getMonto());
-			detFormCC.setResponsable(detFormCCDto.getResponsable());
+			detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
 			
 			
 			superRepo.save(documento.get());

@@ -245,7 +245,7 @@ public class ExcelService {
 		headerLabel = new Label(2, 8, "Clasificación", headerFormat);
 		sheet.addCell(headerLabel);
 		
-		headerLabel = new Label(3, 8, "Responsable", headerFormat);
+		headerLabel = new Label(3, 8, "Beneficiario", headerFormat);
 		sheet.addCell(headerLabel);
 		
 		headerLabel = new Label(4, 8, "Fecha", headerFormat);
@@ -253,6 +253,8 @@ public class ExcelService {
 		
 		headerLabel = new Label(5, 8, "Monto", headerFormat);
 		sheet.addCell(headerLabel);
+		
+		
 		
 
 		CellView cell = sheet.getColumnView(0);
@@ -281,7 +283,7 @@ public class ExcelService {
 			celllabel = new Label(2, count+8, detalle.getClasificacion().getClasificacion(), cellFormat);
 			sheet.addCell(celllabel);
 
-			celllabel = new Label(3, count+8, detalle.getResponsable(), cellFormat);
+			celllabel = new Label(3, count+8, detalle.getBeneficiario(), cellFormat);
 			sheet.addCell(celllabel);
 
 			celllabel = new Label(4, count+8, detalle.getFecha().toString(), cellFormat);

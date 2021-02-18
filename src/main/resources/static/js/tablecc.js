@@ -63,6 +63,7 @@ $(document).ready(function() {
 					}
 				}
 			},
+			{ data: "responsable" },
 			{ data: "total" }
 		],
 
@@ -82,10 +83,12 @@ $(document).ready(function() {
 			$("#estatusNewForm").val(formulario.estatus);
 			$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
 			$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
+			$("#responsableNew").val(formulario.responsable);
 			$("#fechaNew").val(formulario.fecha.split("T")[0]);
 			$("#idFormNew").val(formulario.idFormularioCajaChica);
 			$("#comentarioNew").val(formulario.comentario);
 			$("#totalNew").val(formulario.total);
+			$("#responsableNew").val(formulario.responsable);
 			$("#idFormulario").val(formulario.idFormularioCajaChica);
 
 			//prepare cancel button too
@@ -155,9 +158,9 @@ $(document).ready(function() {
 					}
 				},
 				{ data: "folio" },
-				{ data: "sucursal" },
+				{ data: "nombreProveedor" },
 				{ data: "fecha" },
-				{ data: "responsable" },
+				{ data: "beneficiario" },
 				{ data: "monto" }
 			],
 
@@ -188,6 +191,7 @@ $(document).ready(function() {
 		document.getElementById("dateNewDiv").hidden = false;
 		document.getElementById("montoNewDiv").hidden = false;
 		document.getElementById("folioNewDiv").hidden = false;
+		document.getElementById("provNewDiv").hidden = false;
 		table2.ajax.reload();
 
 
@@ -220,6 +224,7 @@ $(document).ready(function() {
 		document.getElementById("dateNewDiv").hidden = false;
 		document.getElementById("montoNewDiv").hidden = false;
 		document.getElementById("folioNewDiv").hidden = false;
+		document.getElementById("provNewDiv").hidden = false;
 
 		document.getElementById("formNewDet").reset();
 	});
@@ -228,6 +233,10 @@ $(document).ready(function() {
 
 		document.getElementById("div-add-xml").hidden = true;
 		document.getElementById("div-btn-add-xml").hidden = false;
+		document.getElementById("dateNewDiv").hidden = false;
+		document.getElementById("montoNewDiv").hidden = false;
+		document.getElementById("folioNewDiv").hidden = false;
+		document.getElementById("provNewDiv").hidden = false;
 
 		document.getElementById("xml").value = "";
 	});
@@ -258,6 +267,7 @@ $(document).ready(function() {
 		document.getElementById("dateNewDiv").hidden = false;
 		document.getElementById("montoNewDiv").hidden = false;
 		document.getElementById("folioNewDiv").hidden = false;
+		document.getElementById("provNewDiv").hidden = false;
 
 	});
 
@@ -299,6 +309,7 @@ $(document).ready(function() {
 		document.getElementById("dateNewDiv").hidden = true
 		document.getElementById("montoNewDiv").hidden = true
 		document.getElementById("folioNewDiv").hidden = true
+		document.getElementById("provNewDiv").hidden = true;
 		$('#siguienteNewDet').prop("disabled", false);
 	});
 
@@ -317,7 +328,8 @@ $(document).ready(function() {
 		$('#detail-clasificacion').val(jsonData.clasificacion);
 		$('#detail-monto').val(jsonData.monto);
 		$('#detail-folio').val(jsonData.folio);
-		$('#detail-responsable').val(jsonData.responsable);
+		$('#detail-beneficiario').val(jsonData.beneficiario);
+		$('#detail-nombreProveedor').val(jsonData.nombreProveedor);
 		
 		$('#detailsModal').modal('show');
 
@@ -358,6 +370,8 @@ $(document).ready(function() {
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
 		$("#comentarioNew").val(formulario.comentario);
+		$("#beneficiarioNew").val(formulario.beneficiario);
+		$('#nombreProveedor').val(jsonData.nombreProveedor);
 		$("#totalNew").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
 
@@ -427,9 +441,9 @@ $(document).ready(function() {
 					}
 				},
 				{ data: "folio" },
-				{ data: "sucursal" },
+				{ data: "nombreProveedor" },
 				{ data: "fecha" },
-				{ data: "responsable" },
+				{ data: "beneficiario" },
 				{ data: "monto" }
 			],
 
