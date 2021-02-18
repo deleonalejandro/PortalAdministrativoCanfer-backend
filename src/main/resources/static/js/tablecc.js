@@ -92,7 +92,7 @@ $(document).ready(function() {
 			$("#idFormulario").val(formulario.idFormularioCajaChica);
 
 			//prepare cancel button too
-			$("#cancelarNewForm").attr("href", "/cajachicaclient/deleteformcc?id=" + formulario.idFormularioCajaChica);
+			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
 		});
 
 		document.getElementById("divTabla").hidden = true;
