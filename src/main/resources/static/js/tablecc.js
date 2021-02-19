@@ -176,6 +176,15 @@ $(document).ready(function() {
 	// Darle submit a New Det
 	$('#submitNewDet').on('click', function(event) {
 
+		event.preventDefault();
+		
+		var href = $(this).attr('href');
+
+		$.post( href, function( data ) {
+		  alert( "Respuesta: " + data );
+		});
+		
+		
 		$('#newDetModal').modal('hide');
 		$('#wizard2-tab').removeClass('active');
 		$('#wizard1-tab').addClass('active');
