@@ -7,7 +7,7 @@ $(document).ready(function() {
 		"info": false,
 		"searching": false,
 		ajax: {
-			dataSrc: ""
+			dataSrc: "/cajachicaclient/loadallforms" 
 		},
 		scrollX: true,
 		"language": {
@@ -81,8 +81,8 @@ $(document).ready(function() {
 		$.get(href, function(formulario, status) {
 			$("#folioFormularioNew").text(formulario.folio);
 			$("#estatusNewForm").val(formulario.estatus);
-			$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
-			$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
+			$("#idCajaChicaNew").val(formulario.claveProvSucursal);
+			$("#sucursalNew").val(formulario.nombreSucursal);
 			$("#responsableNew").val(formulario.responsable);
 			$("#fechaNew").val(formulario.fecha.split("T")[0]);
 			$("#idFormNew").val(formulario.idFormularioCajaChica);
@@ -138,7 +138,7 @@ $(document).ready(function() {
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
 				},
-				{ data: "clasificacion" },
+				{ data: "nombreClasificacion" },
 				{
 					data: "documento",
 					"className": 'detxml-control',
@@ -374,8 +374,8 @@ $(document).ready(function() {
 		//Llena los parametros del formulario 
 		$("#folioFormularioNew").text(formulario.folio);
 		$("#estatusNewForm").val(formulario.estatus);
-		$("#idCajaChicaNew").val(formulario.sucursal.claveProv);
-		$("#sucursalNew").val(formulario.sucursal.nombreSucursal);
+		$("#idCajaChicaNew").val(formulario.claveProvSucursal);
+		$("#sucursalNew").val(formulario.nombreSucursal);
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
 		$("#comentarioNew").val(formulario.comentario);
@@ -430,22 +430,22 @@ $(document).ready(function() {
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
 				},
-				{ data: "clasificacion" },
+				{ data: "nombreClasificacion" },
 				{
-					data: "documento",
+					data: "nombreArchivoXML",
 					"className": 'detxml-control',
 					"render": function(data) {
-						if (data.archivoXML != '') {
-							return '<span class="badge badge-blue">' + data.archivoXML.nombre + '</span>';
+						if (data != '') {
+							return '<span class="badge badge-blue">' + data + '</span>';
 						}
 					}
 				},
 				{
-					data: "documento",
+					data: "nombreArchivoPDF",
 					"className": 'detpdf-control',
 					"render": function(data) {
-						if (data.archivoPDF != '') {
-							return '<span class="badge badge-blue">' + data.archivoPDF.nombre + '</span>';
+						if (data != '') {
+							return '<span class="badge badge-blue">' + data + '</span>';
 						}
 					}
 				},
