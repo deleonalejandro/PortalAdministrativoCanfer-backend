@@ -45,12 +45,7 @@ $(document).ready(function() {
 				},
 			},
 
-			{
-				data: "fecha",
-				"render": function(data) {
-					return data.split("T")[0]
-				}
-			},
+			{ data: "fecha" },
 			{ data: "folio" },
 			{
 				data: "estatus",
@@ -128,22 +123,22 @@ $(document).ready(function() {
 			{ data: "nombreClasificacion" },
 
 			{
-				data: "nombreArchivoPDF",
+				data: null,
 				"className": 'detpdf-control',
-				"render": function(data, row) {
-					if (data != null) {
-						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + data + '</font></u></a>';
+				"render": function(row) {
+					if (row.nombreArchivoPDF != null) {
+						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoPDF + '</font></u></a>';
 					} else {
 						return '<a>N/D</a>';
 					}
 				}
 			},
 			{
-				data: "nombreArchivoXML",
-				"className": 'detxml-control',
-				"render": function(data, row) {
-					if (data != null) {
-						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + data + '</font></u></a>';
+				data: null,
+				"className": 'detpdf-control',
+				"render": function(row) {
+					if (row.nombreArchivoXML != null) {
+						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -151,12 +146,7 @@ $(document).ready(function() {
 			},
 			{ data: "folio" },
 			{ data: "nombreProveedor" },
-			{
-				data: "fecha",
-				"render": function(data) {
-					return data.split("T")[0]
-				}
-			},
+			{ data: "fecha" },
 			{ data: "beneficiario" },
 			{ data: "monto" }
 		],
