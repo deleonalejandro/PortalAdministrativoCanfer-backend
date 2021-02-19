@@ -760,20 +760,14 @@
 															<div class="col-4">
 																<label for="clasificacionNewDet"
 																	class="form-control-label mb-0 font-weight-bold">
-																	Clasificación:</label> <select
-																	class="form-control form-control-solid"
-																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																	id="idClasificacion" name="idClasificacion">
-																	<option th:each="clasificacion : ${clasificaciones}"
-																		th:value="${clasificacion.idClasificacionCajaChica}"
-																		th:text="${clasificacion.clasificacion}"></option>
-																</select>
+																	Clasificación:</label>
 															</div>
 															<div class="col-6">
 																<!-- INPUT IMPORTE ESTATUS -->
-																<select class="form-control form-control-solid"
+																 <select
+																	class="form-control form-control-solid"
 																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																	id="detail-clasificacion" name="detail-clasificacion">
+																	id="idClasificacion" name="idClasificacion">
 																	<option th:each="clasificacion : ${clasificaciones}"
 																		th:value="${clasificacion.idClasificacionCajaChica}"
 																		th:text="${clasificacion.clasificacion}"></option>

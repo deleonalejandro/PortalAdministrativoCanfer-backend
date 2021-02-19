@@ -445,10 +445,7 @@
 
 	$('#proveedorTable tbody').on('click', '.editBtn', function() {
 		
-		var tr = $(this).closest('tr');
-		var data = tableProveedor.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var jsonData = tableProveedor.row(this).data();
 
 		$("#idProveedor").val(jsonData.idProveedor);
 		$("#inputEmpresa").val(jsonData.nombreEmpresa);
@@ -480,10 +477,7 @@
 
 		event.preventDefault();
 
-		var tr = $(this).closest('tr');
-		var data = tableProveedor.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var jsonData = tableProveedor.row(this).data();
 
 		$('.deleteForm .delBtn').attr("href", "supplier/delete/" + jsonData.idProveedor)
 		$('#deleteModal').modal("show");
