@@ -136,7 +136,7 @@ $(document).ready(function() {
 			{
 				data: ["nombreArchivoXML","idDocumento"],
 				"className": 'detxml-control',
-				"render": function(data, row) {
+				"render": function(row) {
 					if (data != null) {
 						return '<a href="/cajachicaclient/download/xml?='+ row.idDocumento+'"><u><font color="blue">' + data + '</font></u></a>';
 					} else {
@@ -173,7 +173,7 @@ $(document).ready(function() {
 			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
 		});
 		
-		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica).load();
 
 		deshabilitarEntradas();
 
@@ -217,8 +217,6 @@ $(document).ready(function() {
 
 			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
 			
-			$('#newDetModal').modal('hide');
-		
 			$('#newDetModal').modal('hide');
 			
 			reestablecerModal();
@@ -316,7 +314,7 @@ $(document).ready(function() {
 	$('#detallesNuevoCajaChica tbody').on('click', 'td.detailsdet-control', 'tr', function(event) {
 
 		var tr = $(this).closest('tr');
-		var data = table.row($(this).parents(tr)).data();
+		var jsonData = table.row($(this).parents(tr)).data();
 		var modData = JSON.stringify(data);
 		var jsonData = JSON.parse(modData);
 
