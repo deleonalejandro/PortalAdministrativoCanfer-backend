@@ -94,7 +94,7 @@ $(document).ready(function() {
 			//prepare cancel button too
 			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
 		});
-
+		
 		document.getElementById("divTabla").hidden = true;
 		document.getElementById("divNuevo").hidden = false;
 
@@ -102,8 +102,6 @@ $(document).ready(function() {
 		var table2 = $('#detallesNuevoCajaChica').DataTable({
 			"drawCallback": function(settings) {
 				table2.columns.adjust();
-				var sum = $('#formularios').DataTable().column(9).data().sum();
-				$("#totalNew").val(sum);
 				
 			},
 			"paging": false,
@@ -112,7 +110,7 @@ $(document).ready(function() {
 			"searching": false,
 			ajax: {
 				url: "/cajachicaclient/loadformdetails?id=" +  $("#idFormNew").val(),
-				dataSrc: ""
+				dataSrc:""
 			},
 			scrollX: true,
 			"language": {
@@ -124,7 +122,6 @@ $(document).ready(function() {
 					"orderable": false,
 					"bSortable": false,
 					"data": null,
-					"defaultContent": '',
 					"render": function() {
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
 					},
@@ -134,7 +131,6 @@ $(document).ready(function() {
 					"orderable": false,
 					"bSortable": false,
 					"data": null,
-					"defaultContent": '',
 					"render": function() {
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
@@ -142,19 +138,19 @@ $(document).ready(function() {
 				{ data: "nombreClasificacion" },
 				{
 					data: "documento",
-					"className": 'detxml-control',
+					"className": 'detpdf-control',
 					"render": function(data) {
-						if (data.archivoXML != '') {
-							return '<span class="badge badge-blue">' + data.archivoXML.nombre + '</span>';
+						if (data.archivoPDF != null) {
+							return '<span class="badge badge-blue">' + $("#idFormNew").val() + '</span>';
 						}
 					}
 				},
 				{
 					data: "documento",
-					"className": 'detpdf-control',
+					"className": 'detxml-control',
 					"render": function(data) {
-						if (data.archivoPDF != '') {
-							return '<span class="badge badge-blue">' + data.archivoPDF.nombre + '</span>';
+						if (data.archivoXML != null) {
+							return '<span class="badge badge-blue">' + $("#idFormNew").val() + '</span>';
 						}
 					}
 				},
@@ -165,11 +161,12 @@ $(document).ready(function() {
 				{ data: "monto" }
 			],
 
-			"order": [[0, "asc"]]
+			"order": [[0, "asc"]],
+			"columnDefs": [
+		    { "width": "2%", "targets": [0,1] }
+		  ]
 
 		});
-
-		table2.columns.adjust();
 
 	});
 
@@ -193,8 +190,7 @@ $(document).ready(function() {
 		document.getElementById("montoNewDiv").hidden = false;
 		document.getElementById("folioNewDiv").hidden = false;
 		document.getElementById("provNewDiv").hidden = false;
-		table2.ajax.reload();
-
+		
 
 	});
 	
@@ -215,9 +211,24 @@ $(document).ready(function() {
 				type: 'POST',
 				success: function(response){
 					document.getElementById("formNewDet").reset();
+					table2.columns.adjust();
+					$('#detallesNuevoCajaChica').DataTable().ajax.reload();
+				
+					var api = this.api(), data;
+					
+	
+					var total = this.api()
+	                .column( 9 )
+	                .data()
+	                .reduce( function (a, b) {
+	                    return intVal(a) + intVal(b);
+	                }, 0 );
+	
+					$('#totalNew').val(total);
 				}
 		})
-		table2.ajax.reload();
+		
+		
 		
 		
 	})
@@ -306,6 +317,7 @@ $(document).ready(function() {
 
 		document.getElementById("divTabla").hidden = false;
 		document.getElementById("divNuevo").hidden = true;
+		table2.destroy();
 
 
 
@@ -315,6 +327,7 @@ $(document).ready(function() {
 
 		document.getElementById("divTabla").hidden = false;
 		document.getElementById("divNuevo").hidden = true;
+		table2.destroy();
 
 
 	});
@@ -357,6 +370,8 @@ $(document).ready(function() {
 		$('#detail-nombreProveedor').val(jsonData.nombreProveedor);
 		
 		$('#detailsModal').modal('show');
+		
+		
 
 	});
 
@@ -406,10 +421,21 @@ $(document).ready(function() {
 
 		//Crea la tabla de los detalles
 		var table2 = $('#detallesNuevoCajaChica').DataTable({
-			"drawCallback": function(settings) {
+			"drawCallback": function(settings, row, data, start, end, display) {
 				table2.columns.adjust();
-				var sum = $('#formularios').DataTable().column(9).data().sum();
-				$("#totalNew").val(sum);
+				
+				var api = this.api(), data;
+				
+
+				var total = this.api()
+                .column( 9 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+				$('#totalNew').val(total);
+				
 			},
 			"paging": false,
 			"ordering": false,
@@ -429,7 +455,6 @@ $(document).ready(function() {
 					"orderable": false,
 					"bSortable": false,
 					"data": null,
-					"defaultContent": '',
 					"render": function() {
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
 					},
@@ -439,26 +464,24 @@ $(document).ready(function() {
 					"orderable": false,
 					"bSortable": false,
 					"data": null,
-					"defaultContent": '',
 					"render": function() {
-						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' +  $("#idFormNew").val() + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
 				},
 				{ data: "nombreClasificacion" },
-				{
-					data: "nombreArchivoXML",
-					"className": 'detxml-control',
+				
+				{data: "nombreArchivoPDF",
+					"className": 'detpdf-control',
 					"render": function(data) {
-						if (data != '') {
+						if (data != null) {
 							return '<span class="badge badge-blue">' + data + '</span>';
 						}
 					}
 				},
-				{
-					data: "nombreArchivoPDF",
-					"className": 'detpdf-control',
+				{data: "nombreArchivoXML",
+					"className": 'detxml-control',
 					"render": function(data) {
-						if (data != '') {
+						if (data != null) {
 							return '<span class="badge badge-blue">' + data + '</span>';
 						}
 					}
@@ -470,17 +493,25 @@ $(document).ready(function() {
 				{ data: "monto" }
 			],
 
-			"order": [[0, "asc"]]
+			"order": [[0, "asc"]],
+			"columnDefs": [
+		    { "width": "2%", "targets": [0,1] }
+		  ]
 
 		});
 
-		table2.columns.adjust();
 
 
 
 
 	});
 	
+	var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
 
 
 
