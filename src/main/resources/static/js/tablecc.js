@@ -2,6 +2,9 @@
 $(document).ready(function() {
 
 	var table = $('#formularios').DataTable({
+		"drawCallback": function(settings) {
+			table.columns.adjust();
+		},
 		ajax: {
 			url: "/cajachicaclient/loadallforms?idSucursal=" + Cookies.get("suc"),
 			dataSrc: ""
@@ -122,22 +125,22 @@ $(document).ready(function() {
 			{
 				data: "nombreArchivoPDF",
 				"className": 'detpdf-control',
-				"render": function(data) {
+				"render": function(data,row) {
 					if (data != null) {
-						return '<u><font color="blue"><br>' + data + '</font></u>';
+						return '<a href="/cajachicaclient/download/pdf?='+ row.idDocumento+'"><u><font color="blue">' + data + '</font></u></a>';
 					} else {
-						return '<p>N/D</p>';
+						return '<a>N/D</a>';
 					}
 				}
 			},
 			{
-				data: "nombreArchivoXML",
+				data: ["nombreArchivoXML","idDocumento"],
 				"className": 'detxml-control',
-				"render": function(data) {
+				"render": function(data, row) {
 					if (data != null) {
-						return '<u><font color="blue"><br>' + data + '</font></u>';
+						return '<a href="/cajachicaclient/download/xml?='+ row.idDocumento+'"><u><font color="blue">' + data + '</font></u></a>';
 					} else {
-						return '<p>N/D</p>';
+						return '<a>N/D</a>';
 					}
 				}
 			},
@@ -164,134 +167,19 @@ $(document).ready(function() {
 		var href = $(this).attr('href');
 
 		$.get(href, function(formulario, status) {
-			$("#folioFormularioNew").text(formulario.folio);
-			$("#estatusNewForm").val(formulario.estatus);
-			$("#idCajaChicaNew").val(formulario.claveProvSucursal);
-			$("#sucursalNew").val(formulario.nombreSucursal);
-			$("#responsableNew").val(formulario.responsable);
-			$("#fechaNew").val(formulario.fecha.split("T")[0]);
-			$("#idFormNew").val(formulario.idFormularioCajaChica);
-			$("#comentarioNew").val(formulario.comentario);
-			$("#totalNew").val(formulario.total);
-			$("#responsableNew").val(formulario.responsable);
-			$("#idFormulario").val(formulario.idFormularioCajaChica);
+			llenarFormulario(formulario);
 
 			//prepare cancel button too
 			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
 		});
+		
+		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
 
-		document.getElementById("divTabla").hidden = true;
-		document.getElementById("divNuevo").hidden = false;
-
-		//Crea la tabla de los detalles
-		var table2 = $('#detallesNuevoCajaChica').DataTable({
-			"drawCallback": function(settings, row, data, start, end, display) {
-				table2.columns.adjust();
-
-				var api = this.api(), data;
-
-
-				var total = this.api()
-					.column(9)
-					.data()
-					.reduce(function(a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				$('#totalNew').val(total);
-
-			},
-			"paging": false,
-			"ordering": false,
-			"info": false,
-			"searching": false,
-			ajax: {
-				url: "/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val(),
-				dataSrc: ""
-			},
-			scrollX: true,
-			"language": {
-				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-			},
-			"columns": [
-				{
-					"className": 'detailsdet-control',
-					"orderable": false,
-					"bSortable": false,
-					"data": null,
-					"render": function() {
-						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
-					},
-				},
-				{
-					"className": 'deletedet-control',
-					"orderable": false,
-					"bSortable": false,
-					"data": null,
-					"render": function() {
-						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + $("#idFormNew").val() + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
-					},
-				},
-				{ data: "nombreClasificacion" },
-
-				{
-					data: "nombreArchivoPDF",
-					"className": 'detpdf-control',
-					"render": function(data) {
-						if (data != null) {
-							return '<u><font color="blue"><br>' + data + '</font></u>';
-						}
-					}
-				},
-				{
-					data: "nombreArchivoXML",
-					"className": 'detxml-control',
-					"render": function(data) {
-						if (data != null) {
-							return '<u><font color="blue"><br>' + data + '</font></u>';
-						}
-					}
-				},
-				{ data: "folio" },
-				{ data: "nombreProveedor" },
-				{ data: "fecha" },
-				{ data: "beneficiario" },
-				{ data: "monto" }
-			],
-
-			"order": [[0, "asc"]],
-			"columnDefs": [
-				{ "width": "2%", "targets": [0, 1] }
-			]
-
-		});
+		deshabilitarEntradas();
 
 	});
 
-
-	// Darle submit a New Det
-	$('#submitNewDet').on('click', function(event) {
-
-		$('#newDetModal').modal('hide');
-		$('#wizard2-tab').removeClass('active');
-		$('#wizard1-tab').addClass('active');
-		document.getElementById("wizard2").hidden = true;
-		document.getElementById("btns-next").hidden = false;
-		document.getElementById("btns-prev").hidden = true;
-		$('#siguienteNewDet').prop("disabled", true);
-		document.getElementById("div-add-xml").hidden = true;
-		document.getElementById("div-btn-add-xml").hidden = false;
-		document.getElementById("div-add-pdf").hidden = true;
-		document.getElementById("div-btn-add-pdf").hidden = false;
-
-		document.getElementById("dateNewDiv").hidden = false;
-		document.getElementById("montoNewDiv").hidden = false;
-		document.getElementById("folioNewDiv").hidden = false;
-		document.getElementById("provNewDiv").hidden = false;
-
-
-	});
-
+	//Darle submit a un nuevo detalle
 	$('#formNewDet').submit(function(event) {
 
 		event.preventDefault();
@@ -326,18 +214,18 @@ $(document).ready(function() {
 		});
 		saveDet.always(function() {
 			
-			document.getElementById("formNewDet").reset();
-			table2.ajax.reload();
-			table2.columns.adjust();
-			var total = table2.api()
-				.column(9)
-				.data()
-				.reduce(function(a, b) {
-					return intVal(a) + intVal(b);
-				}, 0);
 
-			$('#totalNew').val(total);
-
+			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+			
+			$('#newDetModal').modal('hide');
+		
+			$('#newDetModal').modal('hide');
+			
+			reestablecerModal();
+			
+			deshabilitarPDF();
+	
+			deshabilitarXML();
 
 
 		});
@@ -359,69 +247,34 @@ $(document).ready(function() {
 	});
 	// Darle Anterior a New Det
 	$('#anteriorNewDet').on('click', function() {
-		$('#wizard2-tab').removeClass('active');
-		$('#wizard1-tab').addClass('active');
-		$('#siguienteNewDet').prop("disabled", true);
-		document.getElementById("wizard2").hidden = true;
-		document.getElementById("btns-next").hidden = false;
-		document.getElementById("btns-prev").hidden = true;
+		
+		reestablecerModal();
 
-		document.getElementById("div-add-xml").hidden = true;
-		document.getElementById("div-btn-add-xml").hidden = false;
-		document.getElementById("div-add-pdf").hidden = true;
-		document.getElementById("div-btn-add-pdf").hidden = false;
-
-		document.getElementById("dateNewDiv").hidden = false;
-		document.getElementById("montoNewDiv").hidden = false;
-		document.getElementById("folioNewDiv").hidden = false;
-		document.getElementById("provNewDiv").hidden = false;
-
-		document.getElementById("formNewDet").reset();
 	});
 	// Cancelar el upload xml
 	$('#closexml').on('click', function() {
+		
+		deshabilitarXML();
 
-		document.getElementById("div-add-xml").hidden = true;
-		document.getElementById("div-btn-add-xml").hidden = false;
-		document.getElementById("dateNewDiv").hidden = false;
-		document.getElementById("montoNewDiv").hidden = false;
-		document.getElementById("folioNewDiv").hidden = false;
-		document.getElementById("provNewDiv").hidden = false;
-
-		document.getElementById("xml").value = "";
+		
 	});
 	// Cancelar el upload pdf
 	$('#closepdf').on('click', function() {
 
-		document.getElementById("div-add-pdf").hidden = true;
-		document.getElementById("div-btn-add-pdf").hidden = false;
-
-		document.getElementById("pdf").value = "";
+		deshabilitarPDF();
+		
 	});
 	// Darle Cancelar a New Det
 	$('#cancelarNewDet').on('click', function() {
 
 		$('#newDetModal').modal('hide');
-		$('#siguienteNewDet').prop("disabled", true);
-		$('#wizard2-tab').removeClass('active');
-		$('#wizard1-tab').addClass('active');
-		document.getElementById("wizard2").hidden = true;
-		document.getElementById("btns-next").hidden = false;
-		document.getElementById("btns-prev").hidden = true;
+		
+		reestablecerModal();
 
-		document.getElementById("div-add-xml").hidden = true;
-		document.getElementById("div-btn-add-xml").hidden = false;
-		document.getElementById("div-add-pdf").hidden = true;
-		document.getElementById("div-btn-add-pdf").hidden = false;
-
-		document.getElementById("dateNewDiv").hidden = false;
-		document.getElementById("montoNewDiv").hidden = false;
-		document.getElementById("folioNewDiv").hidden = false;
-		document.getElementById("provNewDiv").hidden = false;
 
 	});
 
-	// Darle Submit a New Formulario
+	// Darle Cancelar a New Formulario
 	$('#cancelarNewForm').on('click', function(event) {
 
 
@@ -429,39 +282,31 @@ $(document).ready(function() {
 
 		$.get(href);
 
-		document.getElementById("divTabla").hidden = false;
-		document.getElementById("divNuevo").hidden = true;
-		table2.destroy();
-
+		habilitarEntradas();
 
 
 	});
-	// Darle Cancelar a New Formulario
+	
+	// Darle Submit a New Formulario
 	$('#submitNewForm').on('click', function() {
-
-		document.getElementById("divTabla").hidden = false;
-		document.getElementById("divNuevo").hidden = true;
-		table2.destroy();
-
+		
+		habilitarEntradas();
 
 	});
 
 	// Adjuntar un pdf al new details
 	$('#btn-add-pdf').on('click', function() {
-		document.getElementById("div-add-pdf").hidden = false;
-		document.getElementById("div-btn-add-pdf").hidden = true;
+		
+		habilitarPDF();
 
 		$('#siguienteNewDet').prop("disabled", false);
 	});
+	
 	// adjuntar un xml al new details
 	$('#btn-add-xml').on('click', function() {
-		document.getElementById("div-add-xml").hidden = false;
-		document.getElementById("div-btn-add-xml").hidden = true;
 
-		document.getElementById("dateNewDiv").hidden = true
-		document.getElementById("montoNewDiv").hidden = true
-		document.getElementById("folioNewDiv").hidden = true
-		document.getElementById("provNewDiv").hidden = true;
+		habilitarXML();
+		
 		$('#siguienteNewDet').prop("disabled", false);
 	});
 
@@ -486,7 +331,6 @@ $(document).ready(function() {
 		$('#detailsModal').modal('show');
 
 
-
 	});
 
 
@@ -509,19 +353,7 @@ $(document).ready(function() {
 
 	$('#detallesNuevoCajaChica tbody').on('click', 'td.deletedet-control', 'tr', function(event) {
 
-		var api = this.api(), data;
-
-
-		var total = this.api()
-			.column(9)
-			.data()
-			.reduce(function(a, b) {
-				return intVal(a) + intVal(b);
-			}, 0);
-
-		$('#totalNew').val(total);
-
-
+		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
 
 	});
 
@@ -537,6 +369,29 @@ $(document).ready(function() {
 		document.getElementById("divNuevo").hidden = false;
 
 		//Llena los parametros del formulario 
+		llenarFormulario(formulario);
+
+		//prepare cancel button too
+		$("#cancelarNewForm").attr("href", "#!");
+		
+		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+
+	});
+	
+	//Funcion para hacer una suma
+
+	var intVal = function(i) {
+		return typeof i === 'string' ?
+			i.replace(/[\$,]/g, '') * 1 :
+			typeof i === 'number' ?
+				i : 0;
+	};
+	
+	//Llenar el formulario con la info que se proporciona
+	
+	var llenarFormulario = function(formulario){
+		
+		//Llena los parametros del formulario 
 		$("#folioFormularioNew").text(formulario.folio);
 		$("#estatusNewForm").val(formulario.estatus);
 		$("#idCajaChicaNew").val(formulario.claveProvSucursal);
@@ -548,21 +403,103 @@ $(document).ready(function() {
 		$('#nombreProveedor').val(formulario.nombreProveedor);
 		$("#totalNew").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
-
-		//prepare cancel button too
-		$("#cancelarNewForm").attr("href", "#!");
+	}
+	
+	//Habilitar la carga de xml
+	
+	var habilitarXML = function() {
 		
-		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+		document.getElementById("dateNewDiv").hidden = true;
+		document.getElementById("montoNewDiv").hidden = true;
+		document.getElementById("folioNewDiv").hidden = true;
+		document.getElementById("provNewDiv").hidden = true;
+		
+		document.getElementById("div-add-xml").hidden = false;
+		document.getElementById("div-btn-add-xml").hidden = true;
+		
+	}
+	
+	//Quitar un xml con sus divs
+	
+	var deshabilitarXML = function(){
+		
+		document.getElementById("dateNewDiv").hidden = false;
+		document.getElementById("montoNewDiv").hidden = false;
+		document.getElementById("folioNewDiv").hidden = false;
+		document.getElementById("provNewDiv").hidden = false;
+		
+		document.getElementById("fechaDet").value = "";
+		document.getElementById("realDate").value = "";
+		document.getElementById("monto").value = "";
+		document.getElementById("folio").value = "";
+		document.getElementById("nombreProveedor").value = "";
+		
+		document.getElementById("xml").value = "";
+		
+		document.getElementById("div-add-xml").hidden = true;
+		document.getElementById("div-btn-add-xml").hidden = false;
+		
+	}
+	
+	//Habilitar la carga de pdf 
+	
+	var habilitarPDF = function(){
+		
+		document.getElementById("div-add-pdf").hidden = false;
+		document.getElementById("div-btn-add-pdf").hidden = true;
+		
+	}
+	
+	//Quitar un pdf con sus divs
 
-	});
+	var deshabilitarPDF = function(){
+		
+		document.getElementById("div-add-pdf").hidden = true;
+		document.getElementById("div-btn-add-pdf").hidden = false;
 
-	var intVal = function(i) {
-		return typeof i === 'string' ?
-			i.replace(/[\$,]/g, '') * 1 :
-			typeof i === 'number' ?
-				i : 0;
-	};
+		document.getElementById("pdf").value = "";
+		
+	}
+	
+	//Deja en blanco los parametros y reestablece los divs
+	
+	var reestablecerModal = function(){
+		
+		$('#siguienteNewDet').prop("disabled", true);
+		$('#wizard2-tab').removeClass('active');
+		$('#wizard1-tab').addClass('active');
+		document.getElementById("wizard2").hidden = true;
+		document.getElementById("btns-next").hidden = false;
+		document.getElementById("btns-prev").hidden = true;
+		
+		document.getElementById("formNewDet").reset();
+		
+		deshabilitarPDF();
 
+		deshabilitarXML();
+		
+		
+	}
+	
+	//Habilitar vista tabla entradas
+	
+	var habilitarEntradas = function(){
+		
+		document.getElementById("divTabla").hidden = false;
+		document.getElementById("divNuevo").hidden = true;
+		
+		
+	}
+	
+	
+	//Deshabilitar vista tabla entradas
 
-
+	var deshabilitarEntradas = function() {
+		
+		document.getElementById("divTabla").hidden = true;
+		document.getElementById("divNuevo").hidden = false;
+		
+		
+	}
+	
 });
