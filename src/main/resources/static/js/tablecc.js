@@ -136,7 +136,7 @@ $(document).ready(function() {
 			{
 				data: "nombreArchivoXML",
 				"className": 'detxml-control',
-				"render": function(row) {
+				"render": function(data,row) {
 					if (data != null) {
 						return '<a href="/cajachicaclient/download/xml?='+ row.idDocumento+'"><u><font color="blue">' + data + '</font></u></a>';
 					} else {
