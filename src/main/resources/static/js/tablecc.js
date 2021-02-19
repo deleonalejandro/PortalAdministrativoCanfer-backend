@@ -12,12 +12,12 @@ $(document).ready(function() {
 		},
 		"columns": [
 			{
-				"className": 'xls-control',
+				"className": 'zip-control',
 				"orderable": false,
 				"data": "idFormularioCajaChica",
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id="><i class="fas fa-file-excel"></i></a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id="><i class="fas fa-file-archive 2x"></i></a>'
 				},
 			},
 			{
