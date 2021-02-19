@@ -413,6 +413,13 @@ public class RepositoryService {
 		
 		return sucursalRepo.findById(id);
 	}
+	
+	// FIND ALL
+	
+	public List<ClasificacionCajaChica> findAllClasificacionCajaChicas() {
+		
+		return clasificacionCCRepo.findAll();
+	}
 
 	// FIND ALL By ID METHODS
 

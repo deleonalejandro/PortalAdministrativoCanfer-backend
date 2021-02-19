@@ -173,11 +173,11 @@ public abstract class Archivo {
  	
  	public void rename(String nombre) {
  		
- 		Path ruta = Paths.get(this.ruta);
+ 		Path newRuta = Paths.get(this.ruta);
  		
  		this.nombre = nombre + '.' + this.extension;
  		
- 		this.ruta = ruta.getParent().resolve(this.nombre).toString();
+ 		move(newRuta.getParent().resolve(this.nombre).toString());
  		
  	}
  	

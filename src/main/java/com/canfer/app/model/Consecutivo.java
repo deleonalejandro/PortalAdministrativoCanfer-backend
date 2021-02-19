@@ -113,6 +113,11 @@ public class Consecutivo {
 		return this.currentNum;
 	}
 	
+	public Long getPrevious() {
+		this.currentNum = this.currentNum - 1;
+		return this.currentNum;
+	}
+	
 	
 	
 	

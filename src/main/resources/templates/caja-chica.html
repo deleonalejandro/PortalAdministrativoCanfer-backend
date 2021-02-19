@@ -292,7 +292,7 @@
 												</div>
 											</div>
 											<div class="alert alert-success alert-icon" role="alert"
-												th:if="${success}==true">
+												th:if="${upload}">
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -304,7 +304,7 @@
 													correctamente el nuevo detalle del fomulario.</div>
 											</div>
 											<div class="alert alert-danger alert-icon" role="alert"
-												th:if="${success}==false">
+												th:if="${upload}">
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -608,6 +608,7 @@
 																					<input type="text" id="fechaDet" name="fechaDet"
 																						style="height: 25px" value="" />
 																				</div>
+																					<input type="text" id="realDate" name="realDate" value="" hidden />
 																			</div>
 																			<div class="row pt-1">
 																				<div class="col-4">
@@ -619,7 +620,7 @@
 																					<!-- INPUT IMPORTE ESTATUS -->
 																					<select class="form-control form-control-solid"
 																						style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																						id="clasificacion" name="clasificacion">
+																						id="idClasificacion" name="idClasificacion">
 																						<option
 																							th:each="clasificacion : ${clasificaciones}"
 																							th:value="${clasificacion.idClasificacionCajaChica}"

@@ -170,20 +170,27 @@ $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) {
 
   });
 
+	
+});
+
 	$(function () {
 	    $('input[name="fechaDet"]').daterangepicker(
 	        {
-			 autoUpdateInput: true,
+			 autoUpdateInput: false,
 	         locale: {
 		      format: "DD/MM/YYYY"
 		    },
-				startDate: moment().startOf("day"),
 	            singleDatePicker: true,
 	            showDropdowns: true,
 	            minYear: 2000,
 	            maxYear: parseInt(moment().format("YYYY"), 10)+1,
-	        }
-	    );
-	});
+	        },
+		);
+
+		$('#fechaDet').on('apply.daterangepicker', function(ev, picker) {
+			
+		  	$("#fechaDet").val(picker.startDate.format('DD/MM/YYYY'));
+		  	$("#realDate").val(picker.startDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 	
-});
+  		})
+	});

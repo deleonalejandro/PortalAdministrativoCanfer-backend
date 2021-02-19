@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +22,8 @@ import org.springframework.stereotype.Service;
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
+import com.canfer.app.security.AuthenticationFacade;
+import com.canfer.app.security.UserPrincipal;
 import com.canfer.app.service.ExcelService;
 
 import javassist.NotFoundException;
@@ -41,6 +42,8 @@ public class CajaChicaActions extends ModuleActions{
 	@Autowired
 	private ExcelService excelService;
 	
+	@Autowired
+	private AuthenticationFacade authenticationFacade;
 	
 
 	@Override
@@ -54,19 +57,10 @@ public class CajaChicaActions extends ModuleActions{
 			
 		} else if (filePDF != null) {
 			
-			/* TODO Save the PDF files as XML files, use the method found in Actioner DF*/
-			
-			//Generar ruta: Facturas/PortalProveedores/RFCEmpresa/year/month/cajachica/
-			
-			//create document
 			Documento doc = new Documento(filePDF);
 			
-			//create route
 			ruta = comprobanteStorageService.init(createRoute(idSucursal));
 			
-			//create name
-			
-			//accept the document
 			doc.accept("new_doc_cajachica", ruta);
 			
 			superRepo.save(doc);
@@ -120,6 +114,26 @@ public class CajaChicaActions extends ModuleActions{
 		
 		return false;
 	}
+	
+	public boolean cancelarForm(Long id) {
+		
+		Optional<FormularioCajaChica> fcc = superRepo.findFormularioCCById(id);
+		
+		if (fcc.isPresent() && fcc.get().isOpen()) {
+			
+			Consecutivo sucursalConsecutivo = superRepo.findConsecutivoBySucursal(fcc.get().getSucursal());
+			
+			sucursalConsecutivo.getPrevious();
+			
+			superRepo.save(sucursalConsecutivo);
+
+			superRepo.delete(fcc.get());
+			
+			return true;
+		}
+		
+		return false;
+	}
 
 	@Override
 	protected boolean deleteAll(List<Long> ids) {
@@ -157,13 +171,13 @@ public class CajaChicaActions extends ModuleActions{
 		
 		if (xmlFile != null) {
 			
-			documento = superRepo.findDocumentoByArchivoPDF(pdfFile); 
+			documento = superRepo.findDocumentoByArchivoXML(xmlFile);
 			
 		} else if (pdfFile != null) {
 			
-			documento = superRepo.findDocumentoByArchivoXML(xmlFile);
+			documento = superRepo.findDocumentoByArchivoPDF(pdfFile); 
 			
-			pdfFile.rename(formularioCajaChica.get().getFolio() + '_' + detFormCCDto.getFolio());
+			pdfFile.rename(String.valueOf(formularioCajaChica.get().getFolio()) + '_' + detFormCCDto.getFolio());
 		
 		} else {
 			
@@ -172,15 +186,15 @@ public class CajaChicaActions extends ModuleActions{
 		
 		
 		if (formularioCajaChica.isPresent() && clasificacionCajaChica.isPresent()) {
-				
+			//TODO LOCALDATETIME ERROR	
 			detFormCC.setFormularioCajaChica(formularioCajaChica.get());
 			detFormCC.setClasificacion(clasificacionCajaChica.get());
 			detFormCC.setDocumento(documento.get());
-			detFormCC.setFecha(detFormCCDto.getFormattedFechaDet());
+			detFormCC.setFecha(detFormCCDto.getFormattedDate());
 			detFormCC.setFolio(detFormCCDto.getFolio());
 			detFormCC.setMonto(detFormCCDto.getMonto());
 			detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
-			
+			detFormCC.setNombreProveedor(detFormCCDto.getNombreProveedor());
 			
 			superRepo.save(documento.get());
 
@@ -211,14 +225,17 @@ public class CajaChicaActions extends ModuleActions{
 		
 		sucursal = superRepo.findSucursalById(idSucursal);
 		
+		/* take current logged user*/
+		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
+		
 		if (sucursal.isPresent()) {
 			 
 			sucursalConsecutivo = superRepo.findConsecutivoBySucursal(sucursal.get());
 			
+			formCC = new FormularioCajaChica(sucursal.get(), sucursalConsecutivo.getNext(), loggedPrincipal.getName());
+			
 			/* potential issue with consecutivo not found*/
 			superRepo.save(sucursalConsecutivo);
-			
-			formCC = new FormularioCajaChica(sucursal.get(), sucursalConsecutivo.getNext());
 			
 			return superRepo.save(formCC); 		
 
@@ -290,13 +307,13 @@ public class CajaChicaActions extends ModuleActions{
 	
 	private Path createRoute(Long idSucursal) {
 		
-		Optional<Proveedor> sucursal = superRepo.findProveedorById(idSucursal);
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(idSucursal);
 		
 		if (sucursal.isPresent()) {
 			
 			LocalDateTime today = LocalDateTime.now();
 			
-			return Paths.get(sucursal.get().getEmpresasRfc().get(0), 
+			return Paths.get(sucursal.get().getEmpresa().getRfc(), 
 					String.valueOf(today.getYear()),
 					String.valueOf(today.getMonthValue()), 
 					"Caja-Chica",

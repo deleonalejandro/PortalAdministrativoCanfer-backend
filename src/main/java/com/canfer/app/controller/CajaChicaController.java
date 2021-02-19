@@ -51,6 +51,7 @@ public class CajaChicaController {
 	
 		model.addAttribute("selectedCompany", "PAE920709D75");
 		model.addAttribute("selectedClave", "A-0080");
+		model.addAttribute("clasificaciones", superRepo.findAllClasificacionCajaChicas());
 		/*
 		// getting the authenticated user
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();

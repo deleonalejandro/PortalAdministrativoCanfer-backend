@@ -43,13 +43,14 @@ public class FormularioCajaChica {
 	private Float total;
 
 	//Constructor
-	public FormularioCajaChica(Sucursal sucursal, Long folio) {
+	public FormularioCajaChica(Sucursal sucursal, Long folio, String responsable) {
 		
 		super(); 
 		this.sucursal = sucursal;
 		this.folio = folio;
 		this.estatus = "ABIERTO";
 		this.total = 0F;
+		this.responsable = responsable;
 	}
 	
 	public FormularioCajaChica() {

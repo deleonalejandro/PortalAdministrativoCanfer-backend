@@ -67,6 +67,19 @@ public class CajaChicaFunctionalityController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	/*******************************
+	 * BORRAR FORMULARIO CAJA CHICA
+	 * 
+	 * @param id - FormularioCajaChica object id.
+	 */
+	@GetMapping("/cancelarformcc")
+	public ResponseEntity<Object> cancelarFormCC(@RequestParam Long id) {
+		
+		actioner.cancelarForm(id);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	/*********************************************
 	 * GUARDAR NUEVO DETALLE FORMULARIO CAJA CHICA
 	 * 
@@ -76,10 +89,12 @@ public class CajaChicaFunctionalityController {
 	 * @param ra - RedirectAttributes for HTTP request.
 	 */
 	@PostMapping("/savedetformcc")
-	public void saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, RedirectAttributes ra) {
+	public ResponseEntity<Object> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, RedirectAttributes ra,
+			@CookieValue("suc") Long idSucursal) {
 		
 		ArchivoXML fileXML = null;
 		ArchivoPDF filePDF = null;
+		detFormCCDto.setIdSucursal(idSucursal);
 		
 		// initializing directories
 		storageService.init();
@@ -128,6 +143,8 @@ public class CajaChicaFunctionalityController {
 		}
 		
 		actioner.saveDet(detFormCCDto, fileXML, filePDF);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
 	

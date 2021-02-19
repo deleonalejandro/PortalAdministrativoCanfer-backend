@@ -2,7 +2,6 @@ package com.canfer.app.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -107,9 +106,9 @@ public class UserPrincipal implements UserDetails {
 		return this.usuario.getEmpresasRfc();
 	}
 	
-	
+	//TODO check out for potential errors
 	public String getName() {
-		return this.usuario.getNombre() + "+" +this.usuario.getApellido();
+		return this.usuario.getNombre() + " " + this.usuario.getApellido();
 	}
 	
 
