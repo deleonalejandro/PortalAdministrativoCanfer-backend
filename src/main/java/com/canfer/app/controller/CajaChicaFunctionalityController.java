@@ -157,10 +157,17 @@ public class CajaChicaFunctionalityController {
 	
 	@GetMapping("/loadformdetails")
 	@ResponseBody
-	public List<DetFormularioCajaChica> showDetalleFormularioCC(@RequestParam("id") Long idFormCC) {
+	public List<DetFormularioCajaChica> getDetallesFormularioCC(@RequestParam("id") Long idFormCC) {
 		
-		return actioner.showDetFormularioCajaChica(idFormCC);
+		return actioner.listDetFormularioCajaChica(idFormCC);
 		
+	}
+	
+	@GetMapping("/loadallforms")
+	@ResponseBody
+	public List<FormularioCajaChica> getAllFormularioCC(@RequestParam Long idSucursal) {
+		
+		return actioner.getAllFormularioCajaChicas(idSucursal);
 	}
 	
 	@GetMapping("/excel")

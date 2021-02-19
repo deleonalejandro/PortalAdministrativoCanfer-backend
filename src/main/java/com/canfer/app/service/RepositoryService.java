@@ -583,4 +583,9 @@ public class RepositoryService {
 		
 		return sucursalRepo.findAllByUsuariosCanfer(usuarioCanfer); 
 	}
+	
+	public List<FormularioCajaChica> findAllFormularioCajaChicaBySucursal(Sucursal sucursal) {
+		
+		return formCCRepo.findAllBySucursal(sucursal);
+	}
 }

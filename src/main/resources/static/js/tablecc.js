@@ -7,7 +7,8 @@ $(document).ready(function() {
 		"info": false,
 		"searching": false,
 		ajax: {
-			dataSrc: "/cajachicaclient/loadallforms" 
+			url: "/cajachicaclient/loadallforms?idSucursal=" + Cookies.get("suc"),
+			dataSrc:""
 		},
 		scrollX: true,
 		"language": {
@@ -17,10 +18,10 @@ $(document).ready(function() {
 			{
 				"className": 'xls-control',
 				"orderable": false,
-				"data": null,
+				"data": "idFormularioCajaChica",
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id='+idFormularioCajaChica +'"><i class="fas fa-file-excel"></i></a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id="><i class="fas fa-file-excel"></i></a>'
 				},
 			},
 			{

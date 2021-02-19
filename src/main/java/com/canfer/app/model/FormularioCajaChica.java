@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 	
 @Entity(name = "FormularioCajaChica")
@@ -22,6 +24,7 @@ public class FormularioCajaChica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idFormularioCajaChica; 
 	
+	@JsonIgnore
     @JoinColumn(name = "SocioNegocio")
     @ManyToOne(fetch = FetchType.LAZY)
     private Sucursal sucursal;
@@ -127,6 +130,15 @@ public class FormularioCajaChica {
 	public boolean isOpen() {
 		return this.estatus.equalsIgnoreCase("ABIERTO");
 	}
+	
+	public String getNombreSucursal() {
+		return this.sucursal.getNombreSucursal();
+	}
+	
+	public String getClaveProvSucursal() {
+		return this.sucursal.getClaveProv();
+	}
+	
 	
 	
 	

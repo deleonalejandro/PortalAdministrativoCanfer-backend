@@ -1,8 +1,8 @@
 package com.canfer.app.model;
 
+
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,8 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity(name = "DetFormularioCajaChica")
 public class DetFormularioCajaChica {
@@ -22,14 +24,17 @@ public class DetFormularioCajaChica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idDetFormularioCajaChica; 
 	
+	@JsonIgnore
 	@JoinColumn(name = "idDocumento")
 	@OneToOne
 	private Documento documento; 
 	
+	@JsonIgnore
     @JoinColumn(name = "idFormulario")
     @ManyToOne(targetEntity = FormularioCajaChica.class, fetch = FetchType.LAZY)
     private FormularioCajaChica formularioCajaChica;
 	
+	@JsonIgnore
 	@JoinColumn(name= "clasificacion")
 	@ManyToOne(targetEntity = ClasificacionCajaChica.class, fetch = FetchType.LAZY)
 	private ClasificacionCajaChica clasificacion;
@@ -131,6 +136,23 @@ public class DetFormularioCajaChica {
 		this.folio = folio;
 	} 
 	
+	public String getNombreArchivoXML() {
+		if (this.documento.hasXML()) {			
+			return this.documento.getArchivoXML().getNombre();
+		}
+		return null;
+	}
+	
+	public String getNombreArchivoPDF() {
+		if (this.documento.hasPDF()) {
+			return this.documento.getArchivoPDF().getNombre();			
+		}
+		return null;
+	}
+	
+	public String getNombreClasificacion() {
+		return this.clasificacion.getClasificacion();
+	}
 	
 	
 }

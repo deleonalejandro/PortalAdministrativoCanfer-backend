@@ -268,7 +268,20 @@ public class CajaChicaActions extends ModuleActions{
 		
 	}
 	
-	public List<DetFormularioCajaChica> showDetFormularioCajaChica(Long id) {
+	public List<FormularioCajaChica> getAllFormularioCajaChicas(Long idSucursal) {
+		
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(idSucursal);
+		
+		if (sucursal.isPresent()) {
+			
+			return superRepo.findAllFormularioCajaChicaBySucursal(sucursal.get());
+		}
+		
+		return Collections.emptyList();
+		
+	}
+	
+	public List<DetFormularioCajaChica> listDetFormularioCajaChica(Long id) {
 		
 		Optional<FormularioCajaChica> formCC = superRepo.findFormularioCCById(id);
 		
