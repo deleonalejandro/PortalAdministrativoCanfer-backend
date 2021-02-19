@@ -2,10 +2,6 @@
 $(document).ready(function() {
 
 	var table = $('#formularios').DataTable({
-		"paging": false,
-		"ordering": false,
-		"info": false,
-		"searching": false,
 		ajax: {
 			url: "/cajachicaclient/loadallforms?idSucursal=" + Cookies.get("suc"),
 			dataSrc:""
@@ -50,17 +46,17 @@ $(document).ready(function() {
 			{
 				data: "estatus",
 				"render": function(data) {
-					if (data.toUpperCase() == 'EN PROCESO') {
-						return '<span class="badge badge-orange">En Proceso</span>';
+					if (data.toUpperCase() == 'CERRADO') {
+						return '<span class="badge badge-orange">Cerrado</span>';
 					}
-					if (data.toUpperCase() == 'PAGADO') {
-						return '<span class="badge badge-green">Pagado</span>';
+					if (data.toUpperCase() == 'ABIERTO') {
+						return '<span class="badge badge-green">Abierto</span>';
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
 						return '<span class="badge badge-red">Cancelado</span>';
 					}
 					else {
-						return '<span class="badge badge-blue">N/A</span>';
+						return '<span class="badge badge-blue">'+data+'</span>';
 					}
 				}
 			},
@@ -68,7 +64,10 @@ $(document).ready(function() {
 			{ data: "total" }
 		],
 
-		"order": [[3,  "desc"]]
+		"order": [[3,  "desc"]],
+		"columnDefs": [
+		    { "width": "2%", "targets": [0,1,2] }
+		  ]
 	});
 
 
@@ -178,10 +177,8 @@ $(document).ready(function() {
 	$('#submitNewDet').on('click', function(event) {
 
 		event.preventDefault();
-		
-		var href = $(this).attr('href');
 
-		$.post( href, function( data ) {
+		$.post( '/cajachicaclient/savedetformcc', function( data ) {
 		  alert( "Respuesta: " + data );
 		});
 		
@@ -369,9 +366,9 @@ $(document).ready(function() {
 		var modData = JSON.stringify(data);
 		var formulario = JSON.parse(modData);
 
-
-		event.preventDefault();
-
+		document.getElementById("divTabla").hidden = true;
+		document.getElementById("divNuevo").hidden = false;
+		
 		//Llena los parametros del formulario 
 		$("#folioFormularioNew").text(formulario.folio);
 		$("#estatusNewForm").val(formulario.estatus);
@@ -380,16 +377,13 @@ $(document).ready(function() {
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
 		$("#comentarioNew").val(formulario.comentario);
-		$("#beneficiarioNew").val(formulario.beneficiario);
+		$("#responsableNew").val(formulario.responsable);
 		$('#nombreProveedor').val(jsonData.nombreProveedor);
 		$("#totalNew").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
 
 		//prepare cancel button too
 		$("#cancelarNewForm").attr("href", "#!");
-
-		document.getElementById("divTabla").hidden = true;
-		document.getElementById("divNuevo").hidden = false;
 
 
 		//Crea la tabla de los detalles
