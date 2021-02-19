@@ -111,7 +111,8 @@ $(document).ready(function() {
 			"info": false,
 			"searching": false,
 			ajax: {
-				dataSrc: "/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica
+				url: "/cajachicaclient/loadformdetails?id=" +  $("#idFormNew").val(),
+				dataSrc: ""
 			},
 			scrollX: true,
 			"language": {
@@ -175,13 +176,6 @@ $(document).ready(function() {
 
 	// Darle submit a New Det
 	$('#submitNewDet').on('click', function(event) {
-
-		event.preventDefault();
-
-		$.post( '/cajachicaclient/savedetformcc', function( data ) {
-		  alert( "Respuesta: " + data );
-		});
-		
 		
 		$('#newDetModal').modal('hide');
 		$('#wizard2-tab').removeClass('active');
@@ -203,6 +197,30 @@ $(document).ready(function() {
 
 
 	});
+	
+	$('#formNewDet').submit( function(event) {
+		
+		event.preventDefault();
+		
+		var data = new FormData(this);
+				
+		var url = "/cajachicaclient/savedetformcc";
+		
+		$.ajax({
+				url: url,
+				data: data,
+				cache: false,
+				contentType: false, 
+				processData: false,
+				type: 'POST',
+				success: function(response){
+					document.getElementById("formNewDet").reset();
+				}
+		})
+		table2.ajax.reload();
+		
+		
+	})
 	// Darle Siguiente a New Det
 	$('#siguienteNewDet').on('click', function() {
 
@@ -378,7 +396,7 @@ $(document).ready(function() {
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
 		$("#comentarioNew").val(formulario.comentario);
 		$("#responsableNew").val(formulario.responsable);
-		$('#nombreProveedor').val(jsonData.nombreProveedor);
+		$('#nombreProveedor').val(formulario.nombreProveedor);
 		$("#totalNew").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
 
@@ -398,7 +416,8 @@ $(document).ready(function() {
 			"info": false,
 			"searching": false,
 			ajax: {
-				dataSrc: "/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica
+				url: "/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val(),
+				dataSrc: ""
 			},
 			scrollX: true,
 			"language": {
