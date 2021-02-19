@@ -1,6 +1,7 @@
 package com.canfer.app.rest;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -141,6 +142,11 @@ public class FNCRestController {
     	
     	return superRepo.findAllProveedorByEmpresa(company);
     	
+    }
+    
+    @GetMapping("/init")
+    public List<String> initiliazeDatatable() {
+    	return Collections.emptyList();
     }
   			
 }

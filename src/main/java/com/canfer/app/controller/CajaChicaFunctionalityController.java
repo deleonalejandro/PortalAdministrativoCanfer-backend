@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,11 +90,12 @@ public class CajaChicaFunctionalityController {
 	 * @param ra - RedirectAttributes for HTTP request.
 	 */
 	@PostMapping("/savedetformcc")
-	public ResponseEntity<Object> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, RedirectAttributes ra,
+	public ResponseEntity<Boolean> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, Model model,
 			@CookieValue("suc") Long idSucursal) {
 		
 		ArchivoXML fileXML = null;
 		ArchivoPDF filePDF = null;
+		Boolean upload;
 		detFormCCDto.setIdSucursal(idSucursal);
 		
 		// initializing directories
@@ -101,7 +103,7 @@ public class CajaChicaFunctionalityController {
 		
 		if (mFileXML.isEmpty() && mFilePDF.isEmpty()) {
 			
-			ra.addFlashAttribute("upload", false);
+			upload = false;
 			
 		} else {
 			
@@ -121,20 +123,20 @@ public class CajaChicaFunctionalityController {
 				
 				boolean value = actioner.upload(fileXML, filePDF, detFormCCDto.getIdSucursal());
 				
-				ra.addFlashAttribute("upload", value);
+				upload = value;
 				
 				
 			} catch (StorageException e) {
 				
 				Log.falla(e.getMessage(), "ERROR_DB");
 				
-				ra.addFlashAttribute("upload", false);
+				upload = false;
 				
 			} catch (NotFoundException e) {
 				
 				Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
 				
-				ra.addFlashAttribute("upload", false);
+				upload = false;
 				
 			}
 			
@@ -144,15 +146,16 @@ public class CajaChicaFunctionalityController {
 		
 		actioner.saveDet(detFormCCDto, fileXML, filePDF);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(upload, HttpStatus.OK);
 		
 	}
 	
 	@GetMapping("/deletedetformcc")
-	public void deleteDetalleFormCC(Long id) {
+	public ResponseEntity<Object> deleteDetalleFormCC(@RequestParam Long id) {
 		
 		actioner.delete(id);
 		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/loadformdetails")
