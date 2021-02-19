@@ -45,7 +45,12 @@ $(document).ready(function() {
 				},
 			},
 
-			{ data: "fecha" },
+			{
+				data: "fecha",
+				"render": function(data) {
+					return data.split("T")[0]
+				}
+			},
 			{ data: "folio" },
 			{
 				data: "estatus",
@@ -125,9 +130,9 @@ $(document).ready(function() {
 			{
 				data: "nombreArchivoPDF",
 				"className": 'detpdf-control',
-				"render": function(data,row) {
+				"render": function(data, row) {
 					if (data != null) {
-						return '<a href="/cajachicaclient/download/pdf?='+ row.idDocumento+'"><u><font color="blue">' + data + '</font></u></a>';
+						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + data + '</font></u></a>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -136,9 +141,9 @@ $(document).ready(function() {
 			{
 				data: "nombreArchivoXML",
 				"className": 'detxml-control',
-				"render": function(data,row) {
+				"render": function(data, row) {
 					if (data != null) {
-						return '<a href="/cajachicaclient/download/xml?='+ row.idDocumento+'"><u><font color="blue">' + data + '</font></u></a>';
+						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + data + '</font></u></a>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -146,7 +151,12 @@ $(document).ready(function() {
 			},
 			{ data: "folio" },
 			{ data: "nombreProveedor" },
-			{ data: "fecha" },
+			{
+				data: "fecha",
+				"render": function(data) {
+					return data.split("T")[0]
+				}
+			},
 			{ data: "beneficiario" },
 			{ data: "monto" }
 		],
@@ -172,7 +182,7 @@ $(document).ready(function() {
 			//prepare cancel button too
 			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
 		});
-		
+
 		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica).load();
 
 		deshabilitarEntradas();
@@ -197,32 +207,32 @@ $(document).ready(function() {
 			type: 'POST',
 		});
 
-		saveDet.done(function(upload){
+		saveDet.done(function(upload) {
 
-			if(upload == true) {
+			if (upload == true) {
 				$('.alert-success').prop('hidden', false);
 			} else {
 				$('.alert-danger').prop('hidden', false);
 			}
-			
-			setTimeout(function(){
+
+			setTimeout(function() {
 				$('.alert').prop('hidden', true);
-				
+
 			}, 4000);
-			
-			
+
+
 		});
 		saveDet.always(function() {
-			
+
 
 			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
-			
+
 			$('#newDetModal').modal('hide');
-			
+
 			reestablecerModal();
-			
+
 			deshabilitarPDF();
-	
+
 			deshabilitarXML();
 
 
@@ -245,28 +255,28 @@ $(document).ready(function() {
 	});
 	// Darle Anterior a New Det
 	$('#anteriorNewDet').on('click', function() {
-		
+
 		reestablecerModal();
 
 	});
 	// Cancelar el upload xml
 	$('#closexml').on('click', function() {
-		
+
 		deshabilitarXML();
 
-		
+
 	});
 	// Cancelar el upload pdf
 	$('#closepdf').on('click', function() {
 
 		deshabilitarPDF();
-		
+
 	});
 	// Darle Cancelar a New Det
 	$('#cancelarNewDet').on('click', function() {
 
 		$('#newDetModal').modal('hide');
-		
+
 		reestablecerModal();
 
 
@@ -284,27 +294,27 @@ $(document).ready(function() {
 
 
 	});
-	
+
 	// Darle Submit a New Formulario
 	$('#submitNewForm').on('click', function() {
-		
+
 		habilitarEntradas();
 
 	});
 
 	// Adjuntar un pdf al new details
 	$('#btn-add-pdf').on('click', function() {
-		
+
 		habilitarPDF();
 
 		$('#siguienteNewDet').prop("disabled", false);
 	});
-	
+
 	// adjuntar un xml al new details
 	$('#btn-add-xml').on('click', function() {
 
 		habilitarXML();
-		
+
 		$('#siguienteNewDet').prop("disabled", false);
 	});
 
@@ -313,19 +323,15 @@ $(document).ready(function() {
 
 	$('#detallesNuevoCajaChica tbody').on('click', 'td.detailsdet-control', 'tr', function(event) {
 
-		var tr = $(this).closest('tr');
-		var jsonData = table.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var d = table2.row(this).data();
 
-alert(jsonData)
-		$('#headerValue').text('Detalle ' + jsonData.folio)
-		$('#detail-fechaDet').val(jsonData.fecha);
-		$('#detail-clasificacion').val(jsonData.clasificacion);
-		$('#detail-monto').val(jsonData.monto);
-		$('#detail-folio').val(jsonData.folio);
-		$('#detail-beneficiario').val(jsonData.beneficiario);
-		$('#detail-nombreProveedor').val(jsonData.nombreProveedor);
+		$('#headerValue').text('Detalle ' + d.folio)
+		$('#detail-fechaDet').val(d.fecha.split("T")[0]);
+		$('#detail-clasificacion').val(d.idClasificacion);
+		$('#detail-monto').val(d.monto);
+		$('#detail-folio').val(d.folio);
+		$('#detail-beneficiario').val(d.beneficiario);
+		$('#detail-nombreProveedor').val(d.nombreProveedor);
 
 		$('#detailsModal').modal('show');
 
@@ -339,10 +345,7 @@ alert(jsonData)
 
 		event.preventDefault();
 
-		var tr = $(this).closest('tr');
-		var data = table.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var jsonData = table.row(this).data();
 
 		$('.deleteForm .delBtn').attr("href", "/cajachicaclient/deleteformcc?id=" + jsonData.idFormularioCajaChica);
 		$('#deleteModal').modal('show');
@@ -359,10 +362,8 @@ alert(jsonData)
 	// Funcion para detalles del Formulario
 
 	$('#formularios tbody').on('click', 'td.details-control', function() {
-		var tr = $(this).closest('tr');
-		var data = table.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var formulario = JSON.parse(modData);
+
+		var formulario = table.row(this).data();
 
 		document.getElementById("divTabla").hidden = true;
 		document.getElementById("divNuevo").hidden = false;
@@ -372,11 +373,11 @@ alert(jsonData)
 
 		//prepare cancel button too
 		$("#cancelarNewForm").attr("href", "#!");
-		
+
 		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
 
 	});
-	
+
 	//Funcion para hacer una suma
 
 	var intVal = function(i) {
@@ -385,11 +386,11 @@ alert(jsonData)
 			typeof i === 'number' ?
 				i : 0;
 	};
-	
+
 	//Llenar el formulario con la info que se proporciona
-	
-	var llenarFormulario = function(formulario){
-		
+
+	var llenarFormulario = function(formulario) {
+
 		//Llena los parametros del formulario 
 		$("#folioFormularioNew").text(formulario.folio);
 		$("#estatusNewForm").val(formulario.estatus);
@@ -403,102 +404,103 @@ alert(jsonData)
 		$("#totalNew").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
 	}
-	
+
 	//Habilitar la carga de xml
-	
+
 	var habilitarXML = function() {
-		
+
 		document.getElementById("dateNewDiv").hidden = true;
 		document.getElementById("montoNewDiv").hidden = true;
 		document.getElementById("folioNewDiv").hidden = true;
 		document.getElementById("provNewDiv").hidden = true;
-		
+
 		document.getElementById("div-add-xml").hidden = false;
 		document.getElementById("div-btn-add-xml").hidden = true;
-		
+
 	}
-	
+
 	//Quitar un xml con sus divs
-	
-	var deshabilitarXML = function(){
-		
+
+	var deshabilitarXML = function() {
+
 		document.getElementById("dateNewDiv").hidden = false;
 		document.getElementById("montoNewDiv").hidden = false;
 		document.getElementById("folioNewDiv").hidden = false;
 		document.getElementById("provNewDiv").hidden = false;
-		
+
 		document.getElementById("fechaDet").value = "";
 		document.getElementById("realDate").value = "";
 		document.getElementById("monto").value = "";
 		document.getElementById("folio").value = "";
 		document.getElementById("nombreProveedor").value = "";
-		
+
 		document.getElementById("xml").value = "";
-		
+
 		document.getElementById("div-add-xml").hidden = true;
 		document.getElementById("div-btn-add-xml").hidden = false;
-		
+
 	}
-	
+
 	//Habilitar la carga de pdf 
-	
-	var habilitarPDF = function(){
-		
+
+	var habilitarPDF = function() {
+
 		document.getElementById("div-add-pdf").hidden = false;
 		document.getElementById("div-btn-add-pdf").hidden = true;
-		
+
 	}
-	
+
 	//Quitar un pdf con sus divs
 
-	var deshabilitarPDF = function(){
-		
+	var deshabilitarPDF = function() {
+
 		document.getElementById("div-add-pdf").hidden = true;
 		document.getElementById("div-btn-add-pdf").hidden = false;
 
 		document.getElementById("pdf").value = "";
-		
+
 	}
-	
+
 	//Deja en blanco los parametros y reestablece los divs
-	
-	var reestablecerModal = function(){
-		
+
+	var reestablecerModal = function() {
+
 		$('#siguienteNewDet').prop("disabled", true);
 		$('#wizard2-tab').removeClass('active');
 		$('#wizard1-tab').addClass('active');
 		document.getElementById("wizard2").hidden = true;
 		document.getElementById("btns-next").hidden = false;
 		document.getElementById("btns-prev").hidden = true;
-		
+
 		document.getElementById("formNewDet").reset();
-		
+
 		deshabilitarPDF();
 
 		deshabilitarXML();
-		
-		
+
+
 	}
-	
+
 	//Habilitar vista tabla entradas
-	
-	var habilitarEntradas = function(){
-		
+
+	var habilitarEntradas = function() {
+
 		document.getElementById("divTabla").hidden = false;
 		document.getElementById("divNuevo").hidden = true;
-		
-		
+
+
 	}
-	
-	
+
+
 	//Deshabilitar vista tabla entradas
 
 	var deshabilitarEntradas = function() {
-		
+
 		document.getElementById("divTabla").hidden = true;
 		document.getElementById("divNuevo").hidden = false;
-		
-		
+
+
 	}
-	
+
+
 });

@@ -291,7 +291,8 @@
 													</select>
 												</div>
 											</div>
-											<div class="alert alert-success alert-icon mt-3" role="alert" hidden=true>
+											<div class="alert alert-success alert-icon mt-3" role="alert"
+												hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -302,7 +303,8 @@
 												<div class="alert-icon-content">Se procesó
 													correctamente el nuevo detalle del fomulario.</div>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" role="alert" hidden=true>
+											<div class="alert alert-danger alert-icon mt-3" role="alert"
+												hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -606,7 +608,8 @@
 																					<input type="text" id="fechaDet" name="fechaDet"
 																						style="height: 25px" value="" />
 																				</div>
-																					<input type="text" id="realDate" name="realDate" value="" hidden />
+																				<input type="text" id="realDate" name="realDate"
+																					value="" hidden />
 																			</div>
 																			<div class="row pt-1">
 																				<div class="col-4">
@@ -757,7 +760,14 @@
 															<div class="col-4">
 																<label for="clasificacionNewDet"
 																	class="form-control-label mb-0 font-weight-bold">
-																	Clasificación:</label>
+																	Clasificación:</label> <select
+																	class="form-control form-control-solid"
+																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																	id="idClasificacion" name="idClasificacion">
+																	<option th:each="clasificacion : ${clasificaciones}"
+																		th:value="${clasificacion.idClasificacionCajaChica}"
+																		th:text="${clasificacion.clasificacion}"></option>
+																</select>
 															</div>
 															<div class="col-6">
 																<!-- INPUT IMPORTE ESTATUS -->
@@ -812,7 +822,8 @@
 															<div class="col-6">
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-nombreProveedor" name="detail-nombreProveedor" />
+																	id="detail-nombreProveedor"
+																	name="detail-nombreProveedor" />
 															</div>
 														</div>
 														<div class="row pt-1">
@@ -919,7 +930,8 @@
 		</footer>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
 		crossorigin="anonymous"></script>
