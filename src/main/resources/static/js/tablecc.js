@@ -7,6 +7,7 @@ $(document).ready(function() {
 			dataSrc:""
 		},
 		scrollX: true,
+		stateSave: true,
 		"language": {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		},
@@ -100,8 +101,20 @@ $(document).ready(function() {
 
 		//Crea la tabla de los detalles
 		var table2 = $('#detallesNuevoCajaChica').DataTable({
-			"drawCallback": function(settings) {
+			"drawCallback": function(settings, row, data, start, end, display) {
 				table2.columns.adjust();
+				
+				var api = this.api(), data;
+				
+
+				var total = this.api()
+                .column( 9 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+				$('#totalNew').val(total);
 				
 			},
 			"paging": false,
@@ -109,8 +122,8 @@ $(document).ready(function() {
 			"info": false,
 			"searching": false,
 			ajax: {
-				url: "/cajachicaclient/loadformdetails?id=" +  $("#idFormNew").val(),
-				dataSrc:""
+				url: "/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val(),
+				dataSrc: ""
 			},
 			scrollX: true,
 			"language": {
@@ -132,25 +145,24 @@ $(document).ready(function() {
 					"bSortable": false,
 					"data": null,
 					"render": function() {
-						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' +  $("#idFormNew").val() + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 					},
 				},
 				{ data: "nombreClasificacion" },
-				{
-					data: "documento",
+				
+				{data: "nombreArchivoPDF",
 					"className": 'detpdf-control',
 					"render": function(data) {
-						if (data.archivoPDF != null) {
-							return '<span class="badge badge-blue">' + $("#idFormNew").val() + '</span>';
+						if (data != null) {
+							return '<u><font color="blue"><br>'+data+'</font></u>';
 						}
 					}
 				},
-				{
-					data: "documento",
+				{data: "nombreArchivoXML",
 					"className": 'detxml-control',
 					"render": function(data) {
-						if (data.archivoXML != null) {
-							return '<span class="badge badge-blue">' + $("#idFormNew").val() + '</span>';
+						if (data != null) {
+							return '<u><font color="blue"><br>'+data+'</font></u>';
 						}
 					}
 				},
@@ -232,6 +244,7 @@ $(document).ready(function() {
 		
 		
 	})
+	
 	// Darle Siguiente a New Det
 	$('#siguienteNewDet').on('click', function() {
 
@@ -390,6 +403,26 @@ $(document).ready(function() {
 		$('.deleteForm .delBtn').attr("href", "/cajachicaclient/deleteformcc?id=" + jsonData.idFormularioCajaChica);
 		$('#deleteModal').modal('show');
 	});
+	
+	// Funcion para delete detalle
+
+	$('#detallesNuevoCajaChica tbody').on('click', 'td.deletedet-control', 'tr', function(event) {
+				
+				var api = this.api(), data;
+				
+
+				var total = this.api()
+                .column( 9 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+				$('#totalNew').val(total);
+
+		
+		
+	});
 
 	// Funcion para detalles del Formulario
 
@@ -474,7 +507,7 @@ $(document).ready(function() {
 					"className": 'detpdf-control',
 					"render": function(data) {
 						if (data != null) {
-							return '<span class="badge badge-blue">' + data + '</span>';
+							return '<u><font color="blue"><br>'+data+'</font></u>';
 						}
 					}
 				},
@@ -482,7 +515,7 @@ $(document).ready(function() {
 					"className": 'detxml-control',
 					"render": function(data) {
 						if (data != null) {
-							return '<span class="badge badge-blue">' + data + '</span>';
+							return '<u><font color="blue"><br>'+data+'</font></u>';
 						}
 					}
 				},
