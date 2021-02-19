@@ -127,7 +127,7 @@ $(document).ready(function() {
 				"className": 'detpdf-control',
 				"render": function(row) {
 					if (row.nombreArchivoPDF != null) {
-						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoPDF + '</font></u></a>';
+						return '<a href="/cajachicaclient/download/pdf?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoPDF + '</font></u></a>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -135,10 +135,10 @@ $(document).ready(function() {
 			},
 			{
 				data: null,
-				"className": 'detpdf-control',
+				"className": 'detxml-control',
 				"render": function(row) {
 					if (row.nombreArchivoXML != null) {
-						return '<a href="/cajachicaclient/download/xml?=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>';
+						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>';
 					} else {
 						return '<a>N/D</a>';
 					}
