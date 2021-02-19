@@ -134,7 +134,7 @@ $(document).ready(function() {
 				}
 			},
 			{
-				data: ["nombreArchivoXML","idDocumento"],
+				data: "nombreArchivoXML",
 				"className": 'detxml-control',
 				"render": function(row) {
 					if (data != null) {
@@ -318,6 +318,7 @@ $(document).ready(function() {
 		var modData = JSON.stringify(data);
 		var jsonData = JSON.parse(modData);
 
+alert(jsonData)
 		$('#headerValue').text('Detalle ' + jsonData.folio)
 		$('#detail-fechaDet').val(jsonData.fecha);
 		$('#detail-clasificacion').val(jsonData.clasificacion);
