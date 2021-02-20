@@ -87,7 +87,7 @@
                         	<div th:each="mapEntry: ${suco}"  class="col-xxl-4 col-xl-6 mb-4">
                                 
                                 <!-- TARJETAS POR EMPRESA -->
-                                <a class="card lift h-100" th:id="${mapEntry.key.idSucursal}" th:href="@{/cajachicaclient}">
+                                <a class="card lift h-100" th:id="${mapEntry.key.idSucursal}" th:href="@{/cajachicaclient/home}">
                                 	
                                 	<div class="text-center mt-5">
                                 	<img class="card-img-top" th:src="@{'company/profile/' + ${mapEntry.value.profilePictureName}}" alt="logo" style="width: 10rem;">
