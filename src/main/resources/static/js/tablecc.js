@@ -21,7 +21,7 @@ $(document).ready(function() {
 				"data": "idFormularioCajaChica",
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/excel?id="><i class="fas fa-file-archive 2x"></i></a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/zip?id='+data+'"><i class="fas fa-file-archive 2x"></i></a>'
 				},
 			},
 			{
@@ -45,7 +45,12 @@ $(document).ready(function() {
 				},
 			},
 
-			{ data: "fecha" },
+			{ data: "fecha",
+				"render": function(data){
+					return data.split("T")[0]
+				}
+			
+			},
 			{ data: "folio" },
 			{
 				data: "estatus",
@@ -86,7 +91,7 @@ $(document).ready(function() {
 					return intVal(a) + intVal(b);
 				}, 0);
 
-			$('#totalNew').val(total);
+			$('#total').val(total);
 
 		},
 		"paging": false,
@@ -146,7 +151,12 @@ $(document).ready(function() {
 			},
 			{ data: "folio" },
 			{ data: "nombreProveedor" },
-			{ data: "fecha" },
+			{ data: "fecha",
+				"render": function(data){
+					return data.split("T")[0]
+				}
+			
+			},
 			{ data: "beneficiario" },
 			{ data: "monto" }
 		],
@@ -382,8 +392,8 @@ $(document).ready(function() {
 	var llenarFormulario = function(formulario) {
 
 		//Llena los parametros del formulario 
-		$("#folioFormularioNew").text(formulario.folio);
-		$("#estatusNewForm").val(formulario.estatus);
+		$("#idFormularioCajaChica").text(formulario.folio);
+		$("#estatus").val(formulario.estatus);
 		$("#idCajaChicaNew").val(formulario.claveProvSucursal);
 		$("#sucursalNew").val(formulario.nombreSucursal);
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
@@ -391,8 +401,10 @@ $(document).ready(function() {
 		$("#comentarioNew").val(formulario.comentario);
 		$("#responsableNew").val(formulario.responsable);
 		$('#nombreProveedor').val(formulario.nombreProveedor);
-		$("#totalNew").val(formulario.total);
+		$("#total").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
+		
+		prepareSelect(formulario.estatus);
 	}
 
 	//Habilitar la carga de xml
@@ -515,6 +527,115 @@ $(document).ready(function() {
 
 
 	}
+	
+	//Habilitar los estatus necesarios
+	
+	var estatusAbierto = function(){
+		
+		$("#estatus").empty();
+		
+		select = document.getElementById("estatus");
+        option = document.createElement( 'option' );
+        option.value = option.text = "ABIERTO";
+        select.add( option );
+		
+		option.value = option.text = "ENVIADO";
+        select.add( option );
+
+		option.value = option.text = "CANCELADO";
+        select.add( option );
+		
+	}
+	
+		var estatusEnviado = function(){
+			
+		$("#estatus").empty();
+		
+		select = document.getElementById("estatus");
+        option = document.createElement( 'option' );
+        option.value = option.text = "ENVIADO";
+        select.add( option );
+		
+		option.value = option.text = "PAGADO";
+        select.add( option );
+
+		option.value = option.text = "CANCELADO";
+        select.add( option );
+
+		option.value = option.text = "EN REVISIÓN";
+        select.add( option );
+		
+	}
+	
+	var estatusCancelado = function(){
+		
+		$("#estatus").empty();
+		
+		select = document.getElementById("estatus");
+        option = document.createElement( 'option' );
+		
+		option.value = option.text = "CANCELADO";
+        select.add( option );
+		
+	}
+	
+	var estatusPagado = function(){
+		
+		$("#estatus").empty();
+		
+		select = document.getElementById("estatus");
+        option = document.createElement( 'option' );
+        option.value = option.text = "PAGADO";
+        select.add( option );
+		
+		option.value = option.text = "CANCELADO";
+        select.add( option );
+		
+	}
+	
+	var estatusEnRevision = function(){
+		
+		$("#estatus").empty();
+		
+		select = document.getElementById("estatus");
+        option = document.createElement( 'option' );
+        option.value = option.text = "EN REVISIÓN";
+        select.add( option );
+		
+		option.value = option.text = "CANCELADO";
+        select.add( option );
+
+		option.value = option.text = "PAGADO";
+        select.add( option );
+		
+	}
+	
+	var prepareSelect = function(option){
+		
+		if (option == "ABIERTO"){
+			
+			estatusAbierto();
+			
+		} else if (option == "ENVIADO"){
+			
+			estatusEnviado();
+			
+		} else if (option == "CANCELADO"){
+			
+			estatusCancelado();
+			
+		} else if (option == "PAGADO"){
+			
+			estatusPagado();
+			
+		} else if (option == "EN REVISIÓN"){
+			
+			estatusEnRevision();
+			
+		}
+		
+	}
+	
 
 
 });
