@@ -51,6 +51,12 @@ public class DetFormularioCajaChica {
 	private String folio;
 	
 	private String nombreProveedor;
+
+	private String numeroGuia;
+	
+	private String paquetería;
+	
+	private String vigenciaSat;
 	
 	//Constructor
 	public DetFormularioCajaChica() {
@@ -157,6 +163,39 @@ public class DetFormularioCajaChica {
 	public Long getIdDocumento() {
 		return this.documento.getIdDocumento();
 	}
+
+	public LocalDateTime getFechaMod() {
+		return fechaMod;
+	}
+
+	public void setFechaMod(LocalDateTime fechaMod) {
+		this.fechaMod = fechaMod;
+	}
+
+	public String getNumeroGuia() {
+		return numeroGuia;
+	}
+
+	public void setNumeroGuia(String numeroGuia) {
+		this.numeroGuia = numeroGuia;
+	}
+
+	public String getPaquetería() {
+		return paquetería;
+	}
+
+	public void setPaquetería(String paquetería) {
+		this.paquetería = paquetería;
+	}
+
+	public String getVigenciaSat() {
+		return vigenciaSat;
+	}
+
+	public void setVigenciaSat(String vigenciaSat) {
+		this.vigenciaSat = vigenciaSat;
+	}
+	
 	
 	
 }
