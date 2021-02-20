@@ -87,7 +87,7 @@
                         	<div th:each="mapEntry: ${suco}"  class="col-xxl-4 col-xl-6 mb-4">
                                 
                                 <!-- TARJETAS POR EMPRESA -->
-                                <a class="card lift h-100" th:id="${mapEntry.key.idSucursal}" th:href="@{/cajachicaclient/home}">
+                                <a class="card lift h-100" th:id="${mapEntry.key.idSucursal}" th:href="@{/cajachicaclient}">
                                 	
                                 	<div class="text-center mt-5">
                                 	<img class="card-img-top" th:src="@{'company/profile/' + ${mapEntry.value.profilePictureName}}" alt="logo" style="width: 10rem;">
@@ -95,7 +95,7 @@
                                     <div class="card-body d-flex justify-content-center flex-column">
                                         <div class="d-flex align-items-center justify-content-between">
                                             <div class="mr-3"> 
-                                                <h5>Clave de Sucursal</h5>
+                                                <h5><div th:text="${mapEntry.key.nombreSucursal}"></div></h5>
                                                 <div class="text-muted" th:text="${mapEntry.key.claveProv}"></div>
                                             </div>
                                         </div>

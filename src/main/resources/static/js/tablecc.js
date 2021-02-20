@@ -356,9 +356,8 @@ $(document).ready(function() {
 
 		var formulario = table.row(this).data();
 
-		document.getElementById("divTabla").hidden = true;
-		document.getElementById("divNuevo").hidden = false;
-
+		deshabilitarEntradas();
+		
 		//Llena los parametros del formulario 
 		llenarFormulario(formulario);
 
@@ -407,6 +406,12 @@ $(document).ready(function() {
 
 		document.getElementById("div-add-xml").hidden = false;
 		document.getElementById("div-btn-add-xml").hidden = true;
+		
+		document.getElementById("fechaDet").required = false;
+		document.getElementById("realDate").required = false;
+		document.getElementById("monto").required = false;
+		document.getElementById("folio").required = false;
+		document.getElementById("nombreProveedor").required = false;
 
 	}
 
@@ -429,6 +434,12 @@ $(document).ready(function() {
 
 		document.getElementById("div-add-xml").hidden = true;
 		document.getElementById("div-btn-add-xml").hidden = false;
+		
+		document.getElementById("fechaDet").required = true;
+		document.getElementById("realDate").required = true;
+		document.getElementById("monto").required = true;
+		document.getElementById("folio").required = true;
+		document.getElementById("nombreProveedor").required = true;
 
 	}
 
@@ -452,7 +463,9 @@ $(document).ready(function() {
 
 	}
 
-	//Deja en blanco los parametros y reestablece los divs
+
+
+	//Solo reestablece los divs
 
 	var reestablecerModal = function() {
 
@@ -463,11 +476,20 @@ $(document).ready(function() {
 		document.getElementById("btns-next").hidden = false;
 		document.getElementById("btns-prev").hidden = true;
 
-		document.getElementById("formNewDet").reset();
-
 		deshabilitarPDF();
 
 		deshabilitarXML();
+
+
+	}
+	
+	//Deja en blanco los parametros y reestablece los divs
+
+	var reestablecerForm = function() {
+		
+		reestablecerModal();
+
+		document.getElementById("formNewDet").reset();
 
 
 	}
@@ -479,8 +501,8 @@ $(document).ready(function() {
 		document.getElementById("divTabla").hidden = false;
 		document.getElementById("divNuevo").hidden = true;
 		table.columns.adjust();
-
-
+		table.columns.adjust();
+		
 	}
 
 

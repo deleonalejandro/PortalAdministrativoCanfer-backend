@@ -208,10 +208,11 @@
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden>PAE920709D75</div>
 							<div id="selectedClave" th:text="${selectedSucursal}" hidden>A-0080</div>
 							<div class="card-body">
-
+								
+								
 								<!-- DIV DONDE ESTA LA TABLA -->
 								<div class="datatable" id="divTabla">
-
+									<h4 class="float-right"> REGISTRO DE FORMULARIOS </h4>
 									<div class="row">
 										<!-- BOTON NUEVO FORMULARIO -->
 										<div class="col-6 pb-3 pl-3">
@@ -232,7 +233,7 @@
 												<th></th>
 												<th></th>
 												<th>Fecha</th>
-												<th>Folio</th>
+												<th>Formulario</th>
 												<th>Estatus</th>
 												<th>Responsable</th>
 												<th>Total</th>
@@ -244,7 +245,7 @@
 												<th></th>
 												<th></th>
 												<th>Fecha</th>
-												<th>Folio</th>
+												<th>Formulario</th>
 												<th>Estatus</th>
 												<th>Responsable</th>
 												<th>Total</th>
@@ -606,7 +607,7 @@
 																				</div>
 																				<div class="col-6">
 																					<input type="text" id="fechaDet" name="fechaDet"
-																						style="height: 25px" value="" />
+																						style="height: 25px" value="" required=true/>
 																				</div>
 																				<input type="text" id="realDate" name="realDate"
 																					value="" hidden />
@@ -621,7 +622,7 @@
 																					<!-- INPUT IMPORTE ESTATUS -->
 																					<select class="form-control form-control-solid"
 																						style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																						id="idClasificacion" name="idClasificacion">
+																						id="idClasificacion" name="idClasificacion" required=true>
 																						<option
 																							th:each="clasificacion : ${clasificaciones}"
 																							th:value="${clasificacion.idClasificacionCajaChica}"
@@ -648,7 +649,7 @@
 																						<input type="number" min="0" step="0.01"
 																							style="height: 20px"
 																							class="form-control form-control-sm bg-white"
-																							id="monto" name="monto" />
+																							id="monto" name="monto" required=true/>
 																					</div>
 																				</div>
 																			</div>
@@ -661,7 +662,7 @@
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="folio" name="folio" />
+																						id="folio" name="folio" required=true/>
 																				</div>
 																			</div>
 																			<div class="row pt-1" id="provNewDiv">
@@ -673,7 +674,7 @@
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="nombreProveedor" name="nombreProveedor" />
+																						id="nombreProveedor" name="nombreProveedor" required=true/>
 																				</div>
 																			</div>
 																			<div class="row pt-1">
@@ -685,7 +686,7 @@
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="beneficiario" name="beneficiario" />
+																						id="beneficiario" name="beneficiario" required=true/>
 																				</div>
 																			</div>
 
