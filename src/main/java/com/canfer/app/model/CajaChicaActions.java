@@ -28,6 +28,7 @@ import com.canfer.app.service.ExcelService;
 
 import javassist.NotFoundException;
 import jxl.write.WriteException;
+import net.bytebuddy.asm.Advice.Return;
 
 @Service("CajaChicaActions")
 public class CajaChicaActions extends ModuleActions{
@@ -142,14 +143,6 @@ public class CajaChicaActions extends ModuleActions{
 
 	@Override
 	protected ResponseEntity<Resource> download(String method, String repo, Long id, String action) {
-		
-		Optional<Archivo> archivo = superRepo.findArchivoById(id);
-		
-		if (archivo.isPresent()) {
-			
-			return dowloadManager.download(archivo.get(), action);
-		}
-		
 		return null;
 	}
 
@@ -158,6 +151,25 @@ public class CajaChicaActions extends ModuleActions{
 		return null;
 	}
 	
+	public ResponseEntity<Resource> download(Long idDocumento, String extension) {
+		
+		Optional<Documento> documento = superRepo.findDocumentoById(idDocumento);
+		
+		if (documento.isPresent()) {
+			
+			if (extension.equalsIgnoreCase("xml") && documento.get().hasXML()) {
+				
+				return dowloadManager.download(documento.get().getArchivoXML(), "d");
+				
+			} else if (extension.equalsIgnoreCase("pdf") && documento.get().hasPDF()) {
+				
+				return dowloadManager.download(documento.get().getArchivoPDF(), "d");
+			}
+			
+		}
+		
+		return null;
+	}
 	
 	public boolean saveDet(DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile) {
 		
@@ -338,6 +350,8 @@ public class CajaChicaActions extends ModuleActions{
 		
 		
 	}
+	
+	
 	
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -171,6 +172,12 @@ public class CajaChicaFunctionalityController {
 	public List<FormularioCajaChica> getAllFormularioCC(@RequestParam Long idSucursal) {
 		
 		return actioner.getAllFormularioCajaChicas(idSucursal);
+	}
+	
+	@GetMapping("/download/{extension}")
+	public ResponseEntity<Resource> download(@RequestParam Long id, @PathVariable String extension) {
+		
+		return actioner.download(id, extension);	
 	}
 	
 	@GetMapping("/excel")

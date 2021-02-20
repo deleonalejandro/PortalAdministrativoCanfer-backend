@@ -44,6 +44,10 @@ public class FormularioCajaChica {
 	private String comentario; 
 	
 	private Float total;
+	
+	private String paqueteria;
+	
+	private String numeroGuia;
 
 	//Constructor
 	public FormularioCajaChica(Sucursal sucursal, Long folio, String responsable) {
@@ -62,7 +66,7 @@ public class FormularioCajaChica {
 
 
 	//Getters and Setters
-
+	
 	public long getIdFormularioCajaChica() {
 		return idFormularioCajaChica;
 	}
@@ -77,14 +81,6 @@ public class FormularioCajaChica {
 
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
-	}
-	
-	public String getResponsable() {
-		return responsable;
-	}
-
-	public void setProveedor(String responsable) {
-		this.responsable = responsable;
 	}
 
 	public Long getFolio() {
@@ -103,12 +99,28 @@ public class FormularioCajaChica {
 		this.fecha = fecha;
 	}
 
+	public LocalDateTime getFechaMod() {
+		return fechaMod;
+	}
+
+	public void setFechaMod(LocalDateTime fechaMod) {
+		this.fechaMod = fechaMod;
+	}
+
 	public String getEstatus() {
 		return estatus;
 	}
 
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
+	}
+
+	public String getResponsable() {
+		return responsable;
+	}
+
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
 	}
 
 	public String getComentario() {
@@ -125,12 +137,28 @@ public class FormularioCajaChica {
 
 	public void setTotal(Float total) {
 		this.total = total;
-	} 
+	}
+
+	public String getPaqueteria() {
+		return paqueteria;
+	}
+
+	public void setPaqueteria(String paqueteria) {
+		this.paqueteria = paqueteria;
+	}
+
+	public String getNumeroGuia() {
+		return numeroGuia;
+	}
+
+	public void setNumeroGuia(String numeroGuia) {
+		this.numeroGuia = numeroGuia;
+	}
 	
 	public boolean isOpen() {
 		return this.estatus.equalsIgnoreCase("ABIERTO");
 	}
-	
+
 	public String getNombreSucursal() {
 		return this.sucursal.getNombreSucursal();
 	}
