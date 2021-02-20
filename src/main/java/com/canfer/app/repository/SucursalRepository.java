@@ -15,6 +15,11 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Long>{
 	
 	List<Sucursal> findAllByUsuariosCanfer(UsuarioCanfer usuarioCanfer);
 	
+	List<Sucursal> findAllByEmpresa(Empresa empresa);
+	
+	List<Sucursal> findAllByEmpresaIn(List<Empresa> empresas);
+	
+	
 
 }
 

@@ -420,6 +420,12 @@ public class RepositoryService {
 		
 		return clasificacionCCRepo.findAll();
 	}
+	
+	public List<Sucursal> findAllSucursales() {
+		
+		return sucursalRepo.findAll();
+		
+	}
 
 	// FIND ALL By ID METHODS
 
@@ -447,7 +453,7 @@ public class RepositoryService {
 
 	}
 
-	public List<Empresa> findallEmpresaById(List<Long> ids) {
+	public List<Empresa> findAllEmpresaById(List<Long> ids) {
 
 		return empresaRepo.findAllById(ids);
 
@@ -582,6 +588,16 @@ public class RepositoryService {
 	public List<Sucursal> findAllSucursalByUsuario(UsuarioCanfer usuarioCanfer) {
 		
 		return sucursalRepo.findAllByUsuariosCanfer(usuarioCanfer); 
+	}
+	
+	public List<Sucursal> findAllSucursalByEmpresa(Empresa empresa) {
+		
+		return sucursalRepo.findAllByEmpresa(empresa);
+	}
+	
+	public List<Sucursal> findAllSucursalByEmpresaIn(List<Empresa> empresas) {
+		
+		return sucursalRepo.findAllByEmpresaIn(empresas);
 	}
 	
 	public List<FormularioCajaChica> findAllFormularioCajaChicaBySucursal(Sucursal sucursal) {

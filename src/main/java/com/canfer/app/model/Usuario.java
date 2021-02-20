@@ -206,6 +206,14 @@ public abstract class Usuario {
 		}
 	}
 	
+	public Boolean isAdmin() {
+		return this.rol.equalsIgnoreCase("ADMIN");
+	}
+	
+	public Boolean isContador() {
+		return this.rol.equalsIgnoreCase("USER_CONTADOR");
+	}
+	
 	@Entity
 	@DiscriminatorValue("USUARIO_CANFER")
 	public static class UsuarioCanfer extends Usuario {

@@ -5,6 +5,7 @@ package com.canfer.app.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -13,18 +14,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.canfer.app.model.Empresa;
-import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Sucursal;
 import com.canfer.app.model.Usuario.UsuarioCanfer;
-import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
-import com.canfer.app.service.EmpresaService;
 import com.canfer.app.service.RepositoryService;
 import com.canfer.app.storage.LogoStorageService;
  
@@ -35,10 +34,6 @@ import com.canfer.app.storage.LogoStorageService;
 public class CajaChicaController {
 	
 	@Autowired
-	private EmpresaService empresaService;
-	@Autowired
-	private EmpresaRepository empresaRepo; 
-	@Autowired
 	private LogoStorageService logoStorageService;
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
@@ -46,12 +41,23 @@ public class CajaChicaController {
 	private RepositoryService superRepo;
 	
 
-	@GetMapping
-	public String getModuloCajaChica(Model model) {
-	
-		model.addAttribute("selectedCompany", "PAE920709D75");
-		model.addAttribute("selectedClave", "A-0080");
+	@GetMapping("/home")
+	public String getModuloCajaChica(@CookieValue("suc") Long idSucursal, Model model) {
+		
+		Empresa company;
+		
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(idSucursal);
+		
+		if (sucursal.isPresent()) {
+			company = sucursal.get().getEmpresa();
+			model.addAttribute("companyProfile", company.getProfilePictureName());
+			
+		}
+
 		model.addAttribute("clasificaciones", superRepo.findAllClasificacionCajaChicas());
+		
+		//TODO RETURN USER IF NOT PART OF SUCURSAL
+		
 		/*
 		// getting the authenticated user
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
@@ -135,10 +141,26 @@ public class CajaChicaController {
 		
 		UsuarioCanfer canferUser;
 		List<Sucursal> sucursales;
+		
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
 		
 		canferUser = (UsuarioCanfer) loggedPrincipal.getUsuario();
-		sucursales = superRepo.findAllSucursalByUsuario(canferUser);
+				
+		if (canferUser.isAdmin()) {
+			
+			sucursales = superRepo.findAllSucursales();
+			
+		} else if (canferUser.isContador()) {
+			
+			List<Empresa> companies = superRepo.findAllEmpresaById(canferUser.getEmpresasId());
+			
+			sucursales = superRepo.findAllSucursalByEmpresaIn(companies);
+			
+		} else {
+			
+			sucursales = superRepo.findAllSucursalByUsuario(canferUser);
+		
+		}
 	
 	    HashMap<Sucursal, Empresa> sucursalAndCompany = new HashMap<>();
 	    
