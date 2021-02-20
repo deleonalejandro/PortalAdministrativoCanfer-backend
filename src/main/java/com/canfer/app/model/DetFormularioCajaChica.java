@@ -154,5 +154,9 @@ public class DetFormularioCajaChica {
 		return this.clasificacion.getClasificacion();
 	}
 	
+	public Long getIdDocumento() {
+		return this.documento.getIdDocumento();
+	}
+	
 	
 }
