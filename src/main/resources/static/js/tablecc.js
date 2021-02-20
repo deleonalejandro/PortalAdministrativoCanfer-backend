@@ -15,12 +15,11 @@ $(document).ready(function() {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		},
 		"columns": [
-			{
+			{	data: "idFormularioCajaChica",
 				"className": 'zip-control',
 				"orderable": false,
-				"data": "idFormularioCajaChica",
 				"defaultContent": '',
-				"render": function() {
+				"render": function(data) {
 					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/zip?id='+data+'"><i class="fas fa-file-archive 2x"></i></a>'
 				},
 			},
