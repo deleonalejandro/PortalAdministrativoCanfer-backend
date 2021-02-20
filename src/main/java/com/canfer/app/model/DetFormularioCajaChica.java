@@ -52,9 +52,6 @@ public class DetFormularioCajaChica {
 	
 	private String nombreProveedor;
 
-	private String numeroGuia;
-	
-	private String paquetería;
 	
 	private String vigenciaSat;
 	
@@ -172,21 +169,6 @@ public class DetFormularioCajaChica {
 		this.fechaMod = fechaMod;
 	}
 
-	public String getNumeroGuia() {
-		return numeroGuia;
-	}
-
-	public void setNumeroGuia(String numeroGuia) {
-		this.numeroGuia = numeroGuia;
-	}
-
-	public String getPaquetería() {
-		return paquetería;
-	}
-
-	public void setPaquetería(String paquetería) {
-		this.paquetería = paquetería;
-	}
 
 	public String getVigenciaSat() {
 		return vigenciaSat;
