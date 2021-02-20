@@ -171,11 +171,12 @@ $(document).ready(function() {
 
 			//prepare cancel button too
 			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
+			
+			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica).load();
+	
+			deshabilitarEntradas();
 		});
 
-		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica).load();
-
-		deshabilitarEntradas();
 
 	});
 
@@ -477,6 +478,7 @@ $(document).ready(function() {
 
 		document.getElementById("divTabla").hidden = false;
 		document.getElementById("divNuevo").hidden = true;
+		table.columns.adjust();
 
 
 	}
