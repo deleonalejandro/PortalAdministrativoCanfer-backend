@@ -534,15 +534,17 @@ $(document).ready(function() {
 		$("#estatus").empty();
 		
 		select = document.getElementById("estatus");
-        option = document.createElement( 'option' );
-        option.value = option.text = "ABIERTO";
-        select.add( option );
+        option1 = document.createElement( 'option' );
+        option1.value = option1.text = "ABIERTO";
+        select.add( option1 );
 		
-		option.value = option.text = "ENVIADO";
-        select.add( option );
-
-		option.value = option.text = "CANCELADO";
-        select.add( option );
+		option2 = document.createElement( 'option' );
+		option2.value = option2.text = "ENVIADO";
+        select.add( option2 );
+		
+		option3 = document.createElement( 'option' );
+		option3.value = option3.text = "CANCELADO";
+        select.add( option3 );
 		
 	}
 	
@@ -555,14 +557,17 @@ $(document).ready(function() {
         option.value = option.text = "ENVIADO";
         select.add( option );
 		
-		option.value = option.text = "PAGADO";
-        select.add( option );
-
-		option.value = option.text = "CANCELADO";
-        select.add( option );
-
-		option.value = option.text = "EN REVISIÓN";
-        select.add( option );
+		option1 = document.createElement( 'option' );
+		option1.value = option1.text = "PAGADO";
+        select.add( option1 );
+		
+		option2 = document.createElement( 'option' );
+		option2.value = option2.text = "CANCELADO";
+        select.add( option2 );
+		
+		option3 = document.createElement( 'option' );
+		option3.value = option3.text = "EN REVISIÓN";
+        select.add( option3 );
 		
 	}
 	
@@ -587,8 +592,9 @@ $(document).ready(function() {
         option.value = option.text = "PAGADO";
         select.add( option );
 		
-		option.value = option.text = "CANCELADO";
-        select.add( option );
+		option1 = document.createElement( 'option' );
+		option1.value = option1.text = "CANCELADO";
+        select.add( option1 );
 		
 	}
 	
@@ -601,11 +607,13 @@ $(document).ready(function() {
         option.value = option.text = "EN REVISIÓN";
         select.add( option );
 		
-		option.value = option.text = "CANCELADO";
-        select.add( option );
+		option1 = document.createElement( 'option' );
+		option1.value = option1.text = "CANCELADO";
+        select.add( option1 );
 
-		option.value = option.text = "PAGADO";
-        select.add( option );
+		option2 = document.createElement( 'option' );
+		option2.value = option2.text = "PAGADO";
+        select.add( option2 );
 		
 	}
 	
