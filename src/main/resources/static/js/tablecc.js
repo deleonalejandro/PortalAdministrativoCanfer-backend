@@ -72,7 +72,7 @@ $(document).ready(function() {
 			{ data: "total" }
 		],
 
-		"order": [[3, "desc"]],
+		"order": [[4, "desc"]],
 		"columnDefs": [
 			{ "width": "2%", "targets": [0, 1, 2] }
 		]
@@ -142,7 +142,8 @@ $(document).ready(function() {
 				"className": 'detxml-control',
 				"render": function(row) {
 					if (row.nombreArchivoXML != null) {
-						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>';
+						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+
+						'<div> "Vigencia: "' + 'row.vigenciaSat </div>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -160,7 +161,7 @@ $(document).ready(function() {
 			{ data: "monto" }
 		],
 
-		"order": [[0, "asc"]],
+		"order": [[7, "desc"]],
 		"columnDefs": [
 			{ "width": "2%", "targets": [0, 1] }
 		]
