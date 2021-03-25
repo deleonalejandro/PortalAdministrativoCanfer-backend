@@ -167,6 +167,9 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Documento documento;
 	
+	@Column
+	private boolean isCajaChica = false;
+	
 	public ComprobanteFiscal() {
 	}
 	
@@ -549,6 +552,14 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		this.tipoRelacionUuidRelacionados = tipoRelacionUuidRelacionados;
 	}
 	
+	public boolean isCajaChica() {
+		return isCajaChica;
+	}
+
+	public void setCajaChica(boolean isCajaChica) {
+		this.isCajaChica = isCajaChica;
+	}
+
 	public void addUuidRelacionados(String uuid) {
 		if (this.uuidRelacionados.isEmpty()) {
 			this.uuidRelacionados = uuid;

@@ -52,7 +52,6 @@ public class DetFormularioCajaChica {
 	
 	private String nombreProveedor;
 
-	
 	private String vigenciaSat;
 	
 	//Constructor
@@ -137,7 +136,15 @@ public class DetFormularioCajaChica {
 
 	public void setFolio(String folio) {
 		this.folio = folio;
-	} 
+	}
+	
+	public boolean hasXML() {
+		return this.documento.hasXML();
+	}
+	
+	public boolean hasPDF() {
+		return this.documento.hasPDF();
+	}
 	
 	public String getNombreArchivoXML() {
 		if (this.documento.hasXML()) {			

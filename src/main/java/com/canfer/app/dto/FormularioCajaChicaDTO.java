@@ -1,5 +1,7 @@
 package com.canfer.app.dto;
 
+import java.time.LocalDateTime;
+
 public class FormularioCajaChicaDTO {
 	
 	private Long idFormularioCajaChica;
@@ -8,6 +10,8 @@ public class FormularioCajaChicaDTO {
 	private String comentario;
 	private String paqueteria;
 	private String numeroGuia;
+	private String numeroPago;
+	private LocalDateTime fechaPago;
 	
 	public FormularioCajaChicaDTO() {
 	}
@@ -59,6 +63,25 @@ public class FormularioCajaChicaDTO {
 	public void setNumeroGuia(String numeroGuia) {
 		this.numeroGuia = numeroGuia;
 	}
+
+	public String getNumeroPago() {
+		return numeroPago;
+	}
+
+	public void setNumeroPago(String numeroPago) {
+		this.numeroPago = numeroPago;
+	}
+
+	public LocalDateTime getFechaPago() {
+		return fechaPago;
+	}
+
+	public void setFechaPago(LocalDateTime fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+	
+	
+	
 	
 	
 	

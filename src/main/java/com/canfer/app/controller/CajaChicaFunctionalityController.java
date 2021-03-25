@@ -133,19 +133,29 @@ public class CajaChicaFunctionalityController {
 				
 				upload = false;
 				
+				return new ResponseEntity<>(upload, HttpStatus.OK);
+				
 			} catch (NotFoundException e) {
 				
 				Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
 				
 				upload = false;
 				
-			}
-			
-			
+				return new ResponseEntity<>(upload, HttpStatus.OK);
+				
+			}	
 			
 		}
 		
-		actioner.saveDet(detFormCCDto, fileXML, filePDF);
+		try {
+			
+			upload = actioner.saveDet(detFormCCDto, fileXML, filePDF);
+			
+		} catch (NotFoundException e) {
+			
+			Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
+			
+		}
 		
 		return new ResponseEntity<>(upload, HttpStatus.OK);
 		
@@ -154,9 +164,25 @@ public class CajaChicaFunctionalityController {
 	@GetMapping("/deletedetformcc")
 	public ResponseEntity<Object> deleteDetalleFormCC(@RequestParam Long id) {
 		
-		actioner.delete(id);
+		if (actioner.delete(id)) {
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		}
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>("ERROR", HttpStatus.OK);
+	}
+	
+	@GetMapping("/updatedetformcc")
+	public ResponseEntity<Object> updateDetalleFormCC(DetFormularioCajaChicaDTO data) {
+		
+		if (actioner.updateDet(data)) {
+			
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		}
+		
+		return new ResponseEntity<>("ERROR", HttpStatus.OK);
 	}
 	
 	@GetMapping("/loadformdetails")
@@ -178,6 +204,13 @@ public class CajaChicaFunctionalityController {
 	public ResponseEntity<Resource> download(@RequestParam Long id, @PathVariable String extension) {
 		
 		return actioner.download(id, extension);	
+	}
+	
+	@GetMapping("/zip")
+	public ResponseEntity<byte[]> downloadZip(@RequestParam("id") Long idFormulario) {
+		
+		return actioner.download(idFormulario);
+		
 	}
 	
 	@GetMapping("/excel")

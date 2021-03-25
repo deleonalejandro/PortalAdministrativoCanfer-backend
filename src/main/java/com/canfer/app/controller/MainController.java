@@ -1,6 +1,9 @@
 package com.canfer.app.controller;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,11 +140,12 @@ public class MainController {
 
 	@GetMapping("/sucursal")
 	@ResponseBody
-	public Sucursal testSucursal() {
+	public LocalDateTime testSucursal() {
 		
-		Optional<Sucursal> sucursal = superRepo.findSucursalById(1L);
+		LocalDateTime dateTime = LocalDateTime.parse("18/02/2021",
+		        DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		
-		return sucursal.get();
+		return dateTime;
 	}
 	
 

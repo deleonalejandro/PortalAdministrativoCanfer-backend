@@ -530,6 +530,11 @@ public class RepositoryService {
 		return comprobanteRepo.findByUuid(uuid);
 
 	}
+	
+	public ComprobanteFiscal findComprobanteByDocumento(Documento doc) {
+		
+		return comprobanteRepo.findByDocumento(doc);
+	}
 
 	public Optional<Proveedor> findProveedorByEmpresaAndClaveProv(Empresa empresa, String clave) {
 		

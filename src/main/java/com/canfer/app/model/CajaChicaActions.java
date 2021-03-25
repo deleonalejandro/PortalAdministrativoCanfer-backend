@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
+import com.canfer.app.dto.FormularioCajaChicaDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.security.AuthenticationFacade;
@@ -28,7 +30,6 @@ import com.canfer.app.service.ExcelService;
 
 import javassist.NotFoundException;
 import jxl.write.WriteException;
-import net.bytebuddy.asm.Advice.Return;
 
 @Service("CajaChicaActions")
 public class CajaChicaActions extends ModuleActions{
@@ -151,6 +152,33 @@ public class CajaChicaActions extends ModuleActions{
 		return null;
 	}
 	
+	public ResponseEntity<byte[]> download(Long idFormulario) {
+		
+		List<Archivo> files = new ArrayList<>();
+		
+		Optional<FormularioCajaChica> formularioCajaChica = superRepo.findFormularioCCById(idFormulario);
+		List<DetFormularioCajaChica> detalles = superRepo.findAllDetFormularioCajaChicaByFormCC(formularioCajaChica.get());
+		
+		for (DetFormularioCajaChica detalle : detalles) {
+			
+			Documento doc = detalle.getDocumento();
+			
+			if (doc.hasXML()) {
+				
+				files.add(doc.getArchivoXML());
+				
+			}
+			
+			if (doc.hasPDF()) {
+				
+				files.add(doc.getArchivoPDF());
+			}
+		}
+		
+		return dowloadManager.downloadZip(files);
+		
+	}
+	
 	public ResponseEntity<Resource> download(Long idDocumento, String extension) {
 		
 		Optional<Documento> documento = superRepo.findDocumentoById(idDocumento);
@@ -171,7 +199,7 @@ public class CajaChicaActions extends ModuleActions{
 		return null;
 	}
 	
-	public boolean saveDet(DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile) {
+	public boolean saveDet(DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile) throws NotFoundException {
 		
 		Optional<FormularioCajaChica> formularioCajaChica;
 		Optional<ClasificacionCajaChica> clasificacionCajaChica;
@@ -181,49 +209,121 @@ public class CajaChicaActions extends ModuleActions{
 		clasificacionCajaChica = superRepo.findClasificacionCCById(detFormCCDto.getIdClasificacion());
 		DetFormularioCajaChica detFormCC = new DetFormularioCajaChica();
 		
+		if (formularioCajaChica.isEmpty() && clasificacionCajaChica.isEmpty()) {
+			
+			Log.error("Error en la creacion de detalle para el formulario ");
+					
+			throw new NotFoundException("No se encontraron los atributos necesarios para crear detalle caja chica.");
+		
+			
+		}
+		
 		if (xmlFile != null) {
 			
 			documento = superRepo.findDocumentoByArchivoXML(xmlFile);
 			
+			if (documento.isPresent()) {
+				
+				ComprobanteFiscal comprobante = superRepo.findComprobanteByDocumento(documento.get());
+					
+				detFormCC.setFormularioCajaChica(formularioCajaChica.get());
+				detFormCC.setClasificacion(clasificacionCajaChica.get());
+				detFormCC.setDocumento(documento.get());
+				detFormCC.setFecha(comprobante.getFechaCarga());
+				detFormCC.setFolio(formularioCajaChica.get().getIdFormularioCajaChica() + "_" + detFormCCDto.getFolio());
+				detFormCC.setMonto(Float.valueOf(comprobante.getTotal()));
+				detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
+				detFormCC.setNombreProveedor(comprobante.getProveedorNombre());
+				
+				// make changes to comprobante: idSap, ClaveProveedor (proveedor)
+				comprobante.setIdNumSap(formularioCajaChica.get().getIdFormularioCajaChica());
+				comprobante.setProveedor(formularioCajaChica.get().getSucursal().getProveedor());
+				comprobante.setCajaChica(true);
+				
+				// save new info
+				superRepo.save(detFormCC);
+				superRepo.save(comprobante);
+				
+				return true;
+				
+			} else {
+				
+				return false;
+
+			}
+			
+			
 		} else if (pdfFile != null) {
 			
-			documento = superRepo.findDocumentoByArchivoPDF(pdfFile); 
+			documento = superRepo.findDocumentoByArchivoPDF(pdfFile);
 			
-			pdfFile.rename(String.valueOf(formularioCajaChica.get().getFolio()) + '_' + detFormCCDto.getFolio());
-		
+			if (documento.isPresent()) {
+				
+				pdfFile.rename(String.valueOf(formularioCajaChica.get().getFolio()) + '_' + detFormCCDto.getFolio());
+				
+				detFormCC.setFormularioCajaChica(formularioCajaChica.get());
+				detFormCC.setClasificacion(clasificacionCajaChica.get());
+				detFormCC.setDocumento(documento.get());
+				detFormCC.setFecha(detFormCCDto.getFormattedDate());
+				detFormCC.setFolio(detFormCCDto.getFolio());
+				detFormCC.setMonto(detFormCCDto.getMonto());
+				detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
+				detFormCC.setNombreProveedor(detFormCCDto.getNombreProveedor());
+				
+				
+				superRepo.save(documento.get());
+				superRepo.save(detFormCC);
+				
+				return true;
+				
+				
+			} else {
+				
+				return false;
+				
+			}
+			
+			
 		} else {
 			
 			throw new NullPointerException("Ambos archivos del detalle se ecuentran vacios.");
 		}
 		
 		
-		if (formularioCajaChica.isPresent() && clasificacionCajaChica.isPresent()) {
-			//TODO LOCALDATETIME ERROR	
-			detFormCC.setFormularioCajaChica(formularioCajaChica.get());
-			detFormCC.setClasificacion(clasificacionCajaChica.get());
-			detFormCC.setDocumento(documento.get());
-			detFormCC.setFecha(detFormCCDto.getFormattedDate());
-			detFormCC.setFolio(detFormCCDto.getFolio());
-			detFormCC.setMonto(detFormCCDto.getMonto());
-			detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
-			detFormCC.setNombreProveedor(detFormCCDto.getNombreProveedor());
-			
-			superRepo.save(documento.get());
-
-			superRepo.save(detFormCC);
-			
-			
-			return true;
-		}
-		
-		return false;
-		
-		
 	}
 	
-	public boolean updateDet() {
+	public boolean updateDet(DetFormularioCajaChicaDTO dfDTO) {
 		
 		/* This method updates the next attributes: clasificacion, nombre de proveedor, fecha, responsable, monto. */
+		
+		Optional<DetFormularioCajaChica> df = superRepo.findDetFormularioCCById(dfDTO.getIdDetFormularioCC());
+		
+		if (df.isPresent() && !df.get().hasXML()) {
+			
+			FormularioCajaChica dfForm = df.get().getFormularioCajaChica();
+			
+			if (dfForm.isOpen()) {
+				
+				Optional<ClasificacionCajaChica> clasificacion = superRepo.findClasificacionCCById(dfDTO.getIdClasificacion());
+				
+				if (clasificacion.isPresent()) {
+					df.get().setClasificacion(clasificacion.get());
+				}
+				
+				df.get().setNombreProveedor(dfDTO.getNombreProveedor());
+				
+				df.get().setFecha(dfDTO.getFormattedDate());
+				
+				df.get().setBeneficiario(dfDTO.getBeneficiario());
+				
+				df.get().setMonto(dfDTO.getMonto());
+				
+				superRepo.save(df.get());
+				
+				return true;
+			}
+
+		}
 		
 		return false;
 		
@@ -259,7 +359,7 @@ public class CajaChicaActions extends ModuleActions{
 	}
 
 	/* This method updates the form's status and comments */
-	public boolean updateForm(Long idForm, String estatus, String comentario) {
+	public boolean updateForm(Long idForm, FormularioCajaChicaDTO formCCDto) {
 		
 		Optional<FormularioCajaChica> formCC;
 		
@@ -267,8 +367,12 @@ public class CajaChicaActions extends ModuleActions{
 		
 		if (formCC.isPresent()) {
 			
-			formCC.get().setComentario(comentario);
-			formCC.get().setEstatus(estatus);
+			formCC.get().setComentario(formCCDto.getComentario());
+			formCC.get().setEstatus(formCCDto.getEstatus());
+			formCC.get().setNumeroGuia(formCCDto.getNumeroGuia());
+			formCC.get().setPaqueteria(formCCDto.getPaqueteria());
+			formCC.get().setNumeroPago(formCCDto.getNumeroPago());
+			formCC.get().setFechaPago(formCCDto.getFechaPago());
 			
 			superRepo.save(formCC.get());
 			

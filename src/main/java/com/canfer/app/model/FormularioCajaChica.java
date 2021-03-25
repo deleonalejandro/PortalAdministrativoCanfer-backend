@@ -48,6 +48,10 @@ public class FormularioCajaChica {
 	private String paqueteria;
 	
 	private String numeroGuia;
+	
+	private String numeroPago;
+	
+	private LocalDateTime fechaPago;
 
 	//Constructor
 	public FormularioCajaChica(Sucursal sucursal, Long folio, String responsable) {
@@ -155,6 +159,22 @@ public class FormularioCajaChica {
 		this.numeroGuia = numeroGuia;
 	}
 	
+	public String getNumeroPago() {
+		return numeroPago;
+	}
+
+	public void setNumeroPago(String numeroPago) {
+		this.numeroPago = numeroPago;
+	}
+
+	public LocalDateTime getFechaPago() {
+		return fechaPago;
+	}
+
+	public void setFechaPago(LocalDateTime fechaPago) {
+		this.fechaPago = fechaPago;
+	}
+
 	public boolean isOpen() {
 		return this.estatus.equalsIgnoreCase("ABIERTO");
 	}

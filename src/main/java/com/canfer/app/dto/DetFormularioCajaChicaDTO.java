@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class DetFormularioCajaChicaDTO {
 	
+	private Long idDetFormularioCC;
 	private Long idSucursal;
 	private Long idFormulario;
 	private Long idClasificacion;
@@ -14,6 +15,14 @@ public class DetFormularioCajaChicaDTO {
 	private String nombreProveedor;
 	
 	public DetFormularioCajaChicaDTO() {
+	}
+	
+	public Long getIdDetFormularioCC() {
+		return idDetFormularioCC;
+	}
+
+	public void setIdDetFormularioCC(Long idDetFormularioCC) {
+		this.idDetFormularioCC = idDetFormularioCC;
 	}
 
 	public Long getIdFormulario() {
