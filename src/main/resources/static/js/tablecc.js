@@ -159,7 +159,6 @@ $(document).ready(function() {
 							return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+
 							'<div><span class="badge badge-warning"> N/D </span></div>';
 						}
-						
 					} else {
 						return '<a>N/D</a>';
 					}
