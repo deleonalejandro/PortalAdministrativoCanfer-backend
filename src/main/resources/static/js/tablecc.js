@@ -142,8 +142,24 @@ $(document).ready(function() {
 				"className": 'detxml-control',
 				"render": function(row) {
 					if (row.nombreArchivoXML != null) {
-						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+
-						'<div> "Vigencia: "' + 'row.vigenciaSat </div>';
+						
+						if(row.vigenciaSat != null) {
+							if(row.vigenciaSat.toUpperCase().includes('VIGENTE')) {
+								
+								return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+ 
+									'<div><span class="badge badge-success">'+ row.vigenciaSat +'</span></div>';
+									
+							} else {
+								
+								return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+ 
+									'<div><span class="badge badge-warning">'+ row.vigenciaSat +'</span></div>';
+							}
+							
+						} else {
+							return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+
+							'<div><span class="badge badge-warning"> N/D </span></div>';
+						}
+						
 					} else {
 						return '<a>N/D</a>';
 					}
