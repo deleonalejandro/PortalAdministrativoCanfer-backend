@@ -208,18 +208,18 @@
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden>PAE920709D75</div>
 							<div id="selectedClave" th:text="${selectedSucursal}" hidden>A-0080</div>
 							<div class="card-body">
-								
-								
+
+
 								<!-- DIV DONDE ESTA LA TABLA -->
 								<div class="datatable" id="divTabla">
-									<h4 class="float-right"> REGISTRO DE FORMULARIOS </h4>
+									<h4 class="float-right">REGISTRO DE FORMULARIOS</h4>
 									<div class="row">
 										<!-- BOTON NUEVO FORMULARIO -->
 										<div class="col-6 pb-3 pl-3">
-											<a type="button" id="btn-add-form"
-												th:href="@{/cajachicaclient/newformcc}"
+											<a href="#prueba"><a type="button" id="btn-add-form"
+												th:href="@{/cajachicaclient/newformcc}" href="#map"
 												class="btn btn-outline-secondary mr-2" data-toggle="modal"
-												data-target="#newFormModal">Nuevo</a>
+												data-target="#newFormModal">Nuevo</a></a>
 
 										</div>
 									</div>
@@ -260,32 +260,38 @@
 								<!-- NUEVO FORMULARIO Main Content Formulario -->
 								<div id="divNuevo" hidden>
 									<form class="newForm" method="post"
-										enctype="multipart/form-data">
+										enctype="multipart/form-data" id="formFormulario">
 										<div class="form-group">
 											<!-- Card del modal -->
 											<div class="row">
-
-												<div class="col-9 font-weight-bold"
+												<div class="col-7 font-weight-bold"
 													style="color: black; font-size: large">CAJA CHICA</div>
-												<div class="font-weight-bold"
-													style="text-align: right; color: black; font-size: large">
-													FORMULARIO #</div>
-												<div class="font-weight-bold" id="idFormularioCajaChica"
-													style="text-align: right; color: black; font-size: large">
+												<div class="col-5">
+													<div class="row pr-3 float-right">
+														<div class="font-weight-bold"
+															style="text-align: right; color: black; font-size: large">
+															FORMULARIO #</div>
+														<div class="font-weight-bold" id="idFormularioCajaChica"
+															style="text-align: right; color: black; font-size: large">
+														</div>
+													</div>
 												</div>
 											</div>
-											<div class="row pr-4">
-
-												<div class="col-8"></div>
-												<div class="col-2"
-													style="text-align: right; color: black; font-weight: 200;">
-													ESTADO</div>
-												<div class="col-2">
-													<!-- INPUT IMPORTE ESTATUS -->
-													<select class="form-control form-control-solid"
-														style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-														id="estatus">
-													</select>
+											<div class="row">
+												<div class="col-7"></div>
+												<div class="col-5">
+													<div class="row pr-3 float-right">
+														<div
+															style="text-align: right; color: black; font-weight: 200;">
+															ESTADO</div>
+														<div class="pl-2">
+															<!-- INPUT IMPORTE ESTATUS -->
+															<select class="form-control form-control-solid"
+																style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
+																id="estatus" name="estatus">
+															</select>
+														</div>
+													</div>
 												</div>
 											</div>
 											<div class="alert alert-success alert-icon mt-3" role="alert"
@@ -317,44 +323,131 @@
 											<div class="row">
 												<div class="col-2">
 													<label for="idCajaChicaNew"
-														class="form-control-label mb-0 font-weight-bold"
-														style="color: black"> Socio de Negocio: </label>
+														class="form-control-label mb-0 font-weight-bold">
+														Socio de Negocio: </label>
 												</div>
 												<div class="col-4">
 													<input type="text" style="height: 20px" readonly
 														class="form-control form-control-sm bg-white"
 														name="idCajaChica" id="idCajaChicaNew" value="" />
 												</div>
+												<!-- DIVS SEGUN ESTATUS ENVIADO -->
+												<div class="col-2" id="infoEnvio" hidden>
+													<label class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Información de Envío: </label>
+												</div>
+												<div class="col-4" id="divPaqueteria" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="paqueteria" id="paqueteriaLabel"
+																class="form-control-label mb-0 font-weight-bold">
+																Paquetería: </label>
+														</div>
+														<div class="col-8">
+															<select name="paqueteria" id="paqueteria"
+																style="height: 30px"
+																class="form-control form-control-sm bg-white"
+																onchange="if(this.options[this.selectedIndex].value=='customOption'){
+																              toggleField(this,this.nextSibling,true);
+																              this.selectedIndex='0'; }">
+																<option value="DHL">DHL</option>
+																<option value="UPS">UPS</option>
+																<option value="Estafeta">Estafeta</option>
+																<option value="customOption">[Otro:]</option>
+															</select><input name="browser"
+																class="form-control form-control-sm bg-white"
+																style="display: none; height: 20px" disabled="disabled"
+																onblur="if(this.value==''){toggleField(this,this.previousSibling,false);}">
+															<script>
+																function toggleField(
+																		hideObj,
+																		showObj,boolVal) {
+																	hideObj.disabled = true;
+																	hideObj.style.display = 'none';
+																	showObj.disabled = false;
+																	showObj.style.display = 'inline';
+																	showObj
+																			.focus();
+																	if(boolVal == true){
+																		document.getElementById('numeroGuiaLabel').innerHTML  ='Contacto: ';
+																		 document.getElementById('paqueteriaLabel').innerHTML  ='Mensajero: ';
+																	} else{
+																		document.getElementById('numeroGuiaLabel').innerHTML  ='Paquetería: ';
+																		 document.getElementById('paqueteriaLabel').innerHTML  ='Número de Guía';
+																	}
+																	
+																}
+															</script>
+														</div>
+
+													</div>
+												</div>
 											</div>
 											<div class="row pt-1">
 												<div class="col-2">
 													<label for="sucursalNew"
-														class="form-control-label mb-0 font-weight-bold"
-														style="color: black"> Nombre Sucursal: </label>
+														class="form-control-label mb-0 font-weight-bold">
+														Nombre Sucursal: </label>
 												</div>
 												<div class="col-4">
 													<input type="text" style="height: 20px" readonly
 														class="form-control form-control-sm bg-white"
 														id="sucursalNew" value="" />
 												</div>
+												<!-- DIVS SEGUN ESTATUS ENVIADO -->
+												<div class="col-2"></div>
+												<div class="col-4" id="divNumeroGuia" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="numeroGuia" id="numeroGuiaLabel"
+																class="form-control-label mb-0 font-weight-bold">
+																Número de Guía: </label>
+														</div>
+														<div class="col-8">
+															<input type="text" style="height: 20px"
+																class="form-control form-control-sm bg-white"
+																id="numeroGuia" name="numeroGuia" value="" />
+														</div>
+													</div>
+												</div>
 											</div>
 											<div class="row pt-1">
 												<div class="col-2">
 													<label for="responsable"
-														class="form-control-label mb-0 font-weight-bold"
-														style="color: black"> Responsable: </label>
+														class="form-control-label mb-0 font-weight-bold">
+														Responsable: </label>
 												</div>
 												<div class="col-4">
 													<input type="text" style="height: 20px" readonly
 														class="form-control form-control-sm bg-white"
 														id="responsableNew" value="" />
 												</div>
+												<!-- DIVS SEGUN ESTATUS PAGO -->
+												<div class="col-2" id="infoPago" hidden>
+													<label for="infoPago"
+														class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Información de Pago: </label>
+												</div>
+												<div class="col-4" id="divNumeroPago" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="numeroPago"
+																class="form-control-label mb-0 font-weight-bold">
+																Número de Pago: </label>
+														</div>
+														<div class="col-8">
+															<input type="text" style="height: 20px"
+																class="form-control form-control-sm bg-white"
+																id="numeroPago" name="numeroPago" value="" />
+														</div>
+													</div>
+												</div>
 											</div>
 											<div class="row pt-1 pb-4">
 												<div class="col-2">
 													<label for="fechaNew"
-														class="form-control-label mb-0 font-weight-bold"
-														style="color: black"> Fecha: </label>
+														class="form-control-label mb-0 font-weight-bold">
+														Fecha: </label>
 												</div>
 												<div class="col-4">
 													<input type="text" style="height: 20px" readonly
@@ -367,16 +460,23 @@
 														class="form-control form-control-sm bg-white"
 														id="idFormNew" name="idFormNew" value="" />
 												</div>
+												<!-- DIVS SEGUN ESTATUS PAGO -->
+												<div class="col-2"></div>
+												<div class="col-4" id="divFechaPago" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="fechaPago"
+																class="form-control-label mb-0 font-weight-bold">
+																Fecha de Pago: </label>
+														</div>
+														<div class="col-8">
+															<input type="date" style="height: 20px"
+																class="form-control form-control-sm bg-white"
+																id="fechaPago" name="fechaPago" value="" />
+														</div>
+													</div>
+												</div>
 											</div>
-
-											<div>
-												<button type="button" id="btn-add-det"
-													class="btn btn-outline-secondary mb-3" data-toggle="modal"
-													data-target="#newDetModal">Nuevo Detalle</button>
-											</div>
-
-
-
 											<div class="row">
 												<div class="col-12">
 													<table class="compact table-hover"
@@ -429,7 +529,7 @@
 													<div class="row">
 														<textarea type="text" style="height: 50px"
 															class="form-control form-control-sm bg-white ml-3"
-															cols="40" rows="5" id="comentarioNew" name="comentario"
+															cols="40" rows="5" id="comentario" name="comentario"
 															value=""></textarea>
 													</div>
 												</div>
@@ -446,7 +546,7 @@
 														</div>
 														<input type="text" style="height: 20px;" readonly
 															class="form-control form-control-sm bg-white text-success"
-															id="total" value="" />
+															id="total" name="total" value="" />
 													</div>
 												</div>
 											</div>
@@ -460,8 +560,6 @@
 
 										</div>
 										<!-- End del modal -->
-
-
 									</form>
 
 								</div>
@@ -603,7 +701,7 @@
 																				</div>
 																				<div class="col-6">
 																					<input type="text" id="fechaDet" name="fechaDet"
-																						style="height: 25px" value="" required=true/>
+																						style="height: 25px" value="" required=true />
 																				</div>
 																				<input type="text" id="realDate" name="realDate"
 																					value="" hidden />
@@ -618,7 +716,8 @@
 																					<!-- INPUT IMPORTE ESTATUS -->
 																					<select class="form-control form-control-solid"
 																						style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																						id="idClasificacion" name="idClasificacion" required=true>
+																						id="idClasificacion" name="idClasificacion"
+																						required=true>
 																						<option
 																							th:each="clasificacion : ${clasificaciones}"
 																							th:value="${clasificacion.idClasificacionCajaChica}"
@@ -645,7 +744,7 @@
 																						<input type="number" min="0" step="0.01"
 																							style="height: 20px"
 																							class="form-control form-control-sm bg-white"
-																							id="monto" name="monto" required=true/>
+																							id="monto" name="monto" required=true />
 																					</div>
 																				</div>
 																			</div>
@@ -658,7 +757,7 @@
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="folio" name="folio" required=true/>
+																						id="folio" name="folio" required=true />
 																				</div>
 																			</div>
 																			<div class="row pt-1" id="provNewDiv">
@@ -670,7 +769,8 @@
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="nombreProveedor" name="nombreProveedor" required=true/>
+																						id="nombreProveedor" name="nombreProveedor"
+																						required=true />
 																				</div>
 																			</div>
 																			<div class="row pt-1">
@@ -682,7 +782,8 @@
 																				<div class="col-6">
 																					<input type="text" style="height: 20px"
 																						class="form-control form-control-sm bg-white"
-																						id="beneficiario" name="beneficiario" required=true/>
+																						id="beneficiario" name="beneficiario"
+																						required=true />
 																				</div>
 																			</div>
 
@@ -749,7 +850,7 @@
 																	Fecha del documento: </label>
 															</div>
 															<div class="col-6">
-																<input type="text" id="detail-fechaDet"
+																<input type="date" id="detail-fechaDet"
 																	name="detail-fechaDet" style="height: 25px" value="" />
 															</div>
 														</div>
@@ -761,8 +862,7 @@
 															</div>
 															<div class="col-6">
 																<!-- INPUT IMPORTE ESTATUS -->
-																 <select
-																	class="form-control form-control-solid"
+																<select class="form-control form-control-solid"
 																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
 																	id="idClasificacion" name="idClasificacion">
 																	<option th:each="clasificacion : ${clasificaciones}"
@@ -801,7 +901,13 @@
 															<div class="col-6">
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-folio" name="detail-folio" />
+																	id="detail-folio" name="detail-folio" disabled />
+															</div>
+															<!--  -->
+															<div class="col-6" hidden>
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="idDetFormularioCC" name="idDetFormularioCC" />
 															</div>
 														</div>
 														<div class="row pt-1">

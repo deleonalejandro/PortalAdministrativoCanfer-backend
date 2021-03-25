@@ -194,3 +194,4 @@ $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) {
 	
   		})
 	});
+	

@@ -15,12 +15,13 @@ $(document).ready(function() {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		},
 		"columns": [
-			{	data: "idFormularioCajaChica",
+			{
+				data: "idFormularioCajaChica",
 				"className": 'zip-control',
 				"orderable": false,
 				"defaultContent": '',
 				"render": function(data) {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/zip?id='+data+'"><i class="fas fa-file-archive 2x"></i></a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/zip?id=' + data + '"><i class="fas fa-file-archive 2x"></i></a>'
 				},
 			},
 			{
@@ -44,24 +45,31 @@ $(document).ready(function() {
 				},
 			},
 
-			{ data: "fecha",
-				"render": function(data){
+			{
+				data: "fecha",
+				"render": function(data) {
 					return data.split("T")[0]
 				}
-			
+
 			},
 			{ data: "folio" },
 			{
 				data: "estatus",
 				"render": function(data) {
-					if (data.toUpperCase() == 'CERRADO') {
-						return '<span class="badge badge-orange">Cerrado</span>';
+					if (data.toUpperCase() == 'ENVIADO') {
+						return '<span class="badge badge-info">Enviado</span>';
 					}
 					if (data.toUpperCase() == 'ABIERTO') {
-						return '<span class="badge badge-green">Abierto</span>';
+						return '<span class="badge badge-blue">Abierto</span>';
+					}
+					if (data.toUpperCase() == 'EN PROCECSO') {
+						return '<span class="badge badge-warning">En Proceso</span>';
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
 						return '<span class="badge badge-red">Cancelado</span>';
+					}
+					if (data.toUpperCase() == 'PAGADO') {
+						return '<span class="badge badge-green">Cancelado</span>';
 					}
 					else {
 						return '<span class="badge badge-blue">' + data + '</span>';
@@ -142,8 +150,8 @@ $(document).ready(function() {
 				"className": 'detxml-control',
 				"render": function(row) {
 					if (row.nombreArchivoXML != null) {
-						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+
-						'<div> "Vigencia: "' + 'row.vigenciaSat </div>';
+						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>' +
+							'<div> "Vigencia: "' + 'row.vigenciaSat </div>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -151,11 +159,12 @@ $(document).ready(function() {
 			},
 			{ data: "folio" },
 			{ data: "nombreProveedor" },
-			{ data: "fecha",
-				"render": function(data){
+			{
+				data: "fecha",
+				"render": function(data) {
 					return data.split("T")[0]
 				}
-			
+
 			},
 			{ data: "beneficiario" },
 			{ data: "monto" }
@@ -181,9 +190,9 @@ $(document).ready(function() {
 
 			//prepare cancel button too
 			$("#cancelarNewForm").attr("href", "/cajachicaclient/cancelarformcc?id=" + formulario.idFormularioCajaChica);
-			
+
 			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + formulario.idFormularioCajaChica).load();
-	
+
 			deshabilitarEntradas();
 		});
 
@@ -206,6 +215,7 @@ $(document).ready(function() {
 			contentType: false,
 			processData: false,
 			type: 'POST',
+
 		});
 
 		saveDet.done(function(upload) {
@@ -298,7 +308,8 @@ $(document).ready(function() {
 
 	// Darle Submit a New Formulario
 	$('#submitNewForm').on('click', function() {
-
+		
+		
 		habilitarEntradas();
 
 	});
@@ -333,6 +344,7 @@ $(document).ready(function() {
 		$('#detail-folio').val(d.folio);
 		$('#detail-beneficiario').val(d.beneficiario);
 		$('#detail-nombreProveedor').val(d.nombreProveedor);
+		$('#idDetFormularioCC').val(d.idDetFormularioCajaChica);
 
 		$('#detailsModal').modal('show');
 
@@ -367,7 +379,7 @@ $(document).ready(function() {
 		var formulario = table.row(this).data();
 
 		deshabilitarEntradas();
-		
+
 		//Llena los parametros del formulario 
 		llenarFormulario(formulario);
 
@@ -375,6 +387,10 @@ $(document).ready(function() {
 		$("#cancelarNewForm").attr("href", "#!");
 
 		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+
+		//Preparar el select con sus fields
+
+
 
 	});
 
@@ -387,9 +403,11 @@ $(document).ready(function() {
 				i : 0;
 	};
 
+
 	//Llenar el formulario con la info que se proporciona
 
 	var llenarFormulario = function(formulario) {
+
 
 		//Llena los parametros del formulario 
 		$("#idFormularioCajaChica").text(formulario.folio);
@@ -398,14 +416,30 @@ $(document).ready(function() {
 		$("#sucursalNew").val(formulario.nombreSucursal);
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
-		$("#comentarioNew").val(formulario.comentario);
+		$("#comentario").val(formulario.comentario);
 		$("#responsableNew").val(formulario.responsable);
 		$('#nombreProveedor').val(formulario.nombreProveedor);
 		$("#total").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
-		
+
 		prepareSelect(formulario.estatus);
 	}
+
+	//Poner los fields dependiendo de la opcion seleccionada
+	$('#estatus').change(function() {
+		var val = $("#estatus option:selected").text();
+		if (val == "ENVIADO") {
+			habilitarInfoEnvio();
+
+		} else if (val == "PAGADO") {
+			habilitarInfoPago();
+
+
+		} else if (val == "ABIERTO") {
+			deshabilitarInfoEnvio();
+
+		}
+	});
 
 	//Habilitar la carga de xml
 
@@ -418,7 +452,7 @@ $(document).ready(function() {
 
 		document.getElementById("div-add-xml").hidden = false;
 		document.getElementById("div-btn-add-xml").hidden = true;
-		
+
 		document.getElementById("fechaDet").required = false;
 		document.getElementById("realDate").required = false;
 		document.getElementById("monto").required = false;
@@ -446,7 +480,7 @@ $(document).ready(function() {
 
 		document.getElementById("div-add-xml").hidden = true;
 		document.getElementById("div-btn-add-xml").hidden = false;
-		
+
 		document.getElementById("fechaDet").required = true;
 		document.getElementById("realDate").required = true;
 		document.getElementById("monto").required = true;
@@ -475,7 +509,26 @@ $(document).ready(function() {
 
 	}
 
+	//Reestablecer los divs del modal
 
+	var reestablecerFormularioForm = function() {
+
+		deshabilitarInfoPago();
+
+		deshabilitarInfoEnvio();
+
+
+	}
+
+	//Reestablecer y limpiar los divs del detalle de form
+
+	var reestablecerFormulario = function() {
+
+		reestablecerFormularioForm();
+
+		document.getElementById("formFormulario").reset();
+
+	}
 
 	//Solo reestablece los divs
 
@@ -494,11 +547,11 @@ $(document).ready(function() {
 
 
 	}
-	
+
 	//Deja en blanco los parametros y reestablece los divs
 
 	var reestablecerForm = function() {
-		
+
 		reestablecerModal();
 
 		document.getElementById("formNewDet").reset();
@@ -514,7 +567,7 @@ $(document).ready(function() {
 		document.getElementById("divNuevo").hidden = true;
 		table.columns.adjust();
 		table.columns.adjust();
-		
+
 	}
 
 
@@ -527,123 +580,218 @@ $(document).ready(function() {
 
 
 	}
-	
-	//Habilitar los estatus necesarios
-	
-	var estatusAbierto = function(){
-		
-		$("#estatus").empty();
-		
-		select = document.getElementById("estatus");
-        option1 = document.createElement( 'option' );
-        option1.value = option1.text = "ABIERTO";
-        select.add( option1 );
-		
-		option2 = document.createElement( 'option' );
-		option2.value = option2.text = "ENVIADO";
-        select.add( option2 );
-		
-		option3 = document.createElement( 'option' );
-		option3.value = option3.text = "CANCELADO";
-        select.add( option3 );
-		
-	}
-	
-		var estatusEnviado = function(){
-			
-		$("#estatus").empty();
-		
-		select = document.getElementById("estatus");
-        option = document.createElement( 'option' );
-        option.value = option.text = "ENVIADO";
-        select.add( option );
-		
-		option1 = document.createElement( 'option' );
-		option1.value = option1.text = "PAGADO";
-        select.add( option1 );
-		
-		option2 = document.createElement( 'option' );
-		option2.value = option2.text = "CANCELADO";
-        select.add( option2 );
-		
-		option3 = document.createElement( 'option' );
-		option3.value = option3.text = "EN REVISIÓN";
-        select.add( option3 );
-		
-	}
-	
-	var estatusCancelado = function(){
-		
-		$("#estatus").empty();
-		
-		select = document.getElementById("estatus");
-        option = document.createElement( 'option' );
-		
-		option.value = option.text = "CANCELADO";
-        select.add( option );
-		
-	}
-	
-	var estatusPagado = function(){
-		
-		$("#estatus").empty();
-		
-		select = document.getElementById("estatus");
-        option = document.createElement( 'option' );
-        option.value = option.text = "PAGADO";
-        select.add( option );
-		
-		option1 = document.createElement( 'option' );
-		option1.value = option1.text = "CANCELADO";
-        select.add( option1 );
-		
-	}
-	
-	var estatusEnRevision = function(){
-		
-		$("#estatus").empty();
-		
-		select = document.getElementById("estatus");
-        option = document.createElement( 'option' );
-        option.value = option.text = "EN REVISIÓN";
-        select.add( option );
-		
-		option1 = document.createElement( 'option' );
-		option1.value = option1.text = "CANCELADO";
-        select.add( option1 );
 
-		option2 = document.createElement( 'option' );
-		option2.value = option2.text = "PAGADO";
-        select.add( option2 );
-		
+	//Habilitar los estatus necesarios
+
+	var estatusAbierto = function() {
+
+		$("#estatus").empty();
+
+		select = document.getElementById("estatus");
+		option1 = document.createElement('option');
+		option1.value = option1.text = "ABIERTO";
+		select.add(option1);
+
+		option2 = document.createElement('option');
+		option2.value = option2.text = "ENVIADO";
+		select.add(option2);
+
+		option3 = document.createElement('option');
+		option3.value = option3.text = "CANCELADO";
+		select.add(option3);
+
+
+	}
+
+	var estatusEnviado = function() {
+
+		$("#estatus").empty();
+
+		habilitarInfoEnvio();
+
+		select = document.getElementById("estatus");
+		option = document.createElement('option');
+		option.value = option.text = "ENVIADO";
+		select.add(option);
+
+		option1 = document.createElement('option');
+		option1.value = option1.text = "PAGADO";
+		select.add(option1);
+
+		option2 = document.createElement('option');
+		option2.value = option2.text = "CANCELADO";
+		select.add(option2);
+
+		option3 = document.createElement('option');
+		option3.value = option3.text = "EN REVISIÓN";
+		select.add(option3);
+
+
+	}
+
+	var estatusCancelado = function(formulario) {
+
+		$("#estatus").empty();
+
+		esconderInformacion(formulario);
+
+		select = document.getElementById("estatus");
+		option = document.createElement('option');
+
+		option.value = option.text = "CANCELADO";
+		select.add(option);
+
 	}
 	
-	var prepareSelect = function(option){
-		
-		if (option == "ABIERTO"){
-			
-			estatusAbierto();
-			
-		} else if (option == "ENVIADO"){
-			
-			estatusEnviado();
-			
-		} else if (option == "CANCELADO"){
-			
-			estatusCancelado();
-			
-		} else if (option == "PAGADO"){
-			
-			estatusPagado();
-			
-		} else if (option == "EN REVISIÓN"){
-			
-			estatusEnRevision();
-			
+	
+
+	//Checar si es necesario esconder o no el formulario
+
+	var esconderInformacion = function(formulario) {
+
+		if (formulario.paqueteria != '' || formulario.numeroGuia != '') {
+			habilitarInfoEnvio();
 		}
-		
+
+		if (formulario.fechaPago != '' || formulario.numeroPago != '') {
+			habilitarInfoPago();
+		}
 	}
-	
+
+	var estatusPagado = function() {
+
+		$("#estatus").empty();
+
+		habilitarInfoPago();
+
+		habilitarInfoEnvio();
+
+		select = document.getElementById("estatus");
+		option = document.createElement('option');
+		option.value = option.text = "PAGADO";
+		select.add(option);
+
+		option1 = document.createElement('option');
+		option1.value = option1.text = "CANCELADO";
+		select.add(option1);
+
+	}
+
+	var estatusEnRevision = function() {
+
+		$("#estatus").empty();
+
+		habilitarInfoEnvio();
+
+		select = document.getElementById("estatus");
+		option = document.createElement('option');
+		option.value = option.text = "EN REVISIÓN";
+		select.add(option);
+
+		option1 = document.createElement('option');
+		option1.value = option1.text = "CANCELADO";
+		select.add(option1);
+
+		option2 = document.createElement('option');
+		option2.value = option2.text = "PAGADO";
+		select.add(option2);
+
+
+	}
+
+	var prepareSelect = function(option) {
+
+		if (option == "ABIERTO") {
+
+			estatusAbierto();
+
+		} else if (option == "ENVIADO") {
+
+			estatusEnviado();
+
+		} else if (option == "CANCELADO") {
+
+			estatusCancelado();
+
+		} else if (option == "PAGADO") {
+
+			estatusPagado();
+
+		} else if (option == "EN REVISIÓN") {
+
+			estatusEnRevision();
+
+		}
+
+	}
+
+
+
+	//Habilitar los divs del pago
+
+	var habilitarInfoEnvio = function() {
+
+		document.getElementById("divPaqueteria").hidden = false;
+		document.getElementById("divNumeroGuia").hidden = false;
+		document.getElementById("infoEnvio").hidden = false;
+
+
+		document.getElementById("paqueteria").required = true;
+		document.getElementById("numeroGuia").required = true;
+
+
+	}
+
+	//Deshabilitar los divs del pago
+
+	var deshabilitarInfoEnvio = function() {
+
+		document.getElementById("divPaqueteria").hidden = true;
+		document.getElementById("divNumeroGuia").hidden = true;
+		document.getElementById("infoEnvio").hidden = true;
+
+		document.getElementById("paqueteria").value = "";
+		document.getElementById("numeroGuia").value = "";
+
+
+		document.getElementById("paqueteria").required = false;
+		document.getElementById("numeroGuia").required = false;
+
+
+	}
+
+	//Habilitar los divs del envio
+
+	var habilitarInfoPago = function() {
+
+		document.getElementById("divNumeroPago").hidden = false;
+		document.getElementById("divFechaPago").hidden = false;
+		document.getElementById("infoPago").hidden = false;
+
+
+		document.getElementById("numeroPago").required = true;
+		document.getElementById("fechaPago").required = true;
+
+
+	}
+
+	//Deshabilitar los divs del evio
+
+	var deshabilitarInfoPago = function() {
+
+		document.getElementById("divNumeroPago").hidden = true;
+		document.getElementById("divFechaPago").hidden = true;
+		document.getElementById("infoPago").hidden = true;
+
+		document.getElementById("numeroPago").value = "";
+		document.getElementById("fechaPago").value = "";
+
+
+		document.getElementById("numeroPago").required = false;
+		document.getElementById("fechaPago").required = false;
+
+
+	}
 
 
 });
