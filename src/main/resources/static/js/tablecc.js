@@ -72,7 +72,7 @@ $(document).ready(function() {
 			{ data: "total" }
 		],
 
-		"order": [[3, "desc"]],
+		"order": [[4, "desc"]],
 		"columnDefs": [
 			{ "width": "2%", "targets": [0, 1, 2] }
 		]
@@ -142,7 +142,8 @@ $(document).ready(function() {
 				"className": 'detxml-control',
 				"render": function(row) {
 					if (row.nombreArchivoXML != null) {
-						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>';
+						return '<a href="/cajachicaclient/download/xml?id=' + row.idDocumento + '"><u><font color="blue">' + row.nombreArchivoXML + '</font></u></a>'+
+						'<div> "Vigencia: "' + 'row.vigenciaSat </div>';
 					} else {
 						return '<a>N/D</a>';
 					}
@@ -160,7 +161,7 @@ $(document).ready(function() {
 			{ data: "monto" }
 		],
 
-		"order": [[0, "asc"]],
+		"order": [[7, "desc"]],
 		"columnDefs": [
 			{ "width": "2%", "targets": [0, 1] }
 		]
@@ -534,15 +535,17 @@ $(document).ready(function() {
 		$("#estatus").empty();
 		
 		select = document.getElementById("estatus");
-        option = document.createElement( 'option' );
-        option.value = option.text = "ABIERTO";
-        select.add( option );
+        option1 = document.createElement( 'option' );
+        option1.value = option1.text = "ABIERTO";
+        select.add( option1 );
 		
-		option.value = option.text = "ENVIADO";
-        select.add( option );
-
-		option.value = option.text = "CANCELADO";
-        select.add( option );
+		option2 = document.createElement( 'option' );
+		option2.value = option2.text = "ENVIADO";
+        select.add( option2 );
+		
+		option3 = document.createElement( 'option' );
+		option3.value = option3.text = "CANCELADO";
+        select.add( option3 );
 		
 	}
 	
@@ -555,14 +558,17 @@ $(document).ready(function() {
         option.value = option.text = "ENVIADO";
         select.add( option );
 		
-		option.value = option.text = "PAGADO";
-        select.add( option );
-
-		option.value = option.text = "CANCELADO";
-        select.add( option );
-
-		option.value = option.text = "EN REVISIÓN";
-        select.add( option );
+		option1 = document.createElement( 'option' );
+		option1.value = option1.text = "PAGADO";
+        select.add( option1 );
+		
+		option2 = document.createElement( 'option' );
+		option2.value = option2.text = "CANCELADO";
+        select.add( option2 );
+		
+		option3 = document.createElement( 'option' );
+		option3.value = option3.text = "EN REVISIÓN";
+        select.add( option3 );
 		
 	}
 	
@@ -587,8 +593,9 @@ $(document).ready(function() {
         option.value = option.text = "PAGADO";
         select.add( option );
 		
-		option.value = option.text = "CANCELADO";
-        select.add( option );
+		option1 = document.createElement( 'option' );
+		option1.value = option1.text = "CANCELADO";
+        select.add( option1 );
 		
 	}
 	
@@ -601,11 +608,13 @@ $(document).ready(function() {
         option.value = option.text = "EN REVISIÓN";
         select.add( option );
 		
-		option.value = option.text = "CANCELADO";
-        select.add( option );
+		option1 = document.createElement( 'option' );
+		option1.value = option1.text = "CANCELADO";
+        select.add( option1 );
 
-		option.value = option.text = "PAGADO";
-        select.add( option );
+		option2 = document.createElement( 'option' );
+		option2.value = option2.text = "PAGADO";
+        select.add( option2 );
 		
 	}
 	
