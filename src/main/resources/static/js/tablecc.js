@@ -307,6 +307,7 @@ $(document).ready(function() {
 		$.get(href);
 
 		habilitarEntradas();
+		reestablecerForm();
 
 
 	});
@@ -315,7 +316,7 @@ $(document).ready(function() {
 	$('#submitNewForm').on('click', function() {
 
 		habilitarEntradas();
-
+		reestablecerForm();
 	});
 
 	// Adjuntar un pdf al new details
@@ -419,6 +420,7 @@ $(document).ready(function() {
 		$("#total").val(formulario.total);
 		$("#idFormulario").val(formulario.idFormularioCajaChica);
 		
+		
 		prepareSelect(formulario.estatus);
 	}
 
@@ -515,7 +517,8 @@ $(document).ready(function() {
 	var reestablecerForm = function() {
 		
 		reestablecerModal();
-
+		deshabilitarPago();
+		deshabilitarEnvio();
 		document.getElementById("formNewDet").reset();
 
 
@@ -659,6 +662,83 @@ $(document).ready(function() {
 		
 	}
 	
+	//Habilitar Pago
+	var habilitarPago = function(){
+		document.getElementById("infoPago").hidden=false;
+		document.getElementById("divNumeroPago").hidden=false;
+		document.getElementById("divFechaPago").hidden=false;
+		
+		document.getElementById("numeroPago").setAttribute("required", "");
+		document.getElementById("fechaPago").setAttribute("required", "");
+		
+	}
+	
+	//Deshabilitar Pago
+	var deshabilitarPago = function(){
+		document.getElementById("infoPago").hidden=true;
+		document.getElementById("divNumeroPago").hidden=true;
+		document.getElementById("divFechaPago").hidden=true;
+		
+		document.getElementById("numeroPago").removeAttribute("required");
+		document.getElementById("fechaPago").removeAttribute("required");
+	}
+	
+	//Habilitar Envio
+	var habilitarEnvio = function(){
+		
+		document.getElementById("divPaqueteria").hidden=false;
+		document.getElementById("infoEnvio").hidden=false;
+		document.getElementById("divNumeroGuia").hidden=false;
+		
+		document.getElementById("paqueteria").setAttribute("required", "");
+		document.getElementById("numeroGuia").setAttribute("required", "");
+		
+	}
+	
+	//Deshabilitar Envio
+	var deshabilitarEnvio = function(){
+		
+		document.getElementById("divPaqueteria").hidden=true;
+		document.getElementById("infoEnvio").hidden=true;
+		document.getElementById("divNumeroGuia").hidden=true;
+		
+		document.getElementById("paqueteria").removeAttribute("required");
+		document.getElementById("numeroGuia").removeAttribute("required");
+		
+	}
+	
+	$( "#estatus" ).change(function() {
 
+	 	  if ($( "#estatus" ).val() == "ABIERTO"){
+	 	  	deshabilitarPago();
+	 	  	deshabilitarEnvio();
+	 	  }
+	 	  if ($( "#estatus" ).val() == "ENVIADO"){
+	 	  	deshabilitarPago();
+	 	  	habilitarEnvio();
+	 	  }
+	 	  if ($( "#estatus" ).val() == "CANCELADO"){
+	 	  	habilitarPago();
+	 	  	habilitarEnvio();
+	 	  	
+	 	  	document.getElementById("paqueteria").required = false;
+			document.getElementById("numeroGuia").required = false;
+			
+			document.getElementById("numeroPago").required = false;
+			document.getElementById("fechaPago").required = false;
+	
+	 	  }
+	 	  if ($( "#estatus" ).val() == "PAGADO"){
+	 	  	habilitarPago();
+	 	  	habilitarEnvio();
+	 	  }
+	 	  if ($( "#estatus" ).val() == "EN REVISIÓN"){
+	 	  	deshabilitarPago();
+	 	  	habilitarEnvio();
+	 	  }
+	 	  
+		
+	});
+	
 
 });
