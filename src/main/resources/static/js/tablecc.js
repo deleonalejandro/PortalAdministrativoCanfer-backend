@@ -314,9 +314,10 @@ $(document).ready(function() {
 
 	// Darle Submit a New Formulario
 	$('#submitNewForm').on('click', function() {
-
-		habilitarEntradas();
+	
 		reestablecerForm();
+		habilitarEntradas();
+		
 	});
 
 	// Adjuntar un pdf al new details
