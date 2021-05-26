@@ -238,8 +238,16 @@
 								}
 						     }
 						},
-						{ data : "fechaCarga" },
-						{ data : "fechaEmision" }
+						{ data : "fechaCarga",
+							"render": function(data) {
+								return data.split("T")[0]
+							}
+						},
+						{ data : "fechaEmision",
+							"render": function(data) {
+								return data.split("T")[0]
+							}
+						}
 		             ],
 		             "order": [[14, 'desc']],
 					
