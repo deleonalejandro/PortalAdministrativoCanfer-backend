@@ -120,8 +120,8 @@ $(document).ready(function() {
 				"orderable": false,
 				"bSortable": false,
 				"data": null,
-				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + $("#idFormNew").val() + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+				"render": function(row) {
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + row.idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 				},
 			},
 			{ data: "nombreClasificacion" },
