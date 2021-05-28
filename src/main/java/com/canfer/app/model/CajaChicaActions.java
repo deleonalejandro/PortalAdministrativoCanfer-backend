@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.dto.FormularioCajaChicaDTO;
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -199,7 +200,7 @@ public class CajaChicaActions extends ModuleActions{
 		return null;
 	}
 	
-	public boolean saveDet(DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile) throws NotFoundException {
+	public boolean saveDet(DetFormularioCajaChicaDTO detFormCCDto, ArchivoXML xmlFile, ArchivoPDF pdfFile, Boolean upload) throws NotFoundException {
 		
 		Optional<FormularioCajaChica> formularioCajaChica;
 		Optional<ClasificacionCajaChica> clasificacionCajaChica;
@@ -209,7 +210,7 @@ public class CajaChicaActions extends ModuleActions{
 		clasificacionCajaChica = superRepo.findClasificacionCCById(detFormCCDto.getIdClasificacion());
 		DetFormularioCajaChica detFormCC = new DetFormularioCajaChica();
 		
-		if (formularioCajaChica.isEmpty() && clasificacionCajaChica.isEmpty()) {
+		if (formularioCajaChica.isEmpty() || clasificacionCajaChica.isEmpty()) {
 			
 			Log.error("Error en la creacion de detalle para el formulario ");
 					
@@ -219,7 +220,19 @@ public class CajaChicaActions extends ModuleActions{
 		}
 		if (xmlFile != null) {			
 			
-			documento = superRepo.findDocumentoByArchivoXML(xmlFile);
+			if (!upload) {
+				
+				Comprobante cfd  = xmlFile.toCfdi();
+				ComprobanteFiscal comprobante = superRepo.findComprobanteByUUID(cfd.getUuidTfd());
+				
+				documento = Optional.of(comprobante.getDocumento());
+				
+			} else {
+				
+				documento = superRepo.findDocumentoByArchivoXML(xmlFile);
+
+			}
+			
 			
 			if (documento.isPresent()) {
 				
@@ -229,13 +242,14 @@ public class CajaChicaActions extends ModuleActions{
 				detFormCC.setClasificacion(clasificacionCajaChica.get());
 				detFormCC.setDocumento(documento.get());
 				detFormCC.setFecha(comprobante.getFechaCarga());
-				detFormCC.setFolio(formularioCajaChica.get().getIdFormularioCajaChica() + "_" + detFormCCDto.getFolio());
+				detFormCC.setFolio(comprobante.getFolio());
 				detFormCC.setMonto(Float.valueOf(comprobante.getTotal()));
 				detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
 				detFormCC.setNombreProveedor(comprobante.getProveedorNombre());
+				detFormCC.setVigenciaSat(comprobante.getEstatusSAT());
 				
 				// make changes to comprobante: idSap, ClaveProveedor (proveedor)
-				comprobante.setIdNumSap(formularioCajaChica.get().getIdFormularioCajaChica());
+				comprobante.setIdNumSap(formularioCajaChica.get().getFolio());
 				comprobante.setProveedor(formularioCajaChica.get().getSucursal().getProveedor());
 				comprobante.setCajaChica(true);
 				

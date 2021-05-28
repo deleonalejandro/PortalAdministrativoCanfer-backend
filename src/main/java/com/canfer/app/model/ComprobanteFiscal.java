@@ -168,7 +168,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	private Documento documento;
 	
 	@Column
-	private boolean isCajaChica = false;
+	private Boolean isCajaChica = false;
 	
 	public ComprobanteFiscal() {
 	}
@@ -552,11 +552,11 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		this.tipoRelacionUuidRelacionados = tipoRelacionUuidRelacionados;
 	}
 	
-	public boolean isCajaChica() {
+	public Boolean isCajaChica() {
 		return isCajaChica;
 	}
 
-	public void setCajaChica(boolean isCajaChica) {
+	public void setCajaChica(Boolean isCajaChica) {
 		this.isCajaChica = isCajaChica;
 	}
 
