@@ -397,7 +397,7 @@ $(document).ready(function() {
 		$('#deleteDet').modal('show');
 		
 		$('#confirmDeleteDet').click(function(){
-		
+			alert('Hola bebecito');
 			$.ajax({
 			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica
 			});
