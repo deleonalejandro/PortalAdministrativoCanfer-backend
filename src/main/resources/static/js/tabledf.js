@@ -1054,6 +1054,16 @@
 					    $('#toastDeletefalse').toggleClass('ew-toast-show')
 					}, 6000);
 		     }
+		     
+		     $('#guardar-modal-info').click(function(){
+			  	  $('#toastEdit').toggleClass('ew-toast-show')
+			  	  
+			  	  $('#toastEdit').toast('show')
+		          
+		          setTimeout(function(){
+					    $('#toastEdit').toggleClass('ew-toast-show')
+					}, 6000);
+		     })
 
 			
 				

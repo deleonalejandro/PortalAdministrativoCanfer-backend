@@ -212,6 +212,16 @@
 						</nav>
 					</div>
 					<div class="col-10">
+						<!-- TOAST PARA GUARDAR MODAL INFO -->
+						<div class="toast" role="alert" id="toastEdit" data-autohide=false
+							data-delay="6000"
+							style="z-index:7000; position: fixed; right: 2.5rem;"
+							aria-live="assertive" aria-atomic="true">
+							<div class="toast-header bg-primary text-white">
+								<i data-feather="edit"></i> <strong class="mr-auto">Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
+							</div>
+							<div class="toast-body">La información se guardó correctamente.</div>
+						</div>
 						<!-- TOAST PARA REFRESH DE SAT -->
 						<div class="toast" role="alert" id="toastSAT" data-autohide=false
 							data-delay="6000"
@@ -1029,7 +1039,7 @@
 														style="color: teal"></i><i
 														class="fas fa-slash fa-stack-1x" style="color: red"></i></span>
 												</div>
-												<button class="btn btn-primary" type="submit">Guardar</button>
+												<button class="btn btn-primary" id="guardar-modal-info" type="submit">Guardar</button>
 											</div>
 										</div>
 									</div>

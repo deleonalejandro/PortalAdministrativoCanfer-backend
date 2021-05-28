@@ -224,12 +224,19 @@ $(document).ready(function() {
 		});
 
 		saveDet.done(function(upload) {
-
-			if (upload == true) {
-				$('.alert-success').prop('hidden', false);
+		
+		 	var res = upload.split("-");
+			var pull = res[0];
+			var success = res[1];
+			
+			if (pull == 'pull') {
+				$('#alert-df').prop('hidden', false);
+			} 
+			if (success == 'true') {
+				$('#alert-upload').prop('hidden', false);
 			} else {
-				$('.alert-danger').prop('hidden', false);
-			}
+				$('#alert-error').prop('hidden', false);
+			} 
 
 			setTimeout(function() {
 				$('.alert').prop('hidden', true);
@@ -365,15 +372,39 @@ $(document).ready(function() {
 
 		var jsonData = table.row(this).data();
 
-		$('.deleteForm .delBtn').attr("href", "/cajachicaclient/deleteformcc?id=" + jsonData.idFormularioCajaChica);
-		$('#deleteModal').modal('show');
+		$('#deleteForm').modal('show');
+		
+		$('#confirmDeleteForm').click(function(){
+		
+			$.ajax({
+			  url: "/cajachicaclient/deleteformcc?id=" + jsonData.idFormularioCajaChica
+			});
+			$('#deleteForm').modal('hide');
+			table.ajax.reload( null, false );
+		
+		})
+		
 	});
 
 	// Funcion para delete detalle
 
 	$('#detallesNuevoCajaChica tbody').on('click', 'td.deletedet-control', 'tr', function(event) {
+		
+		event.preventDefault();
 
-		table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+		var jsonData = table.row(this).data();
+
+		$('#deleteDet').modal('show');
+		
+		$('#confirmDeleteDet').click(function(){
+		
+			$.ajax({
+			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica
+			});
+			$('#deleteDet').modal('hide');
+			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+		
+		})
 
 	});
 

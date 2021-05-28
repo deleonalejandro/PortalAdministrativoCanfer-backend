@@ -45,7 +45,7 @@ public class Documento {
 	@OneToOne(cascade = CascadeType.ALL)
 	private ArchivoPDF archivoPDF;
 	
-	@Column(nullable = false)
+	@Column
 	@CreationTimestamp
 	private LocalDateTime fechaCreacion;
 	
