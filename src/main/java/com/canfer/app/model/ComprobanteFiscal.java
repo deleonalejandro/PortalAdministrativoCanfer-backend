@@ -286,7 +286,7 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		
 		if (!this.estatusPago.equalsIgnoreCase(documento.getEstatus()) || !this.comentario.equalsIgnoreCase(documento.getComentario())) {
 			
-			Log.activity("Se actualizó el documento fiscal " + this.getUuid() + ".", this.getEmpresaNombre(), "UPDATE");
+			Log.activity("Se guardó la información del documento fiscal " + this.getUuid() + ".", this.getEmpresaNombre(), "UPDATE");
 			sendMail = sendMail + 1; 
 			
 		}
