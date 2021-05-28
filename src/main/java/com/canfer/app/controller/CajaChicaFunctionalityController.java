@@ -90,13 +90,14 @@ public class CajaChicaFunctionalityController {
 	 * @param ra - RedirectAttributes for HTTP request.
 	 */
 	@PostMapping("/savedetformcc")
-	public ResponseEntity<Boolean> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, Model model,
+	public ResponseEntity<String> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, Model model,
 			@CookieValue("suc") Long idSucursal) {
 		
 		
 		ArchivoXML fileXML = null;
 		ArchivoPDF filePDF = null;
 		Boolean upload;
+		Boolean exists = false;
 		detFormCCDto.setIdSucursal(idSucursal);
 		
 		// initializing directories
@@ -130,7 +131,7 @@ public class CajaChicaFunctionalityController {
 				
 				upload = false;
 				
-				return new ResponseEntity<>(upload, HttpStatus.OK);
+				return new ResponseEntity<>(upload.toString(), HttpStatus.OK);
 				
 			} catch (NotFoundException e) {
 				
@@ -138,7 +139,7 @@ public class CajaChicaFunctionalityController {
 				
 				upload = false;
 				
-				return new ResponseEntity<>(upload, HttpStatus.OK);
+				return new ResponseEntity<>(upload.toString(), HttpStatus.OK);
 				
 			}	
 			
@@ -146,6 +147,9 @@ public class CajaChicaFunctionalityController {
 		
 		try {
 			
+			// get the boolean value for the existence or not of the CFDI
+			exists = upload;
+			// get boolean for success or not of the Det genertion.
 			upload = actioner.saveDet(detFormCCDto, fileXML, filePDF, upload);
 			
 		} catch (NotFoundException e) {
@@ -154,7 +158,12 @@ public class CajaChicaFunctionalityController {
 			
 		}
 		
-		return new ResponseEntity<>(upload, HttpStatus.OK);
+		// return response depending if its a new document or not and successful or not.
+		if (exists) {			
+			return new ResponseEntity<>("pull-"+upload, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("new-"+upload, HttpStatus.OK);
+		}
 		
 	}
 	
