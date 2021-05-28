@@ -402,7 +402,7 @@ $(document).ready(function() {
 			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica
 			});
 			$('#deleteDet').modal('hide');
-			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
+			table.ajax.reload( null, false );
 		
 		})
 
