@@ -121,7 +121,7 @@ $(document).ready(function() {
 				"bSortable": false,
 				"data": null,
 				"render": function(row) {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0" href="/cajachicaclient/deletedetformcc?id=' + row.idDetFormularioCajaChica + '"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 				},
 			},
 			{ data: "nombreClasificacion" },
