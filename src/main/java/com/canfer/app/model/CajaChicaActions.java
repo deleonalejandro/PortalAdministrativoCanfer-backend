@@ -371,11 +371,11 @@ public class CajaChicaActions extends ModuleActions{
 	}
 
 	/* This method updates the form's status and comments */
-	public boolean updateForm(Long idForm, FormularioCajaChicaDTO formCCDto) {
+	public boolean updateForm(FormularioCajaChicaDTO formCCDto) {
 		
 		Optional<FormularioCajaChica> formCC;
 		
-		formCC = superRepo.findFormularioCCById(idForm);
+		formCC = superRepo.findFormularioCCById(formCCDto.getIdFormularioCajaChica());
 		
 		if (formCC.isPresent()) {
 			

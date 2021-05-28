@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
+import com.canfer.app.dto.FormularioCajaChicaDTO;
 import com.canfer.app.model.CajaChicaActions;
 import com.canfer.app.model.DetFormularioCajaChica;
 import com.canfer.app.model.FormularioCajaChica;
@@ -79,6 +80,14 @@ public class CajaChicaFunctionalityController {
 		actioner.cancelarForm(id);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/updateformcc")
+	public ResponseEntity<String> updateFormCC(FormularioCajaChicaDTO formCCDto) {
+		
+		Boolean updateBoolean = actioner.updateForm(formCCDto);
+		
+		return new ResponseEntity<>(updateBoolean.toString(), HttpStatus.OK);
 	}
 	
 	/*********************************************
@@ -190,6 +199,8 @@ public class CajaChicaFunctionalityController {
 		
 		return new ResponseEntity<>("ERROR", HttpStatus.OK);
 	}
+	
+	
 	
 	@GetMapping("/loadformdetails")
 	@ResponseBody
