@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.model.CajaChicaActions;
@@ -94,6 +93,7 @@ public class CajaChicaFunctionalityController {
 	public ResponseEntity<Boolean> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, Model model,
 			@CookieValue("suc") Long idSucursal) {
 		
+		
 		ArchivoXML fileXML = null;
 		ArchivoPDF filePDF = null;
 		Boolean upload;
@@ -122,11 +122,8 @@ public class CajaChicaFunctionalityController {
 					
 				}
 				
-				boolean value = actioner.upload(fileXML, filePDF, detFormCCDto.getIdSucursal());
-				
-				upload = value;
-				
-				
+				upload = actioner.upload(fileXML, filePDF, detFormCCDto.getIdSucursal());
+	
 			} catch (StorageException e) {
 				
 				Log.falla(e.getMessage(), "ERROR_DB");
@@ -149,7 +146,7 @@ public class CajaChicaFunctionalityController {
 		
 		try {
 			
-			upload = actioner.saveDet(detFormCCDto, fileXML, filePDF);
+			upload = actioner.saveDet(detFormCCDto, fileXML, filePDF, upload);
 			
 		} catch (NotFoundException e) {
 			

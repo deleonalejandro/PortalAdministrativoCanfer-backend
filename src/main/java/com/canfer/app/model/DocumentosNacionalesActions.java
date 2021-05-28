@@ -3,6 +3,7 @@ package com.canfer.app.model;
 
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -368,7 +369,20 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			comprobante = value.get();
 			
-			comprobante.fetchPDF().actualizar(file);
+			if (comprobante.fetchPDF() == null) {
+				
+				ArchivoPDF newPdf = (ArchivoPDF) comprobanteStorageService.storePortalFile(file);
+				
+				Path rutaFromXML = Paths.get(comprobante.fetchXML().getRuta());
+				
+				newPdf.accept(newPdf.getNombre(), rutaFromXML.getParent().toString());
+				
+				comprobante.fetchDocument().setArchivoPDF(newPdf);
+				
+			} else {
+				
+				comprobante.fetchPDF().actualizar(file);
+			}
 			
 			return true;
 		
