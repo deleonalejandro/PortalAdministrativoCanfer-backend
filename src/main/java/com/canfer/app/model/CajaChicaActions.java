@@ -224,7 +224,6 @@ public class CajaChicaActions extends ModuleActions{
 				
 				Comprobante cfd  = xmlFile.toCfdi();
 				ComprobanteFiscal comprobante = superRepo.findComprobanteByUUID(cfd.getUuidTfd());
-				
 				documento = Optional.of(comprobante.getDocumento());
 				
 			} else {

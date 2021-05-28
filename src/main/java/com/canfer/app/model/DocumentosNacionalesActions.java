@@ -371,12 +371,15 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			if (comprobante.fetchPDF() == null) {
 				
+				// uploading newpdf to the system.
 				ArchivoPDF newPdf = (ArchivoPDF) comprobanteStorageService.storePortalFile(file);
-				
+				// creating route from the XML file.
 				Path rutaFromXML = Paths.get(comprobante.fetchXML().getRuta());
-				
-				newPdf.accept(newPdf.getNombre(), rutaFromXML.getParent().toString());
-				
+				// getting name from the uploaded file.
+				String[] nameParts = newPdf.getNombre().split("\\.");
+				// accepting the document and moving from previous file location to final storage.
+				newPdf.accept(nameParts[0], rutaFromXML.getParent().toString());
+				// binding the new pdf to the CFDI document. 
 				comprobante.fetchDocument().setArchivoPDF(newPdf);
 				
 			} else {
