@@ -294,7 +294,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="alert alert-success alert-icon mt-3" role="alert"
+											<div class="alert alert-success alert-icon mt-3" id="alert-upload" role="alert"
 												hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
@@ -306,7 +306,7 @@
 												<div class="alert-icon-content">Se procesó
 													correctamente el nuevo detalle del fomulario.</div>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" role="alert"
+											<div class="alert alert-danger alert-icon mt-3" id="alert-error" role="alert"
 												hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
@@ -317,6 +317,18 @@
 												</div>
 												<div class="alert-icon-content">No se pudo procesar
 													correctamente el nuevo detalle de formulario.</div>
+											</div>
+											<div class="alert alert-success alert-icon mt-3" id="alert-df" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">La información del nuevo detalle de formulario
+												fue obtenida del módulo de documentos fiscales.</div>
 											</div>
 											<hr>
 											<!-- Atributos del Formulario -->
@@ -372,8 +384,8 @@
 																		document.getElementById('numeroGuiaLabel').innerHTML  ='Contacto: ';
 																		 document.getElementById('paqueteriaLabel').innerHTML  ='Mensajero: ';
 																	} else{
-																		document.getElementById('numeroGuiaLabel').innerHTML  ='Paquetería: ';
-																		 document.getElementById('paqueteriaLabel').innerHTML  ='Número de Guía';
+																		document.getElementById('numeroGuiaLabel').innerHTML  ='Número de Guía: ';
+																		 document.getElementById('paqueteriaLabel').innerHTML  ='Paquetería: ';
 																	}
 																	
 																}
@@ -963,14 +975,14 @@
 
 								<!-- MODAL PARA CONFIRMAR BORRAR -->
 								<div class="deleteForm">
-									<div class="modal fade" id="deleteModal" tabindex="-1"
+									<div class="modal fade" id="deleteForm" tabindex="-1"
 										role="dialog" aria-labelledby="exampleModalCenterTitle"
 										aria-hidden="true">
 										<div class="modal-dialog modal-dialog-centered"
 											role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title" id="exampleModalCenterTitle">Eliminar
+													<h5 class="modal-title">Eliminar
 														Formulario</h5>
 													<button class="close" type="button" data-dismiss="modal"
 														aria-label="Close">
@@ -982,7 +994,35 @@
 												<div class="modal-footer">
 													<button class="btn btn-primary" type="button"
 														data-dismiss="modal">Cancelar</button>
-													<a class="btn btn-danger delBtn" id="confirmDelete"
+													<a class="btn btn-danger delBtn" id="confirmDeleteForm"
+														type="button">Eliminar</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- MODAL PARA CONFIRMAR BORRAR -->
+								<div class="deleteForm">
+									<div class="modal fade" id="deleteDet" tabindex="-1"
+										role="dialog" aria-labelledby="exampleModalCenterTitle"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Eliminar
+														Detalle</h5>
+													<button class="close" type="button" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+												</div>
+												<div class="modal-body">¿Está seguro que desea
+													eliminar el detalle?</div>
+												<div class="modal-footer">
+													<button class="btn btn-primary" type="button"
+														data-dismiss="modal">Cancelar</button>
+													<a class="btn btn-danger delBtn" id="confirmDeleteDet"
 														type="button">Eliminar</a>
 												</div>
 											</div>
