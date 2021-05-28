@@ -217,8 +217,7 @@ public class CajaChicaActions extends ModuleActions{
 		
 			
 		}
-		
-		if (xmlFile != null) {
+		if (xmlFile != null) {			
 			
 			documento = superRepo.findDocumentoByArchivoXML(xmlFile);
 			
