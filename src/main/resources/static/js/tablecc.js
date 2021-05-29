@@ -392,17 +392,17 @@ $(document).ready(function() {
 		
 		event.preventDefault();
 
-		var jsonData = table.row(this).data();
+		var jsonData = table2.row(this).data();
 
 		$('#deleteDet').modal('show');
 		
 		$('#confirmDeleteDet').click(function(){
-			alert('Hola bebecito');
 			$.ajax({
-			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica
+			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica,
+			  success: table2.ajax.reload( null, false )
 			});
 			$('#deleteDet').modal('hide');
-			table.ajax.reload( null, false );
+			
 		
 		})
 
