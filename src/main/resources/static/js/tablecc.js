@@ -397,12 +397,12 @@ $(document).ready(function() {
 		$('#deleteDet').modal('show');
 		
 		$('#confirmDeleteDet').click(function(){
-		
 			$.ajax({
 			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica
+			  success: table2.ajax.reload( null, false )
 			});
 			$('#deleteDet').modal('hide');
-			table.ajax.reload( null, false );
+		
 		
 		})
 
