@@ -231,10 +231,7 @@ $(document).ready(function() {
 			
 			if (pull == 'pull') {
 				$('#alert-df').prop('hidden', false);
-				alert("ya quedo mijo")
-			} else{
-				alert(pull)
-			}
+			} 
 			if (success == 'true') {
 				$('#alert-upload').prop('hidden', false);
 			} else {
