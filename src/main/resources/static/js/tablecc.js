@@ -241,7 +241,7 @@ $(document).ready(function() {
 			setTimeout(function() {
 				$('.alert').prop('hidden', true);
 
-			}, 4000);
+			}, 6000);
 
 
 		});
