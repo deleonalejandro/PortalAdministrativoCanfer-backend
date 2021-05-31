@@ -231,7 +231,10 @@ $(document).ready(function() {
 			
 			if (pull == 'pull') {
 				$('#alert-df').prop('hidden', false);
-			} 
+				alert("ya quedo mijo")
+			} else{
+				alert(pull)
+			}
 			if (success == 'true') {
 				$('#alert-upload').prop('hidden', false);
 			} else {
@@ -398,8 +401,9 @@ $(document).ready(function() {
 		
 		$('#confirmDeleteDet').click(function(){
 			$.ajax({
-			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica
-			  success: table2.ajax.reload( null, false )
+			  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica,
+			  success: table2.ajax.reload( null, false ),
+			  type: 'GET'
 			});
 			$('#deleteDet').modal('hide');
 		
