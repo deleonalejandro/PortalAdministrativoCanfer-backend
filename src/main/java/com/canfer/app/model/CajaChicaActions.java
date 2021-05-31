@@ -3,6 +3,8 @@ package com.canfer.app.model;
 
 
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -218,11 +220,20 @@ public class CajaChicaActions extends ModuleActions{
 		
 			
 		}
+		
 		if (xmlFile != null) {			
 			
 			if (!upload) {
 				
 				Comprobante cfd  = xmlFile.toCfdi();
+				
+				// check if its a valid cfd.
+				if (cfd == null) {
+					
+					return false;
+					
+				}
+				
 				ComprobanteFiscal comprobante = superRepo.findComprobanteByUUID(cfd.getUuidTfd());
 				documento = Optional.of(comprobante.getDocumento());
 				
@@ -234,6 +245,18 @@ public class CajaChicaActions extends ModuleActions{
 			
 			
 			if (documento.isPresent()) {
+				
+				Optional<DetFormularioCajaChica> checkDet = superRepo.findDetFormularioCCByDocumento(documento.get());
+				
+				// check whether the det exists or not in the module.
+				if (checkDet.isPresent()) {
+					
+					Log.activity("Error al intentar guardar detalle: El detalle de caja chica ya se encuentra registrado en este u otro formulario."
+							+ " Fo. Formulario: "+ checkDet.get().getFormularioCajaChica().getFolio()+", Fo. Detalle: "+checkDet.get().getFolio()+".", 
+							formularioCajaChica.get().getSucursal().getEmpresa().getNombre(), "ERROR_DB");
+					
+					return false;
+				}
 				
 				ComprobanteFiscal comprobante = superRepo.findComprobanteByDocumento(documento.get());
 					

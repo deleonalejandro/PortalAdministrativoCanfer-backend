@@ -585,6 +585,11 @@ public class RepositoryService {
 		return consecutivoRepo.findBySucursal(sucursal);
 	}
 	
+	public Optional<DetFormularioCajaChica> findDetFormularioCCByDocumento(Documento documento) {
+		
+		return detFormCCRepo.findByDocumento(documento);
+	}
+	
 	public List<DetFormularioCajaChica> findAllDetFormularioCajaChicaByFormCC(FormularioCajaChica formularioCajaChica){
 		
 		return detFormCCRepo.findAllByFormularioCajaChica(formularioCajaChica);

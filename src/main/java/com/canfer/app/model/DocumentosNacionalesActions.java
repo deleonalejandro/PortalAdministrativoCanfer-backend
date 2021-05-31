@@ -617,14 +617,23 @@ public class DocumentosNacionalesActions extends ModuleActions {
 
 	private Boolean businessValidation(ArchivoXML archivo) {
 		
+		// if the xml file is not read it will return a null value.
 		Comprobante comprobante = archivo.toCfdi();
+		
+		if (comprobante == null) {
+			
+			return false;
+			
+		}
+		
+		// the code continues if the value is not null, proceeding to get the company.
 		Empresa receptor = superRepo.findEmpresaByRFC(comprobante.getReceptorRfc());
 		
-		//check if uuid is in DB
+		// check if uuid is in DB.
 		if (exist(comprobante.getUuidTfd())) {
 			
 			Log.activity("Error al intentar guardar factura: El comprobante fiscal ya se encuentra registrado en la base de datos. UUID: "
-					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorRfc(), comprobante.getReceptorRfc(), "ERROR_DB");
+					+ comprobante.getUuidTfd() + " Emisor: " + comprobante.getEmisorRfc(), comprobante.getReceptorNombre(), "ERROR_DB");
 			
 			return false;
 			
@@ -640,7 +649,6 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		}
 		
 		// adding company stamp
-		
 		archivo.setReceptor(comprobante.getReceptorNombre());
 		
 		return true; 
