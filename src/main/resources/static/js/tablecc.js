@@ -229,11 +229,12 @@ $(document).ready(function() {
 			var pull = res[0];
 			var success = res[1];
 			
-			if (pull == 'pull') {
-				$('#alert-df').prop('hidden', false);
-			} 
+		
 			if (success == 'true') {
 				$('#alert-upload').prop('hidden', false);
+				if (pull == 'pull') {
+					$('#alert-df').prop('hidden', false);
+				} 
 			} else {
 				$('#alert-error').prop('hidden', false);
 			} 
