@@ -223,6 +223,33 @@
 
 										</div>
 									</div>
+
+									<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+									<div class="alert alert-success alert-icon mt-3"
+										id="alert-upload-form" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-check"></i>
+										</div>
+										<div class="alert-icon-content">Se guardó correctamente
+											la información del fomulario.</div>
+									</div>
+									<div class="alert alert-danger alert-icon mt-3"
+										id="alert-error-form" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-times"></i>
+										</div>
+										<div class="alert-icon-content">No se pudo procesar
+											correctamente la información del formulario.</div>
+									</div>
+
 									<!-- TABLA -->
 
 									<table class="compact table-hover" id="formularios"
@@ -260,6 +287,7 @@
 								<!-- NUEVO FORMULARIO Main Content Formulario -->
 								<div id="divNuevo" hidden>
 									<form class="newForm" method="post"
+										th:action="@{/cajachicaclient/updateformcc}"
 										enctype="multipart/form-data" id="formFormulario">
 										<div class="form-group">
 											<!-- Card del modal -->
@@ -271,9 +299,13 @@
 														<div class="font-weight-bold"
 															style="text-align: right; color: black; font-size: large">
 															FORMULARIO #</div>
-														<div class="font-weight-bold" id="idFormularioCajaChica"
+														<div class="font-weight-bold" id="idFormulario"
 															style="text-align: right; color: black; font-size: large">
 														</div>
+														<!-- Hidden fields (informative only) -->
+															<input type="text" style="height: 20px"
+																id="idFormularioCajaChica1" name="idFormularioCajaChica"
+																value="" hidden/>
 													</div>
 												</div>
 											</div>
@@ -288,14 +320,14 @@
 															<!-- INPUT IMPORTE ESTATUS -->
 															<select class="form-control form-control-solid"
 																style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
-																id="estatus"  name="estatus">
+																id="estatus" name="estatus">
 															</select>
 														</div>
 													</div>
 												</div>
 											</div>
-											<div class="alert alert-success alert-icon mt-3" id="alert-upload" role="alert"
-												hidden=true>
+											<div class="alert alert-success alert-icon mt-3"
+												id="alert-upload" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -306,8 +338,8 @@
 												<div class="alert-icon-content">Se procesó
 													correctamente el nuevo detalle del fomulario.</div>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" id="alert-error" role="alert"
-												hidden=true>
+											<div class="alert alert-danger alert-icon mt-3"
+												id="alert-error" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -318,8 +350,8 @@
 												<div class="alert-icon-content">No se pudo procesar
 													correctamente el nuevo detalle de formulario.</div>
 											</div>
-											<div class="alert alert-warning alert-icon mt-3" id="alert-df" role="alert"
-												hidden=true>
+											<div class="alert alert-warning alert-icon mt-3"
+												id="alert-df" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -327,8 +359,9 @@
 												<div class="alert-icon-aside">
 													<i class="fas fa-info-circle"></i>
 												</div>
-												<div class="alert-icon-content">La información del nuevo detalle de formulario
-												fue obtenida del módulo de documentos fiscales.</div>
+												<div class="alert-icon-content">La información del
+													nuevo detalle de formulario fue obtenida del módulo de
+													documentos fiscales.</div>
 											</div>
 											<hr>
 											<!-- Atributos del Formulario -->
@@ -373,21 +406,26 @@
 															<script>
 																function toggleField(
 																		hideObj,
-																		showObj,boolVal) {
+																		showObj,
+																		boolVal) {
 																	hideObj.disabled = true;
 																	hideObj.style.display = 'none';
 																	showObj.disabled = false;
 																	showObj.style.display = 'inline';
 																	showObj
 																			.focus();
-																	if(boolVal == true){
-																		document.getElementById('numeroGuiaLabel').innerHTML  ='Contacto: ';
-																		 document.getElementById('paqueteriaLabel').innerHTML  ='Mensajero: ';
-																	} else{
-																		document.getElementById('numeroGuiaLabel').innerHTML  ='Número de Guía: ';
-																		 document.getElementById('paqueteriaLabel').innerHTML  ='Paquetería: ';
+																	if (boolVal == true) {
+																		document
+																				.getElementById('numeroGuiaLabel').innerHTML = 'Contacto: ';
+																		document
+																				.getElementById('paqueteriaLabel').innerHTML = 'Mensajero: ';
+																	} else {
+																		document
+																				.getElementById('numeroGuiaLabel').innerHTML = 'Número de Guía: ';
+																		document
+																				.getElementById('paqueteriaLabel').innerHTML = 'Paquetería: ';
 																	}
-																	
+
 																}
 															</script>
 														</div>
@@ -490,9 +528,9 @@
 												</div>
 											</div>
 											<div class="row">
-												<button class="btn btn-secondary ml-3" type="button" data-toggle="modal" data-target="#newDetModal">
-  													Nuevo Detalle
-												</button>
+												<button class="btn btn-secondary ml-3" type="button"
+													data-toggle="modal" data-target="#newDetModal">
+													Nuevo Detalle</button>
 												<div class="col-12">
 													<table class="compact table-hover"
 														id="detallesNuevoCajaChica"
@@ -701,10 +739,11 @@
 																				detalle</h5>
 																			<!-- Content del new detalle modal -->
 																			<!-- Hidden fields (informative only) -->
-																			<div class="col-2" hidden>
+																			<div class="col-2" >
 																				<input type="text" style="height: 20px" readonly
 																					class="form-control form-control-sm bg-white"
-																					id="idFormulario" name="idFormulario" value="" />
+																					id="idFormularioCajaChica2"
+																					name="idFormulario" value="" />
 																			</div>
 																		</div>
 																		<div>
@@ -731,7 +770,7 @@
 																					<!-- INPUT IMPORTE ESTATUS -->
 																					<select class="form-control form-control-solid"
 																						style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																						id="idClasificacion" name="idClasificacion"
+																						id="idClasificacion1" name="idClasificacion"
 																						required=true>
 																						<option
 																							th:each="clasificacion : ${clasificaciones}"
@@ -841,8 +880,8 @@
 
 
 								<!-- MODAL PARA MAS INFORMACION DE DETALLE-->
-								<form class="detailsForm" method="post"
-									enctype="multipart/form-data">
+								<form class="detailsForm" method="post" th:action="@{/cajachicaclient/updatedetformcc}"
+									enctype="multipart/form-data" id="updateDetForm">
 									<div class="modal fade" id="detailsModal" tabindex="-1"
 										role="dialog" aria-labelledby="myLargeModalLabel"
 										aria-hidden="true">
@@ -879,7 +918,7 @@
 																<!-- INPUT IMPORTE ESTATUS -->
 																<select class="form-control form-control-solid"
 																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																	id="idClasificacion" name="idClasificacion">
+																	id="idClasificacion2" name="idClasificacion">
 																	<option th:each="clasificacion : ${clasificaciones}"
 																		th:value="${clasificacion.idClasificacionCajaChica}"
 																		th:text="${clasificacion.clasificacion}"></option>
@@ -966,7 +1005,7 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button class="btn btn-secondary" type="submit">Guardar</button>
+													<button class="btn btn-secondary" id="updateDet" type="submit">Guardar</button>
 												</div>
 											</div>
 										</div>
@@ -982,8 +1021,7 @@
 											role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title">Eliminar
-														Formulario</h5>
+													<h5 class="modal-title">Eliminar Formulario</h5>
 													<button class="close" type="button" data-dismiss="modal"
 														aria-label="Close">
 														<span aria-hidden="true">×</span>
@@ -994,8 +1032,8 @@
 												<div class="modal-footer">
 													<button class="btn btn-primary" type="button"
 														data-dismiss="modal">Cancelar</button>
-													<a class="btn btn-danger text-light delBtn" id="confirmDeleteForm"
-														type="button">Eliminar</a>
+													<a class="btn btn-danger text-light delBtn"
+														id="confirmDeleteForm" type="button">Eliminar</a>
 												</div>
 											</div>
 										</div>
@@ -1010,8 +1048,7 @@
 											role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title">Eliminar
-														Detalle</h5>
+													<h5 class="modal-title">Eliminar Detalle</h5>
 													<button class="close" type="button" data-dismiss="modal"
 														aria-label="Close">
 														<span aria-hidden="true">×</span>
@@ -1022,8 +1059,8 @@
 												<div class="modal-footer">
 													<button class="btn btn-primary" type="button"
 														data-dismiss="modal">Cancelar</button>
-													<a class="btn btn-danger text-light delBtn" id="confirmDeleteDet"
-														type="button">Eliminar</a>
+													<a class="btn btn-danger text-light delBtn"
+														id="confirmDeleteDet" type="button">Eliminar</a>
 												</div>
 											</div>
 										</div>

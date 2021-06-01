@@ -191,9 +191,10 @@ public class CajaChicaFunctionalityController {
 	@GetMapping("/updatedetformcc")
 	public ResponseEntity<Object> updateDetalleFormCC(DetFormularioCajaChicaDTO data) {
 		
-		if (actioner.updateDet(data)) {
+		boolean update = actioner.updateDet(data); 
+		if (update) {
 			
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(update, HttpStatus.OK);
 			
 		}
 		

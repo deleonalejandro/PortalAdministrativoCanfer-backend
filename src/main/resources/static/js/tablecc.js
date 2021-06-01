@@ -265,6 +265,7 @@ $(document).ready(function() {
 
 
 	})
+	
 
 	// Darle Siguiente a New Det
 	$('#siguienteNewDet').on('click', function() {
@@ -322,10 +323,49 @@ $(document).ready(function() {
 
 	// Darle Submit a New Formulario
 	$('#submitNewForm').on('click', function() {
-	
-		reestablecerForm();
-		habilitarEntradas();
+
+		event.preventDefault();
+
+		var data = new FormData($('#formFormulario')[0]);
+
+		var url = "/cajachicaclient/updateformcc";
+
+		var saveForm = $.ajax({
+			url: url,
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'POST',
+		});
+
+		saveForm.done(function(upload) {
 		
+			if (upload == 'true') {
+				$('#alert-upload-form').prop('hidden', false);
+			} else {
+				$('#alert-error-form').prop('hidden', false);
+			} 
+
+			setTimeout(function() {
+				$('.alert').prop('hidden', true);
+
+			}, 6000);
+
+
+		});
+		saveForm.always(function() {
+
+			table.ajax.reload(null,false);
+
+			reestablecerForm();
+			habilitarEntradas();
+
+
+		});
+
+
+
 	});
 
 	// Adjuntar un pdf al new details
@@ -353,7 +393,7 @@ $(document).ready(function() {
 
 		$('#headerValue').text('Detalle ' + d.folio)
 		$('#detail-fechaDet').val(d.fecha.split("T")[0]);
-		$('#detail-clasificacion').val(d.idClasificacion);
+		$('#detail-clasificacion').val(d.idClasificacion2);
 		$('#detail-monto').val(d.monto);
 		$('#detail-folio').val(d.folio);
 		$('#detail-beneficiario').val(d.beneficiario);
@@ -456,8 +496,10 @@ $(document).ready(function() {
 
 	var llenarFormulario = function(formulario) {
 
+		prepareSelect(formulario.estatus);
+		
 		//Llena los parametros del formulario 
-		$("#idFormularioCajaChica").text(formulario.folio);
+		$("#idFormulario").text(formulario.folio);
 		$("#estatus").val(formulario.estatus);
 		$("#idCajaChicaNew").val(formulario.claveProvSucursal);
 		$("#sucursalNew").val(formulario.nombreSucursal);
@@ -467,10 +509,16 @@ $(document).ready(function() {
 		$("#responsableNew").val(formulario.responsable);
 		$('#nombreProveedor').val(formulario.nombreProveedor);
 		$("#total").val(formulario.total);
-		$("#idFormulario").val(formulario.idFormularioCajaChica);
+		$("#paqueteria").append($("<option />").val(formulario.paqueteria).text(formulario.paqueteria));
+		$("#paqueteria").val(formulario.paqueteria);
+		$("#numeroGuia").val(formulario.numeroGuia);
+		$("#numeroPago").val(formulario.numeroPago);
+		$("#fechaPago").val(formulario.fechaPago);
+		$("#idFormularioCajaChica1").val(formulario.idFormularioCajaChica);
+		$("#idFormularioCajaChica2").val(formulario.idFormularioCajaChica);
+		$("#idFormularioCC").val(formulario.idFormularioCajaChica);
 		
 		
-		prepareSelect(formulario.estatus);
 	}
 
 	//Habilitar la carga de xml
@@ -623,7 +671,7 @@ $(document).ready(function() {
 		select = document.getElementById("estatus");
         option = document.createElement( 'option' );
         option.value = option.text = "ENVIADO";
-        select.add( option );
+        select.add(option);
 		
 		option1 = document.createElement( 'option' );
 		option1.value = option1.text = "PAGADO";
@@ -636,6 +684,8 @@ $(document).ready(function() {
 		option3 = document.createElement( 'option' );
 		option3.value = option3.text = "EN REVISIÓN";
         select.add( option3 );
+        
+        habilitarEnvio();
 		
 	}
 	
@@ -648,6 +698,16 @@ $(document).ready(function() {
 		
 		option.value = option.text = "CANCELADO";
         select.add( option );
+        
+        habilitarEnvio();
+        habilitarPago();
+        
+        document.getElementById("paqueteria").removeAttribute("required");
+		document.getElementById("numeroGuia").removeAttribute("required");
+			
+		document.getElementById("numeroPago").removeAttribute("required");
+		document.getElementById("fechaPago").removeAttribute("required");
+        
 		
 	}
 	
@@ -663,6 +723,9 @@ $(document).ready(function() {
 		option1 = document.createElement( 'option' );
 		option1.value = option1.text = "CANCELADO";
         select.add( option1 );
+        
+        habilitarEnvio();
+        habilitarPago();
 		
 	}
 	
@@ -682,6 +745,8 @@ $(document).ready(function() {
 		option2 = document.createElement( 'option' );
 		option2.value = option2.text = "PAGADO";
         select.add( option2 );
+        
+        habilitarEnvio();
 		
 	}
 	
@@ -713,9 +778,9 @@ $(document).ready(function() {
 	
 	//Habilitar Pago
 	var habilitarPago = function(){
-		document.getElementById("infoPago").hidden=false;
-		document.getElementById("divNumeroPago").hidden=false;
-		document.getElementById("divFechaPago").hidden=false;
+		document.getElementById("infoPago").removeAttribute("hidden")
+		document.getElementById("divNumeroPago").removeAttribute("hidden")
+		document.getElementById("divFechaPago").removeAttribute("hidden")
 		
 		document.getElementById("numeroPago").setAttribute("required", "");
 		document.getElementById("fechaPago").setAttribute("required", "");
@@ -735,9 +800,9 @@ $(document).ready(function() {
 	//Habilitar Envio
 	var habilitarEnvio = function(){
 		
-		document.getElementById("divPaqueteria").hidden=false;
-		document.getElementById("infoEnvio").hidden=false;
-		document.getElementById("divNumeroGuia").hidden=false;
+		document.getElementById("divPaqueteria").removeAttribute("hidden");
+		document.getElementById("infoEnvio").removeAttribute("hidden")
+		document.getElementById("divNumeroGuia").removeAttribute("hidden")
 		
 		document.getElementById("paqueteria").setAttribute("required", "");
 		document.getElementById("numeroGuia").setAttribute("required", "");
@@ -756,7 +821,7 @@ $(document).ready(function() {
 		
 	}
 	
-	$( "#estatus" ).change(function() {
+	$("#estatus").change(function() {
 
 	 	  if ($( "#estatus" ).val() == "ABIERTO"){
 	 	  	deshabilitarPago();
@@ -770,11 +835,11 @@ $(document).ready(function() {
 	 	  	habilitarPago();
 	 	  	habilitarEnvio();
 	 	  	
-	 	  	document.getElementById("paqueteria").required = false;
-			document.getElementById("numeroGuia").required = false;
+	 	  	document.getElementById("paqueteria").removeAttribute("required");
+			document.getElementById("numeroGuia").removeAttribute("required");
 			
-			document.getElementById("numeroPago").required = false;
-			document.getElementById("fechaPago").required = false;
+			document.getElementById("numeroPago").removeAttribute("required");
+			document.getElementById("fechaPago").removeAttribute("required");
 	
 	 	  }
 	 	  if ($( "#estatus" ).val() == "PAGADO"){
