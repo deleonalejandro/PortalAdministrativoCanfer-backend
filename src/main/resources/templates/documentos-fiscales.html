@@ -212,16 +212,6 @@
 						</nav>
 					</div>
 					<div class="col-10">
-						<!-- TOAST PARA GUARDAR MODAL INFO -->
-						<div class="toast" role="alert" id="toastEdit" data-autohide=false
-							data-delay="6000"
-							style="z-index:7000; position: fixed; right: 2.5rem;"
-							aria-live="assertive" aria-atomic="true">
-							<div class="toast-header bg-primary text-white">
-								<i data-feather="edit"></i> <strong class="mr-auto">Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-							</div>
-							<div class="toast-body">La información se guardó correctamente.</div>
-						</div>
 						<!-- TOAST PARA REFRESH DE SAT -->
 						<div class="toast" role="alert" id="toastSAT" data-autohide=false
 							data-delay="6000"
@@ -233,44 +223,13 @@
 							</div>
 							<div class="toast-body">Se procesó la petición ante el SAT.</div>
 						</div>
-						<!-- TOAST PARA UPLOAD -->
-						<div class="toast" role="alert" id="toastUploadtrue" data-autohide=false
-							data-delay="6000"
-							style="z-index:7000; position: fixed; right: 2.5rem;"
-							aria-live="assertive" aria-atomic="true">
-							<div class="toast-header bg-success text-white">
-								<i data-feather="check-circle"></i> <strong class="mr-auto">Nuevo
-									Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-							</div>
-							<div class="toast-body">Carga de documento fiscal exitosa.</div>
-						</div>
-						<!-- TOAST PARA UPLOAD FALSE -->
-						<div class="toast" role="alert" id="toastUploadfalse" data-autohide=false
-							data-delay="6000"
-							style="z-index:7000; position: fixed; right: 2.5rem;"
-							aria-live="assertive" aria-atomic="true">
-							<div class="toast-header bg-danger text-white">
-								<i data-feather="x-circle"></i> <strong class="mr-auto">Nuevo
-									Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-							</div>
-							<div class="toast-body">Hubo un error al cargar el nuevo Documento Fiscal.</div>
-						</div>
-						<!-- TOAST PARA DELETE FALSE -->
-						<div class="toast" role="alert" id="toastDeletefalse" data-autohide=false
-							data-delay="6000"
-							style="z-index:7000; position: fixed; right: 2.5rem;"
-							aria-live="assertive" aria-atomic="true">
-							<div class="toast-header bg-danger text-white">
-								<i data-feather="x-circle"></i> <strong class="mr-auto">Error</strong> <small class="text-white-50 ml-2">Ahora</small>
-							</div>
-							<div class="toast-body">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
-						</div>
 
 						<!-- Main Content Tables  facturas-->
 						<div class="card mb-0" id="divFacturas">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden></div>
 							<div id="upload" th:text="${upload}" hidden></div>
 							<div id="deletePermission" th:text="${delete}" hidden></div>
+							<div id="editSuccess" th:text="${edit}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -556,7 +515,58 @@
 											</div>
 										</div>
 									</div>
-
+									
+									<!--  DIV PARA PONER TODOS LOS ALERTS -->
+									<div>
+										<div class="alert alert-success alert-icon mt-3" id="alert-edit" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-check"></i>
+												</div>
+												<div class="alert-icon-content">Se actualizó correctamente la información del formulario. </div>
+											</div>
+											<div class="alert alert-success alert-icon mt-3" id="alert-upload-true" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-check"></i>
+												</div>
+												<div class="alert-icon-content">Se procesó
+													correctamente el nuevo documento fiscal.</div>
+											</div>
+											<div class="alert alert-danger alert-icon mt-3" id="alert-upload-false" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">No se pudo cargar
+													correctamente el nuevo documento fiscal.</div>
+											</div>
+											<div class="alert alert-danger alert-icon mt-3" id="alert-delete-false" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
+											</div>
+											
+									</div>
+									
 									<!-- TABLA -->
 									<table class="compact table-hover" id="facturas"
 										style="text-align: center; width: 100%">

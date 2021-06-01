@@ -1023,47 +1023,37 @@
 				
 			});
 			
-			//TOASTS
+			//ALERTS
 			 
 			  if($("#upload").text() == 'true') {
-			  	  $('#toastUploadtrue').toggleClass('ew-toast-show')
-			  	  
-			  	  $('#toastUploadtrue').toast('show')
-		          
-		          setTimeout(function(){
-					    $('#toastUploadtrue').toggleClass('ew-toast-show')
-					}, 6000);
+			  	 $('#alert-upload-true').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
 		     }
 		     
 
 			if($("#upload").text() == 'false') {
-				  $('#toastUploadfalse').toggleClass('ew-toast-show')
-				  
-		          $('#toastUploadfalse').toast('show')
-		          setTimeout(function(){
-					    $('#toastUploadfalse').toggleClass('ew-toast-show')
-					}, 6000);
+				  $('#alert-upload-false').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
 		          
 		     }
 
 			if($("#deletePermission").text() == 'false') {
-				  $('#toastDeletefalse').toggleClass('ew-toast-show')
-				  
-		          $('#toastDeletefalse').toast('show')
-		          setTimeout(function(){
-					    $('#toastDeletefalse').toggleClass('ew-toast-show')
-					}, 6000);
+				  $('#alert-delete-false').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
 		     }
 		     
-		     $('#guardar-modal-info').click(function(){
-			  	  $('#toastEdit').toggleClass('ew-toast-show')
-			  	  
-			  	  $('#toastEdit').toast('show')
-		          
-		          setTimeout(function(){
-					    $('#toastEdit').toggleClass('ew-toast-show')
-					}, 6000);
-		     })
+		     if($("#editSuccess").text() == 'true') {
+				$('#alert-edit').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
+		     }
 
 			
 				
