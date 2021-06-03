@@ -188,17 +188,16 @@ public class CajaChicaFunctionalityController {
 		return new ResponseEntity<>("ERROR", HttpStatus.OK);
 	}
 	
-	@GetMapping("/updatedetformcc")
+	@PostMapping("/updatedetformcc")
 	public ResponseEntity<Object> updateDetalleFormCC(DetFormularioCajaChicaDTO data) {
 		
-		boolean update = actioner.updateDet(data); 
-		if (update) {
+		if (actioner.updateDet(data)) {
 			
-			return new ResponseEntity<>(update, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 			
 		}
 		
-		return new ResponseEntity<>("ERROR", HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 	
 	

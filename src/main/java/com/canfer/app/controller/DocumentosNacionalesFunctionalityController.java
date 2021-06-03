@@ -146,19 +146,26 @@ public class DocumentosNacionalesFunctionalityController {
 	}
 	
 	@PostMapping(value = "/update")
-	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, @RequestParam("pdf") MultipartFile pdf) {
+	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, @RequestParam("pdf") MultipartFile pdf, RedirectAttributes ra) {
 		
+		Boolean isPdfuploaded = true;
 		
 		if (!pdf.isEmpty()) {
 			
-			actioner.updateCfdFile(pdf, documento.getIdComprobanteFiscal());
+			isPdfuploaded = actioner.updateCfdFile(pdf, documento.getIdComprobanteFiscal());
 			
 		}
 		
 		// update object information normally 
-		actioner.updateCfdInformation(documento);
+		if(actioner.updateCfdInformation(documento) && isPdfuploaded) {
 			
-	
+			ra.addFlashAttribute("edit", true);
+			
+		} else {
+			
+			ra.addFlashAttribute("edit", false);
+		}
+		
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 	}
 	

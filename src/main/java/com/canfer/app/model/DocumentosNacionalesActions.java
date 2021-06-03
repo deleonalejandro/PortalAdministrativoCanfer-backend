@@ -397,7 +397,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	
 	public boolean updateCfdInformation(ComprobanteFiscalDTO documento) {
 		
-		Optional<Proveedor> proveedor = null;
+		Optional<Proveedor> proveedor = Optional.empty();
 		ComprobanteFiscal comprobanteUpdate;
 		Optional<ComprobanteFiscal> comprobante = superRepo.findComprobanteById(documento.getIdComprobanteFiscal());
 		
