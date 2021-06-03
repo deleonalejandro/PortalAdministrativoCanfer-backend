@@ -905,7 +905,7 @@
 															</div>
 															<div class="col-6">
 																<input type="date" id="detail-fechaDet"
-																	name="detail-fechaDet" style="height: 25px" value="" />
+																	name="realDate" style="height: 25px" value="" />
 															</div>
 														</div>
 														<div class="row pt-1">
@@ -942,7 +942,7 @@
 																	<input type="number" min="0" step="0.01"
 																		style="height: 20px"
 																		class="form-control form-control-sm bg-white"
-																		id="detail-monto" name="detail-monto" />
+																		id="detail-monto" name="monto" />
 																</div>
 															</div>
 														</div>
@@ -955,13 +955,19 @@
 															<div class="col-6">
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-folio" name="detail-folio" disabled />
+																	id="detail-folio" name="folio" disabled />
 															</div>
 															<!--  INFORMATIVO -->
 															<div class="col-6" hidden>
-																<input type="text" hidden style="height: 20px"
+																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="idDetFormularioCC" name="idDetFormularioCC" />
+																	id="detail-idDetFormularioCC" name="idDetFormularioCC" />
+																	<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-idFormulario" name="idDetFormularioCC" />
+																	<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-idSucursal" name="idSucursal" />
 															</div>
 														</div>
 														<div class="row pt-1">
@@ -974,7 +980,7 @@
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
 																	id="detail-nombreProveedor"
-																	name="detail-nombreProveedor" />
+																	name="nombreProveedor" />
 															</div>
 														</div>
 														<div class="row pt-1">
@@ -986,7 +992,7 @@
 															<div class="col-6">
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-beneficiario" name="detail-beneficiario" />
+																	id="detail-beneficiario" name="beneficiario" />
 															</div>
 														</div>
 
@@ -1000,7 +1006,7 @@
 																</div>
 															</div>
 															<input class="form-control" id="detail-pdf" type="file"
-																accept=".pdf" name="detail-pdf" />
+																accept=".pdf" name="pdf" />
 														</div>
 													</div>
 												</div>

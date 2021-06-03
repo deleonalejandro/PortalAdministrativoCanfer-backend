@@ -212,6 +212,53 @@ $(document).ready(function() {
 
 
 	});
+	//Darle update a  detalle
+	$('#updateDetForm').submit(function(event) {
+
+		event.preventDefault();
+
+		var data = new FormData(this);
+
+		var url = "/cajachicaclient/updatedetformcc";
+
+		var updateDet = $.ajax({
+			url: url,
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'POST',
+		});
+
+		updateDet.done(function(upload) {
+		
+		
+			if (upload == 'true') {
+				$('#alert-upload').prop('hidden', false);
+			} else {
+				$('#alert-error').prop('hidden', false);
+			} 
+
+			setTimeout(function() {
+				$('.alert').prop('hidden', true);
+
+			}, 6000);
+
+
+		});
+		updateDet.always(function() {
+
+
+			table2.ajax.reload(null, false);
+
+			$('#detailsModal').modal('hide');
+
+		});
+
+
+
+	})
+	
 
 	//Darle submit a un nuevo detalle
 	$('#formNewDet').submit(function(event) {
@@ -334,7 +381,7 @@ $(document).ready(function() {
 
 		event.preventDefault();
 
-		var data = new FormData($('#formFormulario'));
+		var data = new FormData($('#formFormulario')[0]);
 
 		var url = "/cajachicaclient/updateformcc";
 
@@ -406,6 +453,8 @@ $(document).ready(function() {
 		$('#detail-folio').val(d.folio);
 		$('#detail-beneficiario').val(d.beneficiario);
 		$('#detail-nombreProveedor').val(d.nombreProveedor);
+		$("#detail-idDetFormularioCC").val(d.idDetFormularioCajaChica);
+	
 
 		$('#detailsModal').modal('show');
 
