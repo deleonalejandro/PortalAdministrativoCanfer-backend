@@ -1,6 +1,7 @@
 
 $(document).ready(function() {
 
+
 	var table = $('#formularios').DataTable({
 		"drawCallback": function(settings) {
 			table.columns.adjust();
@@ -54,11 +55,14 @@ $(document).ready(function() {
 			{
 				data: "estatus",
 				"render": function(data) {
+				
+					
 					if (data.toUpperCase() == 'CERRADO') {
 						return '<span class="badge badge-orange">Cerrado</span>';
 					}
 					if (data.toUpperCase() == 'ABIERTO') {
 						return '<span class="badge badge-green">Abierto</span>';
+		
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
 						return '<span class="badge badge-red">Cancelado</span>';
@@ -121,7 +125,11 @@ $(document).ready(function() {
 				"bSortable": false,
 				"data": null,
 				"render": function(row) {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+					if($('#estatus').val()=='ABIERTO'){
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+					} else {
+						return ''
+					}
 				},
 			},
 			{ data: "nombreClasificacion" },
@@ -326,7 +334,7 @@ $(document).ready(function() {
 
 		event.preventDefault();
 
-		var data = new FormData($('#formFormulario')[0]);
+		var data = new FormData($('#formFormulario'));
 
 		var url = "/cajachicaclient/updateformcc";
 
@@ -439,29 +447,31 @@ $(document).ready(function() {
 	$('#detallesNuevoCajaChica tbody').on('click', 'td.deletedet-control', 'tr', function(event) {
 		
 		event.preventDefault();
-
-		var jsonData = table2.row(this).data();
-
-		$('#deleteDet').modal('show');
-		
-		$('#confirmDeleteDet').click(function(){
+		if($('#estatus').val()=='ABIERTO'){
 			
-			var borrarDet = $.ajax({
-							  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica,
-							  cache: false,
-							  contentType: false,
-							  processData: false,
-							  type: 'GET',
-							});
+			var jsonData = table2.row(this).data();
+	
+			$('#deleteDet').modal('show');
 			
-			borrarDet.done(function() {
-				table2.ajax.reload( null, false );
-				$('#deleteDet').modal('hide');
+			$('#confirmDeleteDet').click(function(){
+				
+				var borrarDet = $.ajax({
+								  url: "/cajachicaclient/deletedetformcc?id=" + jsonData.idDetFormularioCajaChica,
+								  cache: false,
+								  contentType: false,
+								  processData: false,
+								  type: 'GET',
+								});
+				
+				borrarDet.done(function() {
+					table2.ajax.reload( null, false );
+					$('#deleteDet').modal('hide');
+				})
+				
+			
+			
 			})
-			
-		
-		
-		})
+		}
 
 	});
 
@@ -609,6 +619,7 @@ $(document).ready(function() {
 
 	}
 	
+	
 	//Deja en blanco los parametros y reestablece los divs
 
 	var reestablecerForm = function() {
@@ -641,6 +652,19 @@ $(document).ready(function() {
 		document.getElementById("divNuevo").hidden = false;
 
 
+	}
+	
+	//Deshabilitar Edit
+	var deshabilitarEdit = function(){
+		
+		document.getElementById("btn-nuevo-det").setAttribute("hidden","");
+		
+	}
+	//Habilitar Edit
+	var habilitarEdit = function(){
+		
+		document.getElementById("btn-nuevo-det").hidden=false; 
+		
 	}
 	
 	//Habilitar los estatus necesarios
@@ -682,7 +706,7 @@ $(document).ready(function() {
         select.add( option2 );
 		
 		option3 = document.createElement( 'option' );
-		option3.value = option3.text = "EN REVISIÓN";
+		option3.value = option3.text = "EN REVISION";
         select.add( option3 );
         
         habilitarEnvio();
@@ -735,7 +759,7 @@ $(document).ready(function() {
 		
 		select = document.getElementById("estatus");
         option = document.createElement( 'option' );
-        option.value = option.text = "EN REVISIÓN";
+        option.value = option.text = "EN REVISION";
         select.add( option );
 		
 		option1 = document.createElement( 'option' );
@@ -755,22 +779,27 @@ $(document).ready(function() {
 		if (option == "ABIERTO"){
 			
 			estatusAbierto();
+			habilitarEdit();
 			
 		} else if (option == "ENVIADO"){
 			
 			estatusEnviado();
+			deshabilitarEdit();
 			
 		} else if (option == "CANCELADO"){
 			
 			estatusCancelado();
+			deshabilitarEdit();
 			
 		} else if (option == "PAGADO"){
 			
 			estatusPagado();
+			deshabilitarEdit();
 			
-		} else if (option == "EN REVISIÓN"){
+		} else if (option == "EN REVISION"){
 			
 			estatusEnRevision();
+			deshabilitarEdit();
 			
 		}
 		
@@ -821,6 +850,7 @@ $(document).ready(function() {
 		
 	}
 	
+	
 	$("#estatus").change(function() {
 
 	 	  if ($( "#estatus" ).val() == "ABIERTO"){
@@ -830,6 +860,7 @@ $(document).ready(function() {
 	 	  if ($( "#estatus" ).val() == "ENVIADO"){
 	 	  	deshabilitarPago();
 	 	  	habilitarEnvio();
+	 	  	deshabilitarEdit();
 	 	  }
 	 	  if ($( "#estatus" ).val() == "CANCELADO"){
 	 	  	habilitarPago();
@@ -843,16 +874,20 @@ $(document).ready(function() {
 	
 	 	  }
 	 	  if ($( "#estatus" ).val() == "PAGADO"){
+	 	  	deshabilitarEdit();
 	 	  	habilitarPago();
 	 	  	habilitarEnvio();
 	 	  }
-	 	  if ($( "#estatus" ).val() == "EN REVISIÓN"){
+	 	  if ($( "#estatus" ).val() == "EN REVISION"){
+	 	  	deshabilitarEdit();
 	 	  	deshabilitarPago();
 	 	  	habilitarEnvio();
 	 	  }
 	 	  
 		
 	});
+	
+	
 	
 
 });
