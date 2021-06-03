@@ -2,9 +2,6 @@ package com.canfer.app.model;
 
 
 
-
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,6 +46,14 @@ public class CajaChicaActions extends ModuleActions{
 	
 	@Autowired
 	private AuthenticationFacade authenticationFacade;
+	
+	private final String ABIERTO = "ABIERTO";
+	private final String CANCELADO = "CANCELADO";
+	private final String ENVIADO = "ENVIADO";
+	private final String PROCESO = "EN REVISION";
+	private final String PAGADO = "PAGADO";
+
+	
 	
 
 	@Override
@@ -246,15 +251,7 @@ public class CajaChicaActions extends ModuleActions{
 			
 			if (documento.isPresent()) {
 				
-				Optional<DetFormularioCajaChica> checkDet = superRepo.findDetFormularioCCByDocumento(documento.get());
-				
-				// check whether the det exists or not in the module.
-				if (checkDet.isPresent()) {
-					
-					Log.activity("Error al intentar guardar detalle: El detalle de caja chica ya se encuentra registrado en este u otro formulario."
-							+ " Fo. Formulario: "+ checkDet.get().getFormularioCajaChica().getFolio()+", Fo. Detalle: "+checkDet.get().getFolio()+".", 
-							formularioCajaChica.get().getSucursal().getEmpresa().getNombre(), "ERROR_DB");
-					
+				if (!acceptRepeatedDet(documento.get())) {
 					return false;
 				}
 				
@@ -487,6 +484,32 @@ public class CajaChicaActions extends ModuleActions{
 		
 		return null;
 		
+		
+	}
+	
+	private Boolean acceptRepeatedDet(Documento documento) {
+		
+		// todos cancelados si lo paso, al menos uno diferente de cancelado entonces no lo paso
+		List<DetFormularioCajaChica> checkDetalles = superRepo.findAllDetFormularioCCByDocumento(documento);
+		
+		for (DetFormularioCajaChica checkDet : checkDetalles) {
+			
+			
+			FormularioCajaChica checkForm = checkDet.getFormularioCajaChica();
+			
+			if (!checkForm.isCanceled()) {
+				
+				Log.activity("Error al intentar guardar detalle: El detalle de caja chica ya se encuentra registrado en este u otro formulario."
+						+ " Fo. Formulario: "+ checkDet.getFormularioCajaChica().getFolio()+", Fo. Detalle: "+checkDet.getFolio()+".", 
+						checkForm.getSucursal().getEmpresa().getNombre(), "ERROR_DB");		
+				
+				return false;
+				
+				}	
+			}
+		
+		return true;
+			
 		
 	}
 	

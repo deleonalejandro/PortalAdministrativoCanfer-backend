@@ -15,4 +15,5 @@ public interface DetFormularioCCRepository extends JpaRepository<DetFormularioCa
 	
 	Optional<DetFormularioCajaChica> findByDocumento(Documento documento);
 	
+	List<DetFormularioCajaChica> findAllByDocumento(Documento documento);
 }

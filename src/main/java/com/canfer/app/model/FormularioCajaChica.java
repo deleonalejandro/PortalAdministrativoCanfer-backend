@@ -175,8 +175,24 @@ public class FormularioCajaChica {
 		this.fechaPago = fechaPago;
 	}
 
-	public boolean isOpen() {
+	public Boolean isOpen() {
 		return this.estatus.equalsIgnoreCase("ABIERTO");
+	}
+	
+	public Boolean isCanceled() {
+		return this.estatus.equalsIgnoreCase("CANCELADO");
+	}
+	
+	public Boolean isPayed() {
+		return this.estatus.equalsIgnoreCase("PAGADO");
+	}
+	
+	public Boolean isSent() {
+		return this.estatus.equalsIgnoreCase("ENVIADO");
+	}
+	
+	public Boolean isProcessing() {
+		return this.estatus.equalsIgnoreCase("EN REVISION");
 	}
 
 	public String getNombreSucursal() {

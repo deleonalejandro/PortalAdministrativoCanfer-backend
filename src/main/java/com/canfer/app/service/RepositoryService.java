@@ -590,6 +590,11 @@ public class RepositoryService {
 		return detFormCCRepo.findByDocumento(documento);
 	}
 	
+	public List<DetFormularioCajaChica> findAllDetFormularioCCByDocumento(Documento documento) {
+		
+		return detFormCCRepo.findAllByDocumento(documento);
+	}
+	
 	public List<DetFormularioCajaChica> findAllDetFormularioCajaChicaByFormCC(FormularioCajaChica formularioCajaChica){
 		
 		return detFormCCRepo.findAllByFormularioCajaChica(formularioCajaChica);
