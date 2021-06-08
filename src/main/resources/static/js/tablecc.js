@@ -40,8 +40,11 @@ $(document).ready(function() {
 				"bSortable": false,
 				"data": null,
 				"defaultContent": '',
-				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+				"render": function(row) {
+					if(row.estatus != 'CANCELADO'){
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
+					}else
+						return ''
 				},
 			},
 
@@ -115,8 +118,12 @@ $(document).ready(function() {
 				"orderable": false,
 				"bSortable": false,
 				"data": null,
-				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
+				"render": function(row) {
+					if(row.hasXML){
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
+					}else{
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i><script> feather.replace()</script></a>'
+					}
 				},
 			},
 			{
@@ -212,6 +219,7 @@ $(document).ready(function() {
 
 
 	});
+	
 	//Darle update a  detalle
 	$('#updateDetForm').submit(function(event) {
 
@@ -234,9 +242,9 @@ $(document).ready(function() {
 		
 		
 			if (upload == 'true') {
-				$('#alert-upload').prop('hidden', false);
+				$('#alert-update').prop('hidden', false);
 			} else {
-				$('#alert-error').prop('hidden', false);
+				$('#alert-error-update').prop('hidden', false);
 			} 
 
 			setTimeout(function() {
@@ -448,15 +456,45 @@ $(document).ready(function() {
 
 		$('#headerValue').text('Detalle ' + d.folio)
 		$('#detail-fechaDet').val(d.fecha.split("T")[0]);
-		$('#detail-clasificacion').val(d.idClasificacion2);
+		$('#detail-clasificacion option:contains(' + d.nombreClasificacion + ')').attr('selected', 'selected');
 		$('#detail-monto').val(d.monto);
 		$('#detail-folio').val(d.folio);
 		$('#detail-beneficiario').val(d.beneficiario);
 		$('#detail-nombreProveedor').val(d.nombreProveedor);
 		$("#detail-idDetFormularioCC").val(d.idDetFormularioCajaChica);
-	
+		
+		if($("#estatus").val() != "ABIERTO"){
+		
+			$('#detail-fechaDet').prop( "disabled", true );
+			$('#detail-nombreProveedor').prop( "disabled", true );
+			$('#detail-monto').prop( "disabled", true );
+			$('#detail-beneficiario').prop( "disabled", true );
+			$('#detail-clasificacion').prop( "disabled", true );
+			$('#detail-pdf').prop( "disabled", true );
+		
+		} else if(d.nombreArchivoXML != null){
+		
+			$('#detail-fechaDet').prop( "disabled", true );
+			$('#detail-nombreProveedor').prop( "disabled", true );
+			$('#detail-monto').prop( "disabled", true );
+			$('#detail-beneficiario').prop( "disabled", false );
+			$('#detail-clasificacion').prop( "disabled", false );
+			$('#detail-pdf').prop( "disabled", false );
+		
+		} else {
+		
+			$('#detail-fechaDet').prop( "disabled", false );
+			$('#detail-nombreProveedor').prop( "disabled", false );
+			$('#detail-monto').prop( "disabled", false );
+			$('#detail-beneficiario').prop( "disabled", false );
+			$('#detail-clasificacion').prop( "disabled", false );
+			$('#detail-pdf').prop( "disabled", false );
+		
+		}
 
 		$('#detailsModal').modal('show');
+		
+		
 
 
 	});
@@ -465,29 +503,32 @@ $(document).ready(function() {
 	// Funcion para delete formulario
 
 	$('#formularios tbody').on('click', 'td.delete-control', 'tr', function(event) {
-
+		
 		event.preventDefault();
 
 		var jsonData = table.row(this).data();
+	
+		if(jsonData.estatus != "CANCELADO"){
 
-		$('#deleteForm').modal('show');
-		
-		$('#confirmDeleteForm').click(function(){
-		
-			var borrarForm = $.ajax({
-							  url: "/cajachicaclient/deleteformcc?id=" + jsonData.idFormularioCajaChica,
-							  cache: false,
-							  contentType: false,
-							  processData: false,
-							  type: 'GET',
-							});
+			$('#deleteForm').modal('show');
 			
-			borrarForm.done(function() {
-				table.ajax.reload( null, false );
-				$('#deleteForm').modal('hide');
+			$('#confirmDeleteForm').click(function(){
+			
+				var borrarForm = $.ajax({
+								  url: "/cajachicaclient/deleteformcc?id=" + jsonData.idFormularioCajaChica,
+								  cache: false,
+								  contentType: false,
+								  processData: false,
+								  type: 'GET',
+								});
+				
+				borrarForm.done(function() {
+					table.ajax.reload( null, false );
+					$('#deleteForm').modal('hide');
+				})
+			
 			})
-		
-		})
+		}
 		
 	});
 
@@ -550,6 +591,12 @@ $(document).ready(function() {
 			typeof i === 'number' ?
 				i : 0;
 	};
+	
+	var clearOptions = function(id) {
+	    var select = document.getElementById(id);
+	    for (var i = select.options.length - 1 ; i >= 0 ; i--)
+	        select.remove(i);
+	}
 
 	//Llenar el formulario con la info que se proporciona
 
@@ -564,12 +611,25 @@ $(document).ready(function() {
 		$("#sucursalNew").val(formulario.nombreSucursal);
 		$("#fechaNew").val(formulario.fecha.split("T")[0]);
 		$("#idFormNew").val(formulario.idFormularioCajaChica);
-		$("#comentarioNew").val(formulario.comentario);
+		$("#comentario").val(formulario.comentario);
 		$("#responsableNew").val(formulario.responsable);
 		$('#nombreProveedor').val(formulario.nombreProveedor);
 		$("#total").val(formulario.total);
-		$("#paqueteria").append($("<option />").val(formulario.paqueteria).text(formulario.paqueteria));
-		$("#paqueteria").val(formulario.paqueteria);
+		
+		//Hacer que el select de paqueteria esté lleno correctamente
+		clearOptions("paqueteria");
+		$("#paqueteria").append($("<option />").val("DHL").text("DHL"));
+		$("#paqueteria").append($("<option />").val("UPS").text("UPS"));
+		$("#paqueteria").append($("<option />").val("Estafeta").text("Estafeta"));
+		$("#paqueteria").append($("<option />").val("customOption").text("[Otro:]"));
+		
+		if(!formulario.paqueteria == null && !formulario.paqueteria == "" && !formulario.paqueteria == null 
+			&& !formulario.paqueteria =="DHL" && !formulario.paqueteria == "Estafeta" && !formulario.paqueteria == "UPS"){
+			
+			$("#paqueteria").append($("<option />").val(formulario.paqueteria).text(formulario.paqueteria));
+			$("#paqueteria").val(formulario.paqueteria);
+		}
+			
 		$("#numeroGuia").val(formulario.numeroGuia);
 		$("#numeroPago").val(formulario.numeroPago);
 		$("#fechaPago").val(formulario.fechaPago);
@@ -703,18 +763,7 @@ $(document).ready(function() {
 
 	}
 	
-	//Deshabilitar Edit
-	var deshabilitarEdit = function(){
-		
-		document.getElementById("btn-nuevo-det").setAttribute("hidden","");
-		
-	}
-	//Habilitar Edit
-	var habilitarEdit = function(){
-		
-		document.getElementById("btn-nuevo-det").hidden=false; 
-		
-	}
+	
 	
 	//Habilitar los estatus necesarios
 	
@@ -735,6 +784,12 @@ $(document).ready(function() {
 		option3.value = option3.text = "CANCELADO";
         select.add( option3 );
 		
+		document.getElementById("btn-nuevo-det").hidden=false; 
+		
+		$('#paqueteria').prop( "disabled",  false);
+		$('#numeroGuia').prop( "disabled",  false);
+		$('#numeroPago').prop( "disabled",  false);
+		$('#fechaPago').prop( "disabled",  false);
 	}
 	
 		var estatusEnviado = function(){
@@ -759,6 +814,11 @@ $(document).ready(function() {
         select.add( option3 );
         
         habilitarEnvio();
+        
+        document.getElementById("btn-nuevo-det").hidden=true; 
+		
+		$('#paqueteria').prop( "disabled",  true);
+		$('#numeroGuia').prop( "disabled",  true);
 		
 	}
 	
@@ -780,6 +840,13 @@ $(document).ready(function() {
 			
 		document.getElementById("numeroPago").removeAttribute("required");
 		document.getElementById("fechaPago").removeAttribute("required");
+		
+		document.getElementById("btn-nuevo-det").hidden=true; 
+		
+		$('#paqueteria').prop( "disabled",  true);
+		$('#numeroGuia').prop( "disabled",  true);
+		$('#numeroPago').prop( "disabled",  true);
+		$('#fechaPago').prop( "disabled",  true);
         
 		
 	}
@@ -799,6 +866,13 @@ $(document).ready(function() {
         
         habilitarEnvio();
         habilitarPago();
+        
+        document.getElementById("btn-nuevo-det").hidden=true; 
+		
+		$('#paqueteria').prop( "disabled",  true);
+		$('#numeroGuia').prop( "disabled",  true);
+		$('#numeroPago').prop( "disabled",  true);
+		$('#fechaPago').prop( "disabled",  true);
 		
 	}
 	
@@ -820,6 +894,13 @@ $(document).ready(function() {
         select.add( option2 );
         
         habilitarEnvio();
+        
+        document.getElementById("btn-nuevo-det").hidden=true; 
+		
+		$('#paqueteria').prop( "disabled",  true);
+		$('#numeroGuia').prop( "disabled",  true);
+		$('#numeroPago').prop( "disabled",  false);
+		$('#fechaPago').prop( "disabled",  false);
 		
 	}
 	
@@ -828,27 +909,25 @@ $(document).ready(function() {
 		if (option == "ABIERTO"){
 			
 			estatusAbierto();
-			habilitarEdit();
+		
 			
 		} else if (option == "ENVIADO"){
 			
 			estatusEnviado();
-			deshabilitarEdit();
 			
 		} else if (option == "CANCELADO"){
 			
 			estatusCancelado();
-			deshabilitarEdit();
+			
 			
 		} else if (option == "PAGADO"){
 			
 			estatusPagado();
-			deshabilitarEdit();
+			
 			
 		} else if (option == "EN REVISION"){
 			
 			estatusEnRevision();
-			deshabilitarEdit();
 			
 		}
 		
@@ -909,7 +988,6 @@ $(document).ready(function() {
 	 	  if ($( "#estatus" ).val() == "ENVIADO"){
 	 	  	deshabilitarPago();
 	 	  	habilitarEnvio();
-	 	  	deshabilitarEdit();
 	 	  }
 	 	  if ($( "#estatus" ).val() == "CANCELADO"){
 	 	  	habilitarPago();
@@ -923,12 +1001,12 @@ $(document).ready(function() {
 	
 	 	  }
 	 	  if ($( "#estatus" ).val() == "PAGADO"){
-	 	  	deshabilitarEdit();
+
 	 	  	habilitarPago();
 	 	  	habilitarEnvio();
 	 	  }
 	 	  if ($( "#estatus" ).val() == "EN REVISION"){
-	 	  	deshabilitarEdit();
+
 	 	  	deshabilitarPago();
 	 	  	habilitarEnvio();
 	 	  }
