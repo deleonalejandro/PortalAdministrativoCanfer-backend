@@ -224,7 +224,7 @@ $(document).ready(function() {
 	$('#updateDetForm').submit(function(event) {
 
 		event.preventDefault();
-
+	
 		var data = new FormData(this);
 
 		var url = "/cajachicaclient/updatedetformcc";
@@ -455,7 +455,8 @@ $(document).ready(function() {
 		var d = table2.row(this).data();
 
 		$('#headerValue').text('Detalle ' + d.folio)
-		$('#detail-fechaDet').val(d.fecha.split("T")[0]);
+		$("#detail-fechaDet").val(d.fecha.split("T")[0]);
+		$("#detail-realDate").val(d.fecha);
 		$('#detail-clasificacion option:contains(' + d.nombreClasificacion + ')').attr('selected', 'selected');
 		$('#detail-monto').val(d.monto);
 		$('#detail-folio').val(d.folio);
@@ -491,7 +492,8 @@ $(document).ready(function() {
 			$('#detail-pdf').prop( "disabled", false );
 		
 		}
-
+		
+		
 		$('#detailsModal').modal('show');
 		
 		
