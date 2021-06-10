@@ -723,6 +723,8 @@ $(document).ready(function() {
 		document.getElementById("wizard2").hidden = true;
 		document.getElementById("btns-next").hidden = false;
 		document.getElementById("btns-prev").hidden = true;
+		document.getElementById("beneficiario").value = "";
+		document.getElementById("idClasificacion1").value = 1;
 
 		deshabilitarPDF();
 
