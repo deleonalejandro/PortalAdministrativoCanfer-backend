@@ -2,6 +2,8 @@ package com.canfer.app.model;
 
 
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -388,7 +390,12 @@ public class CajaChicaActions extends ModuleActions{
 				// look for the cfd that contains the given document.
 				// TODO change pdf to documents that dont have an XML file
 				ComprobanteFiscal cfd = superRepo.findComprobanteByDocumento(df.get().getDocumento());
-				docNacActions.updateCfdFile(pdf, cfd.getIdComprobanteFiscal());
+				
+				if (cfd != null) {
+					docNacActions.updateCfdFile(pdf, cfd.getIdComprobanteFiscal());					
+				} else {
+					df.get().getDocumento().getArchivoPDF().actualizar(pdf);
+				}
 				
 			}
 			
