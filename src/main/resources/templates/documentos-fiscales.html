@@ -230,6 +230,7 @@
 							<div id="upload" th:text="${upload}" hidden></div>
 							<div id="deletePermission" th:text="${delete}" hidden></div>
 							<div id="editSuccess" th:text="${edit}" hidden></div>
+							<div id="editpdfSuccess" th:text="${edit}" hidden></div>
 							<div class="card-body">
 								<div class="datatable">
 
@@ -518,7 +519,7 @@
 									
 									<!--  DIV PARA PONER TODOS LOS ALERTS -->
 									<div>
-										<div class="alert alert-success alert-icon mt-3" id="alert-edit" role="alert"
+										<div class="alert alert-success alert-icon mt-3" id="alert-edit-true" role="alert"
 												hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
@@ -528,6 +529,41 @@
 													<i class="fa fa-check"></i>
 												</div>
 												<div class="alert-icon-content">Se actualizó correctamente la información del formulario. </div>
+											</div>
+											<div class="alert alert-danger alert-icon mt-3" id="alert-edit-false" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">No se pudo actualizar
+													correctamente la información del documento fiscal.</div>
+											</div>
+											<div class="alert alert-success alert-icon mt-3" id="alert-pdfedit-true" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-check"></i>
+												</div>
+												<div class="alert-icon-content">Se actualizó correctamente el PDF del documento fiscal. </div>
+											</div>
+											<div class="alert alert-danger alert-icon mt-3" id="alert-pdfedit-false" role="alert"
+												hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">No se pudo actualizar
+													correctamente el PDF del documento fiscal.</div>
 											</div>
 											<div class="alert alert-success alert-icon mt-3" id="alert-upload-true" role="alert"
 												hidden=true>
