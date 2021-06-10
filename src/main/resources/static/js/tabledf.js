@@ -1049,7 +1049,28 @@
 		     }
 		     
 		     if($("#editSuccess").text() == 'true') {
-				$('#alert-edit').prop('hidden', false);
+				$('#alert-edit-true').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
+		     }
+		     
+		     if($("#editSuccess").text() == 'false') {
+				$('#alert-edit-false').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
+		     }
+		     
+		     if($("#editpdfSuccess").text() == 'true') {
+				$('#alert-pdfedit-true').prop('hidden', false);
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+				}, 6000);
+		     }
+		     
+		     if($("#editpdfSuccess").text() == 'false') {
+				$('#alert-pdfedit-false').prop('hidden', false);
 				setTimeout(function() {
 					$('.alert').prop('hidden', true);
 				}, 6000);
