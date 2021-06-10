@@ -57,6 +57,9 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	@Autowired
+	private CajaChicaActions ccActioner;
+	
 	@Override
 	public boolean upload(ArchivoXML fileXML, ArchivoPDF filePDF) throws NotFoundException {
 		
@@ -288,6 +291,8 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		
 		Optional<ComprobanteFiscal> value;
 		ComprobanteFiscal comprobanteFiscal = null;
+		Documento doc;
+		Optional<DetFormularioCajaChica> detCC;
 		
 		value = superRepo.findComprobanteById(id);
 		
@@ -295,15 +300,18 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			
 			comprobanteFiscal = value.get();
 
+			// clear the cfd from any related files.
 			if(comprobanteFiscal instanceof ComplementoPago) {
 				clearComplemento((ComplementoPago) comprobanteFiscal);
 			}
 			
 			if (comprobanteFiscal instanceof Factura && ((Factura) comprobanteFiscal).getHasComplemento()) {
-				
-					return false;
-					
-				
+				return false;	
+			}
+			
+			// clear cfd from CAJA CHICA dets.
+			if(!clearDetsCajaChica(comprobanteFiscal)) {
+				return false;
 			}
 			
 			comprobanteFiscal.delete();
@@ -613,6 +621,35 @@ public class DocumentosNacionalesActions extends ModuleActions {
 	    return true;
 
 	  }
+	
+	private boolean clearDetsCajaChica(ComprobanteFiscal comprobanteFiscal) {
+		
+		Documento doc;
+		List<DetFormularioCajaChica> detsCC;
+		
+		// check if the cfd lives in other modules
+		doc = comprobanteFiscal.getDocumento();
+		
+		// delete the detCC from CAJA CHICA MODULE.
+		detsCC = superRepo.findAllDetFormularioCCByDocumento(doc);
+		
+		for (DetFormularioCajaChica det : detsCC) {
+			
+			if(!ccActioner.forceDelete(det.getIdDetFormularioCajaChica())) {
+				
+				Log.activity("Error al borrar el detalle de caja chica con Fo. "+ det.getFolio() +" y formulario con Fo. " + det.getFormularioCajaChica().getFolio() 
+						+ " que incluye el comprobante fiscal: " + comprobanteFiscal.getIdNumSap(), comprobanteFiscal.getEmpresaNombre(), "DELETE");
+				
+				return false;
+			}
+	
+		}
+		
+		return true;
+		
+					
+		
+	}
 	
 
 	private Boolean businessValidation(ArchivoXML archivo) {
