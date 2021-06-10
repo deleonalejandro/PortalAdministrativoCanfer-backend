@@ -350,6 +350,30 @@
 												<div class="alert-icon-content">No se pudo procesar
 													correctamente el nuevo detalle de formulario.</div>
 											</div>
+											<div class="alert alert-success alert-icon mt-3"
+												id="alert-update" role="alert" hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-check"></i>
+												</div>
+												<div class="alert-icon-content">Se guardó
+													correctamente ela información del detalle de formulario.</div>
+											</div>
+											<div class="alert alert-danger alert-icon mt-3"
+												id="alert-error-update" role="alert" hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content">No se pudo guardar
+													correctamente la información del detalle de formulario.</div>
+											</div>
 											<div class="alert alert-warning alert-icon mt-3"
 												id="alert-df" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
@@ -904,9 +928,12 @@
 																	Fecha del documento: </label>
 															</div>
 															<div class="col-6">
-																<input type="date" id="detail-fechaDet"
-																	name="realDate" style="height: 25px" value="" />
+																<input type="text" id="detail-fechaDet"
+																	name="fechaDet" style="height: 25px" value="" />
+																	<input type="text" id="detail-realDate" name="realDate"
+																					value="" hidden />
 															</div>
+															
 														</div>
 														<div class="row pt-1">
 															<div class="col-4">
@@ -918,7 +945,7 @@
 																<!-- INPUT IMPORTE ESTATUS -->
 																<select class="form-control form-control-solid"
 																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
-																	id="idClasificacion2" name="idClasificacion">
+																	id="detail-clasificacion" name="idClasificacion">
 																	<option th:each="clasificacion : ${clasificaciones}"
 																		th:value="${clasificacion.idClasificacionCajaChica}"
 																		th:text="${clasificacion.clasificacion}"></option>

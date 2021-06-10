@@ -193,5 +193,33 @@ $("#reportrangeEmision").on('cancel.daterangepicker', function(ev, picker) {
 		  	$("#realDate").val(picker.startDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
 	
   		})
+  		
+  		
+	});
+	
+	$(function () {
+		  	
+	    $('input[name="detail-fechaDet"]').daterangepicker(
+	        {
+			 autoUpdateInput: false,
+	         locale: {
+		      format: "DD/MM/YYYY"
+		    },
+	            singleDatePicker: true,
+	            showDropdowns: true,
+	            minYear: 2000,
+	            maxYear: parseInt(moment().format("YYYY"), 10)+1,
+	        },
+	        
+		);
+
+		$('#detail-fechaDet').on('apply.daterangepicker', function(ev, picker) {
+			
+		  	$("#detail-fechaDet").val(picker.startDate.format('DD/MM/YYYY'));
+		  	$("#detail-realDate").val(picker.startDate.format('YYYY-MM-DD'+'T'+'HH:mm:ss'));
+	
+  		})
+  		
+  		
 	});
 	
