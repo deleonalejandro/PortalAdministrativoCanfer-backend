@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
+import com.canfer.app.model.Sucursal;
 import com.canfer.app.dto.EmpresaDTO;
+import com.canfer.app.dto.SucursalDTO;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.MunicipioRepository;
 import com.canfer.app.security.IAuthenticationFacade;
@@ -187,6 +189,18 @@ public class EmpresaService {
 		empresaRepository.deleteById(id);
 		
 		Log.activity("Se eliminó una empresa." , empresa.getNombre(), "DELETE");
+	}
+	
+	
+	/* SUCURSAL METHODS
+	 * 
+	 * 
+	 * 
+	 * ****************/
+	
+	public Boolean save(SucursalDTO sucursal) {
+		
+		return true;
 	}
 
 

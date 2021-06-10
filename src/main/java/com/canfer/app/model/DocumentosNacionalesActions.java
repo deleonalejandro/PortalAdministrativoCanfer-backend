@@ -306,7 +306,6 @@ public class DocumentosNacionalesActions extends ModuleActions {
 			}
 			
 			if (comprobanteFiscal instanceof Factura && ((Factura) comprobanteFiscal).getHasComplemento()) {
-				
 				return false;	
 			}
 			

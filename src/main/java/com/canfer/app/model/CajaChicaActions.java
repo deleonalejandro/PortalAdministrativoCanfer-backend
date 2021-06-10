@@ -364,13 +364,20 @@ public class CajaChicaActions extends ModuleActions{
 
 		if (df.isPresent()) {
 			
-			if (!df.get().hasXML()) {
+			FormularioCajaChica dfForm = df.get().getFormularioCajaChica();
+			Optional<ClasificacionCajaChica> clasificacion = superRepo.findClasificacionCCById(dfDTO.getIdClasificacion());
+			
+			if (dfForm.isOpen()) {
 				
-				FormularioCajaChica dfForm = df.get().getFormularioCajaChica();
-				
-				if (dfForm.isOpen()) {
+				if (df.get().hasXML()) {
 					
-					Optional<ClasificacionCajaChica> clasificacion = superRepo.findClasificacionCCById(dfDTO.getIdClasificacion());
+					if (clasificacion.isPresent()) {
+						df.get().setClasificacion(clasificacion.get());
+					}
+					
+					df.get().setBeneficiario(dfDTO.getBeneficiario());
+					
+				} else {
 					
 					if (clasificacion.isPresent()) {
 						df.get().setClasificacion(clasificacion.get());
@@ -380,26 +387,27 @@ public class CajaChicaActions extends ModuleActions{
 					df.get().setFecha(dfDTO.getFormattedDate());
 					df.get().setBeneficiario(dfDTO.getBeneficiario());
 					df.get().setMonto(dfDTO.getMonto());
+				}
+				
+				if (!pdf.isEmpty()) {
+					// look for the cfd that contains the given document.
+					// TODO change pdf to documents that dont have an XML file
+					ComprobanteFiscal cfd = superRepo.findComprobanteByDocumento(df.get().getDocumento());
 					
-					superRepo.save(df.get());
+					if (cfd != null) {
+						docNacActions.updateCfdFile(pdf, cfd.getIdComprobanteFiscal());					
+					} else {
+						df.get().getDocumento().getArchivoPDF().actualizar(pdf);
+					}
+					
 				}
 				
+				superRepo.save(df.get());
+				
+				return true;
 			}
 			
-			if (!pdf.isEmpty()) {
-				// look for the cfd that contains the given document.
-				// TODO change pdf to documents that dont have an XML file
-				ComprobanteFiscal cfd = superRepo.findComprobanteByDocumento(df.get().getDocumento());
-				
-				if (cfd != null) {
-					docNacActions.updateCfdFile(pdf, cfd.getIdComprobanteFiscal());					
-				} else {
-					df.get().getDocumento().getArchivoPDF().actualizar(pdf);
-				}
-				
-			}
-			
-			return true;
+			return false;
 			
 		}
 		
