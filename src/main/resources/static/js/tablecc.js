@@ -240,7 +240,6 @@ $(document).ready(function() {
 
 		updateDet.done(function(upload) {
 		
-		
 			if (upload == 'true') {
 				$('#alert-update').prop('hidden', false);
 			} else {
@@ -256,10 +255,12 @@ $(document).ready(function() {
 		});
 		updateDet.always(function() {
 
-
+			
 			table2.ajax.reload(null, false);
-
+		
 			$('#detailsModal').modal('hide');
+			
+			document.getElementById("detail-pdf").value = "";
 
 		});
 

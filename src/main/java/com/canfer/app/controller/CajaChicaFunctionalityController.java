@@ -189,15 +189,15 @@ public class CajaChicaFunctionalityController {
 	}
 	
 	@PostMapping("/updatedetformcc")
-	public ResponseEntity<Object> updateDetalleFormCC(DetFormularioCajaChicaDTO data) {
+	public ResponseEntity<String> updateDetalleFormCC(DetFormularioCajaChicaDTO data) {
 		
 		if (actioner.updateDet(data)) {
 			
-			return new ResponseEntity<>(true, HttpStatus.OK);
+			return new ResponseEntity<>("true", HttpStatus.OK);
 			
 		}
 		
-		return new ResponseEntity<>(false, HttpStatus.OK);
+		return new ResponseEntity<>("false", HttpStatus.OK);
 	}
 	
 	
