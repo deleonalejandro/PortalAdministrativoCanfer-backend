@@ -148,16 +148,18 @@ public class DocumentosNacionalesFunctionalityController {
 	@PostMapping(value = "/update")
 	public String update(ComprobanteFiscalDTO documento,  @RequestParam String rfc, @RequestParam("pdf") MultipartFile pdf, RedirectAttributes ra) {
 		
-		Boolean isPdfuploaded = true;
+		Boolean isPdfuploaded;
 		
 		if (!pdf.isEmpty()) {
 			
 			isPdfuploaded = actioner.updateCfdFile(pdf, documento.getIdComprobanteFiscal());
 			
+			ra.addFlashAttribute("edit-pdf", isPdfuploaded);
+			
 		}
 		
 		// update object information normally 
-		if(actioner.updateCfdInformation(documento) && isPdfuploaded) {
+		if(actioner.updateCfdInformation(documento)) {
 			
 			ra.addFlashAttribute("edit", true);
 			
