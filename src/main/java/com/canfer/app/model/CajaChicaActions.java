@@ -18,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
@@ -93,6 +94,7 @@ public class CajaChicaActions extends ModuleActions{
 	@Override
 	public boolean delete(Long id) {
 		
+		
 		Optional<DetFormularioCajaChica> df = superRepo.findDetFormularioCCById(id);
 		
 		if (df.isPresent()) {
@@ -111,11 +113,40 @@ public class CajaChicaActions extends ModuleActions{
 		return false;
 	}
 	
+	public boolean forceDelete(Long id) {
+		
+		
+		Optional<DetFormularioCajaChica> df = superRepo.findDetFormularioCCById(id);
+		
+		if (df.isPresent()) {
+			
+			superRepo.delete(df.get());
+			
+			return true;
+
+		}
+		
+		return false;
+	}
+	
 	public boolean deleteForm(Long id) {
 		
 		Optional<FormularioCajaChica> fcc = superRepo.findFormularioCCById(id);
 		
 		if (fcc.isPresent() && fcc.get().isOpen()) {
+			
+			List<DetFormularioCajaChica> detalles = listDetFormularioCajaChica(fcc.get().getIdFormularioCajaChica());
+			
+			for (DetFormularioCajaChica det : detalles) {
+				
+				if(!delete(det.getIdDetFormularioCajaChica())) {
+					
+					Log.activity("No se logró eliminar el formulario debido a un error al borrar sus detalles.", 
+							fcc.get().getSucursal().getEmpresa().getNombre(), "DELETE");
+					
+					return false;
+				} 
+			}
 			
 			superRepo.delete(fcc.get());
 			
@@ -324,37 +355,45 @@ public class CajaChicaActions extends ModuleActions{
 		
 	}
 	
-	public boolean updateDet(DetFormularioCajaChicaDTO dfDTO) {
+	public boolean updateDet(DetFormularioCajaChicaDTO dfDTO, MultipartFile pdf) {
 		
-		/* This method updates the next attributes: clasificacion, nombre de proveedor, fecha, responsable, monto. */
-		
+		/* This method updates the next attributes: clasificacion, nombre de proveedor, fecha, responsable, monto, and pdf*/
 		Optional<DetFormularioCajaChica> df = superRepo.findDetFormularioCCById(dfDTO.getIdDetFormularioCC());
-		
-		if (df.isPresent() && !df.get().hasXML()) {
+
+		if (df.isPresent()) {
 			
-			FormularioCajaChica dfForm = df.get().getFormularioCajaChica();
-			
-			if (dfForm.isOpen()) {
+			if (!df.get().hasXML()) {
 				
-				Optional<ClasificacionCajaChica> clasificacion = superRepo.findClasificacionCCById(dfDTO.getIdClasificacion());
+				FormularioCajaChica dfForm = df.get().getFormularioCajaChica();
 				
-				if (clasificacion.isPresent()) {
-					df.get().setClasificacion(clasificacion.get());
+				if (dfForm.isOpen()) {
+					
+					Optional<ClasificacionCajaChica> clasificacion = superRepo.findClasificacionCCById(dfDTO.getIdClasificacion());
+					
+					if (clasificacion.isPresent()) {
+						df.get().setClasificacion(clasificacion.get());
+					}
+					
+					df.get().setNombreProveedor(dfDTO.getNombreProveedor());
+					df.get().setFecha(dfDTO.getFormattedDate());
+					df.get().setBeneficiario(dfDTO.getBeneficiario());
+					df.get().setMonto(dfDTO.getMonto());
+					
+					superRepo.save(df.get());
 				}
 				
-				df.get().setNombreProveedor(dfDTO.getNombreProveedor());
-				
-				df.get().setFecha(dfDTO.getFormattedDate());
-				
-				df.get().setBeneficiario(dfDTO.getBeneficiario());
-				
-				df.get().setMonto(dfDTO.getMonto());
-				
-				superRepo.save(df.get());
-				
-				return true;
 			}
-
+			
+			if (!pdf.isEmpty()) {
+				// look for the cfd that contains the given document.
+				// TODO change pdf to documents that dont have an XML file
+				ComprobanteFiscal cfd = superRepo.findComprobanteByDocumento(df.get().getDocumento());
+				docNacActions.updateCfdFile(pdf, cfd.getIdComprobanteFiscal());
+				
+			}
+			
+			return true;
+			
 		}
 		
 		return false;

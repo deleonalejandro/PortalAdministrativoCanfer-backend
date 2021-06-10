@@ -189,9 +189,9 @@ public class CajaChicaFunctionalityController {
 	}
 	
 	@PostMapping("/updatedetformcc")
-	public ResponseEntity<Object> updateDetalleFormCC(DetFormularioCajaChicaDTO data) {
+	public ResponseEntity<Object> updateDetalleFormCC(DetFormularioCajaChicaDTO data, @RequestParam("pdf") MultipartFile pdf) {
 		
-		if (actioner.updateDet(data)) {
+		if (actioner.updateDet(data, pdf)) {
 			
 			return new ResponseEntity<>(true, HttpStatus.OK);
 			
