@@ -154,20 +154,13 @@ public class DocumentosNacionalesFunctionalityController {
 			
 			isPdfuploaded = actioner.updateCfdFile(pdf, documento.getIdComprobanteFiscal());
 			
-			ra.addFlashAttribute("edit-pdf", isPdfuploaded);
+			ra.addFlashAttribute("editPdf", isPdfuploaded);
 			
 		}
 		
 		// update object information normally 
-		if(actioner.updateCfdInformation(documento)) {
-			
-			ra.addFlashAttribute("edit", true);
-			
-		} else {
-			
-			ra.addFlashAttribute("edit", false);
-		}
-		
+		ra.addFlashAttribute("edit", actioner.updateCfdInformation(documento));
+
 		return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 	}
 	

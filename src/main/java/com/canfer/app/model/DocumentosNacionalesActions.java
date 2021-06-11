@@ -403,7 +403,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		}
 	}
 	
-	public boolean updateCfdInformation(ComprobanteFiscalDTO documento) {
+	public String updateCfdInformation(ComprobanteFiscalDTO documento) {
 		
 		Optional<Proveedor> proveedor = Optional.empty();
 		ComprobanteFiscal comprobanteUpdate;
@@ -425,31 +425,31 @@ public class DocumentosNacionalesActions extends ModuleActions {
 					
 					comprobanteUpdate = superRepo.save(comprobante.get());
 					emailSender.sendEmailUpdateDoc(comprobanteUpdate);
-					return true;
+					return "true";
 					
 				} else if (choice == 2 || choice == 3) {
 					
 					comprobanteUpdate = superRepo.save(comprobante.get());
 					emailSender.sendEmailNewDoc(comprobanteUpdate);
-					return true;
+					return "true";
 					
 				}else {
 				
 					superRepo.save(comprobante.get());
-					return false;
+					return "none";
 				}
 				
 				
 			} catch (Exception e) {
 				
 				Log.activity("Error al actualizar CFDI: " + documento.getUuid(), comprobante.get().getEmpresaNombre(), "ERROR_UPDATE");
-				return false;
+				return "false";
 			}
 			
 			
 		} else {
 			
-			return false;
+			return "false";
 		}
 		
 	}
