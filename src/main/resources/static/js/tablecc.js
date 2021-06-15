@@ -58,19 +58,15 @@ $(document).ready(function() {
 				data: "estatus",
 				"render": function(data) {
 				
-					
-					if (data.toUpperCase() == 'CERRADO') {
-						return '<span class="badge badge-orange">Cerrado</span>';
-					}
 					if (data.toUpperCase() == 'ABIERTO') {
-						return '<span class="badge badge-green">Abierto</span>';
+						return '<span class="badge badge-green">ABIERTO</span>';
 		
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
-						return '<span class="badge badge-red">Cancelado</span>';
+						return '<span class="badge badge-red">CANCELADO</span>';
 					}
 					else {
-						return '<span class="badge badge-blue">' + data + '</span>';
+						return '<span class="badge badge-blue">' + data.toUpperCase() + '</span>';
 					}
 				}
 			},
@@ -197,9 +193,9 @@ $(document).ready(function() {
 			
 			},
 			{ data: "beneficiario" },
-			{ data: "subTotal" },
-			{ data: "monto" },
-			{ data: "total" }
+			{ data: "subTotal", "defaultContent": "0" },
+			{ data: "monto", "defaultContent": "0" },
+			{ data: "total", "defaultContent": "0" }
 		],
 
 		"order": [[7, "desc"]],
