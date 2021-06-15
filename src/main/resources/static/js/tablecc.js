@@ -183,7 +183,7 @@ $(document).ready(function() {
 		                        if(row.bitRS == true) {
 		                        	return '<i class="far fa-check-square" ></i>';
 		                        }
-		                        if(row.bitRS == true) {
+		                        else {
 		                            return '<i class="far fa-square" ></i>';
 		                        }
 							}
@@ -197,7 +197,7 @@ $(document).ready(function() {
 			
 			},
 			{ data: "beneficiario" },
-			{ data: "subtotal" },
+			{ data: "subTotal" },
 			{ data: "monto" },
 			{ data: "total" }
 		],
@@ -474,7 +474,7 @@ $(document).ready(function() {
 		$('#detail-folio').val(d.folio);
 		$('#detail-beneficiario').val(d.beneficiario);
 		$('#detail-total').val(d.total);
-		$('#detail-subtotal').val(d.subtotal);
+		$('#detail-subtotal').val(d.subTotal);
 		$('#detail-nombreProveedor').val(d.nombreProveedor);
 		$("#detail-idDetFormularioCC").val(d.idDetFormularioCajaChica);
 		
@@ -524,7 +524,7 @@ $(document).ready(function() {
 	
 	var sumarTotal = function() {
 	    var newTotal = intVal($('#subtotal').val()) + intVal($('#monto').val())
-	    $('#total').val(newTotal)
+	    $('#det-total').val(newTotal)
 	}
 	
 	var detailSumarTotal = function() {
@@ -708,7 +708,7 @@ $(document).ready(function() {
 		document.getElementById("realDate").required = false;
 		document.getElementById("monto").required = false;
 		document.getElementById("subtotal").required = false;
-		document.getElementById("total").required = false;
+		document.getElementById("det-total").required = false;
 		document.getElementById("folio").required = false;
 		document.getElementById("nombreProveedor").required = false;
 
@@ -728,7 +728,7 @@ $(document).ready(function() {
 		document.getElementById("fechaDet").value = "";
 		document.getElementById("realDate").value = "";
 		document.getElementById("monto").value = "";
-		document.getElementById("total").value = "";
+		document.getElementById("det-total").value = "";
 		document.getElementById("subtotal").value = "";
 		document.getElementById("folio").value = "";
 		document.getElementById("nombreProveedor").value = "";
