@@ -568,11 +568,14 @@
 																	style="color: purple"></i></th>
 																<th>XML<i class="far fa-file-code float-left fa-lg"
 																	style="color: purple"></i></th>
+																<th>RS</th>
 																<th>Folio</th>
 																<th>Nombre Proveedor</th>
 																<th>Fecha</th>
 																<th>Beneficiario</th>
+																<th>Subtotal</th>
 																<th>Monto</th>
+																<th>Total</th>
 															</tr>
 														</thead>
 														<tfoot>
@@ -582,11 +585,14 @@
 																<th>Clasificación</th>
 																<th>PDF</th>
 																<th>XML</th>
+																<th>RS</th>
 																<th>Folio</th>
 																<th>Nombre Proveedor</th>
 																<th>Fecha</th>
 																<th>Beneficiario</th>
+																<th>Subtotal</th>
 																<th>Monto</th>
+																<th>Total</th>
 															</tr>
 														</tfoot>
 													</table>
@@ -803,6 +809,29 @@
 																					</select>
 																				</div>
 																			</div>
+																			<div class="row pt-1" id="subtotalNewDiv">
+																				<div class="col-4">
+																					<label for="subtotalNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Subtotal: </label>
+																				</div>
+
+																				<div class="col-6">
+																					<div class="input-group">
+																						<div class="input-group-prepend ">
+																							<div class="input-group-text"
+																								style="height: 20px">
+																								<i data-feather="dollar-sign"
+																									style="color: gray"></i>
+																							</div>
+																						</div>
+																						<input type="number" min="0" step="0.01"
+																							style="height: 20px"
+																							class="form-control form-control-sm bg-white"
+																							id="subtotal" name="subtotal" required=true />
+																					</div>
+																				</div>
+																			</div>
 																			<div class="row pt-1" id="montoNewDiv">
 																				<div class="col-4">
 																					<label for="montoNewDet"
@@ -823,6 +852,29 @@
 																							style="height: 20px"
 																							class="form-control form-control-sm bg-white"
 																							id="monto" name="monto" required=true />
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="totalNewDiv">
+																				<div class="col-4">
+																					<label for="totalNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Total: </label>
+																				</div>
+
+																				<div class="col-6">
+																					<div class="input-group">
+																						<div class="input-group-prepend ">
+																							<div class="input-group-text"
+																								style="height: 20px">
+																								<i data-feather="dollar-sign"
+																									style="color: gray"></i>
+																							</div>
+																						</div>
+																						<input type="number" min="0" step="0.01"
+																							style="height: 20px"
+																							class="form-control form-control-sm bg-white"
+																							id="total" name="total" disabled />
 																					</div>
 																				</div>
 																			</div>
@@ -921,6 +973,17 @@
 												</div>
 												<div class="modal-body">
 													<div class="form-group">
+														<!-- Bits de documento -->
+														<div class="row">
+															<div class="pl-3">
+																<div class="form-check form-check-inline">
+																	<input class="form-check-input" type="checkbox"
+																		id="detail-bitRS" value="" disabled /> <label
+																		class="form-check-label font-weight-bold" for="bitRS">RS
+																	</label>
+																</div>
+															</div>
+														</div>
 														<div class="row pt-1">
 															<div class="col-4">
 																<label for="dateNewDet"
@@ -954,7 +1017,28 @@
 														</div>
 														<div class="row pt-1">
 															<div class="col-4">
-																<label for="montoNewDet"
+																<label for="subtotal"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Subtotal: </label>
+															</div>
+
+															<div class="col-6">
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: gray"></i>
+																		</div>
+																	</div>
+																	<input type="number" min="0" step="0.01"
+																		style="height: 20px"
+																		class="form-control form-control-sm bg-white"
+																		id="detail-subtotal" name="subtotal" />
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="monto"
 																	class="form-control-label mb-0 font-weight-bold">
 																	Monto: </label>
 															</div>
@@ -970,6 +1054,27 @@
 																		style="height: 20px"
 																		class="form-control form-control-sm bg-white"
 																		id="detail-monto" name="monto" />
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="montoNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Total: </label>
+															</div>
+
+															<div class="col-6">
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: gray"></i>
+																		</div>
+																	</div>
+																	<input type="number" min="0" step="0.01"
+																		style="height: 20px"
+																		class="form-control form-control-sm bg-white"
+																		id="detail-total" disabled name="total" />
 																</div>
 															</div>
 														</div>

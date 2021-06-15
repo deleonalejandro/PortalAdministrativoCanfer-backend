@@ -178,6 +178,16 @@ $(document).ready(function() {
 					}
 				}
 			},
+			 { data : null,
+		                    "render": function(row) {
+		                        if(row.bitRS == false) {
+		                            return '<i class="far fa-square" ></i>';
+		                        }
+		                        if(row.bitRS == true) {
+		                            return '<i class="far fa-check-square" ></i>';
+		                        }
+							}
+						 },
 			{ data: "folio" },
 			{ data: "nombreProveedor" },
 			{ data: "fecha",
@@ -187,7 +197,9 @@ $(document).ready(function() {
 			
 			},
 			{ data: "beneficiario" },
-			{ data: "monto" }
+			{ data: "subtotal" },
+			{ data: "monto" },
+			{ data: "total" }
 		],
 
 		"order": [[7, "desc"]],
@@ -461,14 +473,19 @@ $(document).ready(function() {
 		$('#detail-monto').val(d.monto);
 		$('#detail-folio').val(d.folio);
 		$('#detail-beneficiario').val(d.beneficiario);
+		$('#detail-total').val(d.total);
+		$('#detail-subtotal').val(d.subtotal);
 		$('#detail-nombreProveedor').val(d.nombreProveedor);
 		$("#detail-idDetFormularioCC").val(d.idDetFormularioCajaChica);
+		
+		$('#detail-bitRS').prop("checked", d.bitRS);
 		
 		if($("#estatus").val() != "ABIERTO"){
 		
 			$('#detail-fechaDet').prop( "disabled", true );
 			$('#detail-nombreProveedor').prop( "disabled", true );
 			$('#detail-monto').prop( "disabled", true );
+			$('#detail-subtotal').prop( "disabled", true );
 			$('#detail-beneficiario').prop( "disabled", true );
 			$('#detail-clasificacion').prop( "disabled", true );
 			$('#detail-pdf').prop( "disabled", true );
@@ -478,6 +495,7 @@ $(document).ready(function() {
 			$('#detail-fechaDet').prop( "disabled", true );
 			$('#detail-nombreProveedor').prop( "disabled", true );
 			$('#detail-monto').prop( "disabled", true );
+			$('#detail-subtotal').prop( "disabled", true );
 			$('#detail-beneficiario').prop( "disabled", false );
 			$('#detail-clasificacion').prop( "disabled", false );
 			$('#detail-pdf').prop( "disabled", false );
@@ -487,6 +505,7 @@ $(document).ready(function() {
 			$('#detail-fechaDet').prop( "disabled", false );
 			$('#detail-nombreProveedor').prop( "disabled", false );
 			$('#detail-monto').prop( "disabled", false );
+			$('#detail-subtotal').prop( "disabled", false );
 			$('#detail-beneficiario').prop( "disabled", false );
 			$('#detail-clasificacion').prop( "disabled", false );
 			$('#detail-pdf').prop( "disabled", false );
@@ -500,7 +519,36 @@ $(document).ready(function() {
 
 
 	});
-
+	
+	//Funcion para sumar subtotales y montos
+	
+	var sumarTotal = function() {
+	    var newTotal = intVal($('#subtotal').val()) + intVal($('#monto').val())
+	    $('#total').val(newTotal)
+	}
+	
+	var detailSumarTotal = function() {
+	    var newTotal = intVal($('#detail-subtotal').val()) + intVal($('#detail-monto').val())
+	    $('#detail-total').val(newTotal)
+	}
+	
+	// funcion para checar si se mueve el subtotal o monto
+	
+	$('#subtotal').change(function(){
+	  sumarTotal();
+	});
+	
+	$('#monto').change(function(){
+	  sumarTotal();
+	});
+	
+	$('#detail-subtotal').change(function(){
+	  detailSumarTotal();
+	});
+	
+	$('#detail-monto').change(function(){
+	  detailSumarTotal();
+	});
 
 	// Funcion para delete formulario
 
@@ -648,6 +696,8 @@ $(document).ready(function() {
 
 		document.getElementById("dateNewDiv").hidden = true;
 		document.getElementById("montoNewDiv").hidden = true;
+		document.getElementById("totalNewDiv").hidden = true;
+		document.getElementById("subtotalNewDiv").hidden = true;
 		document.getElementById("folioNewDiv").hidden = true;
 		document.getElementById("provNewDiv").hidden = true;
 
@@ -657,6 +707,8 @@ $(document).ready(function() {
 		document.getElementById("fechaDet").required = false;
 		document.getElementById("realDate").required = false;
 		document.getElementById("monto").required = false;
+		document.getElementById("subtotal").required = false;
+		document.getElementById("total").required = false;
 		document.getElementById("folio").required = false;
 		document.getElementById("nombreProveedor").required = false;
 
@@ -668,12 +720,16 @@ $(document).ready(function() {
 
 		document.getElementById("dateNewDiv").hidden = false;
 		document.getElementById("montoNewDiv").hidden = false;
+		document.getElementById("totalNewDiv").hidden = false;
+		document.getElementById("subtotalNewDiv").hidden = false;
 		document.getElementById("folioNewDiv").hidden = false;
 		document.getElementById("provNewDiv").hidden = false;
 
 		document.getElementById("fechaDet").value = "";
 		document.getElementById("realDate").value = "";
 		document.getElementById("monto").value = "";
+		document.getElementById("total").value = "";
+		document.getElementById("subtotal").value = "";
 		document.getElementById("folio").value = "";
 		document.getElementById("nombreProveedor").value = "";
 
@@ -685,6 +741,7 @@ $(document).ready(function() {
 		document.getElementById("fechaDet").required = true;
 		document.getElementById("realDate").required = true;
 		document.getElementById("monto").required = true;
+		document.getElementById("subtotal").required = true;
 		document.getElementById("folio").required = true;
 		document.getElementById("nombreProveedor").required = true;
 
