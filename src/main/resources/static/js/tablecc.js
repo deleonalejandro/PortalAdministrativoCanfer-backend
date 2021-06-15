@@ -90,7 +90,7 @@ $(document).ready(function() {
 			table2.columns.adjust();
 
 			var total = this.api()
-				.column(9)
+				.column(12)
 				.data()
 				.reduce(function(a, b) {
 					return intVal(a) + intVal(b);
@@ -180,11 +180,11 @@ $(document).ready(function() {
 			},
 			 { data : null,
 		                    "render": function(row) {
-		                        if(row.bitRS == false) {
-		                            return '<i class="far fa-square" ></i>';
+		                        if(row.bitRS == true) {
+		                        	return '<i class="far fa-check-square" ></i>';
 		                        }
 		                        if(row.bitRS == true) {
-		                            return '<i class="far fa-check-square" ></i>';
+		                            return '<i class="far fa-square" ></i>';
 		                        }
 							}
 						 },
@@ -534,19 +534,19 @@ $(document).ready(function() {
 	
 	// funcion para checar si se mueve el subtotal o monto
 	
-	$('#subtotal').change(function(){
+	$('#subtotal').click(function(){
 	  sumarTotal();
 	});
 	
-	$('#monto').change(function(){
+	$('#monto').click(function(){
 	  sumarTotal();
 	});
 	
-	$('#detail-subtotal').change(function(){
+	$('#detail-subtotal').click(function(){
 	  detailSumarTotal();
 	});
 	
-	$('#detail-monto').change(function(){
+	$('#detail-monto').click(function(){
 	  detailSumarTotal();
 	});
 
