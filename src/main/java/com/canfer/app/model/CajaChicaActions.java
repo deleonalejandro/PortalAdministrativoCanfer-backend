@@ -273,6 +273,14 @@ public class CajaChicaActions extends ModuleActions{
 				}
 				
 				ComprobanteFiscal comprobante = superRepo.findComprobanteByUUID(cfd.getUuidTfd());
+				
+				// verify if the invoice is payed, return false if when true.
+				if (comprobante == null || comprobante.getEstatusPago().equalsIgnoreCase(PAGADO)) {
+					Log.activity("Error al intentar guardar detalle: La factura que se desea adjuntar al formulario de caja chica con Fo. " + formularioCajaChica.get().getFolio()
+							+ " ya se encuentra pagada.", formularioCajaChica.get().getSucursal().getEmpresa().getNombre(), "ERROR_DB");
+					return false;
+				}
+				
 				documento = Optional.of(comprobante.getDocumento());
 				
 			} else {
@@ -295,10 +303,15 @@ public class CajaChicaActions extends ModuleActions{
 				detFormCC.setDocumento(documento.get());
 				detFormCC.setFecha(comprobante.getFechaCarga());
 				detFormCC.setFolio(comprobante.getFolio());
-				detFormCC.setMonto(Float.valueOf(comprobante.getTotal()));
 				detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
 				detFormCC.setNombreProveedor(comprobante.getProveedorNombre());
 				detFormCC.setVigenciaSat(comprobante.getEstatusSAT());
+				detFormCC.setBitRS(comprobante.getBitRS());
+				detFormCC.setTotal(Float.valueOf(comprobante.getTotal()));
+				// considering that some cfd will have null values in these fields.
+				detFormCC.setSubTotal(Float.valueOf(comprobante.getSubTotal()==null?"0":comprobante.getSubTotal()));
+				detFormCC.setMonto(Float.valueOf(comprobante.getMonto()==null?"0":comprobante.getMonto()));
+				
 				
 				// make changes to comprobante: idSap, ClaveProveedor (proveedor)
 				comprobante.setIdNumSap(formularioCajaChica.get().getFolio());
@@ -306,8 +319,11 @@ public class CajaChicaActions extends ModuleActions{
 				comprobante.setCajaChica(true);
 				
 				// save new info
-				superRepo.save(detFormCC);
+				superRepo.saveAndFlush(detFormCC);
 				superRepo.save(comprobante);
+				
+				// update cc form total
+				updateFormTotal(formularioCajaChica.get());
 				
 				return true;
 				
@@ -334,10 +350,14 @@ public class CajaChicaActions extends ModuleActions{
 				detFormCC.setMonto(detFormCCDto.getMonto());
 				detFormCC.setBeneficiario(detFormCCDto.getBeneficiario());
 				detFormCC.setNombreProveedor(detFormCCDto.getNombreProveedor());
-				
+				detFormCC.setTotal(detFormCCDto.getTotal());
+				detFormCC.setSubTotal(detFormCCDto.getSubTotal());
 				
 				superRepo.save(documento.get());
-				superRepo.save(detFormCC);
+				superRepo.saveAndFlush(detFormCC);
+				
+				// update cc form total
+				updateFormTotal(formularioCajaChica.get());
 				
 				return true;
 				
@@ -369,8 +389,10 @@ public class CajaChicaActions extends ModuleActions{
 			
 			if (dfForm.isOpen()) {
 				
+				// we check if we are updating information from a cfd with XML or just a PDF info
+				
 				if (df.get().hasXML()) {
-					
+					// XML DOCUMENTOS-FISCALES INFORMATION
 					if (clasificacion.isPresent()) {
 						df.get().setClasificacion(clasificacion.get());
 					}
@@ -378,7 +400,7 @@ public class CajaChicaActions extends ModuleActions{
 					df.get().setBeneficiario(dfDTO.getBeneficiario());
 					
 				} else {
-					
+					// JUST PDF INFORMATION
 					if (clasificacion.isPresent()) {
 						df.get().setClasificacion(clasificacion.get());
 					}
@@ -387,13 +409,17 @@ public class CajaChicaActions extends ModuleActions{
 					df.get().setFecha(dfDTO.getFormattedDate());
 					df.get().setBeneficiario(dfDTO.getBeneficiario());
 					df.get().setMonto(dfDTO.getMonto());
+					df.get().setTotal(dfDTO.getTotal());
+					df.get().setSubTotal(dfDTO.getSubTotal());
+					
+					
 				}
 				
 				if (!pdf.isEmpty()) {
 					// look for the cfd that contains the given document.
-					// TODO change pdf to documents that dont have an XML file
 					ComprobanteFiscal cfd = superRepo.findComprobanteByDocumento(df.get().getDocumento());
 					
+					// if the detail contain XML use update function from that module, otherwise just update directly.
 					if (cfd != null) {
 						docNacActions.updateCfdFile(pdf, cfd.getIdComprobanteFiscal());					
 					} else {
@@ -402,7 +428,9 @@ public class CajaChicaActions extends ModuleActions{
 					
 				}
 				
-				superRepo.save(df.get());
+				superRepo.saveAndFlush(df.get());
+				// update cc form total
+				updateFormTotal(dfForm);
 				
 				return true;
 			}
@@ -459,6 +487,7 @@ public class CajaChicaActions extends ModuleActions{
 			formCC.get().setPaqueteria(formCCDto.getPaqueteria());
 			formCC.get().setNumeroPago(formCCDto.getNumeroPago());
 			formCC.get().setFechaPago(formCCDto.getFechaPago());
+			formCC.get().setTotal(formCCDto.getTotal());
 			
 			superRepo.save(formCC.get());
 			
@@ -565,6 +594,30 @@ public class CajaChicaActions extends ModuleActions{
 		return true;
 			
 		
+	}
+	
+	private Boolean updateFormTotal(FormularioCajaChica formCC) {
+		Float newTotal = 0f;
+		List<DetFormularioCajaChica> detalles = listDetFormularioCajaChica(formCC.getIdFormularioCajaChica());
+		
+		if (detalles.isEmpty()) {
+			return false;
+		}
+		
+		try {
+			
+			for (DetFormularioCajaChica det : detalles) {
+				newTotal += det.getTotal();
+			}	
+			
+			formCC.setTotal(newTotal);
+			superRepo.save(formCC);
+			
+		} catch (Exception e) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	

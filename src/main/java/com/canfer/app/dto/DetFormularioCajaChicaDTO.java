@@ -13,6 +13,9 @@ public class DetFormularioCajaChicaDTO {
 	private String beneficiario;
 	private String folio;
 	private String nombreProveedor;
+	private Boolean bitRS;
+	private Float total;
+	private Float subTotal;
 	
 	public DetFormularioCajaChicaDTO() {
 	}
@@ -91,6 +94,30 @@ public class DetFormularioCajaChicaDTO {
 	
 	public LocalDateTime getFormattedDate() {
 		return LocalDateTime.parse(realDate);
+	}
+
+	public Boolean getBitRS() {
+		return bitRS;
+	}
+
+	public void setBitRS(Boolean bitRS) {
+		this.bitRS = bitRS;
+	}
+
+	public Float getTotal() {
+		return total;
+	}
+
+	public void setTotal(Float total) {
+		this.total = total;
+	}
+
+	public Float getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(Float subTotal) {
+		this.subTotal = subTotal;
 	}
 	
 	

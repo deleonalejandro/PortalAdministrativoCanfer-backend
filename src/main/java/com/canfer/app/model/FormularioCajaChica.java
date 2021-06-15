@@ -203,6 +203,15 @@ public class FormularioCajaChica {
 		return this.sucursal.getClaveProv();
 	}
 	
+	public Float updateTotal(Float detTotal) {
+		if (this.total == null) {
+			this.total = detTotal;
+		} else {
+			this.total += detTotal;			
+		}
+		return this.total;
+	}
+	
 	
 	
 	

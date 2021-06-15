@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class FormularioCajaChicaDTO {
 	
 	private Long idFormularioCajaChica;
-	private String total;
+	private Float total;
 	private String estatus;
 	private String comentario;
 	private String paqueteria;
@@ -24,11 +24,11 @@ public class FormularioCajaChicaDTO {
 		this.idFormularioCajaChica = idFormularioCajaChica;
 	}
 
-	public String getTotal() {
+	public Float getTotal() {
 		return total;
 	}
 
-	public void setTotal(String total) {
+	public void setTotal(Float total) {
 		this.total = total;
 	}
 

@@ -208,6 +208,11 @@ public class RepositoryService {
 		
 	}
 	
+	// SAVE AND FLUSH METHODS
+	public DetFormularioCajaChica saveAndFlush(DetFormularioCajaChica detFormularioCajaChica) {
+		return detFormCCRepo.saveAndFlush(detFormularioCajaChica);
+	}
+	
 	
 	
 	// DELETE METHODS
@@ -613,6 +618,10 @@ public class RepositoryService {
 	public List<Sucursal> findAllSucursalByEmpresaIn(List<Empresa> empresas) {
 		
 		return sucursalRepo.findAllByEmpresaIn(empresas);
+	}
+	
+	public Optional<Sucursal> findSucursalByEmpresaAndClaveProv(Empresa empresa, String claveProv) {
+		return sucursalRepo.findByEmpresaAndClaveProv(empresa, claveProv);
 	}
 	
 	public List<FormularioCajaChica> findAllFormularioCajaChicaBySucursal(Sucursal sucursal) {

@@ -170,6 +170,12 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 	@Column
 	private Boolean isCajaChica = false;
 	
+	@Column
+	private String subTotal;
+	
+	@Column
+	private String monto;
+	
 	public ComprobanteFiscal() {
 	}
 	
@@ -213,6 +219,8 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 		this.versionTimbre = comprobante.getVersionTfd();
 		this.moneda = comprobante.getMoneda();
 		this.total = comprobante.getTotal();
+		this.subTotal = comprobante.getSubTotal();
+		this.monto = String.valueOf(Long.valueOf(this.total) - Long.valueOf(this.subTotal));
 		this.tipoDocumento = comprobante.getTipoDeComprobante();
 		
 		//Related UUIDs
@@ -689,6 +697,22 @@ public abstract class ComprobanteFiscal implements IModuleEntity {
 
 	public void setDocumento(Documento documento) {
 		this.documento = documento;
+	}	
+
+	public String getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(String subTotal) {
+		this.subTotal = subTotal;
+	}
+
+	public String getMonto() {
+		return monto;
+	}
+
+	public void setMonto(String monto) {
+		this.monto = monto;
 	}
 
 	private String createName() {

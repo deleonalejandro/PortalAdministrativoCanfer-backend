@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.query.criteria.LiteralHandlingMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -54,6 +55,12 @@ public class DetFormularioCajaChica {
 	private String nombreProveedor;
 
 	private String vigenciaSat;
+	
+	private Boolean bitRS;
+	
+	private Float total;
+	
+	private Float subTotal;
 	
 	//Constructor
 	public DetFormularioCajaChica() {
@@ -185,6 +192,32 @@ public class DetFormularioCajaChica {
 	public void setVigenciaSat(String vigenciaSat) {
 		this.vigenciaSat = vigenciaSat;
 	}
+
+	public Float getTotal() {
+		return total;
+	}
+
+	public void setTotal(Float total) {
+		this.total = total;
+	}
+
+	public Float getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(Float subTotal) {
+		this.subTotal = subTotal;
+	}
+
+	public Boolean getBitRS() {
+		return bitRS;
+	}
+
+	public void setBitRS(Boolean bitRS) {
+		this.bitRS = bitRS;
+	}
+	
+	
 	
 	
 	
