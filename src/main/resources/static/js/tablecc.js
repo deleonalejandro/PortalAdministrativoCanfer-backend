@@ -534,19 +534,19 @@ $(document).ready(function() {
 	
 	// funcion para checar si se mueve el subtotal o monto
 	
-	$('#subtotal').click(function(){
+	$('#subtotal').change(function(){
 	  sumarTotal();
 	});
 	
-	$('#monto').click(function(){
+	$('#monto').change(function(){
 	  sumarTotal();
 	});
 	
-	$('#detail-subtotal').click(function(){
+	$('#detail-subtotal').change(function(){
 	  detailSumarTotal();
 	});
 	
-	$('#detail-monto').click(function(){
+	$('#detail-monto').change(function(){
 	  detailSumarTotal();
 	});
 
