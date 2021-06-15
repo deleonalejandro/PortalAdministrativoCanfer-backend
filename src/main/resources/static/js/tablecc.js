@@ -805,8 +805,8 @@ $(document).ready(function() {
 		document.getElementById("divTabla").hidden = false;
 		document.getElementById("divNuevo").hidden = true;
 		table.columns.adjust();
-		table.columns.adjust();
-		
+		table.ajax.reload(null,false);
+
 	}
 
 
