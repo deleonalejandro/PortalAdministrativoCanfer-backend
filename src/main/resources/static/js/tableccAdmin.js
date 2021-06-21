@@ -88,7 +88,7 @@ $(document).ready(function() {
 				table.ajax.reload( null, false );
 				$('#deleteForm').modal('hide');
 				
-				if (success == 'true') {
+				if (success == true) {
 					$('#alert-delete').prop('hidden', false);
 				} else {
 					$('#alert-delete-error').prop('hidden', false);
@@ -133,7 +133,7 @@ $(document).ready(function() {
 					$('#openForm').modal('hide');
 					
 					
-				if (success == 'true') {
+				if (success == true) {
 					$('#alert-open').prop('hidden', false);
 				} else {
 					$('#alert-open-error').prop('hidden', false);
