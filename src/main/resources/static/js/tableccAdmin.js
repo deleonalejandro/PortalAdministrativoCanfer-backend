@@ -22,7 +22,7 @@ $(document).ready(function() {
 				"data": null,
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0">Abrir Formulario</a>'
+					return '<span class="badge">Abrir Formulario</span>';
 				},
 			},
 			{
@@ -56,7 +56,7 @@ $(document).ready(function() {
 			{ data: "total" }
 		],
 
-		"order": [[4, "desc"]],
+		"order": [[3, "desc"]],
 		"columnDefs": [
 			{ "width": "2%", "targets": [1] }
 		]
