@@ -22,7 +22,7 @@ $(document).ready(function() {
 				"data": null,
 				"defaultContent": '',
 				"render": function() {
-					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list">Abrir Formulario</a>'
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0">Abrir Formulario</a>'
 				},
 			},
 			{
