@@ -155,6 +155,49 @@ public class CajaChicaActions extends ModuleActions{
 		return false;
 	}
 	
+	public Boolean deleteNotOpenForm(Long id) {
+		
+		Optional<FormularioCajaChica> fcc = superRepo.findFormularioCCById(id);
+		
+		if (fcc.isPresent()) {
+			
+			List<DetFormularioCajaChica> detalles = listDetFormularioCajaChica(fcc.get().getIdFormularioCajaChica());
+			
+			for (DetFormularioCajaChica det : detalles) {
+				
+				if(!delete(det.getIdDetFormularioCajaChica())) {
+					
+					Log.activity("No se logró eliminar el formulario debido a un error al borrar sus detalles.", 
+							fcc.get().getSucursal().getEmpresa().getNombre(), "DELETE");
+					
+					return false;
+				} 
+			}
+			
+			superRepo.delete(fcc.get());
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public Boolean openForm(Long id) {
+		
+		Optional<FormularioCajaChica> fcc = superRepo.findFormularioCCById(id);
+		
+		if (fcc.isPresent()) {
+			
+			fcc.get().setEstatus(ABIERTO);
+			
+			superRepo.save(fcc.get());
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public boolean cancelarForm(Long id) {
 		
 		Optional<FormularioCajaChica> fcc = superRepo.findFormularioCCById(id);
@@ -503,6 +546,19 @@ public class CajaChicaActions extends ModuleActions{
 		if (sucursal.isPresent()) {
 			
 			return superRepo.findAllFormularioCajaChicaBySucursal(sucursal.get());
+		}
+		
+		return Collections.emptyList();
+		
+	}
+	
+public List<FormularioCajaChica> getAllCanceledFormularioCajaChicas(Long idSucursal) {
+		
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(idSucursal);
+		
+		if (sucursal.isPresent()) {
+			
+			return superRepo.findAllFormularioCajaChicaBySucursalAndEstatus(sucursal.get(), CANCELADO);
 		}
 		
 		return Collections.emptyList();

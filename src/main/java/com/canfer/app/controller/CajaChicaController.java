@@ -96,6 +96,21 @@ public class CajaChicaController {
 
 	}
 	
+	@GetMapping("/administration")
+	public String getAdministrationCajaChica(@CookieValue("suc") Long idSucursal, Model model) {
+		
+		Empresa company;
+		
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(idSucursal);
+		
+		if (sucursal.isPresent()) {
+			company = sucursal.get().getEmpresa();
+			model.addAttribute("companyProfile", company.getProfilePictureName());
+			
+		}
+		
+		return "caja-chica-administration";
+	}
 	/*
 	@GetMapping("/documentosFiscalesClient/catalogo")
 	public String getCatalog(@RequestParam String selectedCompany, Model model, RedirectAttributes ra) {

@@ -69,11 +69,34 @@ public class CajaChicaFunctionalityController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	/*******************************
-	 * BORRAR FORMULARIO CAJA CHICA
-	 * 
-	 * @param id - FormularioCajaChica object id.
-	 */
+	@GetMapping("/openformcc")
+	public ResponseEntity<Boolean> openFormCC(@RequestParam Long id) {
+		
+		if(actioner.openForm(id)) {
+
+			return new ResponseEntity<>(true, HttpStatus.OK);
+			
+		} else {
+			
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		
+	}
+	
+	@GetMapping("/deletecanceledformcc")
+	public ResponseEntity<Boolean> deleteCanceledFormCC(@RequestParam Long id) {
+		
+		if(actioner.deleteNotOpenForm(id)) {
+			
+			return new ResponseEntity<>(true, HttpStatus.OK);
+
+		} else {
+			
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		
+	}
+
 	@GetMapping("/cancelarformcc")
 	public ResponseEntity<Object> cancelarFormCC(@RequestParam Long id) {
 		
@@ -215,6 +238,13 @@ public class CajaChicaFunctionalityController {
 	public List<FormularioCajaChica> getAllFormularioCC(@RequestParam Long idSucursal) {
 		
 		return actioner.getAllFormularioCajaChicas(idSucursal);
+	}
+	
+	@GetMapping("/loadallcanceledforms")
+	@ResponseBody
+	public List<FormularioCajaChica> getAllCanceledFormularioCC(@RequestParam Long idSucursal) {
+		
+		return actioner.getAllCanceledFormularioCajaChicas(idSucursal);
 	}
 	
 	@GetMapping("/download/{extension}")

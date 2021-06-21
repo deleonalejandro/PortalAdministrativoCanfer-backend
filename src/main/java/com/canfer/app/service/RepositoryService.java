@@ -628,4 +628,8 @@ public class RepositoryService {
 		
 		return formCCRepo.findAllBySucursal(sucursal);
 	}
+	
+	public List<FormularioCajaChica> findAllFormularioCajaChicaBySucursalAndEstatus(Sucursal sucursal, String estatus) {
+		return formCCRepo.findAllBySucursalAndEstatus(sucursal, estatus);
+	}
 }

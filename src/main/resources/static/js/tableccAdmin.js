@@ -22,7 +22,7 @@ $(document).ready(function() {
 				"data": null,
 				"defaultContent": '',
 				"render": function() {
-					return '<span class="btn-transparent-dark">Abrir Formulario</span>';
+					return '<button class="btn-transparent-dark" type="button">Abrir Formulario</button>';
 				},
 			},
 			{

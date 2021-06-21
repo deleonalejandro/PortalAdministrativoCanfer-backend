@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
+import org.aspectj.weaver.tools.cache.CacheKeyResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -231,6 +232,60 @@ public class EmpresaService {
 		}
 		
 		return superRepo.save(newSucursal);
+		
+	}
+	
+	public Boolean deleteSucursal(Long id) {
+		
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(id);
+		
+		if (sucursal.isPresent()) {
+			
+			String sucursalName = sucursal.get().getNombreSucursal() + " " + sucursal.get().getClaveProv();
+			String empresaName = sucursal.get().getEmpresa().getNombre();
+			
+			superRepo.delete(sucursal.get());
+			Log.activity("Se eliminó la sucursal " + sucursalName + " exitosamente." , empresaName, "DELETE");
+			
+			return true;
+		} else {
+			
+			Log.falla("Error al eliminar la sucursal.", "ERROR_DELETE");
+			return false;
+		}
+	}
+	
+	public Boolean updateSucursal(SucursalDTO sucursal) {
+		
+		Sucursal updateSucursal;
+		
+		Optional<Sucursal> checkSucursal = superRepo.findSucursalById(sucursal.getIdSucursal());
+		
+		if(checkSucursal.isEmpty()) {
+			
+			throw new EntityExistsException("La sucursal que desea actualizar no se encuentra en la base de datos.");
+			
+		} 
+		
+		updateSucursal = checkSucursal.get();
+		
+		try {
+			
+			updateSucursal.setClaveProv(sucursal.getClaveProv());
+			updateSucursal.setNombreSucursal(sucursal.getNombreSucursal());
+			updateSucursal.updateRfc();
+
+			superRepo.save(updateSucursal);
+			
+			return true;
+			
+		} catch (Exception e) {
+			
+			throw new UnknownError("Ocurrio un error inesperado");
+			
+		}
+		
+		
 		
 	}
 

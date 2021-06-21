@@ -61,6 +61,8 @@ public class Sucursal {
 		this.proveedor = proveedor;
 		this.claveProv = proveedor.getClaveProv();
 		this.nombreSucursal = proveedor.getNombre();
+		this.empresaRfc = empresa.getRfc();
+		this.proveedorRfc = proveedor.getRfc();
 		
 	}
 
@@ -126,6 +128,11 @@ public class Sucursal {
 
 	public void setProveedorRfc(String proveedorRfc) {
 		this.proveedorRfc = proveedorRfc;
+	}
+	
+	public void updateRfc() {
+		this.proveedorRfc = proveedor.getRfc();
+		this.empresaRfc = empresa.getRfc();
 	}
 	
 	

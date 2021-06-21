@@ -10,6 +10,8 @@ import com.canfer.app.model.Sucursal;
 public interface FormularioCajaChicaRepository extends JpaRepository<FormularioCajaChica, Long>{
 
 	List<FormularioCajaChica> findAllBySucursal(Sucursal sucursal);
+	
+	List<FormularioCajaChica> findAllBySucursalAndEstatus(Sucursal sucursal, String estatus);
 
 }
 

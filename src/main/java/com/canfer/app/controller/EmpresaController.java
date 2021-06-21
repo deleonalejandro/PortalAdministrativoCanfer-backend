@@ -9,6 +9,8 @@ import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.dto.EmpresaDTO;
+import com.canfer.app.dto.SucursalDTO;
 import com.canfer.app.model.Consecutivo;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
+import com.canfer.app.model.Sucursal;
 import com.canfer.app.repository.ConsecutivoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.EstadoRepository;
@@ -32,6 +36,7 @@ import com.canfer.app.repository.MunicipioRepository;
 import com.canfer.app.service.EmpresaService;
 import com.canfer.app.storage.LogoStorageService;
 import com.canfer.app.storage.StorageException;
+import com.sun.xml.bind.v2.TODO;
 
 import javassist.NotFoundException;
 
@@ -212,11 +217,74 @@ public class EmpresaController {
 		return "redirect:/admin/companies";
 	}
 	
+	@GetMapping(value = "/sucursal/delete/{id}")
+	public ResponseEntity<String> deleteSucursal(@PathVariable Long id, RedirectAttributes ra) {
+		
+		if (empresaService.deleteSucursal(id)) {
+			return new ResponseEntity<>("true", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("false", HttpStatus.OK);
+		}
+	}
+	
+	@PostMapping(value = "/sucursal/update")
+	public ResponseEntity<String> updateSucursal(SucursalDTO sucursal, RedirectAttributes redirectAttributes) {
+		
+		try {
+			
+			if(empresaService.updateSucursal(sucursal)) {
+				return new ResponseEntity<>("true", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>("false", HttpStatus.OK);
+			}
+			
+		} catch (EntityExistsException e) {
+			Log.falla("Error al actualizar sucursal: " + e.getMessage(), "ERROR_DB");
+			return new ResponseEntity<>("false", HttpStatus.OK);
+		} catch (UnknownError e) {
+			Log.falla("Error al actualizar sucursal: " + e.getMessage(), "ERROR");
+			return new ResponseEntity<>("false", HttpStatus.OK);
+		}
+	}
+	
+	@PostMapping(value = "/addSucursal")
+	public String addSucursal(SucursalDTO sucursal, RedirectAttributes ra) {
+		try {
+			// TODO ADD RESPONSE ENTITIES INSTEAD.
+			Sucursal saveSucursal;
+			saveSucursal = empresaService.saveSucursal(sucursal);
+			
+			// creating the sequence for the company
+			Consecutivo consecutivo = new Consecutivo(saveSucursal.getEmpresa(), saveSucursal, "Caja Chica", 0L, 9999999L, 0L);
+			consecutivoRepository.save(consecutivo);
+			
+			Log.activity("Se creó una nueva sucursal " + saveSucursal.getNombreSucursal() + "." , saveSucursal.getEmpresa().getNombre(), "NEW_USER");
+		} catch (EntityExistsException e) {
+	
+			Log.falla("Error al añadir la sucursal: " + e.getMessage(), "ERROR_DB");
+			ra.addFlashAttribute("companyExistsError", e.getMessage());
+			return "redirect:/admin/addCompany";
+			
+		} catch (UnknownError e) {
+			
+			Log.falla("Error al añadir la sucursal: " + e.getMessage(), "ERROR");
+			ra.addFlashAttribute("error", e.getMessage());
+			return "redirect:/admin/addCompany";
+			
+		} catch (NotFoundException e) {
+			Log.falla("Error al añadir la sucursal: " + e.getMessage(), "ERROR");
+			return "redirect:/admin/addCompany";
+		}
+		
+		return "redirect:/admin/companies";
+	}
+	
 	@GetMapping(value = "/findMunicipios/{idEstado}")
 	@ResponseBody
 	public List<Municipio> getMunicipios(@PathVariable Long idEstado) {
 		return municipioRepository.findAllByEstado(estadoRepository.findById(idEstado).get());
 	}
+	
 	
 	
 
