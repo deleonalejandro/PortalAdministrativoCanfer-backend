@@ -10,6 +10,8 @@ public class SucursalDTO {
 	private String proveedor;
 	private String claveProv;
 	private String nombreSucursal;
+	private String empresaRfc;
+	private String proveedorRfc;
 	private Set<UsuarioCanfer> usuariosCanfer;
 	
 	public SucursalDTO() {
@@ -63,6 +65,24 @@ public class SucursalDTO {
 	public void setUsuariosCanfer(Set<UsuarioCanfer> usuariosCanfer) {
 		this.usuariosCanfer = usuariosCanfer;
 	}
+
+	public String getEmpresaRfc() {
+		return empresaRfc;
+	}
+
+	public void setEmpresaRfc(String empresaRfc) {
+		this.empresaRfc = empresaRfc;
+	}
+
+	public String getProveedorRfc() {
+		return proveedorRfc;
+	}
+
+	public void setProveedorRfc(String proveedorRfc) {
+		this.proveedorRfc = proveedorRfc;
+	}
+	
+	
 	
 	
 

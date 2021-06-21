@@ -1,5 +1,7 @@
 package com.canfer.app.service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
+import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Sucursal;
 import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.dto.SucursalDTO;
@@ -31,6 +34,8 @@ public class EmpresaService {
 	private IAuthenticationFacade authenticationFacade;
 	@Autowired
 	private MunicipioRepository municipioRepository;
+	@Autowired
+	private RepositoryService superRepo;
 
 	
 	public List<Empresa> findAll() {
@@ -198,9 +203,35 @@ public class EmpresaService {
 	 * 
 	 * ****************/
 	
-	public Boolean save(SucursalDTO sucursal) {
+	public Sucursal saveSucursal(SucursalDTO sucursal) throws NotFoundException {
 		
-		return true;
+		Sucursal newSucursal;
+		Optional<Sucursal> checkSucursal;
+		Empresa empresa;
+		Optional<Proveedor> proveedor;
+		
+		empresa = empresaRepository.findByRfc(sucursal.getEmpresaRfc());
+		if (empresa == null) {
+			Log.falla("Error al registrar una nueva sucursal, la empresa asociada no existe en el catálogo.", "ERROR");
+			throw new NotFoundException("La empresa no existe en el catálogo.");
+		}
+		
+		proveedor = superRepo.findProveedorByEmpresaAndClaveProv(empresa, sucursal.getClaveProv());
+		if (proveedor.isEmpty()) {
+			Log.falla("Error al registrar una nueva sucursal, el proveedor asociado no existe en el catálogo.", "ERROR");
+			throw new NotFoundException("El proveedor no existe en el catálogo.");
+		}
+		
+		checkSucursal = superRepo.findSucursalByEmpresaAndClaveProv(empresa, sucursal.getClaveProv());
+		
+		if(checkSucursal.isPresent()) {
+			throw new EntityExistsException("La sucursal que desea registrar ya existe.");
+		} else {
+			newSucursal = new Sucursal(empresa, proveedor.get());
+		}
+		
+		return superRepo.save(newSucursal);
+		
 	}
 
 

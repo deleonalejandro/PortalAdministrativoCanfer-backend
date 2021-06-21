@@ -47,6 +47,10 @@ public class Sucursal {
 			)
 	private Set<UsuarioCanfer> usuariosCanfer;
 	
+	private String empresaRfc;
+	
+	private String proveedorRfc;
+	
 	public Sucursal() {
 		// TODO Auto-generated constructor stub
 	}
@@ -107,6 +111,24 @@ public class Sucursal {
 	public void setNombreSucursal(String nombreSucursal) {
 		this.nombreSucursal = nombreSucursal;
 	}
+
+	public String getEmpresaRfc() {
+		return empresaRfc;
+	}
+
+	public void setEmpresaRfc(String empresaRfc) {
+		this.empresaRfc = empresaRfc;
+	}
+
+	public String getProveedorRfc() {
+		return proveedorRfc;
+	}
+
+	public void setProveedorRfc(String proveedorRfc) {
+		this.proveedorRfc = proveedorRfc;
+	}
+	
+	
 	
 	
 	

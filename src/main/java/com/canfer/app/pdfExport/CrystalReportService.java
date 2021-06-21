@@ -168,6 +168,10 @@ public class CrystalReportService {
 			ReportClientDocument reportClientDoc = new ReportClientDocument();	
 			
 			reportClientDoc.open(CRYSTAL_REPORT, 0);
+			
+
+			
+			System.out.println("Si lo abrimos " + CRYSTAL_REPORT);
 			//NOTE: If parameters or database login credentials are required, they need to be set before.
 			//calling the export() method of the PrintOutputController.
 			if (comprobante.getFolio() != null) {
