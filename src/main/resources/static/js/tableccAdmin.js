@@ -32,10 +32,8 @@ $(document).ready(function() {
 				"data": null,
 				"defaultContent": '',
 				"render": function(row) {
-					if(row.estatus != 'CANCELADO'){
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
-					}else
-						return ''
+	
 				},
 			},
 
