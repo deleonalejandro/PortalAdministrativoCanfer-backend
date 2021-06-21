@@ -396,6 +396,8 @@ $(document).ready(function() {
 	$('#submitNewForm').on('click', function() {
 
 		event.preventDefault();
+		$('#estatus').prop( "disabled",  false);
+		$('#paqueteria').prop( "disabled",  false);
 
 		var data = new FormData($('#formFormulario')[0]);
 
@@ -479,30 +481,30 @@ $(document).ready(function() {
 		if($("#estatus").val() != "ABIERTO"){
 		
 			$('#detail-fechaDet').prop( "disabled", true );
-			$('#detail-nombreProveedor').prop( "disabled", true );
-			$('#detail-monto').prop( "disabled", true );
-			$('#detail-subtotal').prop( "disabled", true );
-			$('#detail-beneficiario').prop( "disabled", true );
+			$('#detail-nombreProveedor').prop( "readonly", true );
+			$('#detail-monto').prop( "readonly", true );
+			$('#detail-subtotal').prop( "readonly", true );
+			$('#detail-beneficiario').prop( "readonly", true );
 			$('#detail-clasificacion').prop( "disabled", true );
 			$('#detail-pdf').prop( "disabled", true );
 		
 		} else if(d.nombreArchivoXML != null){
 		
 			$('#detail-fechaDet').prop( "disabled", true );
-			$('#detail-nombreProveedor').prop( "disabled", true );
-			$('#detail-monto').prop( "disabled", true );
-			$('#detail-subtotal').prop( "disabled", true );
-			$('#detail-beneficiario').prop( "disabled", false );
+			$('#detail-nombreProveedor').prop( "readonly", true );
+			$('#detail-monto').prop( "readonly", true );
+			$('#detail-subtotal').prop( "readonly", true );
+			$('#detail-beneficiario').prop( "readonly", false );
 			$('#detail-clasificacion').prop( "disabled", false );
 			$('#detail-pdf').prop( "disabled", false );
 		
 		} else {
 		
 			$('#detail-fechaDet').prop( "disabled", false );
-			$('#detail-nombreProveedor').prop( "disabled", false );
-			$('#detail-monto').prop( "disabled", false );
-			$('#detail-subtotal').prop( "disabled", false );
-			$('#detail-beneficiario').prop( "disabled", false );
+			$('#detail-nombreProveedor').prop( "readonly", false );
+			$('#detail-monto').prop( "readonly", false );
+			$('#detail-subtotal').prop( "readonly", false );
+			$('#detail-beneficiario').prop( "readonly", false );
 			$('#detail-clasificacion').prop( "disabled", false );
 			$('#detail-pdf').prop( "disabled", false );
 		
@@ -669,12 +671,12 @@ $(document).ready(function() {
 		$("#paqueteria").append($("<option />").val("Estafeta").text("Estafeta"));
 		$("#paqueteria").append($("<option />").val("customOption").text("[Otro:]"));
 		
-		if(!formulario.paqueteria == null && !formulario.paqueteria == "" && !formulario.paqueteria == null 
-			&& !formulario.paqueteria =="DHL" && !formulario.paqueteria == "Estafeta" && !formulario.paqueteria == "UPS"){
-			
+		if(formulario.paqueteria != null && formulario.paqueteria != "" && formulario.paqueteria !="DHL" && formulario.paqueteria != "Estafeta" && formulario.paqueteria != "UPS"){
+			alert(formulario.paqueteria)
 			$("#paqueteria").append($("<option />").val(formulario.paqueteria).text(formulario.paqueteria));
-			$("#paqueteria").val(formulario.paqueteria);
 		}
+		
+		$("#paqueteria").val(formulario.paqueteria);
 			
 		$("#numeroGuia").val(formulario.numeroGuia);
 		$("#numeroPago").val(formulario.numeroPago);
@@ -785,7 +787,6 @@ $(document).ready(function() {
 
 	}
 	
-	
 	//Deja en blanco los parametros y reestablece los divs
 
 	var reestablecerForm = function() {
@@ -844,9 +845,9 @@ $(document).ready(function() {
 		document.getElementById("btn-nuevo-det").hidden=false; 
 		
 		$('#paqueteria').prop( "disabled",  false);
-		$('#numeroGuia').prop( "disabled",  false);
-		$('#numeroPago').prop( "disabled",  false);
-		$('#fechaPago').prop( "disabled",  false);
+		$('#numeroGuia').prop( "readonly",  false);
+		$('#numeroPago').prop( "readonly",  false);
+		$('#fechaPago').prop( "readonly",  false);
 	}
 	
 		var estatusEnviado = function(){
@@ -857,10 +858,6 @@ $(document).ready(function() {
         option = document.createElement( 'option' );
         option.value = option.text = "ENVIADO";
         select.add(option);
-		
-		option1 = document.createElement( 'option' );
-		option1.value = option1.text = "PAGADO";
-        select.add( option1 );
 		
 		option2 = document.createElement( 'option' );
 		option2.value = option2.text = "CANCELADO";
@@ -875,7 +872,13 @@ $(document).ready(function() {
         document.getElementById("btn-nuevo-det").hidden=true; 
 		
 		$('#paqueteria').prop( "disabled",  true);
-		$('#numeroGuia').prop( "disabled",  true);
+		$('#numeroGuia').prop( "readonly",  true);
+		
+		if(/ADMIN/i.test($('#userRoles').text()) || /CONTADOR/i.test($('#userRoles').text())){
+			$('#estatus').prop( "disabled",  false);
+		} else{
+			$('#estatus').prop( "disabled",  true);
+		}
 		
 	}
 	
@@ -901,9 +904,9 @@ $(document).ready(function() {
 		document.getElementById("btn-nuevo-det").hidden=true; 
 		
 		$('#paqueteria').prop( "disabled",  true);
-		$('#numeroGuia').prop( "disabled",  true);
-		$('#numeroPago').prop( "disabled",  true);
-		$('#fechaPago').prop( "disabled",  true);
+		$('#numeroGuia').prop( "readonly",  true);
+		$('#numeroPago').prop( "readonly",  true);
+		$('#fechaPago').prop( "readonly",  true);
         
 		
 	}
@@ -927,9 +930,15 @@ $(document).ready(function() {
         document.getElementById("btn-nuevo-det").hidden=true; 
 		
 		$('#paqueteria').prop( "disabled",  true);
-		$('#numeroGuia').prop( "disabled",  true);
-		$('#numeroPago').prop( "disabled",  true);
-		$('#fechaPago').prop( "disabled",  true);
+		$('#numeroGuia').prop( "readonly",  true);
+		$('#numeroPago').prop( "readonly",  true);
+		$('#fechaPago').prop( "readonly",  true);
+		
+		if(/ADMIN/i.test($('#userRoles').text()) || /CONTADOR/i.test($('#userRoles').text())){
+			$('#estatus').prop( "disabled",  false);
+		} else{
+			$('#estatus').prop( "disabled",  true);
+		}
 		
 	}
 	
@@ -955,9 +964,16 @@ $(document).ready(function() {
         document.getElementById("btn-nuevo-det").hidden=true; 
 		
 		$('#paqueteria').prop( "disabled",  true);
-		$('#numeroGuia').prop( "disabled",  true);
-		$('#numeroPago').prop( "disabled",  false);
-		$('#fechaPago').prop( "disabled",  false);
+		$('#numeroGuia').prop( "readonly",  true);
+		$('#numeroPago').prop( "readonly",  false);
+		$('#fechaPago').prop( "readonly",  false);
+		
+		if(/ADMIN/i.test($('#userRoles').text()) || /CONTADOR/i.test($('#userRoles').text())){
+			
+			$('#estatus').prop( "disabled",  false);
+		} else{
+			$('#estatus').prop( "disabled",  true);
+		}
 		
 	}
 	

@@ -194,6 +194,7 @@
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column" style="position: fixed">
 							<a class="nav-link active" id="pestañaFormulario" href="#!">Entradas</a>
+							<a sec:authorize="hasRole('ADMIN')" class="nav-link" id="pestañaAdministrativa" th:href="@{/cajachicaclient/administration}">Administración</a>
 							<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
@@ -207,6 +208,7 @@
 						<div class="card mb-0">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden>PAE920709D75</div>
 							<div id="selectedClave" th:text="${selectedSucursal}" hidden>A-0080</div>
+							<div sec:authentication="principal.authorities" hidden id="userRoles"></div>
 							<div class="card-body">
 
 
