@@ -193,8 +193,11 @@
 
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column" style="position: fixed">
-							<a class="nav-link " id="pestañaFormulario" th:href="@{/cajachicaclient/home}">Entradas</a>
-							<a sec:authorize="hasRole('ADMIN')" class="nav-link active" id="pestañaAdministrativa" th:href="@{/cajachicaclient/administration}">Administración</a>
+							<a class="nav-link " id="pestañaFormulario"
+								th:href="@{/cajachicaclient/home}">Entradas</a> <a
+								sec:authorize="hasRole('ADMIN')" class="nav-link active"
+								id="pestañaAdministrativa"
+								th:href="@{/cajachicaclient/administration}">Administración</a>
 							<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
@@ -208,14 +211,18 @@
 						<div class="card mb-0">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden>PAE920709D75</div>
 							<div id="selectedClave" th:text="${selectedSucursal}" hidden>A-0080</div>
-							<div sec:authentication="principal.authorities" hidden id="userRoles"></div>
+							<div sec:authentication="principal.authorities" hidden
+								id="userRoles"></div>
 							<div class="card-body">
 
 
 								<!-- DIV DONDE ESTA LA TABLA -->
-								<div class="datatable" id="divTabla">
-									<div><h4 class="float-right">REGISTRO DE FORMULARIOS CANCELADOS</h4></div>
-									
+								<div id="divTabla">
+									<div>
+										<h4 class="float-right">REGISTRO DE FORMULARIOS
+											CANCELADOS</h4>
+									</div>
+
 
 									<!-- ALERTS DE UPDATE DE FORMULARIOS -->
 									<div class="alert alert-success alert-icon mt-3"
@@ -227,7 +234,8 @@
 										<div class="alert-icon-aside">
 											<i class="fa fa-check"></i>
 										</div>
-										<div class="alert-icon-content">Se abrió correctamente el formulario cerrado.</div>
+										<div class="alert-icon-content">Se abrió correctamente
+											el formulario cerrado.</div>
 									</div>
 									<div class="alert alert-danger alert-icon mt-3"
 										id="alert-open-error" role="alert" hidden=true>
@@ -238,8 +246,8 @@
 										<div class="alert-icon-aside">
 											<i class="fa fa-times"></i>
 										</div>
-										<div class="alert-icon-content">No se pudo abrir
-											el formulario.</div>
+										<div class="alert-icon-content">No se pudo abrir el
+											formulario.</div>
 									</div>
 									<div class="alert alert-success alert-icon mt-3"
 										id="alert-delete" role="alert" hidden=true>
@@ -250,7 +258,8 @@
 										<div class="alert-icon-aside">
 											<i class="fa fa-check"></i>
 										</div>
-										<div class="alert-icon-content">Se borró correctamente el formulario cerrado.</div>
+										<div class="alert-icon-content">Se borró correctamente
+											el formulario cerrado.</div>
 									</div>
 									<div class="alert alert-danger alert-icon mt-3"
 										id="alert-delete-error" role="alert" hidden=true>
@@ -261,46 +270,46 @@
 										<div class="alert-icon-aside">
 											<i class="fa fa-times"></i>
 										</div>
-										<div class="alert-icon-content">No se pudo borrar
-											el formulario.</div>
+										<div class="alert-icon-content">No se pudo borrar el
+											formulario.</div>
 									</div>
 
 									<!-- TABLA -->
-									
-									<table class="compact table-hover" id="formularios"
-										style="text-align: center; width: 100%">
-										<thead>
-											<tr>
-												<th></th>
-												<th></th>
-												<th>Fecha</th>
-												<th>Formulario</th>
-												<th>Estatus</th>
-												<th>Responsable</th>
-												<th>Total</th>
-											</tr>
-										</thead>
-										<tfoot>
-											<tr>
-												<th></th>
-												<th></th>
-												<th>Fecha</th>
-												<th>Formulario</th>
-												<th>Estatus</th>
-												<th>Responsable</th>
-												<th>Total</th>
-											</tr>
-										</tfoot>
-									</table>
+									<div class="datatable" >
+										<table class="compact table-hover" id="formularios"
+											style="text-align: center; width: 100%">
+											<thead>
+												<tr>
+													<th></th>
+													<th></th>
+													<th>Fecha</th>
+													<th>Formulario</th>
+													<th>Estatus</th>
+													<th>Responsable</th>
+													<th>Total</th>
+												</tr>
+											</thead>
+											<tfoot>
+												<tr>
+													<th></th>
+													<th></th>
+													<th>Fecha</th>
+													<th>Formulario</th>
+													<th>Estatus</th>
+													<th>Responsable</th>
+													<th>Total</th>
+												</tr>
+											</tfoot>
+										</table>
 
 
-
+									</div>
 								</div>
 
-								
 
 
-								
+
+
 								<!-- MODAL PARA CONFIRMAR BORRAR -->
 								<div class="deleteForm">
 									<div class="modal fade" id="deleteForm" tabindex="-1"
@@ -343,12 +352,13 @@
 														<span aria-hidden="true">×</span>
 													</button>
 												</div>
-												<div class="modal-body">¿Está seguro que desea
-													abrir el formulario cancelado?</div>
+												<div class="modal-body">¿Está seguro que desea abrir
+													el formulario cancelado?</div>
 												<div class="modal-footer">
 													<button class="btn btn-primary" type="button"
 														data-dismiss="modal">Cancelar</button>
-													<a class="btn btn-danger text-light delBtn" type="button"> Abrir</a>
+													<a class="btn btn-danger text-light delBtn" type="button">
+														Abrir</a>
 												</div>
 											</div>
 										</div>
