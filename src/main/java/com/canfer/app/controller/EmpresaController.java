@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
+import org.jaxen.function.LocalNameFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -248,11 +250,11 @@ public class EmpresaController {
 	}
 	
 	@PostMapping(value = "/addSucursal")
-	public String addSucursal(SucursalDTO sucursal, RedirectAttributes ra) {
+	public String addSucursal(@RequestParam Long idProveedor, RedirectAttributes ra) {
 		try {
 			// TODO ADD RESPONSE ENTITIES INSTEAD.
 			Sucursal saveSucursal;
-			saveSucursal = empresaService.saveSucursal(sucursal);
+			saveSucursal = empresaService.saveSucursal(idProveedor);
 			
 			// creating the sequence for the company
 			Consecutivo consecutivo = new Consecutivo(saveSucursal.getEmpresa(), saveSucursal, "Caja Chica", 0L, 9999999L, 0L);

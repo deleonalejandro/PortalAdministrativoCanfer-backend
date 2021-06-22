@@ -204,26 +204,22 @@ public class EmpresaService {
 	 * 
 	 * ****************/
 	
-	public Sucursal saveSucursal(SucursalDTO sucursal) throws NotFoundException {
+	public Sucursal saveSucursal(Long idProveedor) throws NotFoundException {
 		
 		Sucursal newSucursal;
 		Optional<Sucursal> checkSucursal;
 		Empresa empresa;
 		Optional<Proveedor> proveedor;
 		
-		empresa = empresaRepository.findByRfc(sucursal.getEmpresaRfc());
-		if (empresa == null) {
-			Log.falla("Error al registrar una nueva sucursal, la empresa asociada no existe en el catálogo.", "ERROR");
-			throw new NotFoundException("La empresa no existe en el catálogo.");
-		}
-		
-		proveedor = superRepo.findProveedorByEmpresaAndClaveProv(empresa, sucursal.getClaveProv());
+		proveedor = superRepo.findProveedorById(idProveedor);
 		if (proveedor.isEmpty()) {
 			Log.falla("Error al registrar una nueva sucursal, el proveedor asociado no existe en el catálogo.", "ERROR");
 			throw new NotFoundException("El proveedor no existe en el catálogo.");
 		}
 		
-		checkSucursal = superRepo.findSucursalByEmpresaAndClaveProv(empresa, sucursal.getClaveProv());
+		empresa = proveedor.get().getEmpresas().get(0);
+		
+		checkSucursal = superRepo.findSucursalByEmpresaAndClaveProv(empresa, proveedor.get().getClaveProv());
 		
 		if(checkSucursal.isPresent()) {
 			throw new EntityExistsException("La sucursal que desea registrar ya existe.");
