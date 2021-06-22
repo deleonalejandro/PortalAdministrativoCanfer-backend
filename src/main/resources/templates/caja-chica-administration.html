@@ -215,14 +215,8 @@
 								id="userRoles"></div>
 							<div class="card-body">
 
-
 								<!-- DIV DONDE ESTA LA TABLA -->
 								<div id="divTabla">
-									<div class="float-right">
-										<h4>REGISTRO DE FORMULARIOS
-											CANCELADOS</h4>
-									</div>
-
 
 									<!-- ALERTS DE UPDATE DE FORMULARIOS -->
 									<div class="alert alert-success alert-icon mt-3"
@@ -273,9 +267,8 @@
 										<div class="alert-icon-content">No se pudo borrar el
 											formulario.</div>
 									</div>
-
 									<!-- TABLA -->
-									<div class="datatable" >
+									<div class="row mt-4 datatable">
 										<table class="compact table-hover" id="formularios"
 											style="text-align: center; width: 100%">
 											<thead>
@@ -304,68 +297,67 @@
 
 
 									</div>
-								</div>
 
 
 
 
 
-								<!-- MODAL PARA CONFIRMAR BORRAR -->
-								<div class="deleteForm">
-									<div class="modal fade" id="deleteForm" tabindex="-1"
-										role="dialog" aria-labelledby="exampleModalCenterTitle"
-										aria-hidden="true">
-										<div class="modal-dialog modal-dialog-centered"
-											role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Eliminar Formulario</h5>
-													<button class="close" type="button" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-												</div>
-												<div class="modal-body">¿Está seguro que desea
-													eliminar el formulario cancelado?</div>
-												<div class="modal-footer">
-													<button class="btn btn-primary" type="button"
-														data-dismiss="modal">Cancelar</button>
-													<a class="btn btn-danger text-light delBtn"
-														id="confirmDeleteForm" type="button">Eliminar</a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- MODAL PARA CONFIRMAR BORRAR -->
-								<div class="openForm">
-									<div class="modal fade" id="openForm" tabindex="-1"
-										role="dialog" aria-labelledby="exampleModalCenterTitle"
-										aria-hidden="true">
-										<div class="modal-dialog modal-dialog-centered"
-											role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Abrir Formulario</h5>
-													<button class="close" type="button" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-												</div>
-												<div class="modal-body">¿Está seguro que desea abrir
-													el formulario cancelado?</div>
-												<div class="modal-footer">
-													<button class="btn btn-primary" type="button"
-														data-dismiss="modal">Cancelar</button>
-													<a class="btn btn-danger text-light delBtn" id="confirmOpenForm" type="button">
-														Abrir</a>
+									<!-- MODAL PARA CONFIRMAR BORRAR -->
+									<div class="deleteForm">
+										<div class="modal fade" id="deleteForm" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalCenterTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">Eliminar Formulario</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">¿Está seguro que desea
+														eliminar el formulario cancelado?</div>
+													<div class="modal-footer">
+														<button class="btn btn-primary" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<a class="btn btn-danger text-light delBtn"
+															id="confirmDeleteForm" type="button">Eliminar</a>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
+									<!-- MODAL PARA CONFIRMAR BORRAR -->
+									<div class="openForm">
+										<div class="modal fade" id="openForm" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalCenterTitle"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">Abrir Formulario</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">¿Está seguro que desea abrir
+														el formulario cancelado?</div>
+													<div class="modal-footer">
+														<button class="btn btn-primary" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<a class="btn btn-danger text-light delBtn"
+															id="confirmOpenForm" type="button"> Abrir</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 								</div>
-
-
 
 							</div>
 						</div>
