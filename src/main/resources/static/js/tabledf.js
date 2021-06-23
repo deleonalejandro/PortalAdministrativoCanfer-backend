@@ -451,8 +451,8 @@
 	
 		// Funcion para editar proveedores
 
-	$('#proveedorTable tbody').on('click', '.editBtn', function() {
-		
+	$('#proveedorTable tbody').on('click', 'td.edit-control', function() {
+	
 		var jsonData = tableProveedor.row(this).data();
 
 		$("#idProveedor").val(jsonData.idProveedor);
