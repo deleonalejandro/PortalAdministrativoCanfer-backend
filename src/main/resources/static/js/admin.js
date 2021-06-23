@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	// Tabla de proveedores
 	var tableProveedor = $('#proveedorTable').DataTable({
+		select: true,
 		ajax: {
 			url: "/catalogsAPI/getSuppliers",
 			dataSrc: ""
@@ -47,6 +48,47 @@ $(document).ready(function() {
 		],
 		"order": [[3, 'asc']],
 	});
+	
+	// Select y creacion de sucursales
+	
+	$('#proveedorTable tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            tableProveedor.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+ 
+    $('#provToSuc').click( function () {
+        jsonData = tableProveedor.row('.selected').data();
+        
+        var addSuc = $.ajax({
+								  url: "/addsucursal?idProveedor=jsonData.idProveedor",
+								  cache: false,
+								  contentType: false,
+								  processData: false,
+								  type: 'GET',
+								});
+				
+				addSuc.done(function(upload) {
+		
+			if (upload == true) {
+				$('#alert-addsuc').prop('hidden', false);
+			} else {
+				$('#alert-error-addsuc').prop('hidden', false);
+			} 
+
+			setTimeout(function() {
+				$('.alert').prop('hidden', true);
+
+			}, 6000);
+
+
+		});
+    } );
+    
 
 	// Tabla de usuarios	
 	var tableUsuario = $('#userTable').DataTable({

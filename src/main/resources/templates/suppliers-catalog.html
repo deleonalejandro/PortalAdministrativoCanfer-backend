@@ -147,7 +147,32 @@
 						
 							<div class="card-header">
 								<a th:href="@{addSupplier}" class="btn btn-primary">Añadir</a>
+								<a id="provToSuc" class="btn btn-primary text-white">Crear Sucursal a partir de Proveedor</a>
 							</div>
+							<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+									<div class="alert alert-success alert-icon mt-3"
+										id="alert-addsuc" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-check"></i>
+										</div>
+										<div class="alert-icon-content">Se creó correctamente
+											la sucursal.</div>
+									</div>
+									<div class="alert alert-danger alert-icon mt-3"
+										id="alert-error-addsuc" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-times"></i>
+										</div>
+										<div class="alert-icon-content">No se pudo crear la sucursal a partir del proveedor seleccionado.</div>
+									</div>
 							<div class="card-body">
 								<div class="datatable">
 									<table class="table table-hover" id="proveedorTable" width="100%">
