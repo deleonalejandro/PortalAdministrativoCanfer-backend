@@ -1,5 +1,7 @@
 package com.canfer.app.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -128,6 +130,16 @@ public class Sucursal {
 
 	public void setProveedorRfc(String proveedorRfc) {
 		this.proveedorRfc = proveedorRfc;
+	}
+	
+	public String getEmpresaNombre() {
+		return this.empresa.getNombre();
+	}
+	
+	public List<String> getUsers(){
+		List<String> userNames = new ArrayList<>();
+		this.usuariosCanfer.forEach(user -> userNames.add(user.getNombre() + " " + user.getApellido()));
+		return userNames;
 	}
 	
 	public void updateRfc() {
