@@ -152,13 +152,10 @@
 									<thead>
 										<tr>
 											<th></th>
-											<th></th>
-											<th></th>
 											<th>Nombre</th>
 											<th>Empresa</th>
 											<th>Clave Proveedor</th>
 											<th>RFC Empresa</th>
-											<th>RFC Sucursal</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -167,12 +164,12 @@
 											<td>
 											<!-- DELETE BUTTON -->
 											<a class="btn btn-datatable btn-icon btn-transparent-dark mr-2"
-											data-toggle="modal" th:attr="data-target='#modalDelete'+${sucursal.getidSucursal()}">
+											data-toggle="modal" th:attr="data-target='#modalDelete'+${sucursal.getIdSucursal()}">
 											<i data-feather="trash-2"></i></a>
 											
 											<!-- MODAL TO DELETE SUC -->
 											<div class="modal fade"
-											th:id="'modalDelete'+${sucursal.getidSucursal()}"
+											th:id="'modalDelete'+${sucursal.getIdSucursal()}"
 											tabindex="-1" role="dialog"
 											aria-labelledby="exampleModalLabel" aria-hidden="true">
 												<div class="modal-dialog modal-dialog-centered" role="document">
@@ -187,7 +184,7 @@
 														<div class="modal-footer">
 															<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
 															<a class="btn btn-danger"
-																th:href="@{company/delete/{id}(id=${company.getidSucursal()})}"
+																th:href="@{sucursal/delete/{id}(id=${sucursal.getIdSucursal()})}"
 																role="button">Eliminar</a>
 														</div>
 													</div>
@@ -200,14 +197,13 @@
 											role="button"><i data-feather="user-plus"></i></a>
 											<!-- EDIT BUTTON -->
 											<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark mr-2"
-											role="button"><i data-feather="list"></i></a>
+											role="button" th:href="@{sucursal?id={id}(id=${sucursal.getIdSucursal()})}"><i data-feather="list"></i></a>
 											
 											</td>
 											<td th:text="${sucursal.nombreSucursal}"></td>
-											<td th:text="${company.empresa.nombre}"></td>
-											<td th:text="${company.claveProv}"></td>
-											<td th:text="${company.empresaRfc}"></td>
-											<td th:text="${company.proveedorRfc}"></td>
+											<td th:text="${sucursal.empresa.nombre}"></td>
+											<td th:text="${sucursal.claveProv}"></td>
+											<td th:text="${sucursal.empresaRfc}"></td>
 										
 										</tr>
 										
@@ -216,13 +212,10 @@
 									<tfoot>
 										<tr>
 											<th></th>
-											<th></th>
-											<th></th>
 											<th>Nombre</th>
 											<th>Empresa</th>
 											<th>Clave Proveedor</th>
 											<th>RFC Empresa</th>
-											<th>RFC Sucursal</th>
 										</tr>
 									</tfoot>
 								</table>
@@ -266,50 +259,42 @@
 							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputNombre">Nombre</label> <input
 									class="form-control input-lg" id="inputNombre" type="text"
-									placeholder="Ingresa el nombre" readonly name="nombre" />
+									disabled name="nombre" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (RFC)-->
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputRfc">Empresa</label> <input
 									class="form-control input-lg" id="inputEmpresa" type="text"
-									placeholder="Ingresa el RFC" readonly name="rfc" />
+									disabled name="rfc" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (RFC)-->
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputRfc">RFC Empresa</label> <input
 									class="form-control input-lg" id="inputRfcEmpresa" type="text"
-									placeholder="Ingresa el RFC" readonly name="rfcEmpresa" />
+									disabled name="rfcEmpresa" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (RFC)-->
-							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputRfc">RFC Sucursal</label> <input
-									class="form-control input-lg" id="inputRfcSuc" type="text"
-									placeholder="Ingresa el RFC"  readonly name="rfcProveedor" />
-							</div>
-						</div>
-						<!-- Form Row-->
-						<div class="form-row">
-							<!-- Form Group (RFC)-->
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputRfc">Clave Proveedor</label> <input
 									class="form-control input-lg" id="inputclaveProv" type="text"
-									placeholder="Ingresa el RFC" readonly name="rfcProveedor" />
+									 disabled name="rfcProveedor" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (RFC)-->
-							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputRfc">UsuariosCanfer</label> <ul id="listUsuarios" class="list-group"> </ul>
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputRfc">UsuariosCanfer</label> 
+									<textarea class="form-control form-control-solid" disabled id="listUsuarios" rows="4" ></textarea>
 							</div>
 						</div>
 						

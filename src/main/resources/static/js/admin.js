@@ -346,32 +346,31 @@ $(document).ready(function() {
 
 	$('#sucursalTable tbody').on('click', '.editBtn', function() {
 		
-		var tr = $(this).closest('tr');
-		var data = tableProveedor.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		event.preventDefault();
+		var href = $(this).attr('href');
+		
+		
+		$.get(href, function(jsonData, status){
+			
+			$("#inputNombre").val(jsonData.nombreSucursal);
+			$("#inputclaveProv").val(jsonData.claveProv);
+			$("#inputEmpresa").val(jsonData.empresaNombre);
+			$("#inputRfcEmpresa").val(jsonData.empresaRfc);
+			
+			var list=jsonData.users;
+			var letters = '';
+			var txtArea = document.getElementById("listUsuarios");
+			for (var i = 0; i < list.length; i++) {
+			
+				txtArea.value +=  '\r\n' +list[i];
+		     
+		   
+		    }
+		
+		 document.getElementById("listUsuarios").innerHTML = letters;
+			
+		})
 
-		$("#inputNombre").val(jsonData.nombreSucursal);
-		$("#inputEmpresa").val(jsonData.empresa.nombre);
-		$("#inputclaveProv").val(jsonData.claveProv);
-		$("#inputRfcEmpresa").val(jsonData.empresaRfc);
-		$("#inputRfcSuc").val(jsonData.proveedorRfc);
-		$("#inputCorreo").val(jsonData.correo);
-		
-		var list=jsonData.usuariosCanfer;
-		
-		for (var i = 0; i < list.length; i++) {
-	       var letters;
-	       var ul = document.getElementById("listUsuarios");
-	       var li = document.createElement("li");
-	
-	       li.appendChild(document.createTextNode(list[i]));
-	       ul.appendChild(li);
-	
-	       letters += "<li>"  + list[i] + "</li>";
-	    }
-	
-	 document.getElementById("listUsuarios").innerHTML = letters;
 
 		$('#infoModal').modal('show');
 
@@ -398,6 +397,27 @@ $(document).ready(function() {
 		$('#deleteModal').modal("show");
 	});
 	
+	//Borrar sucursal
+	$('.modal-del-suc .btn-danger').on('click', function(){
+	
+		event.preventDefault();
+		var href = $(this).attr('href');
+		
+			var borrarSuc = $.ajax({
+								  url: href,
+								  cache: false,
+								  contentType: false,
+								  processData: false,
+								  type: 'GET',
+								});
+				
+				borrarSuc.done(function() {
+					sucursalTable.ajax.reload( null, false );
+					$('.modal-del-suc').modal('hide');
+				})
+	
+	});
+
 	
 	// Funcion para editar empresas
 
