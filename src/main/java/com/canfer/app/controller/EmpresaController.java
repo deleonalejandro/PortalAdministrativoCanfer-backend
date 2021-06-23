@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
 
@@ -235,6 +236,17 @@ public class EmpresaController {
 			return new ResponseEntity<>(false, HttpStatus.OK);
 		}
 		
+	}
+	
+	@GetMapping(value = "/sucursal")
+	@ResponseBody
+	public Sucursal showSucursal(@RequestParam Long id) {
+		Optional<Sucursal> sucursal = superRepo.findSucursalById(id);
+		if (sucursal.isPresent()) {
+			return sucursal.get();
+		} else {
+			return null;
+		}
 	}
 	
 	
