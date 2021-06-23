@@ -11,6 +11,15 @@ $(document).ready(function() {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		},
 		columns: [
+		 {
+                "className":  'select-control', 
+                "orderable":  false,
+                "data": null,
+                "defaultContent": '',
+				"render": function () {
+                    return '<a class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="check-circle"></i><script> feather.replace()</script></a>' ;
+                 },
+            },
 			{
 				"className": 'delete-control',
 				"orderable": false,
@@ -49,18 +58,24 @@ $(document).ready(function() {
 		"order": [[3, 'asc']],
 	});
 	
-	// Select y creacion de sucursales
 	
-	$('#proveedorTable tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            tableProveedor.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    } );
  
+ 	//Funcion para seleccionar
+				
+	$('#proveedorTable tbody').on('click', 'td.select-control', function () {
+	
+	 	var tr = $(this).closest('tr');
+         if ($(tr).hasClass('selected')) {
+             tr.removeClass('selected')
+         }
+         else {
+         	tableProveedor.$('tr.selected').removeClass('selected');
+             tr.addClass('selected')
+			
+         }	
+  
+
+	});
     $('#provToSuc').click( function () {
         jsonData = tableProveedor.row('.selected').data();
         
@@ -209,6 +224,15 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	// Tabla de sucursal
+	var tableSuc = $('#sucursalTable').DataTable({
+		scrollX: true,
+		"language": {
+			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		}
+		
+	});
 
 	/****** Funciones para las tablas: elimar, editar *******/
 
@@ -317,7 +341,48 @@ $(document).ready(function() {
 		$('#editModal').modal('show');
 
 	});
+	
+	// Funcion para info sucursales
 
+	$('#sucursalTable tbody').on('click', '.editBtn', function() {
+		
+		var tr = $(this).closest('tr');
+		var data = tableProveedor.row($(this).parents(tr)).data();
+		var modData = JSON.stringify(data);
+		var jsonData = JSON.parse(modData);
+
+		$("#inputNombre").val(jsonData.nombreSucursal);
+		$("#inputEmpresa").val(jsonData.empresa.nombre);
+		$("#inputclaveProv").val(jsonData.claveProv);
+		$("#inputRfcEmpresa").val(jsonData.empresaRfc);
+		$("#inputRfcSuc").val(jsonData.proveedorRfc);
+		$("#inputCorreo").val(jsonData.correo);
+		
+		var list=jsonData.usuariosCanfer;
+		
+		for (var i = 0; i < list.length; i++) {
+	       var letters;
+	       var ul = document.getElementById("listUsuarios");
+	       var li = document.createElement("li");
+	
+	       li.appendChild(document.createTextNode(list[i]));
+	       ul.appendChild(li);
+	
+	       letters += "<li>"  + list[i] + "</li>";
+	    }
+	
+	 document.getElementById("listUsuarios").innerHTML = letters;
+
+		$('#infoModal').modal('show');
+
+	});
+
+
+	$('#cancelarInfo').on('click', function(){
+		document.getElementById("listUsuarios").innerHTML = '';
+	});
+	
+		
 	// Funcion para delete en proveedores
 
 	$('#proveedorTable tbody').on('click', 'td.delete-control', 'tr', function(event) {
@@ -395,7 +460,113 @@ $(document).ready(function() {
 
 
 
-
+	//FILTROS
+	
+		// usuarios portal
+	
+	 // Setup - add a text input to each footer cell
+    $('#userTable thead tr').clone(true).appendTo( '#userTable thead' );
+    $('#userTable thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        if(title !=''){
+	        
+	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	 
+	        $( 'input', this ).on( 'keyup change', function () {
+	            if ( tableUsuario.column(i).search() !== this.value ) {
+	                tableUsuario
+	                    .column(i)
+	                    .search( this.value )
+	                    .draw();
+	            }
+	        } );
+        }
+    } );
+    
+    	// usuarios proveedores
+	
+	 // Setup - add a text input to each footer cell
+    $('#userProveedorTable thead tr').clone(true).appendTo( '#userProveedorTable thead' );
+    $('#userProveedorTable thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        if(title !=''){
+	        
+	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	 
+	        $( 'input', this ).on( 'keyup change', function () {
+	            if ( tableUsuarioProveedor.column(i).search() !== this.value ) {
+	                tableUsuarioProveedor
+	                    .column(i)
+	                    .search( this.value )
+	                    .draw();
+	            }
+	        } );
+        }
+    } );
+    
+    	// empresas
+	
+	 // Setup - add a text input to each footer cell
+    $('#empresaTable thead tr').clone(true).appendTo( '#empresaTable thead' );
+    $('#empresaTable thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        if(title !=''){
+	        
+	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	 
+	        $( 'input', this ).on( 'keyup change', function () {
+	            if ( tableEmpresa.column(i).search() !== this.value ) {
+	                tableEmpresa
+	                    .column(i)
+	                    .search( this.value )
+	                    .draw();
+	            }
+	        } );
+        }
+    } );
+    
+    	// proveedores
+	
+	 // Setup - add a text input to each footer cell
+    $('#proveedorTable thead tr').clone(true).appendTo( '#proveedorTable thead' );
+    $('#proveedorTable thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        if(title !=''){
+	        
+	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	 
+	        $( 'input', this ).on( 'keyup change', function () {
+	            if ( tableProveedor.column(i).search() !== this.value ) {
+	                tableProveedor
+	                    .column(i)
+	                    .search( this.value )
+	                    .draw();
+	            }
+	        } );
+        }
+    } );
+    
+    // sucursales
+	
+	 // Setup - add a text input to each footer cell
+    $('#sucursalTable thead tr').clone(true).appendTo( '#sucursalTable thead' );
+    $('#sucursalTable thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        if(title !=''){
+	        
+	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	 
+	        $( 'input', this ).on( 'keyup change', function () {
+	            if ( tableSuc.column(i).search() !== this.value ) {
+	                tableSuc
+	                    .column(i)
+	                    .search( this.value )
+	                    .draw();
+	            }
+	        } );
+        }
+    } );
+	
 
 
 });

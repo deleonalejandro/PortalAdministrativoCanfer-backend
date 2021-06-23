@@ -142,26 +142,23 @@
 					</div>
 					<div class="col-10">
 						<!-- Main Content Tables -->
-						<div class="alert alert-danger mb-4" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
-						<div class="alert alert-danger mb-4" role="alert" th:text="${logoError}" th:if="${logoError}"></div>
-						<div class="alert alert-danger mb-4" role="alert" th:text="${CompanyNotFoundMsg}" th:if="${CompanyNotFoundMsg}"></div>
+						
 						<div class="card mb-4"> 
 							<div class="card-header">
-								<a th:href="@{addCompany}" class="btn btn-primary">Añadir</a>
 							</div>
 							<div class="card-body">
 								<div class="datatable">
-								<table class="table table-hover" id="empresaTable" width="100%">
+								<table class="table table-hover" id="sucursalTable" width="100%">
 									<thead>
 										<tr>
 											<th></th>
+											<th></th>
+											<th></th>
 											<th>Nombre</th>
-											<th>RFC</th>
-											<th>Contacto</th>
-											<th>Correo</th>
-											<th>Telefono</th>
-											<th>Pagina Web</th>
-											<th>Localidad</th>
+											<th>Empresa</th>
+											<th>Clave Proveedor</th>
+											<th>RFC Empresa</th>
+											<th>RFC Sucursal</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -190,7 +187,7 @@
 														<div class="modal-footer">
 															<button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
 															<a class="btn btn-danger"
-																th:href="@{company/delete/{id}(id=${company.getidEmpresa()})}"
+																th:href="@{company/delete/{id}(id=${company.getidSucursal()})}"
 																role="button">Eliminar</a>
 														</div>
 													</div>
@@ -198,20 +195,19 @@
 												</div>
 											
 											</div>
-											
+											<!-- ADD USER -->
+											<a class="addUserBtn btn btn-datatable btn-icon btn-transparent-dark mr-2"
+											role="button"><i data-feather="user-plus"></i></a>
 											<!-- EDIT BUTTON -->
 											<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark mr-2"
-											th:href="@{company/save/{id}(id=${company.getidEmpresa()})}"
-											role="button"><i data-feather="edit"></i></a>
+											role="button"><i data-feather="list"></i></a>
 											
 											</td>
-											<td th:text="${company.nombre}"></td>
-											<td th:text="${company.rfc}">RFC</td>
-											<td th:text="${company.contacto}">Contacto</td>
-											<td th:text="${company.correo}">Correo</td>
-											<td th:text="${company.telefono}">Telefono</td>
-											<td th:text="${company.paginaWeb}">Pagina Web</td>
-											<td th:text="${company.localidad}">Localidad</td>
+											<td th:text="${sucursal.nombreSucursal}"></td>
+											<td th:text="${company.empresa.nombre}"></td>
+											<td th:text="${company.claveProv}"></td>
+											<td th:text="${company.empresaRfc}"></td>
+											<td th:text="${company.proveedorRfc}"></td>
 										
 										</tr>
 										
@@ -219,14 +215,14 @@
 									</tbody>
 									<tfoot>
 										<tr>
-											<th>Acciones</th>
+											<th></th>
+											<th></th>
+											<th></th>
 											<th>Nombre</th>
-											<th>RFC</th>
-											<th>Contacto</th>
-											<th>Correo</th>
-											<th>Telefono</th>
-											<th>Pagina Web</th>
-											<th>Localidad</th>
+											<th>Empresa</th>
+											<th>Clave Proveedor</th>
+											<th>RFC Empresa</th>
+											<th>RFC Sucursal</th>
 										</tr>
 									</tfoot>
 								</table>
@@ -250,13 +246,13 @@
 			</div>
 		</footer>
 	</div>
-	<form class="detailsForm" th:action="@{company/update}" method="post" enctype="multipart/form-data">
-	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+	<form class="detailsForm"  enctype="multipart/form-data">
+	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Editar Empresa</h5>
+					<h5 class="modal-title">Información Sucursal</h5>
 					<button class="close" type="button" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -270,134 +266,57 @@
 							<div class="form-group col-md-12">
 								<label class="small mb-1" for="inputNombre">Nombre</label> <input
 									class="form-control input-lg" id="inputNombre" type="text"
-									placeholder="Ingresa el nombre" name="nombre" />
+									placeholder="Ingresa el nombre" readonly name="nombre" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (RFC)-->
 							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputRfc">RFC</label> <input
-									class="form-control input-lg" id="inputRfc" type="text"
-									placeholder="Ingresa el RFC" name="rfc" />
+								<label class="small mb-1" for="inputRfc">Empresa</label> <input
+									class="form-control input-lg" id="inputEmpresa" type="text"
+									placeholder="Ingresa el RFC" readonly name="rfc" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (CONTACTO)-->
+							<!-- Form Group (RFC)-->
 							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputContacto">Contacto</label> <input
-									class="form-control" id="inputContacto" type="text"
-									placeholder="Ingresa el contacto" name="contacto" />
-							</div>
-							<!-- Form Group (CORREO)-->
-							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputTelefono">Teléfono</label> 
-								<input class="form-control" id="inputTelefono"
-									type="tel" name="telefono" placeholder="Ingresa el teléfono" />
+								<label class="small mb-1" for="inputRfc">RFC Empresa</label> <input
+									class="form-control input-lg" id="inputRfcEmpresa" type="text"
+									placeholder="Ingresa el RFC" readonly name="rfcEmpresa" />
 							</div>
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (CORREO)-->
-							<div class="form-group col-md-12">
-								<label class="small mb-1" for="inputCorreo">Correo
-									Eléctronico</label> <input class="form-control" id="inputCorreo"
-									type="text" name="correo" placeholder="Ingresa el correo" />
-							</div>
-						</div>
-						<div class="form-row">
-							<!-- Form Group (CALLE)-->
-							<div class="form-group col-md-8">
-								<label class="small mb-1" for="inputCalle">Calle</label> <input
-									class="form-control" id="inputCalle" type="text"
-									placeholder="Ingresa la calle" name="calle" />
-							</div>
-							<!-- Form Group (EXTERIOR)-->
-							<div class="form-group col-md-4">
-								<label class="small mb-1" for="inputExterior">Exterior</label> <input
-									class="form-control" id="inputExterior" type="text"
-									name="numExt" />
-							</div>
-						</div>
-						<div class="form-row">
-							<!-- Form Group (COLONIA)-->
-							<div class="form-group col-md-12">
-								<label class="small mb-1" for="inputColonia">Colonia</label> <input
-									class="form-control" id="inputColonia" type="text"
-									placeholder="Ingresa la colonia" name="colonia" />
-							</div>
-						</div>
-						<!-- Form Row        -->
-						<div class="form-row">
-							<!-- Form Group (ESTADO)-->
+							<!-- Form Group (RFC)-->
 							<div class="form-group col-md-6">
-								<label class="text-gray-600 small" for="inputEstado">Estado</label>
-								<select id="inputEstado" class="form-control" name="idEstado">
-									<option selected value=0>--Selecciona--</option>
-									<option th:each="state : ${estados}" th:text="${state.nombre}" th:value="${state.getidEstado()}">
-								</select>
+								<label class="small mb-1" for="inputRfc">RFC Sucursal</label> <input
+									class="form-control input-lg" id="inputRfcSuc" type="text"
+									placeholder="Ingresa el RFC"  readonly name="rfcProveedor" />
 							</div>
-							<!-- Form Group (MUNICIPIO)-->
+						</div>
+						<!-- Form Row-->
+						<div class="form-row">
+							<!-- Form Group (RFC)-->
 							<div class="form-group col-md-6">
-								<label class="text-gray-600 small" for="inputMunicipio">Municipio</label>
-								<select id="inputMunicipio" class="form-control" name="idMunicipio">
-									<option selected value=0>--Selecciona--</option>
-									
-								</select>
+								<label class="small mb-1" for="inputRfc">Clave Proveedor</label> <input
+									class="form-control input-lg" id="inputclaveProv" type="text"
+									placeholder="Ingresa el RFC" readonly name="rfcProveedor" />
 							</div>
 						</div>
-						<!-- Form Group (LOCALIDAD)-->
-						<div class="form-group">
-							<label class="small mb-1" for="inputLocalidad">Localidad</label>
-							<input class="form-control" id="inputLocalidad" type="text"
-								placeholder="Ingresa la localidad" name="localidad" />
-						</div>
+						<!-- Form Row-->
 						<div class="form-row">
-							<!-- Form Group (first name)-->
-							<div class="form-group col-md-8">
-								<label class="small mb-1" for="inputReferencia">Referencia</label>
-								<input class="form-control" id="inputReferencia" type="text"
-									placeholder="Ingresa la referencia" name="referencia" />
-							</div>
-							<!-- Form Group (last name)-->
-							<div class="form-group col-md-4">
-								<label class="small mb-1" for="inputCp">CP</label> <input
-									class="form-control" id="inputCp" type="text" name="cp"
-									placeholder="Ingresa el código postal" />
+							<!-- Form Group (RFC)-->
+							<div class="form-group col-md-6">
+								<label class="small mb-1" for="inputRfc">UsuariosCanfer</label> <ul id="listUsuarios" class="list-group"> </ul>
 							</div>
 						</div>
-						<!-- Form Group (email address)-->
-						<div class="form-group">
-							<label class="small mb-1" for="inputPaginaWeb">Pagina Web</label>
-							<input class="form-control" id="inputPaginaWeb" type="text"
-								placeholder="Ingresa la pagina web" name="paginaWeb" />
-						</div>
-						<div class="form-row">
-							<!-- Form Group (IMAGEN EMPRESA)-->
-							<div class="form-group col-md-8">
-							<label class="small mb-1" for="inputLogo">Cargar Logotipo</label>
-							<div class="input-group mb-2"> 
-								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<i class="text-primary" data-feather="image"></i>
-									</div>
-								</div>
-								<input class="form-control" id="inputLogo"
-									type="file" accept=".png, .jpg, .gif" name="logo" />
-							</div>
-							</div>
-							<!-- Form Group (COLOR)-->
-							<div class="form-group col-md-4">
-								<label class="small mb-1" for="inputColor">Color</label> 
-								<input class="form-control" id="inputColor" type="color" name="color"/>
-							</div>
-						</div>
+						
 				</div>
 				<div class="modal-footer">
 					<!-- Save changes button-->
 					<button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
-					<button class="btn btn-primary" type="submit">Guardar</button>
 				</div>
 			</div>
 		</div>
