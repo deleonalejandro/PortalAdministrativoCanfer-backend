@@ -65,7 +65,7 @@ $(document).ready(function() {
         jsonData = tableProveedor.row('.selected').data();
         
         var addSuc = $.ajax({
-								  url: "/addsucursal?idProveedor=jsonData.idProveedor",
+								  url: "/addsucursal?idProveedor="+jsonData.idProveedor,
 								  cache: false,
 								  contentType: false,
 								  processData: false,
