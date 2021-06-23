@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
-import org.jaxen.function.LocalNameFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +35,9 @@ import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.EstadoRepository;
 import com.canfer.app.repository.MunicipioRepository;
 import com.canfer.app.service.EmpresaService;
+import com.canfer.app.service.RepositoryService;
 import com.canfer.app.storage.LogoStorageService;
 import com.canfer.app.storage.StorageException;
-import com.sun.xml.bind.v2.TODO;
 
 import javassist.NotFoundException;
 
@@ -59,6 +58,8 @@ public class EmpresaController {
 	private LogoStorageService logoService;
 	@Autowired
 	private ConsecutivoRepository consecutivoRepository;
+	@Autowired
+	private RepositoryService superRepo;
 	
 	public EmpresaController() {
 	}
@@ -219,6 +220,24 @@ public class EmpresaController {
 		return "redirect:/admin/companies";
 	}
 	
+	@GetMapping("/sucursales")
+	public String getSucursales(Model model) {
+		model.addAttribute("sucursales", superRepo.findAllSucursales());
+		return "sucursales-catalog";
+	}
+	
+	@GetMapping("/sucursales/adduser")
+	public ResponseEntity<Boolean> addUserToSucursal(@RequestParam Long suc, @RequestParam Long user) {
+		
+		if(empresaService.addUserToSucursal(suc, user)) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		
+	}
+	
+	
 	@GetMapping(value = "/sucursal/delete/{id}")
 	public ResponseEntity<String> deleteSucursal(@PathVariable Long id, RedirectAttributes ra) {
 		
@@ -249,10 +268,9 @@ public class EmpresaController {
 		}
 	}
 	
-	@PostMapping(value = "/addSucursal")
-	public String addSucursal(@RequestParam Long idProveedor, RedirectAttributes ra) {
+	@GetMapping(value = "/addsucursal")
+	public ResponseEntity<Boolean> addSucursal(@RequestParam Long idProveedor, RedirectAttributes ra) {
 		try {
-			// TODO ADD RESPONSE ENTITIES INSTEAD.
 			Sucursal saveSucursal;
 			saveSucursal = empresaService.saveSucursal(idProveedor);
 			
@@ -265,20 +283,20 @@ public class EmpresaController {
 	
 			Log.falla("Error al añadir la sucursal: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("companyExistsError", e.getMessage());
-			return "redirect:/admin/addCompany";
+			return new ResponseEntity<>(false, HttpStatus.OK);
 			
 		} catch (UnknownError e) {
 			
 			Log.falla("Error al añadir la sucursal: " + e.getMessage(), "ERROR");
 			ra.addFlashAttribute("error", e.getMessage());
-			return "redirect:/admin/addCompany";
+			return new ResponseEntity<>(false, HttpStatus.OK);
 			
 		} catch (NotFoundException e) {
 			Log.falla("Error al añadir la sucursal: " + e.getMessage(), "ERROR");
-			return "redirect:/admin/addCompany";
+			return new ResponseEntity<>(false, HttpStatus.OK);
 		}
 		
-		return "redirect:/admin/companies";
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/findMunicipios/{idEstado}")

@@ -22,8 +22,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 		
-		if (roles.contains("ROLE_USER_PROVEEDOR")) {
+		if (roles.contains("ROLE_USER_PROVEEDOR")) {		
 			response.sendRedirect("/dashboardSupplier"); 
+			
+		} else if (roles.contains("ROLE_USER_CAJA")) {
+			response.sendRedirect("/cajachicaclient/dashboard");
+			
 		} else {
 			response.sendRedirect("/dashboard");
 

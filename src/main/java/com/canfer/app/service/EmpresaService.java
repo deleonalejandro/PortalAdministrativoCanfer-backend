@@ -17,6 +17,8 @@ import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
 import com.canfer.app.model.Proveedor;
 import com.canfer.app.model.Sucursal;
+import com.canfer.app.model.Usuario;
+import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.dto.EmpresaDTO;
 import com.canfer.app.dto.SucursalDTO;
 import com.canfer.app.repository.EmpresaRepository;
@@ -25,6 +27,7 @@ import com.canfer.app.security.IAuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 
 import javassist.NotFoundException;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 
 @Service
 public class EmpresaService {
@@ -279,6 +282,26 @@ public class EmpresaService {
 			
 			throw new UnknownError("Ocurrio un error inesperado");
 			
+		}
+		
+		
+		
+	}
+	
+	public Boolean addUserToSucursal(Long idSucursal, Long idUser) {
+		
+		Optional<Usuario> newUser;
+		Optional<Sucursal> sucursal;
+		
+		newUser = superRepo.findUsuarioById(idUser);
+		sucursal = superRepo.findSucursalById(idSucursal);
+		
+		if (newUser.isPresent() && sucursal.isPresent()) {
+			sucursal.get().addUser((UsuarioCanfer) newUser.get());
+			return true;
+		} else {
+			Log.activity("Error al añadir usuario a la sucursal. Verifica que ambas entidades existan.", sucursal.get().getEmpresa().getNombre(), "DELETE_USER");
+			return false;
 		}
 		
 		

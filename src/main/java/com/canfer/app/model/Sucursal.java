@@ -135,6 +135,14 @@ public class Sucursal {
 		this.empresaRfc = empresa.getRfc();
 	}
 	
+	public Boolean addUser(UsuarioCanfer newUser) {
+		if (!this.usuariosCanfer.contains(newUser)) {
+			this.usuariosCanfer.add(newUser);
+			return true;
+		}
+		return false;
+	}
+	
 	
 	
 	
