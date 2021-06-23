@@ -135,9 +135,9 @@
 						<nav class="nav nav-borders flex-column">
 							<a class="nav-link" th:href="@{users}">Usuarios Portal Administrativo</a> 
 							<a class="nav-link" th:href="@{suppliersUsers}">Usuarios Portal Proveedor</a>
-							<a class="nav-link active" th:href="@{companies}">Empresas</a> 
+							<a class="nav-link" th:href="@{companies}">Empresas</a> 
 							<a class="nav-link" th:href="@{suppliers}">Proveedores</a>
-							<a class="nav-link" th:href="@{sucursales}">Sucursales</a>
+							<a class="nav-link active" th:href="@{sucursales}">Sucursales</a>
 						</nav>
 					</div>
 					<div class="col-10">
@@ -165,23 +165,23 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="company : ${empresas}">
+										<tr th:each="sucursal : ${sucursales}">
 											<!--  ACTION BUTTONS -->
 											<td>
 											<!-- DELETE BUTTON -->
 											<a class="btn btn-datatable btn-icon btn-transparent-dark mr-2"
-											data-toggle="modal" th:attr="data-target='#modalDelete'+${company.getidEmpresa()}">
+											data-toggle="modal" th:attr="data-target='#modalDelete'+${sucursal.getidSucursal()}">
 											<i data-feather="trash-2"></i></a>
 											
-											<!-- MODAL TO DELETE COMPANY -->
+											<!-- MODAL TO DELETE SUC -->
 											<div class="modal fade"
-											th:id="'modalDelete'+${company.getidEmpresa()}"
+											th:id="'modalDelete'+${sucursal.getidSucursal()}"
 											tabindex="-1" role="dialog"
 											aria-labelledby="exampleModalLabel" aria-hidden="true">
 												<div class="modal-dialog modal-dialog-centered" role="document">
 													<div class="modal-content">
 														<div class="modal-header">
-															<h5 class="modal-title" id="exampleModalLabel">Eliminar Empresa</h5>
+															<h5 class="modal-title" id="exampleModalLabel">Eliminar Sucursal</h5>
 															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 																<span aria-hidden="true">&times;</span>
 															</button>

@@ -137,6 +137,7 @@
 							<a class="nav-link" th:href="@{suppliersUsers}">Usuarios Portal Proveedor</a> 
 							<a class="nav-link" th:href="@{companies}">Empresas</a> 
 							<a class="nav-link active" th:href="@{suppliers}">Proveedores</a>
+							<a class="nav-link" th:href="@{sucursales}">Sucursales</a>
 						</nav>
 					</div>
 					<div class="col-10">
@@ -149,7 +150,10 @@
 								<a th:href="@{addSupplier}" class="btn btn-primary">Añadir</a>
 								<a id="provToSuc" class="btn btn-primary text-white">Crear Sucursal a partir de Proveedor</a>
 							</div>
-							<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+							
+							<div class="card-body">
+								<div class="datatable">
+								<!-- ALERTS DE UPDATE DE FORMULARIOS -->
 									<div class="alert alert-success alert-icon mt-3"
 										id="alert-addsuc" role="alert" hidden=true>
 										<button class="close" type="button" data-dismiss="alert"
@@ -173,11 +177,10 @@
 										</div>
 										<div class="alert-icon-content">No se pudo crear la sucursal a partir del proveedor seleccionado.</div>
 									</div>
-							<div class="card-body">
-								<div class="datatable">
 									<table class="table table-hover" id="proveedorTable" width="100%">
 										<thead>
 											<tr>
+												<th></th>
 												<th></th>
 												<th></th>
 												<th>Proveedor de</th>
@@ -196,7 +199,7 @@
 										</thead>
 										<tfoot>
 											<tr>
-												<!-- Pendiente de colocar Empresa al que Corresponde -->
+												<th></th>
 												<th></th>
 												<th></th>
 												<th>Proveedor de</th>

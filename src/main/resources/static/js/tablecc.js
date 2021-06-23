@@ -1,5 +1,25 @@
 $(document).ready(function() {
 
+	// Filtros
+	
+	 // Setup - add a text input to each footer cell
+    $('#formularios thead tr').clone(true).appendTo( '#formularios thead' );
+    $('#formularios thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        if(title !=''){
+	        
+	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	 
+	        $( 'input', this ).on( 'keyup change', function () {
+	            if ( table.column(i).search() !== this.value ) {
+	                table
+	                    .column(i)
+	                    .search( this.value )
+	                    .draw();
+	            }
+	        } );
+        }
+    } );
 
 	var table = $('#formularios').DataTable({
 		"drawCallback": function(settings) {

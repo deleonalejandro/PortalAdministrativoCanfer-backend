@@ -77,9 +77,9 @@
 }
 
 
-tr.selected td.select-control svg {
+tr.selected td.select-control a svg {
 
-	color:blue;
+	color:#bd9108;
 }
 
 tr.shown td.details-control svg {
@@ -1989,7 +1989,7 @@ pre code {
 
 table.dataTable tbody tr.selected {
     color: black !important;
-    background-color: #dfebf7 !important;
+    background-color: #f2d477 !important;
 }
 
 .table-borderless th,
