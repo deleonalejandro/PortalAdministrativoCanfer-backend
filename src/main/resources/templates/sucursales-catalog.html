@@ -192,7 +192,7 @@
 											</div>
 											<!-- ADD USER -->
 											<a class="addUserBtn btn btn-datatable btn-icon btn-transparent-dark mr-2"
-											role="button"><i data-feather="user-plus"></i></a>
+											role="button" th:href="@{sucursal?id={id}(id=${sucursal.getIdSucursal()})}"><i data-feather="user-plus"></i></a>
 											<!-- EDIT BUTTON -->
 											<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark mr-2"
 											role="button" th:href="@{sucursal?id={id}(id=${sucursal.getIdSucursal()})}"><i data-feather="list"></i></a>
@@ -305,6 +305,53 @@
 		</div>
 	</div>
 	</form>
+	
+	<form class="detailsForm"  enctype="multipart/form-data">
+	<div class="modal fade" id="addUserSuc" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Añadir Usuario</h5>
+					<button class="close" type="button" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+						<input type="hidden" name=idEmpresa id="idEmpresa">
+						<!-- Form Row-->
+						<div class="form-row">
+							<!-- Form Group (NOMBRE)-->
+							<div class="form-group col-md-12">
+								<label class="small mb-1" for="inputNombre">Nombre</label> <input
+									class="form-control input-lg" id="newUserNombre" type="text"
+									disabled name="nombre" />
+							</div>
+								<div class="form-group col-md-12" hidden><input
+									class="form-control input-lg" id="newUseridSuc" type="text"
+									 name="suc" />
+							</div>
+						</div>
+						<div class="form-row">
+							<!-- Form Group (RFC)-->
+							<div class="form-group col-md-12">
+								<label for="exampleFormControlSelect2">Seleccionar Usuarios de Caja Chica:</label><select class="form-control form-control-solid" id="usuariosSelect" name="user" multiple=""> 
+								 </select>
+							</div>
+						</div>
+						
+				</div>
+				<div class="modal-footer">
+					<!-- Save changes button-->
+					<button class="btn btn-primary" type="submit"  data-dismiss="modal">Guardar</button>
+					<button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

@@ -375,11 +375,66 @@ $(document).ready(function() {
 		$('#infoModal').modal('show');
 
 	});
+	
+
+	$("#infoModal").on('hide.bs.modal', function(){
+    	var txtArea = document.getElementById("listUsuarios");
+    	txtArea.value = ''
+  	});
+  	
+  	// Funcion para añadir user a  sucursales
+  	
+	var clearOptions = function(id) {
+	    var select = document.getElementById(id);
+	    for (var i = select.options.length - 1 ; i >= 0 ; i--)
+	        select.remove(i);
+	}
+	
+	$('#sucursalTable tbody').on('click', '.editBtn', function() {
+		
+		event.preventDefault();
+		var href = $(this).attr('href');
+		
+		
+		$.get(href, function(jsonData, status){
+			
+			$("#newUserNombre").val(jsonData.nombreSucursal);
+			$("#newUseridSuc").val(jsonData.idSucursal);
+		 
+			
+		})
+		
+		$.get('/sucursal/users', function(jsonData, status){
+			
+			
+				var list=jsonData;
+				var select = document.getElementById("usuariosSelect");
+				for (var i = 0; i < list.length; i++) {
+					var string = data.split('-')
+			        option = document.createElement( 'option' );
+			        option.value = string[0];
+			        option.text = string[1];
+			        select.add( option );
+		
+			     
+			   
+			    }
+			
+		})
+			
+		$('#addUserSuc').attr('action', '/sucursales/adduser');
+		$('#addUserSuc').modal('show');
+
+	});
 
 
 	$("#infoModal").on('hide.bs.modal', function(){
     	var txtArea = document.getElementById("listUsuarios");
     	txtArea.value = ''
+  	});
+  	
+  	$("#addUserSuc").on('hide.bs.modal', function(){
+    	clearOptions('usuariosSelect');
   	});
 		
 	// Funcion para delete en proveedores
