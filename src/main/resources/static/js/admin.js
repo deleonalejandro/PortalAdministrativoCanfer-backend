@@ -377,8 +377,9 @@ $(document).ready(function() {
 	});
 
 
-	$(".detailsForm").on('hide.bs.modal', function(){
-    	document.getElementById("listUsuarios").innerHTML = '';
+	$("#infoModal").on('hide.bs.modal', function(){
+    	var txtArea = document.getElementById("listUsuarios");
+    	txtArea.value = ''
   	});
 		
 	// Funcion para delete en proveedores
@@ -397,7 +398,7 @@ $(document).ready(function() {
 	});
 	
 	//Borrar sucursal
-	$('.modal-del-suc .btn-danger').on('click', function(){
+	$('#delBtn-suc').on('click', function(){
 	
 		event.preventDefault();
 		var href = $(this).attr('href');
