@@ -377,10 +377,9 @@ $(document).ready(function() {
 	});
 
 
-	$('#cancelarInfo').on('click', function(){
-		document.getElementById("listUsuarios").innerHTML = '';
-	});
-	
+	$(".detailsForm").on('hide.bs.modal', function(){
+    	document.getElementById("listUsuarios").innerHTML = '';
+  	});
 		
 	// Funcion para delete en proveedores
 
