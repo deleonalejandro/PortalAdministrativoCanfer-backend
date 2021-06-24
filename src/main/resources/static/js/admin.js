@@ -467,7 +467,6 @@ $(document).ready(function() {
 								});
 				
 				borrarSuc.done(function() {
-					sucursalTable.ajax.reload( null, false );
 					$('.modal-del-suc').modal('hide');
 				})
 	
