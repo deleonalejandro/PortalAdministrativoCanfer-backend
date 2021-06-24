@@ -422,7 +422,7 @@ $(document).ready(function() {
 			
 		})
 			
-	    $('#addUserSuc').attr('action', '/admin/sucursales/adduser');
+	    $('#addUserSucform').attr('action', '/admin/sucursales/adduser');
 		$('#addUserSuc').modal('show');
 
 	});
