@@ -596,7 +596,7 @@ public List<FormularioCajaChica> getAllCanceledFormularioCajaChicas(Long idSucur
 		}
 	}
 	
-public Boolean removeClasificacionCajaChica(Long idClasificacionCC) {
+	public Boolean removeClasificacionCajaChica(Long idClasificacionCC) {
 		
 		Optional<ClasificacionCajaChica> clasificacion;
 		//TODO ACCEPT REPEATED STRINGS OR NOT?
@@ -611,6 +611,10 @@ public Boolean removeClasificacionCajaChica(Long idClasificacionCC) {
 			Log.general("Error inesperado al eliminar la clasificacion de caja chica.");
 			return false;
 		}
+	}
+	
+	public List<ClasificacionCajaChica> getAllClasificaciones() {
+		return superRepo.findAllClasificacionCajaChicas();
 	}
 	
 	

@@ -239,6 +239,16 @@ public class EmpresaController {
 		}
 	}
 	
+	@GetMapping("/sucursales/removeuser")
+	public String removeUser(@RequestParam Long suc, @RequestParam Long user) {
+		
+		if(empresaService.removeUserFromSucursal(suc, user)) {
+			return "redirect:/admin/sucursales";
+		} else {
+			return "redirect:/admin/sucursales";
+		}
+	}
+	
 	@GetMapping(value = "/sucursal")
 	@ResponseBody
 	public Sucursal showSucursal(@RequestParam Long id) {

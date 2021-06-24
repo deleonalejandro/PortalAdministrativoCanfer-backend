@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.dto.FormularioCajaChicaDTO;
 import com.canfer.app.model.CajaChicaActions;
+import com.canfer.app.model.ClasificacionCajaChica;
 import com.canfer.app.model.DetFormularioCajaChica;
 import com.canfer.app.model.FormularioCajaChica;
 import com.canfer.app.model.Log;
@@ -245,6 +246,28 @@ public class CajaChicaFunctionalityController {
 	public List<FormularioCajaChica> getAllCanceledFormularioCC(@RequestParam Long idSucursal) {
 		
 		return actioner.getAllCanceledFormularioCajaChicas(idSucursal);
+	}
+	
+	@GetMapping("/addclasificacion")
+	public String addClasificacion(@RequestParam String clasificacion) {
+		
+		actioner.addClasificacionCajaChica(clasificacion);
+		
+		return "redirect:/admin/clasificaciones/cc";
+	}
+	
+	@GetMapping("/removeclasificacion")
+	public String addClasificacion(@RequestParam("id") Long clasificacion) {
+		
+		actioner.removeClasificacionCajaChica(clasificacion);
+		
+		return "redirect:/admin/clasificaciones/cc";
+	}
+	
+	@GetMapping("/getclasificaciones")
+	@ResponseBody
+	public List<ClasificacionCajaChica> getClasificaciones() {
+		return actioner.getAllClasificaciones();
 	}
 	
 	@GetMapping("/download/{extension}")

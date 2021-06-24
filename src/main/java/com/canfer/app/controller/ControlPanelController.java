@@ -76,6 +76,12 @@ public class ControlPanelController {
 		return "admin-panel";
 	}
 	
+	@GetMapping(value = "/clasificaciones/cc")
+	public String getClasificaciones(Model model) {
+		
+		return "clasificaciones-caja-chica";
+	}
+	
 	@GetMapping("/stopEmailThread")
 	public String stopEmailThread() {
 		
