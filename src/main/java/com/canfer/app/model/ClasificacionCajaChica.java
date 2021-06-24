@@ -24,6 +24,10 @@ public class ClasificacionCajaChica {
 	public ClasificacionCajaChica() {
 		super();
 	}
+	
+	public ClasificacionCajaChica(String clasificacion) {
+		this.clasificacion = clasificacion;
+	}
 
 	//Getters and Setters
 	

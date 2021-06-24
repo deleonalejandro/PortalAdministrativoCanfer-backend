@@ -1,7 +1,5 @@
 package com.canfer.app.storage;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

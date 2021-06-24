@@ -1,9 +1,6 @@
 package com.canfer.app.service;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +8,6 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.NullArgumentException;
-import org.aspectj.weaver.tools.cache.CacheKeyResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +26,6 @@ import com.canfer.app.security.IAuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 
 import javassist.NotFoundException;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 
 @Service
 public class EmpresaService {
@@ -300,14 +295,44 @@ public class EmpresaService {
 		sucursal = superRepo.findSucursalById(idSucursal);
 		
 		if (newUser.isPresent() && sucursal.isPresent()) {
-			sucursal.get().addUser((UsuarioCanfer) newUser.get());
-			return true;
+			if(sucursal.get().addUser((UsuarioCanfer) newUser.get())) {
+				superRepo.save(sucursal.get());
+				return true;				
+			} else {
+				Log.activity("Error al añadir usuario a la sucursal. El usuario " + newUser.get().getNombre() + 
+						" ya pertenece a esta caja chica.", sucursal.get().getEmpresa().getNombre(), "DELETE_USER");
+				return false;
+			}
 		} else {
 			Log.activity("Error al añadir usuario a la sucursal. Verifica que ambas entidades existan.", sucursal.get().getEmpresa().getNombre(), "DELETE_USER");
 			return false;
 		}
 		
 		
+		
+	}
+	
+	public Boolean removeUserFromSucursal(Long idSucursal, Long idUser) {
+		
+		Optional<Usuario> user;
+		Optional<Sucursal> sucursal;
+		
+		user = superRepo.findUsuarioById(idUser);
+		sucursal = superRepo.findSucursalById(idSucursal);
+		
+		if (user.isPresent() && sucursal.isPresent()) {
+			if(sucursal.get().removeUser((UsuarioCanfer) user.get())) {
+				superRepo.save(sucursal.get());
+				return true;				
+			} else {
+				Log.activity("Error al eliminar usuario de la sucursal. El usuario " + user.get().getNombre() + 
+						" no esta asignado a la sucursal " + sucursal.get().getNombreSucursal() +".", sucursal.get().getEmpresa().getNombre(), "DELETE_USER");
+				return false;
+			}
+		} else {
+			Log.activity("Error al añadir usuario a la sucursal. Verifica que ambas entidades existan.", sucursal.get().getEmpresa().getNombre(), "DELETE_USER");
+			return false;
+		}
 		
 	}
 	

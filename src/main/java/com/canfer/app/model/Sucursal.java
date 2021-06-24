@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -162,6 +161,14 @@ public class Sucursal {
 	public Boolean addUser(UsuarioCanfer newUser) {
 		if (!this.usuariosCanfer.contains(newUser)) {
 			this.usuariosCanfer.add(newUser);
+			return true;
+		}
+		return false;
+	}
+	
+	public Boolean removeUser(UsuarioCanfer user) {
+		if (this.usuariosCanfer.contains(user)) {
+			this.usuariosCanfer.remove(user);
 			return true;
 		}
 		return false;

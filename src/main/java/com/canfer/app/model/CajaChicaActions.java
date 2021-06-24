@@ -104,6 +104,9 @@ public class CajaChicaActions extends ModuleActions{
 				
 				superRepo.delete(df.get());
 				
+				// update total sum
+				updateFormTotal(dfForm);
+				
 				return true;
 			}
 
@@ -576,6 +579,38 @@ public List<FormularioCajaChica> getAllCanceledFormularioCajaChicas(Long idSucur
 		
 		return Collections.emptyList();
 		
+	}
+	
+	public Boolean addClasificacionCajaChica(String newClasificacion) {
+		
+		ClasificacionCajaChica clasificacion;
+		//TODO ACCEPT REPEATED STRINGS OR NOT
+		try {
+			clasificacion = new ClasificacionCajaChica(newClasificacion);
+			superRepo.save(clasificacion);
+			Log.general("La clasificacion de caja chica se ha agregado con exito.");
+			return true;
+		} catch (Exception e) {
+			Log.general("Error inesperado al crear una clasificacion de caja chica.");
+			return false;
+		}
+	}
+	
+public Boolean removeClasificacionCajaChica(Long idClasificacionCC) {
+		
+		Optional<ClasificacionCajaChica> clasificacion;
+		//TODO ACCEPT REPEATED STRINGS OR NOT?
+		try {
+			clasificacion = superRepo.findClasificacionCCById(idClasificacionCC);
+			if (clasificacion.isPresent()) {
+				superRepo.delete(clasificacion.get());
+			}
+			Log.general("La clasificacion de caja chica se ha eliminado con exito.");
+			return true;
+		} catch (Exception e) {
+			Log.general("Error inesperado al eliminar la clasificacion de caja chica.");
+			return false;
+		}
 	}
 	
 	

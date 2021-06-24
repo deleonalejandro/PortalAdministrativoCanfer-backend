@@ -230,14 +230,13 @@ public class EmpresaController {
 	}
 	
 	@GetMapping("/sucursales/adduser")
-	public ResponseEntity<Boolean> addUserToSucursal(@RequestParam Long suc, @RequestParam Long user) {
+	public String addUserToSucursal(@RequestParam Long suc, @RequestParam Long user) {
 		
 		if(empresaService.addUserToSucursal(suc, user)) {
-			return new ResponseEntity<>(true, HttpStatus.OK);
+			return "redirect:/admin/sucursales";
 		} else {
-			return new ResponseEntity<>(false, HttpStatus.OK);
+			return "redirect:/admin/sucursales";
 		}
-		
 	}
 	
 	@GetMapping(value = "/sucursal")
