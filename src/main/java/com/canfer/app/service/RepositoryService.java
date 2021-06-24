@@ -35,6 +35,7 @@ import com.canfer.app.repository.FormularioCajaChicaRepository;
 import com.canfer.app.repository.PagoRepository;
 import com.canfer.app.repository.ProveedorRepository;
 import com.canfer.app.repository.SucursalRepository;
+import com.canfer.app.repository.UsuarioCanferRepository;
 import com.canfer.app.repository.UsuarioRepository;
 
 @Service
@@ -48,6 +49,8 @@ public class RepositoryService {
 	private ArchivoRepository archivoRepo;
 	@Autowired
 	private UsuarioRepository usuarioRepo;
+	@Autowired
+	private UsuarioCanferRepository usuarioCanferRepo;
 	@Autowired
 	private EmpresaRepository empresaRepo;
 	@Autowired
@@ -631,5 +634,9 @@ public class RepositoryService {
 	
 	public List<FormularioCajaChica> findAllFormularioCajaChicaBySucursalAndEstatus(Sucursal sucursal, String estatus) {
 		return formCCRepo.findAllBySucursalAndEstatus(sucursal, estatus);
+	}
+	
+	public List<UsuarioCanfer> findAllUsuarioCanferByRol(String rol) {
+		return usuarioCanferRepo.findAllByRol(rol);
 	}
 }

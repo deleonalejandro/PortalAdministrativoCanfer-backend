@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityExistsException;
 
@@ -31,6 +32,7 @@ import com.canfer.app.model.Empresa;
 import com.canfer.app.model.Log;
 import com.canfer.app.model.Municipio;
 import com.canfer.app.model.Sucursal;
+import com.canfer.app.model.Usuario.UsuarioCanfer;
 import com.canfer.app.repository.ConsecutivoRepository;
 import com.canfer.app.repository.EmpresaRepository;
 import com.canfer.app.repository.EstadoRepository;
@@ -247,6 +249,12 @@ public class EmpresaController {
 		} else {
 			return null;
 		}
+	}
+	
+	@GetMapping(value = "/sucursal/users")
+	@ResponseBody
+	public List<String> usersSucursal() {
+		return empresaService.getUsersForSucursal();
 	}
 	
 	

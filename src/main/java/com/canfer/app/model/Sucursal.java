@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.canfer.app.model.Usuario.UsuarioCanfer;
@@ -35,6 +37,10 @@ public class Sucursal {
 	@JoinColumn(name = "idProveedor")
 	@OneToOne
 	private Proveedor proveedor;
+	
+	@OneToMany(mappedBy = "sucursal", cascade = CascadeType.REMOVE)
+    private List<Consecutivo> consecutivos;
+	
 	
 	private String claveProv;
 	
@@ -139,6 +145,12 @@ public class Sucursal {
 	public List<String> getUsers(){
 		List<String> userNames = new ArrayList<>();
 		this.usuariosCanfer.forEach(user -> userNames.add(user.getNombre() + " " + user.getApellido()));
+		return userNames;
+	}
+	
+	public List<String> getUsersAndId(){
+		List<String> userNames = new ArrayList<>();
+		this.usuariosCanfer.forEach(user -> userNames.add(String.valueOf(user.getIdUsuario())+"-"+user.getNombre() + " " + user.getApellido()));
 		return userNames;
 	}
 	

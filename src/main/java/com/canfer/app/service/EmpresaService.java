@@ -2,6 +2,9 @@ package com.canfer.app.service;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -305,6 +308,22 @@ public class EmpresaService {
 		}
 		
 		
+		
+	}
+	
+	public List<String> getUsersForSucursal() {
+		List<String> users = new ArrayList<>();
+		List<UsuarioCanfer> validUsers = superRepo.findAllUsuarioCanferByRol("USER_CAJA");
+		
+		if (!validUsers.isEmpty()) {
+			
+			validUsers.forEach(user -> users.add(String.valueOf(user.getIdUsuario()) + "-" + user.getNombre()+" "+user.getApellido())); 
+			
+			return users;
+			
+		}
+		
+		return Collections.emptyList();
 		
 	}
 

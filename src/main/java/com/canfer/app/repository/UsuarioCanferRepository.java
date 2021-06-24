@@ -12,4 +12,5 @@ public interface UsuarioCanferRepository extends UsuarioBaseRepository<UsuarioCa
 	
 
 	List<UsuarioCanfer> findAllByEmpresas(Empresa findByRfc);
+	List<UsuarioCanfer> findAllByRol(String rol);
 }
