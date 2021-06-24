@@ -404,13 +404,13 @@ $(document).ready(function() {
 			
 		})
 		
-		$.get('/sucursal/users', function(jsonData, status){
-			
+		$.get('/admin/sucursal/users', function(jsonData, status){
 			
 				var list=jsonData;
 				var select = document.getElementById("usuariosSelect");
+				
 				for (var i = 0; i < list.length; i++) {
-					var string = data.split('-')
+					var string = jsonData[i].split('-')
 			        option = document.createElement( 'option' );
 			        option.value = string[0];
 			        option.text = string[1];
@@ -423,6 +423,7 @@ $(document).ready(function() {
 		})
 			
 		$('#addUserSuc').attr('action', '/sucursales/adduser');
+		sucursalTable.ajax.reload(null, false);
 		$('#addUserSuc').modal('show');
 
 	});
@@ -467,7 +468,8 @@ $(document).ready(function() {
 								});
 				
 				borrarSuc.done(function() {
-					$('.modal-del-suc').modal('hide');
+					sucursalTable.ajax.reload(null, false);
+					$('.modal').modal('hide');
 				})
 	
 	});
