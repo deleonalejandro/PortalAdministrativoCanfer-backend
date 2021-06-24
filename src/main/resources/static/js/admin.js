@@ -390,7 +390,7 @@ $(document).ready(function() {
 	        select.remove(i);
 	}
 	
-	$('#sucursalTable tbody').on('click', '.editBtn', function() {
+	$('#sucursalTable tbody').on('click', '.addUserBtn', function() {
 		
 		event.preventDefault();
 		var href = $(this).attr('href');
