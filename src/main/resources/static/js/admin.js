@@ -426,6 +426,10 @@ $(document).ready(function() {
 		$('#addUserSuc').modal('show');
 
 	});
+	
+	$("#submitadduser").on('click', function(){
+    	document.getElementById("addUserSucform").submit();
+  	});
 
 
 	$("#infoModal").on('hide.bs.modal', function(){
