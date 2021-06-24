@@ -1,110 +1,166 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Portal Administrativo Canfer - Inicio de Sesión</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <link rel="icon" type="image/x-icon" href="/assets/img/logosEmpresas/canfer.gif" />
-        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="bg-white">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11">
-                                <!-- Social login form-->
-                                <div class="card my-5">
-                                    <div class="card-body p-5 text-center">
-                                        <div class="h3 font-weight-light mb-3">Iniciar Sesión</div>
-                       
-                                    </div>
-                                    <hr class="my-0" />
-                                    <div class="card-body p-5">
-                                    <!-- Alerta de error al iniciar sesion -->
-                                    <div class="alert alert-danger" role="alert" th:if="${loginError}"> El usuario o contraseña son incorrectos. </div>
-                                    <div class="alert alert-success" role="alert" th:if="${success}"> Ha cerrado sesión exitosamente. </div>
-                                    
-                                        <!-- Login form-->
-                                        <form th:action="@{/check_login}" method="post">
-                                        	<div class="form-group"> 
-                                                <input class="form-control form-control-solid py-4" type="text" id="auth" name="auth" value="pa" hidden />
-                                            </div>
-                                            <!-- Form Group (username)-->
-                                            <div class="form-group">
-                                                <label class="text-gray-600 small" for="emailExample">Usuario</label>
-                                                <input class="form-control form-control-solid py-4" type="text" id="username" name="username" placeholder="" aria-label="Email Address" aria-describedby="username" />
-                                            </div>
-                                            <!-- Form Group (password)-->
-                                            <div class="form-group">
-                                                <label class="text-gray-600 small" for="passwordExample">Contraseña</label>
-                                                <!-- Joined input group append example-->
-												<div class="input-group input-group-joined input-group-solid">
-	                                                <input class="form-control form-control-solid py-4" type="password" id="password" name="password" placeholder="" aria-label="Password" aria-describedby="passwordExample" />
-	                                                <div class="input-group-append">
-												        <span class="input-group-text">
-												            <i data-feather="eye-off" onClick="myFunction()" id="powerOn"></i>
-												        </span>
-												    </div>
-											    </div>
-                                                <script>
-													function myFunction() {
-													  var x = document.getElementById("password");
-													  const powerOn = $('#powerOn');
-													  if (x.type === "password") {
-													    x.type = "text";
-													    powerOn.replaceWith(feather.icons['eye'].toSvg({ id: 'powerOn', onClick: 'myFunction()' }));
-													    
-													    
-													  } else {
-													    x.type = "password";
-													    powerOn.replaceWith(feather.icons['eye-off'].toSvg({ id: 'powerOn', onClick: 'myFunction()' }));
-													    
-													  }
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Portal Administrativo Canfer - Inicio de Sesión</title>
+<link href="css/styles.css" rel="stylesheet" />
+<link rel="icon" type="image/x-icon"
+	href="/assets/img/logosEmpresas/canfer.gif" />
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js"
+	crossorigin="anonymous"></script>
+</head>
+<body class="bg-white">
+	<div id="layoutAuthentication">
+		<div id="layoutAuthentication_content">
+			<main>
+				<div class="container">
+				
+					<!-- Imagen de logo de canfer -->
+					<div class="form-group d-flex align-items-center justify-content-between mb-0">
+						<img src="assets/img/text-canfer.png" class="pl-3 mt-5 img-fluid mr-5" alt="Logo Canfer" style= "height: 10rem"/> 
+						<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png" class="pl-3 mt-5 img-fluid ml-5  mr-0" alt="Logo Canfer" style= "height: 10rem"/> 
+				
+					</div>
+					
+					<div class="row justify-content-center">
+						<div class="col-xl-5 col-lg-6 col-md-8 col-sm-11">
+							<!-- Social login form-->
+							<div class="card my-5">
+								<div class="card-body p-5 text-center">
+									<div class="h3 font-weight-light mb-3">Iniciar Sesión</div>
+
+								</div>
+								<hr class="my-0" />
+								<div class="card-body p-5">
+									<!-- Alerta de error al iniciar sesion -->
+									<div class="alert alert-danger" role="alert"
+										th:if="${loginError}">El usuario o contraseña son
+										incorrectos.</div>
+									<div class="alert alert-success" role="alert"
+										th:if="${success}">Ha cerrado sesión exitosamente.</div>
+
+									<!-- Login form-->
+									<form th:action="@{/check_login}" method="post">
+										<div class="form-group">
+											<input class="form-control form-control-solid py-4"
+												type="text" id="auth" name="auth" value="pa" hidden />
+										</div>
+										<!-- Form Group (username)-->
+										<div class="form-group">
+											<label class="text-gray-600 small" for="emailExample">Usuario</label>
+											<input class="form-control form-control-solid py-4"
+												type="text" id="username" name="username" placeholder=""
+												aria-label="Email Address" aria-describedby="username" />
+										</div>
+										<!-- Form Group (password)-->
+										<div class="form-group">
+											<label class="text-gray-600 small" for="passwordExample">Contraseña</label>
+											<!-- Joined input group append example-->
+											<div class="input-group input-group-joined input-group-solid">
+												<input class="form-control form-control-solid py-4"
+													type="password" id="password" name="password"
+													placeholder="" aria-label="Password"
+													aria-describedby="passwordExample" />
+												<div class="input-group-append">
+													<span class="input-group-text"> <i
+														data-feather="eye-off" onClick="myFunction()" id="powerOn"></i>
+													</span>
+												</div>
+											</div>
+											<script>
+												function myFunction() {
+													var x = document
+															.getElementById("password");
+													const powerOn = $('#powerOn');
+													if (x.type === "password") {
+														x.type = "text";
+														powerOn
+																.replaceWith(feather.icons['eye']
+																		.toSvg({
+																			id : 'powerOn',
+																			onClick : 'myFunction()'
+																		}));
+
+													} else {
+														x.type = "password";
+														powerOn
+																.replaceWith(feather.icons['eye-off']
+																		.toSvg({
+																			id : 'powerOn',
+																			onClick : 'myFunction()'
+																		}));
+
 													}
-												</script>
-                                            </div>
-                                           
-                                            <!-- Form Group (login box)-->
-                                            <div class="form-group d-flex align-items-center justify-content-between mb-0">
-                                                <div class="custom-control custom-control-solid custom-checkbox">
-                                                    <input class="custom-control-input small" id="customCheck1" type="checkbox" />
-                                                    <label class="custom-control-label" for="customCheck1">Recordar contraseña</label>
-                                                </div>
-                                                <input class="btn btn-primary" type="submit" name="submit" value="Iniciar Sesión">
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <hr class="my-0" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="footer mt-auto footer-dark">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
-                            <div class="col-md-6 text-md-right small">
-                                <a href="#!">Privacy Policy</a>
-                                &middot;
-                                <a href="#!">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+												}
+											</script>
+										</div>
+
+										<!-- Form Group (login box)-->
+										<div
+											class="form-group d-flex align-items-center justify-content-between mb-0">
+											<div
+												class="custom-control custom-control-solid custom-checkbox">
+												<input class="custom-control-input small" id="customCheck1"
+													type="checkbox" /> <label class="custom-control-label"
+													for="customCheck1">Recordar contraseña</label>
+											</div>
+											<input class="btn btn-primary" type="submit" name="submit"
+												value="Iniciar Sesión">
+										</div>
+									</form>
+								</div>
+								<hr class="my-0" />
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- LOGOS DISEÑO -->
+				<div class="d-flex justify-content-center">
+					<div th:each="company: ${empresas}">
+	
+							<div class="text-center mt-5 ml-5">
+								<img class="card-img-top"
+									th:src="@{'company/profile/' + ${company.profilePictureName}}"
+									alt="logo" style="width: 10rem;">
+							</div>
+					</div>
+				</div>
+				
+				
+				
+			</main>
+		</div>
+		<div id="layoutAuthentication_footer">
+			<footer class="footer mt-auto footer-dark">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6 small">Copyright &copy; Canfer Grupo
+							Empresarial 2020</div>
+						<div class="col-md-6 text-md-right small">
+							<a href="#!">Privacy Policy</a> &middot; <a href="#!">Terms
+								&amp; Conditions</a>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		crossorigin="anonymous"></script>
+	<script src="js/scripts.js"></script>
+</body>
 </html>
