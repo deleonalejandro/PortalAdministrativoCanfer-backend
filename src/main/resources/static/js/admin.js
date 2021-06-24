@@ -423,7 +423,6 @@ $(document).ready(function() {
 		})
 			
 		$('#addUserSuc').attr('action', '/sucursales/adduser');
-		sucursalTable.ajax.reload(null, false);
 		$('#addUserSuc').modal('show');
 
 	});
