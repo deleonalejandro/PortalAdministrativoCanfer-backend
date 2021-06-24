@@ -257,6 +257,9 @@
 								<label class="small mb-1" for="inputNombre">Nombre</label> <input
 									class="form-control input-lg" id="inputNombre" type="text"
 									disabled name="nombre" />
+									<div class="form-group col-md-12" hidden><input
+									class="form-control input-lg" id="infoUseridSuc" type="text"
+									 name="suc" /></div>
 							</div>
 						</div>
 						<!-- Form Row-->
@@ -290,10 +293,12 @@
 						<div class="form-row">
 							<!-- Form Group (RFC)-->
 							<div class="form-group col-md-12">
-								<label class="small mb-1" for="inputRfc">UsuariosCanfer</label> 
-									<textarea class="form-control form-control-solid" disabled id="listUsuarios" rows="4" ></textarea>
+								<label for="exampleFormControlSelect2">Usuarios de Caja Chica:</label>
+									<select class="form-control form-control-solid" name="user" id="listUsuarios" multiple=""> 
+								 	</select>
 							</div>
 						</div>
+						<button class="btn btn-primary" type="button" id="removeUser" data-dismiss="modal">Quitar Usuario</button>
 						
 				</div>
 				<div class="modal-footer">

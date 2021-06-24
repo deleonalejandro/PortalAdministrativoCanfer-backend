@@ -356,18 +356,22 @@ $(document).ready(function() {
 			$("#inputclaveProv").val(jsonData.claveProv);
 			$("#inputEmpresa").val(jsonData.empresaNombre);
 			$("#inputRfcEmpresa").val(jsonData.empresaRfc);
+			$("#infoUseridSuc").val(jsonData.idSucursal);
 			
-			var list=jsonData.users;
-			var letters = '';
-			var txtArea = document.getElementById("listUsuarios");
+			var list=jsonData.usersAndId;
+			var select = document.getElementById("listUsuarios");
+				
 			for (var i = 0; i < list.length; i++) {
-			
-				txtArea.value +=  '\r\n' +list[i];
+				var string = list[i].split('-')
+		        option = document.createElement( 'option' );
+		        option.value = string[0];
+		        option.text = string[1];
+		        select.add( option );
+	
 		     
 		   
 		    }
-		
-		 document.getElementById("listUsuarios").innerHTML = letters;
+		    
 			
 		})
 
@@ -376,10 +380,13 @@ $(document).ready(function() {
 
 	});
 	
-
+	$("#listUsuarios").on('change', function(){
+    	$('#removeUser').attr('href','/admin/sucursales/removeuser?suc='+ $("#infoUseridSuc").val() +'&user='+ $("#listUsuarios").val())
+  	});
+  	
 	$("#infoModal").on('hide.bs.modal', function(){
-    	var txtArea = document.getElementById("listUsuarios");
-    	txtArea.value = ''
+    	clearOptions('listUsuarios')
+    	$('#removeUser').attr('href','')
   	});
   	
   	// Funcion para añadir user a  sucursales
@@ -429,12 +436,6 @@ $(document).ready(function() {
 	
 	$("#submitadduser").on('click', function(){
     	document.getElementById("addUserSucform").submit();
-  	});
-
-
-	$("#infoModal").on('hide.bs.modal', function(){
-    	var txtArea = document.getElementById("listUsuarios");
-    	txtArea.value = ''
   	});
   	
   	$("#addUserSuc").on('hide.bs.modal', function(){
