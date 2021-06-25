@@ -26,10 +26,15 @@
 				<div class="container">
 				
 					<!-- Imagen de logo de canfer -->
-					<div class="form-group d-flex align-items-center justify-content-between mb-0">
-						<img src="assets/img/text-canfer.png" class="pl-3 mt-5 img-fluid mr-5" alt="Logo Canfer" style= "height: 10rem"/> 
-						<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png" class="pl-3 mt-5 img-fluid ml-5  mr-0" alt="Logo Canfer" style= "height: 10rem"/> 
-				
+					<div class="d-none d-lg-block">	
+						<div class="form-group d-flex align-items-center justify-content-between mb-0">
+							<img src="assets/img/text-canfer.png" class="pl-3 mt-5 img-fluid mr-5" alt="Logo Canfer" style= "height: 5rem"/> 
+							<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png" class="pl-3 mt-5 img-fluid ml-5  mr-0" alt="Logo Canfer" style= "height: 5rem"/> 
+						</div>
+					</div>
+					
+					<div class="d-lg-none text-center">
+						<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png" class="mt-5 img-fluid" alt="Logo Canfer" style= "height: 5rem"/>
 					</div>
 					
 					<div class="row justify-content-center">
@@ -126,14 +131,16 @@
 				</div>
 				
 				<!-- LOGOS DISEÑO -->
-				<div class="d-flex justify-content-center">
-					<div th:each="company: ${empresas}">
-	
-							<div class="text-center mt-5 ml-5">
-								<img class="card-img-top"
-									th:src="@{'company/profile/' + ${company.profilePictureName}}"
-									alt="logo" style="width: 10rem;">
-							</div>
+				<div class="d-none d-lg-block">
+					<div class="d-flex justify-content-center align-items-center">
+						<div th:each="company: ${empresas}">
+		
+								<div class="text-center mt-5 ml-5">
+									<img class="card-img-top"
+										th:src="@{'company/profile/' + ${company.profilePictureName}}"
+										alt="logo" style="width: 5rem;">
+								</div>
+						</div>
 					</div>
 				</div>
 				
