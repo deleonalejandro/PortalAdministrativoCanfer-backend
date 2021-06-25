@@ -18,7 +18,7 @@ $(document).ready(function() {
 				"data": null,
 				"defaultContent": '',
 				"render": function(row) {
-					return '<a href="/cajachicaclient/removeclasificacion?id=' + row.idClasificacionCajaChica  +' class="text-reset deleteBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="text-muted" data-feather="trash-2"></i></a><script>feather.replace()</script>';
+					return '<a href="/cajachicaclient/removeclasificacion?id=' + row.idClasificacionCajaChica  +'" class="text-reset deleteBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="text-muted" data-feather="trash-2"></i></a><script>feather.replace()</script>';
 
 				},
 			},
