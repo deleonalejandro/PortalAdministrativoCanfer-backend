@@ -988,8 +988,7 @@
 				$("#pestañaFacturas, #pestañaAvisos, #pestañaLog, #pestañaInicio, #pestañaCompl").removeClass("active") 
 				table
 					table
-					    .columns( 10 )
-					    .search( 'E' )
+					    .columns( 10 ).search( '^E$',true ,false,true)
 					    .draw();
 	
 				table.ajax.reload(null,false);

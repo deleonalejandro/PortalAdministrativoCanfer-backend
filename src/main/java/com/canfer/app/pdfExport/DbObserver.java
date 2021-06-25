@@ -60,7 +60,7 @@ public class DbObserver {
 			pago.setBitProcesado(true);
 			pagoRepository.save(pago);
 			
-			List<Long> numsSap = pago.getIdNumSap();
+			List<Long> numsSap = pago.getListIdNumSap();
 			for(Long numSap : numsSap) {
 				Factura factura = facturaRepository.findByRfcEmpresaAndRfcProveedorAndIdNumSap(pago.getRfcEmpresa(), 
 						pago.getRfcProveedor(), numSap);
