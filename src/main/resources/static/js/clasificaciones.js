@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	// Tabla de proveedores
 	var tableclas = $('#clasCCTable').DataTable({
+		"pageLength": 25,
 		select: true,
 		ajax: {
 			url: "/cajachicaclient/getclasificaciones",
