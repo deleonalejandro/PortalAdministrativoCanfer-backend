@@ -1,6 +1,7 @@
 package com.canfer.app.model;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ public class Pago implements IModuleEntity {
 	private Integer idNumPago;
 	
 	@Column
-	private Long idNumSap;
+	private List<Long> idNumSap;
 	
 	@Column
 	private String rfcEmpresa; 
@@ -99,11 +100,11 @@ public class Pago implements IModuleEntity {
 		this.idNumPago = idNumPago;
 	}
 
-	public Long getIdNumSap() {
+	public List<Long> getIdNumSap() {
 		return idNumSap;
 	}
 
-	public void setIdNumSap(Long idNumSap) {
+	public void setIdNumSap(List<Long> idNumSap) {
 		this.idNumSap = idNumSap;
 	}
 	

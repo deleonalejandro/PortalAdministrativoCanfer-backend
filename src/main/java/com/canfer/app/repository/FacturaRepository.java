@@ -19,7 +19,7 @@ public interface FacturaRepository extends ComprobanteFiscalBaseRepository<Factu
 
 	Factura findByRfcEmpresaAndRfcProveedorAndIdNumSap(String rfcEmpresa, String rfcProveedor, Long IdNumSap);
 	List<Factura> findAllByComplemento(ComplementoPago complemento);
-	ComprobanteFiscal findByPago(Pago pago);
+	List<ComprobanteFiscal> findByPago(Pago pago);
   
 }
 
