@@ -143,8 +143,10 @@ public class CrystalReportService {
 	}
 
 	public ArchivoPDF exportGenerico(ComprobanteFiscal comprobanteFiscal) {
+
+		System.out.println("Entre al metodo");
 		
-		String CRYSTAL_REPORT = env.getProperty("storage.crystalGenerico");
+		String CRYSTAL_REPORT = "rassdk://static/reports/report.rpt";
 		
 		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
 		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
@@ -164,10 +166,13 @@ public class CrystalReportService {
 		
 		try {
 
+			System.out.println("La ruta registrada es: " + CRYSTAL_REPORT);
 			//Open report.			
 			ReportClientDocument reportClientDoc = new ReportClientDocument();	
 			
-			reportClientDoc.open(CRYSTAL_REPORT, 0);
+			System.out.println("Realice el reportClientDoc");
+			
+			reportClientDoc.open(CRYSTAL_REPORT, 1);
 			
 
 			
