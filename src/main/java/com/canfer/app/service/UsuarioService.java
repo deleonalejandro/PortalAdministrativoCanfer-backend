@@ -1,6 +1,7 @@
 package com.canfer.app.service;
 
 
+import java.sql.SQLDataException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,9 +91,10 @@ public class UsuarioService {
 
 	}
 
-	public Usuario saveUsuarioProveedor(UserDTO user) throws NotFoundException {
+	public Usuario saveUsuarioProveedor(UserDTO user) throws NotFoundException, SQLDataException {
 
 		Usuario testProveedor;
+		Usuario newUsuario;
 		String ePassword;
 		String password;
 		List<Proveedor> proveedoresList;
@@ -111,12 +113,9 @@ public class UsuarioService {
 		}
 
 		password = generatePassword(user.getRfc());
-
-		
+		// Write credentials in .txt
 		System.out.println(user.getRfc() + " " + password);
-		ePassword = passwordEncoder.encode(password);
-
-		UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), ePassword, user.getNombre(),
+		UsuarioProveedor usuario = new UsuarioProveedor(user.getUsername(), passwordEncoder.encode(password), user.getNombre(),
 				user.getApellido(), user.getCorreo(), "USER_PROVEEDOR", "");
 
 		// assign the suppliers to the users
@@ -127,12 +126,18 @@ public class UsuarioService {
 			empresas.addAll(proveedor.getEmpresas());
 		}
 
-		usuario.setEmpresas(empresas);
-
-		Log.falla("Se agregó un nuevo usuario: " + user.getUsername(), "NEW_USER");
+		usuario.setEmpresas(empresas);		
 		emailSender.sendEmailNewAccount(usuario, password);
 		
-		return usuarioProveedorRepository.save(usuario);
+		try {
+			
+			newUsuario = usuarioProveedorRepository.save(usuario);
+			return newUsuario;
+			
+		} catch (Exception e) {
+			
+			throw new SQLDataException();
+		}
 		
 
 	}
@@ -158,6 +163,7 @@ public class UsuarioService {
 		}
 		// Take the value of the object if exists
 		Usuario updateUsuario = checkUsuario.get();
+		List<Empresa> companies = empresaService.findAllById(user.getEmpresaIdsList());
 
 		// Use setters to transfer the basic information, except password.
 		updateUsuario.setUsername(user.getUsername());
@@ -166,6 +172,7 @@ public class UsuarioService {
 		updateUsuario.setNombre(user.getNombre());
 		updateUsuario.setPermisos(user.getPermisosToString());
 		updateUsuario.setRol(user.getRol());
+		updateUsuario.setEmpresas(companies);
 
 		if (user.getActivo() == null) {
 			updateUsuario.setActivo(false);

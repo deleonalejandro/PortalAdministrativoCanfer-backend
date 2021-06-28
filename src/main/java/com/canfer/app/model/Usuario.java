@@ -64,6 +64,11 @@ public abstract class Usuario {
 	
 	private Boolean activo;
 	
+	private final String ADMIN = "ADMIN";
+	private final String CONTADOR = "USER_CONTADOR";
+	private final String PROVEEDOR = "USER_PROVEEDOR";
+	
+	
 	//Main constructor from the class Usuario.
 	public Usuario(String username, String password, String nombre, String apellido, String correo, String rol, String permisos) {
 		this.username = username;
@@ -207,11 +212,15 @@ public abstract class Usuario {
 	}
 	
 	public Boolean isAdmin() {
-		return this.rol.equalsIgnoreCase("ADMIN");
+		return this.rol.equalsIgnoreCase(ADMIN);
 	}
 	
 	public Boolean isContador() {
-		return this.rol.equalsIgnoreCase("USER_CONTADOR");
+		return this.rol.equalsIgnoreCase(CONTADOR);
+	}
+	
+	public Boolean isProveedor() {
+		return this.rol.equalsIgnoreCase(PROVEEDOR);
 	}
 	
 	@Entity

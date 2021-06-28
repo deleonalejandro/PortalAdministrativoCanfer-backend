@@ -28,9 +28,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		} else if (roles.contains("ROLE_USER_CAJA")) {
 			response.sendRedirect("/cajachicaclient/dashboard");
 			
-		} else {
-			response.sendRedirect("/dashboard");
+		} else if (roles.contains("ROLE_ADMIN")){
+			response.sendRedirect("/admin/cpanel");
 
+		} else {
+			response.sendRedirect("/login");
 		}
 		
 	}

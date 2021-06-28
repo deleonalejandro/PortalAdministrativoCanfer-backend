@@ -1,5 +1,7 @@
 package com.canfer.app.controller;
 
+import java.sql.SQLDataException;
+
 import javax.persistence.EntityExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,12 +141,14 @@ public class UserController {
 			
 			usuarioService.saveUsuarioProveedor(user);
 			
-			
 		} catch (EntityExistsException | NotFoundException e) {
 			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("errorMessage", e.getMessage());
 			return "redirect:/registerSupplier";
-		} 
+		} catch (SQLDataException e) {
+			Log.falla("Error inesperado al registrar el usuario proveedor.", "ERROR_DB");
+			return "redirect:/registerSupplier";
+		}
 		
 		ra.addFlashAttribute("registerSuccess", true);
 		return "redirect:/admin/users";

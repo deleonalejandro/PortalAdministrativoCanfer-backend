@@ -1,10 +1,8 @@
 package com.canfer.app.controller;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -16,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.businessobjects.reports.jdbinterface.common.SideOfNode;
-import com.canfer.app.model.ComprobanteFiscal;
-import com.canfer.app.model.Sucursal;
-import com.canfer.app.repository.ComprobanteFiscalBaseRepository;
+import com.canfer.app.model.Usuario;
 import com.canfer.app.repository.ComprobanteFiscalRespository;
-import com.canfer.app.repository.EstadoRepository;
 import com.canfer.app.security.AuthenticationFacade;
+import com.canfer.app.security.UserPrincipal;
 import com.canfer.app.service.EmpresaService;
 import com.canfer.app.service.RepositoryService;
 
@@ -61,8 +56,23 @@ public class MainController {
 	@RequestMapping("/login")
 	public String login( Model model) {
 		
+		Usuario user;
+		
 		if (isAuthenticated()) {
-	        return "redirect:/dashboard";
+			
+			UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
+			
+			user = (Usuario) loggedPrincipal.getUsuario();
+			
+			if (user.isAdmin()) {
+				return "redirect:/admin/cpanel";
+				
+			} else if (user.isContador()) {
+				return "redirect:/dashboard";
+				
+			} else if (user.isProveedor()) {
+				return "redirect:/dashboardSupplier";
+			}
 	    }
 		
 		model.addAttribute("empresas", empresaService.findAll());

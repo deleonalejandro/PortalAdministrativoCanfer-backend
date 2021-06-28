@@ -1,5 +1,6 @@
 package com.canfer.app.controller;
 
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -151,7 +152,9 @@ public class PortalProveedorController {
 			Log.falla("Error al registrar el usuario proveedor: " + e.getMessage(), "ERROR_DB");
 			ra.addFlashAttribute("errorMessage", e.getMessage());
 			return "redirect:/registerSupplier";
-		} 
+		} catch (SQLDataException e) {
+			Log.falla("Error al registrar el usuario proveedor.", "ERROR_DB");
+		}
 		
 		ra.addFlashAttribute("registerSuccess", true);
 		return "redirect:/login/portalP";

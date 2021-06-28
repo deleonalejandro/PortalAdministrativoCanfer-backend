@@ -5,6 +5,7 @@ package com.canfer.app.model;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -314,7 +315,13 @@ public class DocumentosNacionalesActions extends ModuleActions {
 				return false;
 			}
 			
-			comprobanteFiscal.delete();
+			try {
+				
+				comprobanteFiscal.delete();
+				
+			} catch (NullPointerException e) {
+				Log.activity("El documento perteneciente a la CFD con Fo. " + comprobanteFiscal.getFolio() + " no se eliminó exitosamente.", comprobanteFiscal.getEmpresaNombre(), "ERROR_DB");
+			}
 			
 			Log.activity("Se ha eliminado el documento fiscal No. " + comprobanteFiscal.getIdNumSap() + "." , comprobanteFiscal.getEmpresaNombre(), "DELETE");
 			
@@ -492,7 +499,7 @@ public class DocumentosNacionalesActions extends ModuleActions {
 		return true;
 	}
 	
-	public boolean saveNewUserSupplier(UserDTO user) throws NotFoundException, EntityExistsException {
+	public boolean saveNewUserSupplier(UserDTO user) throws NotFoundException, EntityExistsException, SQLDataException {
 		
 		usuarioService.saveUsuarioProveedor(user);
 		
