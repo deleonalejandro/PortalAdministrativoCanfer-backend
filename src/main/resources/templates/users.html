@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-	<meta name="description" content="" />
-	<meta name="author" content="" />
-	<title>Users</title>
-	<link href="css/styles.css" rel="stylesheet" />
-	<link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
-	<script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
-	</head>
-	
-	<body>
-		<div class="container mt-3">
-			<div class="card mb-4">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Users</title>
+<link href="css/styles.css" rel="stylesheet" />
+<link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js"
+	crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div class="container mt-3">
+		<div class="card mb-4">
 			<div class="card-body">
 				<h2 class="h2">Usuarios</h2>
 				<div class="datatable">
-					<table id="catalogTable" class="table table-bordered table-hover" style="width:100%">
+					<table id="catalogTable" class="table table-bordered table-hover"
+						style="width: 100%">
 						<thead>
 							<tr>
 								<th>Usuario</th>
@@ -31,7 +37,7 @@
 								<th>Activo</th>
 								<th>Rol</th>
 								<th>Permisos</th>
-							</tr>						
+							</tr>
 						</thead>
 						<tfoot>
 							<tr>
@@ -43,18 +49,30 @@
 								<th>Activo</th>
 								<th>Rol</th>
 								<th>Permiso</th>
-							</tr>	
+							</tr>
 					</table>
 				</div>
-			</div>	
 			</div>
-		</div>	
+		</div>
+	</div>
 
+	<footer class="footer mt-auto footer-light">
+		<div class="mx-auto">
+			<div class="row">
+				<div class="small">Copyright &copy; Canfer Grupo Empresarial
+					2021</div>
+			</div>
+		</div>
+	</footer>
+	<script type="text/JavaScript"
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"
+		crossorigin="anonymous"></script>
+	<script src="js/usertable.js"></script>
 
-	<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-    <script src="js/usertable.js"></script>
-	
-	</body>
+</body>
 </html>

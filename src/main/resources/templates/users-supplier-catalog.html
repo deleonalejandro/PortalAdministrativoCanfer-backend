@@ -1,156 +1,203 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Pagina Principal de Contaduria Nacional" />
-        <meta name="author" content="Alejandro y Yasmin" />
-        <title>Configuración - Catálogos</title>
-        
-        <!-- SCRIPTS AND LINKS -->
-        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-		<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js}" crossorigin="anonymous"></script>
-		<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css"/>
-		<link rel="icon" type="image/x-icon" href="/assets/img/logosEmpresas/canfer.gif" />
-        <link th:href="@{/css/styles-admin.css}" rel="stylesheet" />
-    </head>
-     <!-- TOP NAV BAR -->
-    <body class="nav-fixed">
-        <nav class="topnav navbar navbar-expand shadow navbar-light bg-white" id="sidenavAccordion">
-            
-            <!-- LOGO DE LA EMPRESA -->
-            <a class="navbar-brand" href="#">
-            	<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png" class="pl-3 img-fluid mr-0" alt="Logo Canfer" style= "height: 45px"/> 
-            </a>
-            
-            <!-- ICONOS DE TOP NAV BAR -->
-            <ul class="navbar-nav align-items-center ml-auto">
-            
-            	 <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-                    <a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
-                </li>
-                
-                 <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownModulo" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="grid"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbarDropdownModulo">
-	                    <h6 class="dropdown-header dropdown-notifications-header">
-	                        <i class="mr-2" data-feather="grid"></i>
-	                            Centro de Módulos
-	                    </h6>
-	                        <a class="dropdown-item py-3"  th:href="@{/dashboard}">
-	                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Contaduría Nacional
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3"  th:href="@{/cajachicaclient/dashboard}" >
-	                            <div class="icon-stack bg-indigo-soft text-indigo mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Caja Chica
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3" target="_blank">
-	                            <div class="icon-stack bg-teal-soft text-teal mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Reposición de Gastos
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3" target="_blank">
-	                            <div class="icon-stack bg-yellow-soft text-yellow mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Comercio Exterior
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3" target="_blank">
-	                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Documentos Extranjeros
-	                            </div>
-	                        </a>
-                    </div>
-                </li>
-               
-                <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="/admin/cpanel" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a>
-                    
-                </li>
-                <li class="nav-item dropdown no-caret mr-2 dropdown-user">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  /></a>
-                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
-                        <h6 class="dropdown-header d-flex align-items-center">
-                            <img class="dropdown-user-img" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  />
-                            <div class="dropdown-user-details">
-                                <div class="dropdown-user-details-name"><span sec:authentication="name"></span></div>
-                                <div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
-                            </div>
-                        </h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout">
-                            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                            Cerrar Sesión
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <div class="overflow:hidden">
-        	<main>
-                <header class= "page-header page-header-compact page-header-gradient border-bottom fixed-top my-5">
-                    <div class="container">
-                        <div class="page-header-content pt-4">
-                            <div class="row align-items-center justify-content-between">
-                                <div class="col-12 pb-3">
-                                    <h1 class="page-header-title text-white">
-                                    	<div class="page-header-icon"> 
-                                    		<i data-feather="settings"></i>
-                                    	</div>
-                                        Configuración
-                                    </h1>
-                                    <h1 class= "page-header-subtitle text-gray-100 mb-0 text-right">Catálogos</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-                    <!-- Main page content-->
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description"
+	content="Pagina Principal de Contaduria Nacional" />
+<meta name="author" content="Alejandro y Yasmin" />
+<title>Configuración - Catálogos</title>
+
+<!-- SCRIPTS AND LINKS -->
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	th:src="@{https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js}"
+	crossorigin="anonymous"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
+<link rel="icon" type="image/x-icon"
+	href="/assets/img/logosEmpresas/canfer.gif" />
+<link th:href="@{/css/styles-admin.css}" rel="stylesheet" />
+</head>
+<!-- TOP NAV BAR -->
+<body class="nav-fixed">
+	<nav class="topnav navbar navbar-expand shadow navbar-light bg-white"
+		id="sidenavAccordion">
+
+		<!-- LOGO DE LA EMPRESA -->
+		<a class="navbar-brand" href="#"> <img
+			src="/assets/img/logosEmpresas/CANFER-logo-transparente.png"
+			class="pl-3 img-fluid mr-0" alt="Logo Canfer" style="height: 45px" />
+		</a>
+
+		<!-- ICONOS DE TOP NAV BAR -->
+		<ul class="navbar-nav align-items-center ml-auto">
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark" href="/dashboard"
+				id="dashboardButton" role="button" aria-haspopup="true"
+				aria-expanded="false"><i data-feather=layout></i></a></li>
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownModulo" href="javascript:void(0);" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+					data-feather="grid"></i></a>
+				<div
+					class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up"
+					aria-labelledby="navbarDropdownModulo">
+					<h6 class="dropdown-header dropdown-notifications-header">
+						<i class="mr-2" data-feather="grid"></i> Centro de Módulos
+					</h6>
+					<a class="dropdown-item py-3" th:href="@{/dashboard}">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Contaduría Nacional
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3"
+						th:href="@{/cajachicaclient/dashboard}">
+						<div class="icon-stack bg-indigo-soft text-indigo mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Caja Chica
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-teal-soft text-teal mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Reposición de Gastos
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-yellow-soft text-yellow mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Comercio Exterior
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Documentos Extranjeros
+						</div>
+					</a>
+				</div></li>
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownMessages" href="/admin/cpanel" role="button"
+				aria-haspopup="true" aria-expanded="false"><i
+					data-feather=settings></i></a></li>
+			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownUserImage" href="javascript:void(0);"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"><img class="img-fluid"
+					th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" /></a>
+				<div
+					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
+					aria-labelledby="navbarDropdownUserImage">
+					<h6 class="dropdown-header d-flex align-items-center">
+						<img class="dropdown-user-img"
+							th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" />
+						<div class="dropdown-user-details">
+							<div class="dropdown-user-details-name">
+								<span sec:authentication="name"></span>
+							</div>
+							<div class="dropdown-user-details-email">
+								<div th:text="${#authentication.principal.correo}"></div>
+							</div>
+						</div>
+					</h6>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/logout">
+						<div class="dropdown-item-icon">
+							<i data-feather="log-out"></i>
+						</div> Cerrar Sesión
+					</a>
+				</div></li>
+		</ul>
+	</nav>
+	<div class="overflow:hidden">
+		<main>
+			<header
+				class="page-header page-header-compact page-header-gradient border-bottom fixed-top my-5">
+				<div class="container">
+					<div class="page-header-content pt-4">
+						<div class="row align-items-center justify-content-between">
+							<div class="col-12 pb-3">
+								<h1 class="page-header-title text-white">
+									<div class="page-header-icon">
+										<i data-feather="settings"></i>
+									</div>
+									Configuración
+								</h1>
+								<h1 class="page-header-subtitle text-gray-100 mb-0 text-right">Catálogos</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+			<!-- Main page content-->
 			<div class="container-fluid" style="padding-top: 150px">
 				<div class="row">
 					<div class="col-2">
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column">
-							<a class="nav-link" th:href="@{users}">Usuarios Portal Administrativo</a> 
-							<a class="nav-link active" th:href="@{suppliersUsers}">Usuarios Portal Proveedor</a> 
-							<a class="nav-link" th:href="@{companies}">Empresas</a> 
-							<a class="nav-link" th:href="@{suppliers}">Proveedores</a>
-							<a class="nav-link" th:href="@{sucursales}">Sucursales</a>
+							<a class="nav-link" th:href="@{users}">Usuarios Portal
+								Administrativo</a> <a class="nav-link active"
+								th:href="@{suppliersUsers}">Usuarios Portal Proveedor</a> <a
+								class="nav-link" th:href="@{companies}">Empresas</a> <a
+								class="nav-link" th:href="@{suppliers}">Proveedores</a> <a
+								class="nav-link" th:href="@{sucursales}">Sucursales</a>
 						</nav>
 					</div>
 					<div class="col-10">
 						<!-- Main Content Tables -->
 						<div class="card mb-4">
-							<div class="alert alert-danger" role="alert" th:text="${updateError}" th:if="${updateError}"></div>
-							<div class="alert alert-danger" role="alert" th:text="${UserNotFoundMessage}" th:if="${UserNotFoundMessage}"></div>
+							<div class="alert alert-danger" role="alert"
+								th:text="${updateError}" th:if="${updateError}"></div>
+							<div class="alert alert-danger" role="alert"
+								th:text="${UserNotFoundMessage}" th:if="${UserNotFoundMessage}"></div>
 							<div class="card-header">
 								<a th:href="@{addUserSupplier}" class="btn btn-primary">Añadir</a>
 							</div>
 							<div class="card-body">
 								<div class="datatable">
-									<table class="table table-hover" id="userProveedorTable" width="100%">
+									<table class="table table-hover" id="userProveedorTable"
+										width="100%">
 										<thead>
 											<tr>
 												<th></th>
@@ -217,96 +264,109 @@
 				</div>
 			</div>
 		</main>
-             <footer class="footer mt-auto footer-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 small">Copyright &copy; Canfer Grupo Empresarial 2020</div>
-                        <div class="col-md-6 text-md-right small">
-                            <a href="#!">Privacy Policy</a>
-                            &middot;
-                            <a href="#!">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    <form action="#" th:action="@{user/save}" method="post">
-	<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Editar Usuario</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+		<footer class="footer mt-auto footer-light">
+			<div class="mx-auto">
+				<div class="row">
+					<div class="small">Copyright &copy; Canfer Grupo Empresarial
+						2021</div>
 				</div>
-				<div class="modal-body">
-					
+			</div>
+		</footer>
+	</div>
+	<form action="#" th:action="@{user/save}" method="post">
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+			aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Editar Usuario</h5>
+						<button class="close" type="button" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
 						<!-- Form Group (username)-->
 						<input type="hidden" name="userId" id="userId">
 						<div class="form-group">
-							<label class="small mb-1" for="inputUsername">Usuario</label> 
-							<input class="form-control" id="inputUsername" type="text"
+							<label class="small mb-1" for="inputUsername">Usuario</label> <input
+								class="form-control" id="inputUsername" type="text"
 								placeholder="Ingresa tu usuario" name="username" />
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (first name)-->
 							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputFirstName">Nombre</label> 
-								<input class="form-control" id="inputFirstName"
-								type="text" placeholder="Ingresa tu nombre" name="nombre"/>
+								<label class="small mb-1" for="inputFirstName">Nombre</label> <input
+									class="form-control" id="inputFirstName" type="text"
+									placeholder="Ingresa tu nombre" name="nombre" />
 							</div>
 							<!-- Form Group (last name)-->
 							<div class="form-group col-md-6">
-								<label class="small mb-1" for="inputLastName">Apellido</label>
-								<input class="form-control" id="inputLastName" type="text" name="apellido"
-									placeholder="Ingresa tu apellido"  />
+								<label class="small mb-1" for="inputLastName">Apellido</label> <input
+									class="form-control" id="inputLastName" type="text"
+									name="apellido" placeholder="Ingresa tu apellido" />
 							</div>
 						</div>
-						
+
 						<!-- Form Group (email address)-->
 						<div class="form-group">
-							<label class="small mb-1" for="inputEmailAddress">Correo electrónico</label> <input class="form-control" id="inputEmailAddress"
-								type="email" placeholder="Ingresa el correo electrónico" name="correo"/>
+							<label class="small mb-1" for="inputEmailAddress">Correo
+								electrónico</label> <input class="form-control" id="inputEmailAddress"
+								type="email" placeholder="Ingresa el correo electrónico"
+								name="correo" />
 						</div>
 						<!-- Form Row-->
 						<div class="form-row">
 							<!-- Form Group (ACTIVO)-->
 							<div class="form-group custom-control custom-checkbox">
-								<input class="custom-control-input" id="checkActivo" name="activo" type="checkbox"> 
-								<label class="custom-control-label" for="checkActivo">Activo</label>
+								<input class="custom-control-input" id="checkActivo"
+									name="activo" type="checkbox"> <label
+									class="custom-control-label" for="checkActivo">Activo</label>
 							</div>
-							
+
 						</div>
 						<!-- Save changes button-->
-						<br/>
-                        
-                        <button class="btn btn-primary" type="button">Restablecer Contraseña</button>
-					
-				</div>
-				<div class="modal-footer">
-					<button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
-					<button class="btn btn-primary" type="submit">Guardar</button>
+						<br />
+
+						<button class="btn btn-primary" type="button">Restablecer
+							Contraseña</button>
+
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
+						<button class="btn btn-primary" type="submit">Guardar</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</form>
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script> 
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="/js/scripts.js"></script>
-        <script src="/js/admin.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="/assets/demo/chart-area-demo.js"></script>
-        <script src="/assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/date-range-picker-demo.js"></script>
-    </body>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		crossorigin="anonymous"></script>
+	<script src="/js/scripts.js"></script>
+	<script src="/js/admin.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+		crossorigin="anonymous"></script>
+	<script src="/assets/demo/chart-area-demo.js"></script>
+	<script src="/assets/demo/chart-bar-demo.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+		crossorigin="anonymous"></script>
+	<script src="assets/demo/date-range-picker-demo.js"></script>
+</body>
 </html>

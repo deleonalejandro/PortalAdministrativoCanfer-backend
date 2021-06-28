@@ -566,7 +566,7 @@ public class RepositoryService {
 				rfcProveedor, idNumSap);
 	}
 
-	public ComprobanteFiscal findFacturaByPago(Pago pago) {
+	public List<ComprobanteFiscal> findFacturaByPago(Pago pago) {
 		return facturaRepo.findByPago(pago);
 	}
 

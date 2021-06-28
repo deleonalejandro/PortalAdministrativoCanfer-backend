@@ -2,6 +2,7 @@ package com.canfer.app.mail;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -78,6 +79,8 @@ public class EmailSenderService {
 	
 	public void sendEmailAvisoPago(Pago pago){
 		
+		List<String> uuids = new ArrayList<String>(); 
+		
 		//Checar el booleanos de mandar notificacion
 		if(!booleanEmailAvisoPago){ return;}
 		
@@ -96,7 +99,7 @@ public class EmailSenderService {
 	
 		
 		//Obtener cfdi que se pago
-		ComprobanteFiscal comprobante = superRepo.findFacturaByPago(pago);
+		List<ComprobanteFiscal> comprobantes = superRepo.findFacturaByPago(pago);
 	    //Obtener la empresa del pago
 		Empresa empresa = superRepo.findEmpresaByRFC(pago.getRfcEmpresa());
 		//Obtener la empresa del pago
@@ -107,16 +110,11 @@ public class EmailSenderService {
 	    	 // Prepare the evaluation context
 	        final Context ctx = new Context();
 	        
-	        if (comprobante != null) {
-			ctx.setVariable("fechaEmision",comprobante.getFechaEmision()); 
-			ctx.setVariable("serie",comprobante.getSerie()); 
-			ctx.setVariable("uuid",comprobante.getUuid()); 
-			ctx.setVariable("folio",comprobante.getFolio()); 
-			ctx.setVariable("tipoComprobante",comprobante.getTipoDocumento());
-			ctx.setVariable("fechaCarga",comprobante.getFechaCarga()); 
-			ctx.setVariable("estatusPago",comprobante.getEstatusPago());
-			ctx.setVariable("estatusSAT",comprobante.getRespuestaValidacion());
+	        for (ComprobanteFiscal comprobante : comprobantes) {
+	        	uuids.add(comprobante.getUuid());
 	        }
+	        
+	        ctx.setVariable("uuid",uuids);
 	        
 	        if (proveedor != null) {
 	        	ctx.setVariable("nombreProveedor", proveedor.getNombre());

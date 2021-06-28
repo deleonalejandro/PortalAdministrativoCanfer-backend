@@ -60,12 +60,15 @@ public class DbObserver {
 			pago.setBitProcesado(true);
 			pagoRepository.save(pago);
 			
-			Factura factura = facturaRepository.findByRfcEmpresaAndRfcProveedorAndIdNumSap(pago.getRfcEmpresa(), 
-					pago.getRfcProveedor(), pago.getIdNumSap());
-			
-			factura.setPago(pago);
-			factura.setEstatusPago(pago.getNuevoEstatusFactura().toUpperCase());
-			facturaRepository.save(factura);
+			List<Long> numsSap = pago.getListIdNumSap();
+			for(Long numSap : numsSap) {
+				Factura factura = facturaRepository.findByRfcEmpresaAndRfcProveedorAndIdNumSap(pago.getRfcEmpresa(), 
+						pago.getRfcProveedor(), numSap);
+				
+				factura.setPago(pago);
+				factura.setEstatusPago(pago.getNuevoEstatusFactura().toUpperCase());
+				facturaRepository.save(factura);
+			}
 			
 			Empresa empresa = empresaRepository.findByRfc(pago.getRfcEmpresa());
 			String nombre = "NA"; 
@@ -85,7 +88,7 @@ public class DbObserver {
 				 nombre = empresa.getNombre();
 			}
 			
-			Log.activity("Se ha procesado el Pago:  " + pago.getIdNumPago() + " para " + pago.getRfcProveedor()+ ".", nombre, "PAYMENT");
+			Log.activity("Se ha procesado el Pago:  " + pago.getIdNumPago() + " para " + pago.getRfcProveedor()+ " en las factuas: " + pago.getIdNumSap()+ " .", nombre, "PAYMENT");
 			
 			}
 	}

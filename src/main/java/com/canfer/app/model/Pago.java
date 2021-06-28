@@ -1,6 +1,10 @@
 package com.canfer.app.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +34,7 @@ public class Pago implements IModuleEntity {
 	private Integer idNumPago;
 	
 	@Column
-	private Long idNumSap;
+	private String idNumSap;
 	
 	@Column
 	private String rfcEmpresa; 
@@ -99,15 +103,28 @@ public class Pago implements IModuleEntity {
 		this.idNumPago = idNumPago;
 	}
 
-	public Long getIdNumSap() {
+	public String getIdNumSap() {
 		return idNumSap;
 	}
 
-	public void setIdNumSap(Long idNumSap) {
+	public void setIdNumSap(String idNumSap) {
 		this.idNumSap = idNumSap;
 	}
 	
-
+	public List<Long> getListIdNumSap() {
+		List<Long> result = new ArrayList<>();
+		
+		if(this.idNumSap.isEmpty()) {
+			return Collections.emptyList();
+		}
+		try {
+			List<String> list = Arrays.asList(this.idNumSap.split(","));
+			list.forEach(value -> result.add(Long.valueOf(value)) );
+			return result;
+		} catch (Exception e) {
+			return Collections.emptyList();
+		}
+	}
 
 	public String getRfcEmpresa() {
 		return rfcEmpresa;
@@ -245,6 +262,7 @@ public class Pago implements IModuleEntity {
 	public ArchivoPDF fetchPDF() {
 		return this.documento.getArchivoPDF();
 	} 
+	
 	
 	
     
