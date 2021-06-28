@@ -11,6 +11,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import com.canfer.app.cfd.Comprobante;
+import com.canfer.app.cfd.Comprobante.Concepto;
 import com.canfer.app.model.Archivo.ArchivoPDF;
 import com.canfer.app.model.ComprobanteFiscal;
 import com.canfer.app.model.Documento;
@@ -146,7 +147,7 @@ public class CrystalReportService {
 
 		System.out.println("Entre al metodo");
 		
-		String CRYSTAL_REPORT = "rassdk://static/reports/report.rpt";
+		String CRYSTAL_REPORT = "rassdk://static/reports/pdfGenerico.rpt";
 		
 		String sName = comprobanteFiscal.getDocumento().getArchivoXML().getNombre(); 
 		String REPORT_NAME = sName.substring(0, sName.length() - 3) + "pdf";
@@ -157,6 +158,7 @@ public class CrystalReportService {
 		String pathQR = env.getProperty("storage.qr");
 		String folio = "";
 		String serie = ""; 
+		Concepto concept;
 		File file = new File(path);
 		
 		boolean existsQR = false;
@@ -206,6 +208,14 @@ public class CrystalReportService {
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "sellocfdi", comprobante.getSelloCfdTfd());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "sellosat", comprobante.getSelloSatTfd());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "sello", comprobante.getSello());
+			
+			comprobante.getConceptos().getConceptosList().forEach(c -> {
+				try {
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "claveProdServ", c.getClaveProdServ());
+				} catch (ReportSDKException e) {
+					e.printStackTrace();
+				}
+			});
 			
 			
 			String sello = comprobante.getSelloCfdTfd();

@@ -546,7 +546,7 @@ public class Comprobante {
 	}
 
 	@XmlRootElement(name = "Conceptos")
-	private static class Conceptos {
+	public static class Conceptos {
 
 		private List<Concepto> conceptosList;
 
@@ -571,7 +571,7 @@ public class Comprobante {
 	}
 
 	@XmlRootElement(name = "Concepto")
-	private static class Concepto {
+	public static class Concepto {
 
 		private String claveProdServ;
 		private String noIdentificacion;
