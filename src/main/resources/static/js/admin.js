@@ -251,8 +251,6 @@ $(document).ready(function() {
 		$("#inputEmailAddress").val(user.correo);
 		$("#checkActivo").prop('checked', user.activo);
 
-		alert(user.permisos.split(','))
-		alert(user.empresasId)
 		$("#dropdownPermisos").val(user.permisos.split(','));
 		$("#dropdownEmpresas").val(user.empresasId);
 		
