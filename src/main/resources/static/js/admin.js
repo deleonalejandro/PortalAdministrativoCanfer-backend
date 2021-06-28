@@ -248,12 +248,14 @@ $(document).ready(function() {
 		$("#inputFirstName").val(user.nombre);
 		$("#inputLastName").val(user.apellido);
 		$("#dropdownRoles").val(user.rol);
-		$("#dropdownPermisos").val(user.permisos.split(','));
 		$("#inputEmailAddress").val(user.correo);
-		$("#dropdownEmpresas").val(user.empresasId.join());
 		$("#checkActivo").prop('checked', user.activo);
 
-
+		alert(user.permisos.split(','))
+		alert(user.empresasId)
+		$("#dropdownPermisos").val(user.permisos.split(','));
+		$("#dropdownEmpresas").val(user.empresasId);
+		
 		$('#editModal').modal('show');
 
 	});

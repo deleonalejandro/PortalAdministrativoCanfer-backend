@@ -346,7 +346,7 @@
 						<div class="form-group">
 							<label class="text-gray-600 small" for="dropdownEmpresas">Empresa</label>
 							<select class="form-control selectpicker" id="dropdownEmpresas"
-								name="empresas" multiple>
+								name="empresaIdsList" multiple>
 								<option value="" selected>--Selecciona Empresa--</option>
 								<option th:each="empresa : ${empresas}"
 									th:value="${empresa.getidEmpresa()}"
