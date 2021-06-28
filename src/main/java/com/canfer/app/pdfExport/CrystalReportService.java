@@ -212,8 +212,15 @@ public class CrystalReportService {
 			comprobante.getConceptos().getConceptosList().forEach(c -> {
 				try {
 					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "claveProdServ", c.getClaveProdServ());
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "noIdentificacion", c.getNoIdentificacion());
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "cantidad", c.getCantidad());
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "claveDeUnidad", c.getClaveUnidad());
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "unidad", c.getUnidad());
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "valorUnitario", c.getValorUnitario());
+					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "importe", c.getImporte());
 				} catch (ReportSDKException e) {
-					e.printStackTrace();
+					Log.activity("No se pudo generar el PDF Generico para: " + comprobanteFiscal.getUuid() +
+							".", comprobante.getReceptorNombre(), "ERROR_FILE");
 				}
 			});
 			
