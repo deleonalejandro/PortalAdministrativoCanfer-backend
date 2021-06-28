@@ -3,7 +3,6 @@ package com.canfer.app.controller;
  
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -156,7 +155,7 @@ public class CajaChicaController {
 	public String getDashboard(Model model) {
 		
 		UsuarioCanfer canferUser;
-		List<Sucursal> sucursales = new ArrayList<>();
+		List<Sucursal> sucursales;
 		
 		UserPrincipal loggedPrincipal = (UserPrincipal) authenticationFacade.getAuthentication().getPrincipal();
 		
@@ -170,10 +169,7 @@ public class CajaChicaController {
 			
 			List<Empresa> companies = superRepo.findAllEmpresaById(canferUser.getEmpresasId());
 			
-			for (Empresa empresa : companies) {
-				sucursales.addAll(superRepo.findAllSucursalByEmpresa(empresa));
-			}
-			
+			sucursales = superRepo.findAllSucursalByEmpresaIn(companies);
 			
 		} else {
 			
