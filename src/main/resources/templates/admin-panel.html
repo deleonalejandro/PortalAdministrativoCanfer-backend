@@ -1,671 +1,931 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="Pagina Principal de Contaduria Nacional" />
-        <meta name="author" content="Alejandro y Yasmin" />
-        <title>Configuración del Sistema</title>
-        
-        <!-- SCRIPTS AND LINKS -->
-        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js" crossorigin="anonymous"></script>
-		<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
-		<link rel="stylesheet" href="https://unpkg.com/status-indicator@1.0.9/styles.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css"/>
-		<link rel="icon" type="image/x-icon" href="/assets/img/logosEmpresas/canfer.gif" />
-        <link href="/css/styles.css" rel="stylesheet" />
-    </head>
-    
-    <!-- TOP NAV BAR -->
-    <body class="nav-fixed">
-        <nav class="topnav navbar navbar-expand shadow navbar-light bg-white" id="sidenavAccordion">
-          
-           <!-- LOGO DE LA EMPRESA -->
-            <a class="navbar-brand" href="#">
-            	<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png" class="pl-3 img-fluid mr-0" alt="Logo Canfer" style= "height: 45px"/> 
-            </a>
-            
-            
-            
-            
-            <!-- ICONOS DE TOP NAV BAR -->
-            <ul class="navbar-nav align-items-center ml-auto">
-            
-            	<li class="nav-item dropdown no-caret mr-3 d-md-inline">
-                    <a class="btn btn-icon btn-transparent-dark" href="/dashboard" id="dashboardButton" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=layout></i></a> 
-                </li>
-                
-                 <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownModulo" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="grid"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbarDropdownModulo">
-	                    <h6 class="dropdown-header dropdown-notifications-header">
-	                        <i class="mr-2" data-feather="grid"></i>
-	                            Centro de Módulos
-	                    </h6>
-	                        <a class="dropdown-item py-3"  th:href="@{/dashboard}" >
-	                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Contaduría Nacional
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3"  th:href="@{/cajachicaclient/dashboard}" >
-	                            <div class="icon-stack bg-indigo-soft text-indigo mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Caja Chica
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3"  target="_blank">
-	                            <div class="icon-stack bg-teal-soft text-teal mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Reposición de Gastos
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3"  target="_blank">
-	                            <div class="icon-stack bg-yellow-soft text-yellow mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Comercio Exterior
-	                            </div>
-	                        </a>
-	                        <div class="dropdown-divider m-0"></div>
-	                        <a class="dropdown-item py-3"  target="_blank">
-	                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
-	                            <div>
-	                                <div class="small text-gray-500">Módulo</div>
-	                                Documentos Extranjeros
-	                            </div>
-	                        </a>
-                    </div>
-                </li>
-             
-                
-                
-                <!-- CONFIGURACIONES -->
-                <div sec:authorize="hasRole('ROLE_ADMIN')">
-	                <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-	                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="/admin/cpanel" role="button"  aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a> 
-	                </li>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description"
+	content="Pagina Principal de Contaduria Nacional" />
+<meta name="author" content="Alejandro y Yasmin" />
+<title>Configuración del Sistema</title>
+
+<!-- SCRIPTS AND LINKS -->
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js"
+	crossorigin="anonymous"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+<link rel="stylesheet"
+	href="https://unpkg.com/status-indicator@1.0.9/styles.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
+<link rel="icon" type="image/x-icon"
+	href="/assets/img/logosEmpresas/canfer.gif" />
+<link href="/css/styles.css" rel="stylesheet" />
+</head>
+
+<!-- TOP NAV BAR -->
+<body class="nav-fixed">
+	<nav class="topnav navbar navbar-expand shadow navbar-light bg-white"
+		id="sidenavAccordion">
+
+		<!-- LOGO DE LA EMPRESA -->
+		<a class="navbar-brand" href="#"> <img
+			src="/assets/img/logosEmpresas/CANFER-logo-transparente.png"
+			class="pl-3 img-fluid mr-0" alt="Logo Canfer" style="height: 45px" />
+		</a>
+
+
+
+
+		<!-- ICONOS DE TOP NAV BAR -->
+		<ul class="navbar-nav align-items-center ml-auto">
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark" href="/dashboard"
+				id="dashboardButton" role="button" aria-haspopup="true"
+				aria-expanded="false"><i data-feather=layout></i></a></li>
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownModulo" href="javascript:void(0);" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+					data-feather="grid"></i></a>
+				<div
+					class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up"
+					aria-labelledby="navbarDropdownModulo">
+					<h6 class="dropdown-header dropdown-notifications-header">
+						<i class="mr-2" data-feather="grid"></i> Centro de Módulos
+					</h6>
+					<a class="dropdown-item py-3" th:href="@{/dashboard}">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Contaduría Nacional
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3"
+						th:href="@{/cajachicaclient/dashboard}">
+						<div class="icon-stack bg-indigo-soft text-indigo mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Caja Chica
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-teal-soft text-teal mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Reposición de Gastos
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-yellow-soft text-yellow mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Comercio Exterior
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Documentos Extranjeros
+						</div>
+					</a>
+				</div></li>
+
+
+
+			<!-- CONFIGURACIONES -->
+			<div sec:authorize="hasRole('ROLE_ADMIN')">
+				<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+					class="btn btn-icon btn-transparent-dark dropdown-toggle"
+					id="navbarDropdownMessages" href="/admin/cpanel" role="button"
+					aria-haspopup="true" aria-expanded="false"><i
+						data-feather=settings></i></a></li>
+			</div>
+
+			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownUserImage" href="javascript:void(0);"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"><img class="img-fluid"
+					th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" /></a>
+				<div
+					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
+					aria-labelledby="navbarDropdownUserImage">
+					<h6 class="dropdown-header d-flex align-items-center">
+						<img class="dropdown-user-img"
+							th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" />
+						<div class="dropdown-user-details">
+							<div class="dropdown-user-details-name">
+								<span sec:authentication="name"></span>
+							</div>
+							<div class="dropdown-user-details-email">
+								<div th:text="${#authentication.principal.correo}"></div>
+							</div>
+						</div>
+					</h6>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/logout">
+						<div class="dropdown-item-icon">
+							<i data-feather="log-out"></i>
+						</div> Cerrar Sesión
+					</a>
+				</div></li>
+		</ul>
+	</nav>
+
+	<main>
+		<header
+			class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+			<div class="container">
+				<div class="page-header-content pt-5">
+					<div class="row align-items-center justify-content-between">
+						<div class="col-auto mt-5">
+							<h1 class="page-header-title">
+								<div class="page-header-icon">
+									<i data-feather="settings"></i>
+								</div>
+								Panel de Control
+							</h1>
+							<div class="page-header-subtitle">Administración del
+								sistema</div>
+						</div>
+					</div>
 				</div>
-				
-                <li class="nav-item dropdown no-caret mr-2 dropdown-user">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  /></a>
-                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
-                        <h6 class="dropdown-header d-flex align-items-center">
-                            <img class="dropdown-user-img" th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}"  />
-                            <div class="dropdown-user-details">
-                                <div class="dropdown-user-details-name"><span sec:authentication="name"></span></div>
-                                <div class="dropdown-user-details-email"><div th:text="${#authentication.principal.correo}"></div></div>
-                            </div>
-                        </h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout">
-                            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                            Cerrar Sesión
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        
-                <main>
-                    <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-                        <div class="container">
-                            <div class="page-header-content pt-5">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-auto mt-5">
-                                        <h1 class="page-header-title">
-                                            <div class="page-header-icon"><i data-feather="settings"></i></div>
-                                            Panel de Control
-                                        </h1>
-                                        <div class="page-header-subtitle">Administración del sistema</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-                    <!-- Main page content-->
-                    <div class="container mt-n10">
-                        <div class="row">
-                            <div class="col-xxl-4 col-xl-6 mb-4">
-                                <!-- Dashboard example card 3-->
-                                <a class="card lift h-100" href="/admin/users">
-                                    <div class="card-body d-flex justify-content-center flex-column">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="mr-3">
-                                                <i class="feather-xl text-green mb-3" data-feather="book-open"></i>
-                                                <h5>Catálogos</h5>
-                                                <div class="text-muted">Administra los usuarios, empresas y proveedores registrados en el sistema.</div>
-                                            </div>
-                                            <img class="card-img-top" src="/assets/img/freepik/windows-pana.svg" alt="..." style="width: 10rem;" />
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-xxl-4 col-xl-6 mb-4">
-                                <!-- Dashboard example card 3-->
-                                <a class="card lift h-100" href="/admin/clasificaciones/cc">
-                                    <div class="card-body d-flex justify-content-center flex-column">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="mr-3">
-                                                <i class="feather-xl text-blue mb-3" data-feather="list"></i>
-                                                <h5>Clasificaciones</h5>
-                                                <div class="text-muted">Administra clasificaciones de módulo de Caja Chica.</div>
-                                            </div>
-                                            <img class="card-img-top" src="/assets/img/freepik/data-report-pana.svg" alt="..." style="width: 10rem;" />
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xxl-8">
-                                <!-- Tabbed dashboard card example-->
-                                <div class="card mb-4">
-                                    <div class="card-header border-bottom">
-                                        <!-- Dashboard card navigation-->
-                                        <ul class="nav nav-tabs card-header-tabs" id="dashboardNav" role="tablist">
-                                            <li class="nav-item mr-1"><a class="nav-link active" id="overview-pill" href="#overview" data-toggle="tab" role="tab" aria-controls="overview" aria-selected="true">Generales</a></li>
-                                            <li class="nav-item mr-1"><a class="nav-link" id="notifications-pill" href="#notifications" data-toggle="tab" role="tab" aria-controls="notifications" aria-selected="false">Notificaciones</a></li>
-                                            <li class="nav-item mr-1"><a class="nav-link" id="email-pill" href="#email" data-toggle="tab" role="tab" aria-controls="email" aria-selected="false">Correo</a></li>
-                                            <li class="nav-item"><a class="nav-link" id="security-pill" href="#security" data-toggle="tab" role="tab" aria-controls="seguridad" aria-selected="false">Seguridad</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="card-body">
-                                    	<div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
-										    La ruta se actualizó exitosamente.
-										    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
-										        <span aria-hidden="true">×</span>
-										    </button>
-										</div>
-										<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${success == false}">
-										    Ocurrió un problema, verifica que la ruta sea correcta y válida. No olvides reescribir la ruta correctamente.
-										    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
-										        <span aria-hidden="true">×</span>
-										    </button>
-										</div>
-                                        <div class="tab-content" id="dashboardNavContent">
-                                            <!-- Dashboard Tab Pane 1-->
-                                            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-pill"> 
-                                                <h4 class="mb-1" for="reception-section">Rutas de almacenamiento</h4>
-                                               	<label class="small mb-2" for="reception-description">Configura las rutas de almacenamiento para los diferentes archivos.</label><br>
-                                               	
-                                               	<!-- (default FACTURAS ruta)-->
-										      	<label class="small mb-1" for="rutaEntradaCorreo">Comprobantes Fiscales</label>
-                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" th:value="${facturas}" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#facturasModal">Cambiar</button><br>
-                                                
-	                                            <!-- Modal FACTURAS -->
-	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
-	                                            <input id="descripcion" name="descripcion" th:value="facturas" hidden>
-												<div class="modal fade" id="facturasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												    <div class="modal-dialog modal-dialog-centered" role="document">
-												        <div class="modal-content">
-												            <div class="modal-header">
-												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Comprobantes Fiscales</h5>
-												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-												            </div>
-												            <div class="modal-body">
-												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
-												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
-												            	<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
-																	<input class="form-control" id="ruta" type="text"
-																		placeholder="C:\..." name="ruta" />
-																</div>
-																
-																<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
-																	<input class="form-control" id="checkRuta" type="text"
-																		placeholder="C:\..." name="checkRuta" />
-																</div>
-												            
-												            </div>
-												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
-												        </div>
-												    </div>
-												</div>
-												</form>
-	                                               	
-                                               	<!-- (default CORREO ruta)-->
-										      	<label class="small mb-1" for="rutaEntradaCorreo">Entradas de Correo</label>
-                                                <input class="form-control mb-2" id="rutaEntradaCorreo" type="text" th:value="${entries}" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#entriesModal">Cambiar</button><br>
-                                                
-                                                <!-- Modal CORREO -->
-	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
-	                                            <input id="descripcion" name="descripcion" th:value="entries" hidden>
-												<div class="modal fade" id="entriesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												    <div class="modal-dialog modal-dialog-centered" role="document">
-												        <div class="modal-content">
-												            <div class="modal-header">
-												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Entradas de Correo</h5>
-												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-												            </div>
-												            <div class="modal-body">
-												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
-												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
-												            	<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
-																	<input class="form-control" id="ruta" type="text"
-																		placeholder="C:\..." name="ruta" />
-																</div>
-																
-																<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
-																	<input class="form-control" id="checkRuta" type="text"
-																		placeholder="C:\..." name="checkRuta" />
-																</div>
-												            
-												            </div>
-												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
-												        </div>
-												    </div>
-												</div>
-												</form>
-                                                
-                                                <!-- (default PORTAL ruta)-->
-										      	<label class="small mb-1" for="rutaEntradaPortal">Entradas del Portal</label>
-                                                <input class="form-control mb-2" id="rutaFacturas" type="text" th:value="${entryPortal}" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#entryPortalModal">Cambiar</button><br>
-                                                
-                                                <!-- Modal PORTAL ENTRADAS -->
-	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
-	                                            <input id="descripcion" name="descripcion"  th:value="entry" hidden>
-												<div class="modal fade" id="entryPortalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												    <div class="modal-dialog modal-dialog-centered" role="document">
-												        <div class="modal-content">
-												            <div class="modal-header">
-												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Entradas del Portal</h5>
-												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-												            </div>
-												            <div class="modal-body">
-												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
-												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
-												            	<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
-																	<input class="form-control" id="ruta" type="text"
-																		placeholder="C:\..." name="ruta" />
-																</div>
-																
-																<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
-																	<input class="form-control" id="checkRuta" type="text"
-																		placeholder="C:\..." name="checkRuta" />
-																</div>
-												            
-												            </div>
-												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
-												        </div>
-												    </div>
-												</div>
-												</form>
-                                                
-                                                
-                                                
-                                                <!-- (default ERROR ruta)-->
-										      	<label class="small mb-1" for="rutaError">Errores</label>
-                                                <input class="form-control mb-2" id="rutaError" type="text" th:value="${error}" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#errorModal">Cambiar</button><br>
-                                                
-                                                <!-- Modal ERROR -->
-	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
-	                                            <input id="descripcion" name="descripcion" th:value="error" hidden>
-												<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												    <div class="modal-dialog modal-dialog-centered" role="document">
-												        <div class="modal-content">
-												            <div class="modal-header">
-												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Errores</h5>
-												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-												            </div>
-												            <div class="modal-body">
-												            	<p style="color:red" th:if=${emailStatus}>*Se recomienda detener el servicio de correo antes de realizar esta modificación</p>
-												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
-												            	<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
-																	<input class="form-control" id="ruta" type="text"
-																		placeholder="C:\..." name="ruta" />
-																</div>
-																
-																<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
-																	<input class="form-control" id="checkRuta" type="text"
-																		placeholder="C:\..." name="checkRuta" />
-																</div>
-												            
-												            </div>
-												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
-												        </div>
-												    </div>
-												</div>
-												</form>
-                                                
-                                                <!-- (default LOGO ruta)-->
-										      	<label class="small mb-1" for="rutaLogo">Logotipos de Empresa</label>
-                                                <input class="form-control mb-2" id="rutaLogo" type="text" th:value="${logo}" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#logoModal">Cambiar</button><br>
-                                                
-                                                <!-- Modal LOGO -->
-	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
-	                                            <input id="descripcion" name="descripcion" th:value="logo" hidden>
-												<div class="modal fade" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												    <div class="modal-dialog modal-dialog-centered" role="document">
-												        <div class="modal-content">
-												            <div class="modal-header">
-												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Logotipos de Empresa</h5>
-												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-												            </div>
-												            <div class="modal-body">
-												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
-												            	<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
-																	<input class="form-control" id="ruta" type="text"
-																		placeholder="C:\..." name="ruta" />
-																</div>
-																
-																<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
-																	<input class="form-control" id="checkRuta" type="text"
-																		placeholder="C:\..." name="checkRuta" />
-																</div>
-												            
-												            </div>
-												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
-												        </div>
-												    </div>
-												</div>
-												</form>
-                                                
-                                                <!-- (default LOG ruta)-->
-										      	<label class="small mb-1" for="rutaLog">Log de Movimientos</label>
-                                                <input class="form-control mb-2" id="rutaLog" type="text" th:value="${log}" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" data-toggle="modal" data-target="#logModal">Cambiar</button><br>
-                                                
-                                                <!-- Modal LOG -->
-	                                            <form class="detailsForm" th:action="@{updatePath}" method="post">
-	                                            <input id="descripcion" name="descripcion" th:value="log" hidden>
-												<div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-												    <div class="modal-dialog modal-dialog-centered" role="document">
-												        <div class="modal-content">
-												            <div class="modal-header">
-												                <h5 class="modal-title" id="exampleModalLabel">Modificar ruta | Log de Movimientos</h5>
-												                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-												            </div>
-												            <div class="modal-body">
-												            	<p>Verifica que la ruta sea absoluta y este escrita correctamente.</p>
-												            	<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="ruta">Nueva ruta:</label>
-																	<input class="form-control" id="ruta" type="text"
-																		placeholder="C:\..." name="ruta" />
-																</div>
-																
-																<!-- Form Group (NUEVA RUTA)-->
-																<div class="form-group">
-																	<label class="small mb-1" for="checkRuta">Reescribir nueva ruta:</label>
-																	<input class="form-control" id="checkRuta" type="text"
-																		placeholder="C:\..." name="checkRuta" />
-																</div>
-												            
-												            </div>
-												            <div class="modal-footer"><button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button><button class="btn btn-primary" type="submit">Guardar cambios</button></div>
-												        </div>
-												    </div>
-												</div>
-												</form>
-                                                
-                                                
-                                            </div> 
-											
-                                            <!-- Dashboard Tab Pane 2-->
-                                            <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="activities-pill">
-                                                <h4 class="mb-1" for="service-section">Notificaciones</h4>
-                                               	<label class="small mb-2" for="service-description">Configura las notificaciones que emite el sistema.</label>
+			</div>
+		</header>
+		<!-- Main page content-->
+		<div class="container mt-n10">
+			<div class="row">
+				<div class="col-xxl-4 col-xl-6 mb-4">
+					<!-- Dashboard example card 3-->
+					<a class="card lift h-100" href="/admin/users">
+						<div class="card-body d-flex justify-content-center flex-column">
+							<div class="d-flex align-items-center justify-content-between">
+								<div class="mr-3">
+									<i class="feather-xl text-green mb-3" data-feather="book-open"></i>
+									<h5>Catálogos</h5>
+									<div class="text-muted">Administra los usuarios, empresas
+										y proveedores registrados en el sistema.</div>
+								</div>
+								<img class="card-img-top"
+									src="/assets/img/freepik/windows-pana.svg" alt="..."
+									style="width: 10rem;" />
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-xxl-4 col-xl-6 mb-4">
+					<!-- Dashboard example card 3-->
+					<a class="card lift h-100" href="/admin/clasificaciones/cc">
+						<div class="card-body d-flex justify-content-center flex-column">
+							<div class="d-flex align-items-center justify-content-between">
+								<div class="mr-3">
+									<i class="feather-xl text-blue mb-3" data-feather="list"></i>
+									<h5>Clasificaciones</h5>
+									<div class="text-muted">Administra clasificaciones de
+										módulo de Caja Chica.</div>
+								</div>
+								<img class="card-img-top"
+									src="/assets/img/freepik/data-report-pana.svg" alt="..."
+									style="width: 10rem;" />
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xxl-8">
+					<!-- Tabbed dashboard card example-->
+					<div class="card mb-4">
+						<div class="card-header border-bottom">
+							<!-- Dashboard card navigation-->
+							<ul class="nav nav-tabs card-header-tabs" id="dashboardNav"
+								role="tablist">
+								<li class="nav-item mr-1"><a class="nav-link active"
+									id="overview-pill" href="#overview" data-toggle="tab"
+									role="tab" aria-controls="overview" aria-selected="true">Generales</a></li>
+								<li class="nav-item mr-1"><a class="nav-link"
+									id="notifications-pill" href="#notifications" data-toggle="tab"
+									role="tab" aria-controls="notifications" aria-selected="false">Notificaciones</a></li>
+								<li class="nav-item mr-1"><a class="nav-link"
+									id="email-pill" href="#email" data-toggle="tab" role="tab"
+									aria-controls="email" aria-selected="false">Correo</a></li>
+								<li class="nav-item"><a class="nav-link" id="security-pill"
+									href="#security" data-toggle="tab" role="tab"
+									aria-controls="seguridad" aria-selected="false">Seguridad</a></li>
+							</ul>
+						</div>
+						<div class="card-body">
+							<div class="alert alert-success alert-dismissible fade show"
+								role="alert" th:if="${success}">
+								La ruta se actualizó exitosamente.
+								<button class="close" type="button" data-dismiss="alert"
+									aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="alert alert-danger alert-dismissible fade show"
+								role="alert" th:if="${success == false}">
+								Ocurrió un problema, verifica que la ruta sea correcta y válida.
+								No olvides reescribir la ruta correctamente.
+								<button class="close" type="button" data-dismiss="alert"
+									aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="tab-content" id="dashboardNavContent">
+								<!-- Dashboard Tab Pane 1-->
+								<div class="tab-pane fade show active" id="overview"
+									role="tabpanel" aria-labelledby="overview-pill">
+									<h4 class="mb-1" for="reception-section">Rutas de
+										almacenamiento</h4>
+									<label class="small mb-2" for="reception-description">Configura
+										las rutas de almacenamiento para los diferentes archivos.</label><br>
 
-                                               	<div class="row mb-1">
-                                               		<div class="col-lg-10"> 
-												      	<b>Recepción de documento fiscal</b>
-												      	<p id=email-thread-active>El servicio envía una notificación al proveedor cuando se recibe un documento fiscal.</p>
-												    </div>
-												    <div class="col-lg-2"> 
-												    	<a class="btn" th:href="@{notificationnewdoc(bit='on')}" th:unless="${newDocStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
-												    	<a class="btn" th:href="@{notificationnewdoc(bit='off')}" th:if="${newDocStatus}"><button class="btn btn-outline-danger" type="button">Detener</button></a>
-												      	
-												    </div> 
-                                               	</div>
-                                               	<div class="row mb-1">
-                                               		<div class="col-lg-10"> 
-												      	<b>Envío de aviso de pago</b>
-												      	<p>El servicio envía una notificación con el aviso de pago al proveedor.</p>
-												    </div>
-												    <div class="col-lg-2"> 
-												    	<a class= btn th:href="@{notificationavisopago(bit='on')}" th:unless="${avisoPagoStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
-												      	<a class= btn th:href="@{notificationavisopago(bit='off')}" th:if="${avisoPagoStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
-												    </div> 
-                                               	</div>
-                                               	<div class="row mb-1">
-                                               		<div class="col-lg-10"> 
-												      	<b>Actualización de documento fiscal</b>
-												      	<p>El servicio envía una notificación al proveedor cuando surge una modificación en su documento fiscal.</p>
-												    </div>
-												    <div class="col-lg-2"> 
-												    	<a class= btn th:href="@{notificationupdatedoc(bit='on')}" th:unless="${updateDocStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
-												      	<a class= btn th:href="@{notificationupdatedoc(bit='off')}" th:if="${updateDocStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
-												    </div> 
-                                               	</div>
-                                               	<div class="row mb-1">
-                                               		<div class="col-lg-10"> 
-												      	<b>Creación de cuenta proveedor</b>
-												      	<p>El servicio envía una notificación al proveedor con las credenciales para el portal de proveedores.</p>
-												    </div>
-												    <div class="col-lg-2"> 
-												    	<a class= btn th:href="@{notificationnewaccount(bit='on')}" th:unless="${newAccountStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
-												      	<a class= btn th:href="@{notificationnewaccount(bit='off')}" th:if="${newAccountStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
-												    </div> 
-                                               	</div>
-                                            </div>
-                                            
-                                            <!-- Dashboard Tab Pane 3-->
-                                            <div class="tab-pane fade" id="email" role="tabpanel" aria-labelledby="activities-pill">
-                                            	
-                                            	<h4 class="mb-1" for="reception-section">Recepción</h4>
-                                               	<label class="small mb-2" for="reception-description">Configura el correo por defecto para recibir comprobantes fiscales.</label><br>
-                                               	<!-- (default email CFD reception)-->
-										      	<label class="small mb-1" for="inputCfdEmail">Correo</label>
-                                                <input class="form-control mb-2" id="inputCfdEmail" type="email" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button> 
-                                                
-                                                <h4 class="mb-1" for="send-section">Envío</h4>
-                                               	<label class="small mb-2" for="send-description">Configura el correo por defecto para enviar notificaciones a los proveedores.</label><br>
-                                               	<!-- (default email notifications)-->
-										      	<label class="small mb-1" for="outputCfdEmail">Correo</label>
-                                                <input class="form-control mb-2" id="outputCfdEmail" type="email" value="fep@canfer.com.mx" disabled/>
-                                                <button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button> 
-                    
-		                                        
-                                            </div>
-                                            
-                                            <!-- Dashboard Tab Pane 4-->
-                                            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="activities-pill">
-                                                
-	                                           	<h4 class="mb-1" for="service-section">Servicios</h4>
-                                               	<label class="small mb-2" for="service-description">Configura los servicios activos en el sistema.</label>
+									<!-- (default FACTURAS ruta)-->
+									<label class="small mb-1" for="rutaEntradaCorreo">Comprobantes
+										Fiscales</label> <input class="form-control mb-2"
+										id="rutaEntradaCorreo" type="text" th:value="${facturas}"
+										disabled />
+									<button class="btn btn-primary mb-3" type="button"
+										data-toggle="modal" data-target="#facturasModal">Cambiar</button>
+									<br>
 
-                                               	<div class="row mb-1">
-                                               		<div class="col-lg-10"> 
-												      	<b>Servicio de correo</b>
-												      	<p id=email-thread-active>El servicio se encarga recibir comprobantes fiscales al correo predeterminado.</p>
-												    </div>
-												    <div class="col-lg-2"> 
-												    	<a class="btn" th:href="@{activateEmailThread}" th:unless="${emailStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
-												    	<a class="btn" th:href="@{stopEmailThread}" th:if="${emailStatus}"><button class="btn btn-outline-danger" type="button">Detener</button></a>
-												      	
-												    </div> 
-                                               	</div>
-                                               	<div class="row mb-1">
-                                               		<div class="col-lg-10"> 
-												      	<b>Servicio sincronización de pagos</b>
-												      	<p>El servicio se encarga de sincronizar la base de datos y reconocer nuevos pagos.</p>
-												    </div>
-												    <div class="col-lg-2"> 
-												    	<a class= btn th:href="@{activateSyncPayments}" th:unless="${syncPaymentStatus}"><button class="btn btn-outline-success" type="button">Activar</button></a>
-												      	<a class= btn th:href="@{stopSyncPayments}" th:if="${syncPaymentStatus}"><button class="btn btn-outline-danger" type="button" >Detener</button></a>
-												    </div> 
-                                               	</div>
-                                               	    
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Illustration dashboard card example-->
-                                <div class="card mb-4">
-                                	<div class="card-header">Actividad</div>
-                                    <div class="card-body">
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <div class="datatable">
-												<!-- TABLA -->
-												<table class="table table-hover" id="logMov" style="text-align: center; width: 100%">
-													<thead>
-														<tr>
-															<th>Fecha</th>
-															<th>Empresa</th>
-															<th></th>
-															<th>Mensaje</th>
-															<th>Hora</th>
-														</tr>
-													</thead>
-													<tfoot>
-														<tr>
-															<th>Fecha</th>
-															<th>Empresa</th>
-															<th></th>
-															<th>Mensaje</th>
-															<th>Hora</th>
-														</tr>
-													</tfoot>
-												</table>
+									<!-- Modal FACTURAS -->
+									<form class="detailsForm" th:action="@{updatePath}"
+										method="post">
+										<input id="descripcion" name="descripcion" th:value="facturas"
+											hidden>
+										<div class="modal fade" id="facturasModal" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Modificar
+															ruta | Comprobantes Fiscales</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<p style="color: red" th:if=${emailStatus}>*Se
+															recomienda detener el servicio de correo antes de
+															realizar esta modificación</p>
+														<p>Verifica que la ruta sea absoluta y este escrita
+															correctamente.</p>
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="ruta">Nueva ruta:</label>
+															<input class="form-control" id="ruta" type="text"
+																placeholder="C:\..." name="ruta" />
+														</div>
+
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="checkRuta">Reescribir
+																nueva ruta:</label> <input class="form-control" id="checkRuta"
+																type="text" placeholder="C:\..." name="checkRuta" />
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-danger" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<button class="btn btn-primary" type="submit">Guardar
+															cambios</button>
+													</div>
+												</div>
 											</div>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-                            
-                            <div class="col-xxl-4">
-                            
-                            	<!-- Team members / people dashboard card example-->
-                                <div class="card mb-4">
-                                    <div class="card-header">Estatus de Servicios</div>
-                                    <div class="card-body">
-                                        
-                                        <!-- CORREO -->
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center flex-shrink-0 mr-3"> 
-                                                <div class=" flex-column font-weight-bold">
-                                                	<span th:if="${emailStatus}"><status-indicator positive pulse></status-indicator>    Servicio de correo</span>
-    												<span th:unless="${emailStatus}"><status-indicator negative pulse></status-indicator>    Servicio de correo</span> 
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <!-- PAGOS -->
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
-                                                <div class=" flex-column font-weight-bold">
-                                                	<span th:if="${syncPaymentStatus}"><status-indicator positive pulse></status-indicator>    Servicio de sincronización de pagos</span>
-    												<span th:unless="${syncPaymentStatus}"><status-indicator negative pulse></status-indicator>    Servicio de sincronización de pagos</span> 
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <!-- Team members / people dashboard card example-->
-                                <div class="card mb-4">
-                                    <div class="card-header">Atajos</div>
-                                    <div class="card-body">
-                                        <!-- Item 1-->
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            
-                                                <div class="d-flex flex-column font-weight-bold">
-                                                    <a class="text-dark line-height-normal mb-1" href="/admin/addUser"><i class="feather-l text-green mr-2"  data-feather="user-plus"></i>Añadir usuario</a>
-                                                </div>
-                                            
-                                        </div>
-                                         <!-- Item 1-->
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            
-                                                <div class="d-flex flex-column font-weight-bold">
-                                                    <a class="text-dark line-height-normal mb-1" href="/admin/addUserSupplier"><i class="feather-l text-green mr-2"  data-feather="user-plus"></i>Añadir usuario proveedor</a>
-                                                </div>
-                                            
-                                        </div>
-                                        <!-- Item 2-->
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center flex-shrink-0 mr-3"> 
-                                                <div class="d-flex flex-column font-weight-bold">
-                                                    <a class="text-dark line-height-normal mb-1" href="/admin/addCompany"><i class="feather-l text-green mr-2"  data-feather="plus-circle"></i>Añadir empresa</a>
-                                                    
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <!-- Item 3-->
-                                        <div class="d-flex align-items-center justify-content-between mb-4">
-                                            <div class="d-flex align-items-center flex-shrink-0 mr-3">
-                                                <div class="d-flex flex-column font-weight-bold">
-                                                    <a class="text-dark line-height-normal mb-1" href="/admin/addSupplier"><i class="feather-l text-green mr-2"  data-feather="plus-circle"></i>Añadir proveedor</a> 
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                </main>
-                <footer class="footer mt-auto footer-light">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 small">Copyright &copy; Your Website 2020</div>
-                            <div class="col-md-6 text-md-right small">
-                                <a href="#!">Privacy Policy</a>
-                                &middot;
-                                <a href="#!">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            
+										</div>
+									</form>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="/js/tablecpanel.js"></script>
-        <script src="/js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="/assets/demo/datatables-demo.js"></script>
-    </body>
+									<!-- (default CORREO ruta)-->
+									<label class="small mb-1" for="rutaEntradaCorreo">Entradas
+										de Correo</label> <input class="form-control mb-2"
+										id="rutaEntradaCorreo" type="text" th:value="${entries}"
+										disabled />
+									<button class="btn btn-primary mb-3" type="button"
+										data-toggle="modal" data-target="#entriesModal">Cambiar</button>
+									<br>
+
+									<!-- Modal CORREO -->
+									<form class="detailsForm" th:action="@{updatePath}"
+										method="post">
+										<input id="descripcion" name="descripcion" th:value="entries"
+											hidden>
+										<div class="modal fade" id="entriesModal" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Modificar
+															ruta | Entradas de Correo</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<p style="color: red" th:if=${emailStatus}>*Se
+															recomienda detener el servicio de correo antes de
+															realizar esta modificación</p>
+														<p>Verifica que la ruta sea absoluta y este escrita
+															correctamente.</p>
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="ruta">Nueva ruta:</label>
+															<input class="form-control" id="ruta" type="text"
+																placeholder="C:\..." name="ruta" />
+														</div>
+
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="checkRuta">Reescribir
+																nueva ruta:</label> <input class="form-control" id="checkRuta"
+																type="text" placeholder="C:\..." name="checkRuta" />
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-danger" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<button class="btn btn-primary" type="submit">Guardar
+															cambios</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+
+									<!-- (default PORTAL ruta)-->
+									<label class="small mb-1" for="rutaEntradaPortal">Entradas
+										del Portal</label> <input class="form-control mb-2" id="rutaFacturas"
+										type="text" th:value="${entryPortal}" disabled />
+									<button class="btn btn-primary mb-3" type="button"
+										data-toggle="modal" data-target="#entryPortalModal">Cambiar</button>
+									<br>
+
+									<!-- Modal PORTAL ENTRADAS -->
+									<form class="detailsForm" th:action="@{updatePath}"
+										method="post">
+										<input id="descripcion" name="descripcion" th:value="entry"
+											hidden>
+										<div class="modal fade" id="entryPortalModal" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Modificar
+															ruta | Entradas del Portal</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<p style="color: red" th:if=${emailStatus}>*Se
+															recomienda detener el servicio de correo antes de
+															realizar esta modificación</p>
+														<p>Verifica que la ruta sea absoluta y este escrita
+															correctamente.</p>
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="ruta">Nueva ruta:</label>
+															<input class="form-control" id="ruta" type="text"
+																placeholder="C:\..." name="ruta" />
+														</div>
+
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="checkRuta">Reescribir
+																nueva ruta:</label> <input class="form-control" id="checkRuta"
+																type="text" placeholder="C:\..." name="checkRuta" />
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-danger" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<button class="btn btn-primary" type="submit">Guardar
+															cambios</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+
+
+
+									<!-- (default ERROR ruta)-->
+									<label class="small mb-1" for="rutaError">Errores</label> <input
+										class="form-control mb-2" id="rutaError" type="text"
+										th:value="${error}" disabled />
+									<button class="btn btn-primary mb-3" type="button"
+										data-toggle="modal" data-target="#errorModal">Cambiar</button>
+									<br>
+
+									<!-- Modal ERROR -->
+									<form class="detailsForm" th:action="@{updatePath}"
+										method="post">
+										<input id="descripcion" name="descripcion" th:value="error"
+											hidden>
+										<div class="modal fade" id="errorModal" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Modificar
+															ruta | Errores</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<p style="color: red" th:if=${emailStatus}>*Se
+															recomienda detener el servicio de correo antes de
+															realizar esta modificación</p>
+														<p>Verifica que la ruta sea absoluta y este escrita
+															correctamente.</p>
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="ruta">Nueva ruta:</label>
+															<input class="form-control" id="ruta" type="text"
+																placeholder="C:\..." name="ruta" />
+														</div>
+
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="checkRuta">Reescribir
+																nueva ruta:</label> <input class="form-control" id="checkRuta"
+																type="text" placeholder="C:\..." name="checkRuta" />
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-danger" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<button class="btn btn-primary" type="submit">Guardar
+															cambios</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+
+									<!-- (default LOGO ruta)-->
+									<label class="small mb-1" for="rutaLogo">Logotipos de
+										Empresa</label> <input class="form-control mb-2" id="rutaLogo"
+										type="text" th:value="${logo}" disabled />
+									<button class="btn btn-primary mb-3" type="button"
+										data-toggle="modal" data-target="#logoModal">Cambiar</button>
+									<br>
+
+									<!-- Modal LOGO -->
+									<form class="detailsForm" th:action="@{updatePath}"
+										method="post">
+										<input id="descripcion" name="descripcion" th:value="logo"
+											hidden>
+										<div class="modal fade" id="logoModal" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Modificar
+															ruta | Logotipos de Empresa</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<p>Verifica que la ruta sea absoluta y este escrita
+															correctamente.</p>
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="ruta">Nueva ruta:</label>
+															<input class="form-control" id="ruta" type="text"
+																placeholder="C:\..." name="ruta" />
+														</div>
+
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="checkRuta">Reescribir
+																nueva ruta:</label> <input class="form-control" id="checkRuta"
+																type="text" placeholder="C:\..." name="checkRuta" />
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-danger" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<button class="btn btn-primary" type="submit">Guardar
+															cambios</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+
+									<!-- (default LOG ruta)-->
+									<label class="small mb-1" for="rutaLog">Log de
+										Movimientos</label> <input class="form-control mb-2" id="rutaLog"
+										type="text" th:value="${log}" disabled />
+									<button class="btn btn-primary mb-3" type="button"
+										data-toggle="modal" data-target="#logModal">Cambiar</button>
+									<br>
+
+									<!-- Modal LOG -->
+									<form class="detailsForm" th:action="@{updatePath}"
+										method="post">
+										<input id="descripcion" name="descripcion" th:value="log"
+											hidden>
+										<div class="modal fade" id="logModal" tabindex="-1"
+											role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered"
+												role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Modificar
+															ruta | Log de Movimientos</h5>
+														<button class="close" type="button" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<p>Verifica que la ruta sea absoluta y este escrita
+															correctamente.</p>
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="ruta">Nueva ruta:</label>
+															<input class="form-control" id="ruta" type="text"
+																placeholder="C:\..." name="ruta" />
+														</div>
+
+														<!-- Form Group (NUEVA RUTA)-->
+														<div class="form-group">
+															<label class="small mb-1" for="checkRuta">Reescribir
+																nueva ruta:</label> <input class="form-control" id="checkRuta"
+																type="text" placeholder="C:\..." name="checkRuta" />
+														</div>
+
+													</div>
+													<div class="modal-footer">
+														<button class="btn btn-danger" type="button"
+															data-dismiss="modal">Cancelar</button>
+														<button class="btn btn-primary" type="submit">Guardar
+															cambios</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+
+
+								</div>
+
+								<!-- Dashboard Tab Pane 2-->
+								<div class="tab-pane fade" id="notifications" role="tabpanel"
+									aria-labelledby="activities-pill">
+									<h4 class="mb-1" for="service-section">Notificaciones</h4>
+									<label class="small mb-2" for="service-description">Configura
+										las notificaciones que emite el sistema.</label>
+
+									<div class="row mb-1">
+										<div class="col-lg-10">
+											<b>Recepción de documento fiscal</b>
+											<p id=email-thread-active>El servicio envía una
+												notificación al proveedor cuando se recibe un documento
+												fiscal.</p>
+										</div>
+										<div class="col-lg-2">
+											<a class="btn" th:href="@{notificationnewdoc(bit='on')}"
+												th:unless="${newDocStatus}"><button
+													class="btn btn-outline-success" type="button">Activar</button></a>
+											<a class="btn" th:href="@{notificationnewdoc(bit='off')}"
+												th:if="${newDocStatus}"><button
+													class="btn btn-outline-danger" type="button">Detener</button></a>
+
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-lg-10">
+											<b>Envío de aviso de pago</b>
+											<p>El servicio envía una notificación con el aviso de
+												pago al proveedor.</p>
+										</div>
+										<div class="col-lg-2">
+											<a class=btn th:href="@{notificationavisopago(bit='on')}"
+												th:unless="${avisoPagoStatus}"><button
+													class="btn btn-outline-success" type="button">Activar</button></a>
+											<a class=btn th:href="@{notificationavisopago(bit='off')}"
+												th:if="${avisoPagoStatus}"><button
+													class="btn btn-outline-danger" type="button">Detener</button></a>
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-lg-10">
+											<b>Actualización de documento fiscal</b>
+											<p>El servicio envía una notificación al proveedor cuando
+												surge una modificación en su documento fiscal.</p>
+										</div>
+										<div class="col-lg-2">
+											<a class=btn th:href="@{notificationupdatedoc(bit='on')}"
+												th:unless="${updateDocStatus}"><button
+													class="btn btn-outline-success" type="button">Activar</button></a>
+											<a class=btn th:href="@{notificationupdatedoc(bit='off')}"
+												th:if="${updateDocStatus}"><button
+													class="btn btn-outline-danger" type="button">Detener</button></a>
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-lg-10">
+											<b>Creación de cuenta proveedor</b>
+											<p>El servicio envía una notificación al proveedor con
+												las credenciales para el portal de proveedores.</p>
+										</div>
+										<div class="col-lg-2">
+											<a class=btn th:href="@{notificationnewaccount(bit='on')}"
+												th:unless="${newAccountStatus}"><button
+													class="btn btn-outline-success" type="button">Activar</button></a>
+											<a class=btn th:href="@{notificationnewaccount(bit='off')}"
+												th:if="${newAccountStatus}"><button
+													class="btn btn-outline-danger" type="button">Detener</button></a>
+										</div>
+									</div>
+								</div>
+
+								<!-- Dashboard Tab Pane 3-->
+								<div class="tab-pane fade" id="email" role="tabpanel"
+									aria-labelledby="activities-pill">
+
+									<h4 class="mb-1" for="reception-section">Recepción</h4>
+									<label class="small mb-2" for="reception-description">Configura
+										el correo por defecto para recibir comprobantes fiscales.</label><br>
+									<!-- (default email CFD reception)-->
+									<label class="small mb-1" for="inputCfdEmail">Correo</label> <input
+										class="form-control mb-2" id="inputCfdEmail" type="email"
+										value="fep@canfer.com.mx" disabled />
+									<button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button>
+
+									<h4 class="mb-1" for="send-section">Envío</h4>
+									<label class="small mb-2" for="send-description">Configura
+										el correo por defecto para enviar notificaciones a los
+										proveedores.</label><br>
+									<!-- (default email notifications)-->
+									<label class="small mb-1" for="outputCfdEmail">Correo</label> <input
+										class="form-control mb-2" id="outputCfdEmail" type="email"
+										value="fep@canfer.com.mx" disabled />
+									<button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button>
+
+
+								</div>
+
+								<!-- Dashboard Tab Pane 4-->
+								<div class="tab-pane fade" id="security" role="tabpanel"
+									aria-labelledby="activities-pill">
+
+									<h4 class="mb-1" for="service-section">Servicios</h4>
+									<label class="small mb-2" for="service-description">Configura
+										los servicios activos en el sistema.</label>
+
+									<div class="row mb-1">
+										<div class="col-lg-10">
+											<b>Servicio de correo</b>
+											<p id=email-thread-active>El servicio se encarga recibir
+												comprobantes fiscales al correo predeterminado.</p>
+										</div>
+										<div class="col-lg-2">
+											<a class="btn" th:href="@{activateEmailThread}"
+												th:unless="${emailStatus}"><button
+													class="btn btn-outline-success" type="button">Activar</button></a>
+											<a class="btn" th:href="@{stopEmailThread}"
+												th:if="${emailStatus}"><button
+													class="btn btn-outline-danger" type="button">Detener</button></a>
+
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-lg-10">
+											<b>Servicio sincronización de pagos</b>
+											<p>El servicio se encarga de sincronizar la base de datos
+												y reconocer nuevos pagos.</p>
+										</div>
+										<div class="col-lg-2">
+											<a class=btn th:href="@{activateSyncPayments}"
+												th:unless="${syncPaymentStatus}"><button
+													class="btn btn-outline-success" type="button">Activar</button></a>
+											<a class=btn th:href="@{stopSyncPayments}"
+												th:if="${syncPaymentStatus}"><button
+													class="btn btn-outline-danger" type="button">Detener</button></a>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Illustration dashboard card example-->
+					<div class="card mb-4">
+						<div class="card-header">Actividad</div>
+						<div class="card-body">
+							<div class="d-flex flex-column justify-content-center">
+								<div class="datatable">
+									<!-- TABLA -->
+									<table class="table table-hover" id="logMov"
+										style="text-align: center; width: 100%">
+										<thead>
+											<tr>
+												<th>Fecha</th>
+												<th>Empresa</th>
+												<th></th>
+												<th>Mensaje</th>
+												<th>Hora</th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<th>Fecha</th>
+												<th>Empresa</th>
+												<th></th>
+												<th>Mensaje</th>
+												<th>Hora</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xxl-4">
+
+					<!-- Team members / people dashboard card example-->
+					<div class="card mb-4">
+						<div class="card-header">Estatus de Servicios</div>
+						<div class="card-body">
+
+							<!-- CORREO -->
+							<div
+								class="d-flex align-items-center justify-content-between mb-4">
+								<div class="d-flex align-items-center flex-shrink-0 mr-3">
+									<div class=" flex-column font-weight-bold">
+										<span th:if="${emailStatus}"><status-indicator positive
+												pulse></status-indicator> Servicio de correo</span> <span
+											th:unless="${emailStatus}"><status-indicator negative
+												pulse></status-indicator> Servicio de correo</span>
+									</div>
+								</div>
+
+							</div>
+							<!-- PAGOS -->
+							<div
+								class="d-flex align-items-center justify-content-between mb-4">
+								<div class="d-flex align-items-center flex-shrink-0 mr-3">
+									<div class=" flex-column font-weight-bold">
+										<span th:if="${syncPaymentStatus}"><status-indicator
+												positive pulse></status-indicator> Servicio de
+											sincronización de pagos</span> <span
+											th:unless="${syncPaymentStatus}"><status-indicator
+												negative pulse></status-indicator> Servicio de
+											sincronización de pagos</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Team members / people dashboard card example-->
+					<div class="card mb-4">
+						<div class="card-header">Atajos</div>
+						<div class="card-body">
+							<!-- Item 1-->
+							<div
+								class="d-flex align-items-center justify-content-between mb-4">
+
+								<div class="d-flex flex-column font-weight-bold">
+									<a class="text-dark line-height-normal mb-1"
+										href="/admin/addUser"><i class="feather-l text-green mr-2"
+										data-feather="user-plus"></i>Añadir usuario</a>
+								</div>
+
+							</div>
+							<!-- Item 1-->
+							<div
+								class="d-flex align-items-center justify-content-between mb-4">
+
+								<div class="d-flex flex-column font-weight-bold">
+									<a class="text-dark line-height-normal mb-1"
+										href="/admin/addUserSupplier"><i
+										class="feather-l text-green mr-2" data-feather="user-plus"></i>Añadir
+										usuario proveedor</a>
+								</div>
+
+							</div>
+							<!-- Item 2-->
+							<div
+								class="d-flex align-items-center justify-content-between mb-4">
+								<div class="d-flex align-items-center flex-shrink-0 mr-3">
+									<div class="d-flex flex-column font-weight-bold">
+										<a class="text-dark line-height-normal mb-1"
+											href="/admin/addCompany"><i
+											class="feather-l text-green mr-2" data-feather="plus-circle"></i>Añadir
+											empresa</a>
+
+									</div>
+								</div>
+
+							</div>
+							<!-- Item 3-->
+							<div
+								class="d-flex align-items-center justify-content-between mb-4">
+								<div class="d-flex align-items-center flex-shrink-0 mr-3">
+									<div class="d-flex flex-column font-weight-bold">
+										<a class="text-dark line-height-normal mb-1"
+											href="/admin/addSupplier"><i
+											class="feather-l text-green mr-2" data-feather="plus-circle"></i>Añadir
+											proveedor</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer class="footer mt-auto footer-light">
+		<div class="mx-auto">
+			<div class="row">
+				<div class="small">Copyright &copy; Canfer Grupo Empresarial
+					2021</div>
+			</div>
+		</div>
+	</footer>
+
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		crossorigin="anonymous"></script>
+	<script src="/js/tablecpanel.js"></script>
+	<script src="/js/scripts.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"
+		crossorigin="anonymous"></script>
+	<script src="/assets/demo/datatables-demo.js"></script>
+</body>
 </html>

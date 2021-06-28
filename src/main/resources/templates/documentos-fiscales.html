@@ -34,7 +34,8 @@
 	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <link href="css/stylesdf.css" rel="stylesheet" />
-<link rel="icon" type="image/x-icon" href="/assets/img/logosEmpresas/canfer.gif" />
+<link rel="icon" type="image/x-icon"
+	href="/assets/img/logosEmpresas/canfer.gif" />
 </head>
 
 <!-- TOP NAV BAR -->
@@ -51,7 +52,7 @@
 
 		<!-- ICONOS DE TOP NAV BAR -->
 		<ul class="navbar-nav align-items-center ml-auto">
-		
+
 			<!-- DASHBOARD FEATHER -->
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
 				class="btn btn-icon btn-transparent-dark" href="/dashboard"
@@ -60,7 +61,8 @@
 
 			<!-- CATALOG FEATHER -->
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
-				class="btn btn-icon btn-transparent-dark" th:href="@{/documentosFiscalesClient/catalogo(selectedCompany=${selectedCompany})}"
+				class="btn btn-icon btn-transparent-dark"
+				th:href="@{/documentosFiscalesClient/catalogo(selectedCompany=${selectedCompany})}"
 				id="catalogButton" role="button" aria-haspopup="true"
 				aria-expanded="false"><i data-feather=book-open></i></a></li>
 
@@ -75,24 +77,28 @@
 					<h6 class="dropdown-header dropdown-notifications-header">
 						<i class="mr-2" data-feather="grid"></i> Centro de Módulos
 					</h6>
-					<a class="dropdown-item py-3"  th:href="@{/dashboard}">
-                        <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
-                        <div>
-                            <div class="small text-gray-500">Módulo</div>
-                            Contaduría Nacional
-                        </div>
-                    </a>
-                    <div class="dropdown-divider m-0"></div>
-                    <a class="dropdown-item py-3"  th:href="@{/cajachicaclient/dashboard}" >
-                        <div class="icon-stack bg-indigo-soft text-indigo mr-4"><i data-feather="layers"></i></div>
-                        <div>
-                            <div class="small text-gray-500">Módulo</div>
-                            Caja Chica
-                        </div>
-                    </a>
+					<a class="dropdown-item py-3" th:href="@{/dashboard}">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Contaduría Nacional
+						</div>
+					</a>
 					<div class="dropdown-divider m-0"></div>
 					<a class="dropdown-item py-3"
-						target="_blank">
+						th:href="@{/cajachicaclient/dashboard}">
+						<div class="icon-stack bg-indigo-soft text-indigo mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Caja Chica
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3" target="_blank">
 						<div class="icon-stack bg-teal-soft text-teal mr-4">
 							<i data-feather="layers"></i>
 						</div>
@@ -102,8 +108,7 @@
 						</div>
 					</a>
 					<div class="dropdown-divider m-0"></div>
-					<a class="dropdown-item py-3"
-						target="_blank">
+					<a class="dropdown-item py-3" target="_blank">
 						<div class="icon-stack bg-yellow-soft text-yellow mr-4">
 							<i data-feather="layers"></i>
 						</div>
@@ -113,8 +118,7 @@
 						</div>
 					</a>
 					<div class="dropdown-divider m-0"></div>
-					<a class="dropdown-item py-3"
-						target="_blank">
+					<a class="dropdown-item py-3" target="_blank">
 						<div class="icon-stack bg-primary-soft text-primary mr-4">
 							<i data-feather="layers"></i>
 						</div>
@@ -128,12 +132,14 @@
 
 
 			<!-- CONFIGURACIONES -->
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <li class="nav-item dropdown no-caret mr-3 d-md-inline">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="/admin/cpanel" role="button" aria-haspopup="true" aria-expanded="false"><i data-feather=settings></i></a>
-                </li>
+			<div sec:authorize="hasRole('ROLE_ADMIN')">
+				<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+					class="btn btn-icon btn-transparent-dark dropdown-toggle"
+					id="navbarDropdownMessages" href="/admin/cpanel" role="button"
+					aria-haspopup="true" aria-expanded="false"><i
+						data-feather=settings></i></a></li>
 			</div>
-			
+
 			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
 				id="navbarDropdownUserImage" href="javascript:void(0);"
@@ -186,7 +192,7 @@
 
 			<!-- Main page content-->
 			<div class="container-fluid" style="padding-top: 150px">
-										
+
 				<div class="row">
 					<div class="col-2">
 
@@ -199,7 +205,8 @@
 								de Pago</a> <a class="nav-link" id="pestañaAvisos" href="#!">Avisos
 								de Pago</a> <a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
 
-							<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png" class=" pl-5 pb-5"
+							<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
+								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
 
@@ -209,7 +216,7 @@
 						<!-- TOAST PARA REFRESH DE SAT -->
 						<div class="toast" role="alert" id="toastSAT" data-autohide=false
 							data-delay="6000"
-							style="z-index:7000; position: fixed; right: 2.5rem;"
+							style="z-index: 7000; position: fixed; right: 2.5rem;"
 							aria-live="assertive" aria-atomic="true">
 							<div class="toast-header bg-primary text-white">
 								<i data-feather="alert-circle"></i> <strong class="mr-auto">Cambio
@@ -498,9 +505,10 @@
 															id="reloadTableBtn">
 															Buscar<i class="ml-2" data-feather="search"></i>
 														</button>
-														<button class="btn btn-primary float-right" type="button" disabled hidden="true" id="reloadTableLoading">
-															<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-															Buscando...
+														<button class="btn btn-primary float-right" type="button"
+															disabled hidden="true" id="reloadTableLoading">
+															<span class="spinner-border spinner-border-sm"
+																role="status" aria-hidden="true"></span> Buscando...
 														</button>
 														<button class="btn btn-blue float-right mr-2"
 															type="button" id="clearFilters">Limpiar</button>
@@ -510,93 +518,96 @@
 											</div>
 										</div>
 									</div>
-									
+
 									<!--  DIV PARA PONER TODOS LOS ALERTS -->
 									<div>
-										<div class="alert alert-success alert-icon mt-3" id="alert-edit-true" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-check"></i>
-												</div>
-												<div class="alert-icon-content">Se actualizó correctamente la información del formulario. </div>
+										<div class="alert alert-success alert-icon mt-3"
+											id="alert-edit-true" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-check"></i>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" id="alert-edit-false" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="alert-icon-content">No se pudo actualizar
-													correctamente la información del documento fiscal.</div>
+											<div class="alert-icon-content">Se actualizó
+												correctamente la información del formulario.</div>
+										</div>
+										<div class="alert alert-danger alert-icon mt-3"
+											id="alert-edit-false" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-times"></i>
 											</div>
-											<div class="alert alert-success alert-icon mt-3" id="alert-pdfedit-true" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-check"></i>
-												</div>
-												<div class="alert-icon-content">Se actualizó correctamente el PDF del documento fiscal. </div>
+											<div class="alert-icon-content">No se pudo actualizar
+												correctamente la información del documento fiscal.</div>
+										</div>
+										<div class="alert alert-success alert-icon mt-3"
+											id="alert-pdfedit-true" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-check"></i>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" id="alert-pdfedit-false" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="alert-icon-content">No se pudo actualizar
-													correctamente el PDF del documento fiscal.</div>
+											<div class="alert-icon-content">Se actualizó
+												correctamente el PDF del documento fiscal.</div>
+										</div>
+										<div class="alert alert-danger alert-icon mt-3"
+											id="alert-pdfedit-false" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-times"></i>
 											</div>
-											<div class="alert alert-success alert-icon mt-3" id="alert-upload-true" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-check"></i>
-												</div>
-												<div class="alert-icon-content">Se procesó
-													correctamente el nuevo documento fiscal.</div>
+											<div class="alert-icon-content">No se pudo actualizar
+												correctamente el PDF del documento fiscal.</div>
+										</div>
+										<div class="alert alert-success alert-icon mt-3"
+											id="alert-upload-true" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-check"></i>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" id="alert-upload-false" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="alert-icon-content">No se pudo cargar
-													correctamente el nuevo documento fiscal.</div>
+											<div class="alert-icon-content">Se procesó
+												correctamente el nuevo documento fiscal.</div>
+										</div>
+										<div class="alert alert-danger alert-icon mt-3"
+											id="alert-upload-false" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-times"></i>
 											</div>
-											<div class="alert alert-danger alert-icon mt-3" id="alert-delete-false" role="alert"
-												hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="alert-icon-content">No se pudo eliminar la factura porque está ligada a un complemento de pago.</div>
+											<div class="alert-icon-content">No se pudo cargar
+												correctamente el nuevo documento fiscal.</div>
+										</div>
+										<div class="alert alert-danger alert-icon mt-3"
+											id="alert-delete-false" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-times"></i>
 											</div>
-											
+											<div class="alert-icon-content">No se pudo eliminar la
+												factura porque está ligada a un complemento de pago.</div>
+										</div>
+
 									</div>
-									
+
 									<!-- TABLA -->
 									<table class="compact table-hover" id="facturas"
 										style="text-align: center; width: 100%">
@@ -661,7 +672,7 @@
 											<a class="dropdown-item" id="csv" href="#">CSV</a> <a
 												class="dropdown-item" id="xml" href="#">XML</a><a
 												class="dropdown-item" id="pdf" href="#">PDF</a> <a
-												class="dropdown-item" id="xls" href="#">EXCEL</a> 
+												class="dropdown-item" id="xls" href="#">EXCEL</a>
 										</div>
 									</div>
 								</div>
@@ -971,9 +982,9 @@
 															</label>
 														</div>
 														<div class="col-9">
-																<input type="text" style="height: 20px" readonly
-																class="form-control text-danger form-control-sm bg-white" 
-																 id="validacionFiscal" value="">
+															<input type="text" style="height: 20px" readonly
+																class="form-control text-danger form-control-sm bg-white"
+																id="validacionFiscal" value="">
 														</div>
 													</div>
 													<div class="row pt-1">
@@ -984,13 +995,13 @@
 															</label>
 														</div>
 														<div class="col-9">
-																<textarea type="text" style="height: 50px" readonly
-																class="form-control text-danger form-control-sm bg-white" cols="40"
-																rows="5" id="respuestaValidacion" value=""></textarea>
-														
+															<textarea type="text" style="height: 50px" readonly
+																class="form-control text-danger form-control-sm bg-white"
+																cols="40" rows="5" id="respuestaValidacion" value=""></textarea>
+
 														</div>
 													</div>
-													
+
 													<div class="row pt-1">
 														<div class="col-3">
 															<label for="docsRelacionados"
@@ -1079,7 +1090,8 @@
 														style="color: teal"></i><i
 														class="fas fa-slash fa-stack-1x" style="color: red"></i></span>
 												</div>
-												<button class="btn btn-primary" id="guardar-modal-info" type="submit">Guardar</button>
+												<button class="btn btn-primary" id="guardar-modal-info"
+													type="submit">Guardar</button>
 											</div>
 										</div>
 									</div>
@@ -1107,7 +1119,8 @@
 											<div class="modal-footer">
 												<button class="btn btn-primary" type="button"
 													data-dismiss="modal">Cancelar</button>
-												<a class="btn btn-danger delBtn"  id ="confirmDelete" type="button">Eliminar</a>
+												<a class="btn btn-danger delBtn" id="confirmDelete"
+													type="button">Eliminar</a>
 											</div>
 										</div>
 									</div>
@@ -1182,28 +1195,25 @@
 								</div>
 							</div>
 						</div>
-		
-			
+
+
 					</div>
 				</div>
 			</div>
 
 		</main>
 		<footer class="footer mt-auto footer-light">
-			<div class="container">
+			<div class="mx-auto">
 				<div class="row">
-					<div class="col-md-10 offset-md-2">
-						<div class="row">
-							<div class="col-md-6 small">Copyright &copy; Canfer Grupo
-								Empresarial 2020</div>
-						</div>
-					</div>
+					<div class="small">Copyright &copy; Canfer Grupo Empresarial
+						2021</div>
 				</div>
 			</div>
 		</footer>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
 		crossorigin="anonymous"></script>

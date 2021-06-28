@@ -56,12 +56,7 @@
 				id="dashboardButton" role="button" aria-haspopup="true"
 				aria-expanded="false"><i data-feather=layout></i></a></li>
 
-			<!-- CATALOG FEATHER -->
-			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
-				class="btn btn-icon btn-transparent-dark"
-				th:href="@{/documentosFiscalesClient/catalogo(selectedCompany=${selectedCompany})}"
-				id="dashboardButton" role="button" aria-haspopup="true"
-				aria-expanded="false"><i data-feather=book-open></i></a></li>
+
 
 			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
 				class="btn btn-icon btn-transparent-dark dropdown-toggle"
@@ -74,23 +69,30 @@
 					<h6 class="dropdown-header dropdown-notifications-header">
 						<i class="mr-2" data-feather="grid"></i> Centro de Módulos
 					</h6>
-					<a class="dropdown-item py-3"  th:href="@{/dashboard}">
-                       <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="layers"></i></div>
-                       <div>
-                           <div class="small text-gray-500">Módulo</div>
-                           Contaduría Nacional
-                       </div>
-                   </a>
-                   <div class="dropdown-divider m-0"></div>
-                   <a class="dropdown-item py-3"  th:href="@{/cajachicaclient/dashboard}" >
-                       <div class="icon-stack bg-indigo-soft text-indigo mr-4"><i data-feather="layers"></i></div>
-                       <div>
-                           <div class="small text-gray-500">Módulo</div>
-                           Caja Chica
-                       </div>
-                   </a>
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" th:href="@{/dashboard}">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Contaduría Nacional
+						</div>
+					</a>
 					<div class="dropdown-divider m-0"></div>
-					<a class="dropdown-item py-3" target="_blank">
+					<a class="dropdown-item py-3"
+						th:href="@{/cajachicaclient/dashboard}">
+						<div class="icon-stack bg-indigo-soft text-indigo mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Caja Chica
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" target="_blank">
 						<div class="icon-stack bg-teal-soft text-teal mr-4">
 							<i data-feather="layers"></i>
 						</div>
@@ -100,7 +102,8 @@
 						</div>
 					</a>
 					<div class="dropdown-divider m-0"></div>
-					<a class="dropdown-item py-3" target="_blank">
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" target="_blank">
 						<div class="icon-stack bg-yellow-soft text-yellow mr-4">
 							<i data-feather="layers"></i>
 						</div>
@@ -110,7 +113,8 @@
 						</div>
 					</a>
 					<div class="dropdown-divider m-0"></div>
-					<a class="dropdown-item py-3" target="_blank">
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" target="_blank">
 						<div class="icon-stack bg-primary-soft text-primary mr-4">
 							<i data-feather="layers"></i>
 						</div>
@@ -190,7 +194,9 @@
 						<!-- Buttons SideNav -->
 						<nav class="nav nav-borders flex-column" style="position: fixed">
 							<a class="nav-link active" id="pestañaFormulario" href="#!">Entradas</a>
-							<a sec:authorize="hasRole('ADMIN')" class="nav-link" id="pestañaAdministrativa" th:href="@{/cajachicaclient/administration}">Administración</a>
+							<a sec:authorize="hasRole('ADMIN')" class="nav-link"
+								id="pestañaAdministrativa"
+								th:href="@{/cajachicaclient/administration}">Administración</a>
 							<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
@@ -204,7 +210,8 @@
 						<div class="card mb-0">
 							<div id="selectedCompany" th:text="${selectedCompany}" hidden>PAE920709D75</div>
 							<div id="selectedClave" th:text="${selectedSucursal}" hidden>A-0080</div>
-							<div sec:authentication="principal.authorities" hidden id="userRoles"></div>
+							<div sec:authentication="principal.authorities" hidden
+								id="userRoles"></div>
 							<div class="card-body">
 
 
@@ -301,9 +308,9 @@
 															style="text-align: right; color: black; font-size: large">
 														</div>
 														<!-- Hidden fields (informative only) -->
-															<input type="text" style="height: 20px"
-																id="idFormularioCajaChica1" name="idFormularioCajaChica"
-																value="" hidden/>
+														<input type="text" style="height: 20px"
+															id="idFormularioCajaChica1" name="idFormularioCajaChica"
+															value="" hidden />
 													</div>
 												</div>
 											</div>
@@ -550,9 +557,11 @@
 												</div>
 											</div>
 											<div class="row">
-												<div id="btn-nuevo-det"><button class="btn btn-secondary ml-3" type="button"
-													data-toggle="modal" data-target="#newDetModal">
-													Nuevo Detalle</button></div>
+												<div id="btn-nuevo-det">
+													<button class="btn btn-secondary ml-3" type="button"
+														data-toggle="modal" data-target="#newDetModal">
+														Nuevo Detalle</button>
+												</div>
 												<div class="col-12">
 													<table class="compact table-hover"
 														id="detallesNuevoCajaChica"
@@ -767,11 +776,12 @@
 																				detalle</h5>
 																			<!-- Content del new detalle modal -->
 																			<!-- Hidden fields (informative only) -->
-																			<div class="col-2" >
-																				<input type="text" hidden style="height: 20px" readonly
+																			<div class="col-2">
+																				<input type="text" hidden style="height: 20px"
+																					readonly
 																					class="form-control form-control-sm bg-white"
-																					id="idFormularioCajaChica2"
-																					name="idFormulario" value="" />
+																					id="idFormularioCajaChica2" name="idFormulario"
+																					value="" />
 																			</div>
 																		</div>
 																		<div>
@@ -954,7 +964,8 @@
 
 
 								<!-- MODAL PARA MAS INFORMACION DE DETALLE-->
-								<form class="detailsForm" method="post" th:action="@{/cajachicaclient/updatedetformcc}"
+								<form class="detailsForm" method="post"
+									th:action="@{/cajachicaclient/updatedetformcc}"
 									enctype="multipart/form-data" id="updateDetForm">
 									<div class="modal fade" id="detailsModal" tabindex="-1"
 										role="dialog" aria-labelledby="myLargeModalLabel"
@@ -989,12 +1000,11 @@
 																	Fecha del documento: </label>
 															</div>
 															<div class="col-6">
-																<input type="text" id="detail-fechaDet"
-																	name="fechaDet" style="height: 25px" value="" />
-																	<input type="text" id="detail-realDate" name="realDate"
-																					value="" hidden />
+																<input type="text" id="detail-fechaDet" name="fechaDet"
+																	style="height: 25px" value="" /> <input type="text"
+																	id="detail-realDate" name="realDate" value="" hidden />
 															</div>
-															
+
 														</div>
 														<div class="row pt-1">
 															<div class="col-4">
@@ -1092,10 +1102,10 @@
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
 																	id="detail-idDetFormularioCC" name="idDetFormularioCC" />
-																	<input type="text" style="height: 20px"
+																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-idFormulario" name="idDetFormularioCC" />
-																	<input type="text" style="height: 20px"
+																	id="detail-idFormulario" name="idDetFormularioCC" /> <input
+																	type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
 																	id="detail-idSucursal" name="idSucursal" />
 															</div>
@@ -1109,8 +1119,7 @@
 															<div class="col-6">
 																<input type="text" style="height: 20px"
 																	class="form-control form-control-sm bg-white"
-																	id="detail-nombreProveedor"
-																	name="nombreProveedor" />
+																	id="detail-nombreProveedor" name="nombreProveedor" />
 															</div>
 														</div>
 														<div class="row pt-1">
@@ -1141,7 +1150,8 @@
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button class="btn btn-secondary" id="updateDet" type="submit">Guardar</button>
+													<button class="btn btn-secondary" id="updateDet"
+														type="submit">Guardar</button>
 												</div>
 											</div>
 										</div>
@@ -1226,18 +1236,10 @@
 			</div>
 		</main>
 		<footer class="footer mt-auto footer-light">
-			<div class="container">
+			<div class="mx-auto">
 				<div class="row">
-					<div class="col-md-10 offset-md-2">
-						<div class="row">
-							<div class="col-md-6 small">Copyright &copy; Canfer Grupo
-								Empresarial 2020</div>
-							<div class="col-md-6 text-md-right small">
-								<a> Políticas de Privacidad</a> &middot; <a>Términos &amp;
-									Condiciones</a>
-							</div>
-						</div>
-					</div>
+					<div class="small">Copyright &copy; Canfer Grupo Empresarial
+						2021</div>
 				</div>
 			</div>
 		</footer>
