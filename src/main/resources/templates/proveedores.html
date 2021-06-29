@@ -116,8 +116,8 @@
 							<a class="nav-link active" id="pestañaInicio" href="#!">Inicio</a>
 							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de
 								Pago</a> <a class="nav-link" id="pestañaPerfil" href="#!">Perfil</a>
-							<a class="nav-link" id="pestañaAyuda" href="#!">Ayuda</a> <img
-								src="assets/img/logosEmpresas/canfer.gif" class=" pl-5 pb-5"
+							<a class="nav-link" id="pestañaAyuda" href="#!">Ayuda</a> <img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
+								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
 
@@ -145,7 +145,7 @@
 											<a type="button" id="btn-csv"
 												class="btn btn-outline-danger mr-2"
 												th:href="@{/proveedoresClient/excel(rfc=${selectedCompany},clave=${selectedClave})}">EXCEL</a>
-											<button class="btn btn-danger" type="button"
+											<button class="btn btn-red" type="button"
 												data-toggle="collapse" data-target="#collapseExample"
 												aria-expanded="false" aria-controls="collapseExample">
 												<i class="" style="color: white" data-feather="search"></i>
@@ -191,7 +191,7 @@
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
 																					<i class="far fa-file-pdf float-left fa-lg"
-																						style="color: red"></i>
+																						style="color:#bf2b1d"></i>
 																				</div>
 																			</div>
 																			<input class="form-control" id="InputGroupPDF"
@@ -199,7 +199,7 @@
 																		</div>
 																		<tr>
 																			<td></td>
-																			<td><input class="btn btn-danger" type="submit"
+																			<td><input class="btn btn-red" type="submit"
 																				value="Cargar" /></td>
 																		</tr>
 																	</table>
@@ -216,8 +216,8 @@
 
 									<div class="collapse" id="collapseExample">
 										<div class="card shadow-none mb-3">
-											<div class="card-header" style="color: red">
-												<i class="mr-2 text-red" data-feather="search"></i> Filtros
+											<div class="card-header" style="color:#bf2b1d">
+												<i class="mr-2" style="color:#bf2b1d" data-feather="search"></i> Filtros
 												de Búsqueda
 
 											</div>
@@ -240,7 +240,7 @@
 														<button
 															class="btn btn-light btn-sm line-height-normal p-2"
 															id="reportrangeEmision">
-															<i class="mr-2 text-red" data-feather="calendar"></i> <span></span>
+															<i class="mr-2" style="color:#bf2b1d" data-feather="calendar"></i> <span></span>
 															<div id="registeredBefore" hidden></div>
 															<div id="registeredAfter" hidden></div>
 															<i class="ml-1" data-feather="chevron-down"></i>
@@ -610,7 +610,7 @@
 																		class="btn btn-datatable btn-icon btn-transparent-dark m-0"
 																		id="pdfDetails"><i
 																		class="far fa-file-pdf float-left fa-lg"
-																		style="color: red"></i></a>
+																		style="color: bf2b1d"></i></a>
 																</div>
 															</div>
 															<div class="row">
@@ -687,7 +687,7 @@
 											</div>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-danger"
+											<button type="button" class="btn btn-red"
 												data-dismiss="modal">Cerrar</button>
 										</div>
 									</div>
@@ -731,7 +731,7 @@
 
 						<!-- Main Content Perfil -->
 						<div class="card mb-0" hidden="true" id="divPerfil">
-							<div class="card-header" style="color: red">Detalles del
+							<div class="card-header" style="color: #bf2b1d">Detalles del
 								perfil</div>
 							<div class="card-body">
 								<!-- Form Row-->
@@ -815,7 +815,7 @@
 							<div class="row">
 								<div class="col-6 m-3">
 									<div class="card">
-										<div class="card-header" style="color: red">Datos de
+										<div class="card-header" style="color: #bf2b1d">Datos de
 											Contacto</div>
 										<div class="card-body">
 											Para cualquier duda o aclaración favor de ponerse en
@@ -824,7 +824,7 @@
 												<label class="small mb-1" for="nombreContacto">Nombre</label>
 												<div class="input-group input-group-joined">
 													<div class="input-group-prepend">
-														<span class="input-group-text mr-4 text-red"> <i
+														<span class="input-group-text mr-4" style="color:#bf2b1d"> <i
 															data-feather="user"></i>
 														</span>
 													</div>
@@ -837,7 +837,7 @@
 												<label class="small mb-1" for="correoContacto">Correo</label>
 												<div class="input-group input-group-joined">
 													<div class="input-group-prepend">
-														<span class="input-group-text mr-4 text-red"> <i
+														<span class="input-group-text mr-4 " style="color:#bf2b1d"> <i
 															data-feather="mail"></i>
 														</span>
 													</div>
@@ -850,7 +850,7 @@
 												<label class="small mb-1" for="telefonoContacto">Teléfono</label>
 												<div class="input-group input-group-joined">
 													<div class="input-group-prepend">
-														<span class="input-group-text mr-4 text-red"> <i
+														<span class="input-group-text mr-4 text-red" style="color:#bf2b1d"> <i
 															data-feather="phone"></i>
 														</span>
 													</div>
@@ -864,8 +864,8 @@
 								</div>
 								<div class="col m-3">
 									<div class="card">
-										<div class="card-header" style="color: red">Datos de
-											Contacto</div>
+										<div class="card-header" style="color:#bf2b1d">Datos de
+											Portal</div>
 										<div class="card-body">
 											<div class="form-group">
 												<label class="small mb-1" for="antiguedad">Antigüedad</label>
