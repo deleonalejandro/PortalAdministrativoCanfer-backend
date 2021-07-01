@@ -52,6 +52,8 @@ public class FormularioCajaChica {
 	private String numeroPago;
 	
 	private LocalDateTime fechaPago;
+	
+	private LocalDateTime fechaEnvio;
 
 	//Constructor
 	public FormularioCajaChica(Sucursal sucursal, Long folio, String responsable) {
@@ -173,6 +175,14 @@ public class FormularioCajaChica {
 
 	public void setFechaPago(LocalDateTime fechaPago) {
 		this.fechaPago = fechaPago;
+	}
+
+	public LocalDateTime getFechaEnvio() {
+		return fechaEnvio;
+	}
+
+	public void setFechaEnvio(LocalDateTime fechaEnvio) {
+		this.fechaEnvio = fechaEnvio;
 	}
 
 	public Boolean isOpen() {

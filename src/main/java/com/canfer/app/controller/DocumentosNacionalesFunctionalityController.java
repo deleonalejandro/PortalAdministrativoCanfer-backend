@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -36,7 +40,7 @@ import javassist.NotFoundException;
 
 @Controller
 @RequestMapping("/documentosFiscalesClient")
-public class DocumentosNacionalesFunctionalityController {
+public class DocumentosNacionalesFunctionalityController implements HandlerExceptionResolver {
 
 	@Autowired
 	@Qualifier("DocumentosNacionalesActions")
@@ -85,6 +89,7 @@ public class DocumentosNacionalesFunctionalityController {
 			return "redirect:/documentosFiscalesClient?rfc=" + rfc;
 		
 	}
+	
 	
 	@GetMapping("/download/{method}/{repo}/{id}")
 	public ResponseEntity<Resource> download(@PathVariable Long id, @PathVariable String method, @PathVariable String repo) {
@@ -230,6 +235,18 @@ public class DocumentosNacionalesFunctionalityController {
 		
 		ra.addFlashAttribute("registerSuccess", true);
 		return "redirect:/dashboard";
+	}
+
+
+	@Override
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
+			Exception ex) {
+		String referrer = request.getHeader("referer");
+		ModelAndView modelAndView = new ModelAndView("redirect:" + referrer);
+	    if (ex instanceof MaxUploadSizeExceededException) {
+	        modelAndView.getModel().put("message", "File size exceeds limit!");
+	    }
+	    return modelAndView;
 	}
 	
 	

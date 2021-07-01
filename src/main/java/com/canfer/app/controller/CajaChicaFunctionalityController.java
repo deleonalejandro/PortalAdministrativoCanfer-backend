@@ -2,6 +2,9 @@ package com.canfer.app.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -16,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.canfer.app.dto.DetFormularioCajaChicaDTO;
 import com.canfer.app.dto.FormularioCajaChicaDTO;
@@ -34,7 +40,7 @@ import javassist.NotFoundException;
 
 @Controller
 @RequestMapping("/cajachicaclient")
-public class CajaChicaFunctionalityController {
+public class CajaChicaFunctionalityController implements HandlerExceptionResolver {
 	
 	@Autowired
 	@Qualifier("CajaChicaActions")
@@ -288,6 +294,17 @@ public class CajaChicaFunctionalityController {
 		
 		return actioner.downloadXls(id);
 		
+	}
+
+	@Override
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
+			Exception ex) {
+		String referrer = request.getHeader("referer");
+		ModelAndView modelAndView = new ModelAndView("redirect:" + referrer);
+	    if (ex instanceof MaxUploadSizeExceededException) {
+	        modelAndView.getModel().put("message", "File size exceeds limit!");
+	    }
+	    return modelAndView;
 	}
 	
 
