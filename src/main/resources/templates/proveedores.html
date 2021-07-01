@@ -802,7 +802,7 @@
 									<div class="form-group col-md-6">
 										<label class="small mb-1" for="monedaPerfil">Moneda</label> <input
 											style="height: 30px;" class="form-control"
-											th:value="${#strings.containsIgnoreCase(supplier.moneda,'d')} ? 'USD': 'MXN'"
+											th:value="${supplier.moneda == null ? '': #strings.containsIgnoreCase(supplier.moneda,'d') ? 'USD': 'MXN'}"
 											type="text" readonly />
 									</div>
 								</div>
