@@ -176,6 +176,7 @@
 																	th:action="@{/proveedoresClient/uploadFactura(rfc=${selectedCompany},clave=${selectedClave})}">
 																	<table>
 																		<div>Cargar un XML:</div>
+																		<div class="text-danger" hidden id="fileSizeXml">Los archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -187,6 +188,7 @@
 																				accept=".xml" type="file" name="files" />
 																		</div>
 																		<div>Cargar un PDF:</div>
+																		<div class="text-danger" hidden id="fileSizePdf">Los archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -676,9 +678,9 @@
 																	</label>
 																</div>
 																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="comentario" value="" />
+																		<textarea type="text" style="height: 50px" readonly
+																		class="form-control form-control-sm bg-white" cols="40"
+																		rows="5" id="comentario" name="comentario" value=""></textarea>
 																</div>
 															</div>
 														</div>
