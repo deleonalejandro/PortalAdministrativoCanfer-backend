@@ -420,9 +420,19 @@ $(document).ready(function() {
 		$('#paqueteria').prop( "disabled",  false);
 
 		var data = new FormData($('#formFormulario')[0]);
-
 		var url = "/cajachicaclient/updateformcc";
-
+		
+		if($('#fechaPago').val() != ''){
+			data.set("fechaPago",$('#fechaPago').val()+'T00:00:00')
+			
+		}
+		
+		if($('#fechaEnvio').val() != ''){
+			data.set("fechaEnvio",$('#fechaEnvio').val()+'T00:00:00')
+			
+		}
+		
+		
 		var saveForm = $.ajax({
 			url: url,
 			data: data,
@@ -700,7 +710,9 @@ $(document).ready(function() {
 			
 		$("#numeroGuia").val(formulario.numeroGuia);
 		$("#numeroPago").val(formulario.numeroPago);
-		$("#fechaPago").val(formulario.fechaPago);
+		if(formulario.fechaPago != null){ $("#fechaPago").val(formulario.fechaPago.split("T")[0]);}
+		if(formulario.fechaEnvio != null){ alert('wuju',formulario.fechaEnvio.split("T")[0] )
+		$("#fechaEnvio").val(formulario.fechaEnvio.split("T")[0]);}
 		$("#idFormularioCajaChica1").val(formulario.idFormularioCajaChica);
 		$("#idFormularioCajaChica2").val(formulario.idFormularioCajaChica);
 		$("#idFormularioCC").val(formulario.idFormularioCajaChica);
@@ -1045,6 +1057,9 @@ $(document).ready(function() {
 		
 		document.getElementById("numeroPago").removeAttribute("required");
 		document.getElementById("fechaPago").removeAttribute("required");
+		
+		$('#fechaPago').val('');
+
 	}
 	
 	//Habilitar Envio
@@ -1053,9 +1068,11 @@ $(document).ready(function() {
 		document.getElementById("divPaqueteria").removeAttribute("hidden");
 		document.getElementById("infoEnvio").removeAttribute("hidden")
 		document.getElementById("divNumeroGuia").removeAttribute("hidden")
+		document.getElementById("divFechaEnvio").removeAttribute("hidden")
 		
 		document.getElementById("paqueteria").setAttribute("required", "");
 		document.getElementById("numeroGuia").setAttribute("required", "");
+		document.getElementById("fechaEnvio").setAttribute("required", "");
 		
 	}
 	
@@ -1065,9 +1082,14 @@ $(document).ready(function() {
 		document.getElementById("divPaqueteria").hidden=true;
 		document.getElementById("infoEnvio").hidden=true;
 		document.getElementById("divNumeroGuia").hidden=true;
+		document.getElementById("divFechaEnvio").hidden=true;
 		
 		document.getElementById("paqueteria").removeAttribute("required");
 		document.getElementById("numeroGuia").removeAttribute("required");
+		document.getElementById("fechaEnvio").removeAttribute("required");
+		
+		$('#fechaEnvio').val('');
+
 		
 	}
 	
@@ -1088,7 +1110,7 @@ $(document).ready(function() {
 	 	  	
 	 	  	document.getElementById("paqueteria").removeAttribute("required");
 			document.getElementById("numeroGuia").removeAttribute("required");
-			
+			document.getElementById("fechaEnvio").removeAttribute("required");
 			document.getElementById("numeroPago").removeAttribute("required");
 			document.getElementById("fechaPago").removeAttribute("required");
 	
