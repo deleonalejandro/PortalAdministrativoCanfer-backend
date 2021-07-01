@@ -204,8 +204,7 @@
 								Crédito</a> <a class="nav-link" id="pestañaCompl" href="#!">Complementos
 								de Pago</a> <a class="nav-link" id="pestañaAvisos" href="#!">Avisos
 								de Pago</a> <a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
-
-							<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
+								<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
@@ -283,6 +282,7 @@
 																	th:action="@{/documentosFiscalesClient/uploadFactura(rfc=${selectedCompany})}">
 																	<table>
 																		<div>Cargar un XML:</div>
+																		<div class="text-danger" hidden id="fileSizeXml">Los archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -294,6 +294,7 @@
 																				accept=".xml" type="file" name="files" />
 																		</div>
 																		<div>Cargar un PDF:</div>
+																		<div class="text-danger" hidden id="fileSizePdf">Los archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -1060,6 +1061,7 @@
 														</div>
 													</div>
 													<div>Adjuntar un PDF:</div>
+													<div class="text-danger" hidden id="fileSizeDetailPdf">Los archivos adjuntos no deben exceder los 550KB.</div>
 													<div class="input-group mb-2">
 														<div class="input-group-prepend">
 															<div class="input-group-text">
@@ -1067,7 +1069,7 @@
 																	style="color: red"></i>
 															</div>
 														</div>
-														<input class="form-control" id="pdf" type="file"
+														<input class="form-control" id="pdf1" type="file"
 															accept=".pdf" name="pdf" />
 													</div>
 												</div>

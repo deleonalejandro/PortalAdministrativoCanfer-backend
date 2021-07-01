@@ -479,6 +479,47 @@
 
 	});
 
+	//check files size
+	$('#InputGroupPDF').on('change', function(){
+		if(this.files[0].size > 563200){
+			$('#InputGroupPDF').val('');
+			
+			$('#fileSizePdf').prop('hidden',false)
+			
+			setTimeout(function() {
+				$('#fileSizePdf').prop('hidden', true);
+
+			}, 6000);
+		}
+	})
+		
+	
+	$('#pdf1').on('change',function(){
+		if(this.files[0].size > 563200){
+			$('#pdf1').val('');
+			$('#fileSizeDetailPdf').prop('hidden',false)
+			
+			setTimeout(function() {
+				$('#fileSizeDetailPdf').prop('hidden', true);
+
+			}, 6000);
+		}
+		
+	})
+		
+	
+	$('#inputGroupXML').on('change', function(){
+		if(this.files[0].size > 563200){
+			$('#inputGroupXML').val('');
+			$('#fileSizeXml').prop('hidden',false)
+			
+			setTimeout(function() {
+				$('#fileSizeXml').prop('hidden', true);
+
+			}, 6000);
+		}
+	})
+	
 	// Funcion para delete en proveedores
 
 	$('#proveedorTable tbody').on('click', 'td.delete-control', 'tr', function(event) {

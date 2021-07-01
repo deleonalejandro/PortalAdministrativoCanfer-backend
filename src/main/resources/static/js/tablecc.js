@@ -227,7 +227,48 @@ $(document).ready(function() {
 		]
 
 	});
+	
+	//check files size
+	$('#pdf').on('change', function(){
+		if(this.files[0].size > 563200){
+			$('#pdf').val('');
+			
+			$('#fileSizePdf').prop('hidden',false)
+			
+			setTimeout(function() {
+				$('#fileSizePdf').prop('hidden', true);
 
+			}, 6000);
+		}
+	})
+		
+	
+	$('#detail-pdf').on('change',function(){
+		if(this.files[0].size > 563200){
+			$('#detail-pdf').val('');
+			$('#fileSizeDetailPdf').prop('hidden',false)
+			
+			setTimeout(function() {
+				$('#fileSizeDetailPdf').prop('hidden', true);
+
+			}, 6000);
+		}
+		
+	})
+		
+	
+	$('#xml').on('change', function(){
+		if(this.files[0].size > 563200){
+			$('#xml').val('');
+			$('#fileSizeXml').prop('hidden',false)
+			
+			setTimeout(function() {
+				$('#fileSizeXml').prop('hidden', true);
+
+			}, 6000);
+		}
+	})
+	
 
 	//Nueva Form
 	$('#btn-add-form').on('click', function(event) {
@@ -714,8 +755,7 @@ $(document).ready(function() {
 		$("#numeroGuia").val(formulario.numeroGuia);
 		$("#numeroPago").val(formulario.numeroPago);
 		if(formulario.fechaPago != null){ $("#fechaPago").val(formulario.fechaPago.split("T")[0]);}
-		if(formulario.fechaEnvio != null){ alert('wuju',formulario.fechaEnvio.split("T")[0] )
-		$("#fechaEnvio").val(formulario.fechaEnvio.split("T")[0]);}
+		if(formulario.fechaEnvio != null){$("#fechaEnvio").val(formulario.fechaEnvio.split("T")[0]);}
 		$("#idFormularioCajaChica1").val(formulario.idFormularioCajaChica);
 		$("#idFormularioCajaChica2").val(formulario.idFormularioCajaChica);
 		$("#idFormularioCC").val(formulario.idFormularioCajaChica);
@@ -881,6 +921,7 @@ $(document).ready(function() {
 		
 		$('#paqueteria').prop( "disabled",  false);
 		$('#numeroGuia').prop( "readonly",  false);
+		$('#fechaEnvio').prop( "readonly",  false);
 		$('#numeroPago').prop( "readonly",  false);
 		$('#fechaPago').prop( "readonly",  false);
 	}
@@ -908,6 +949,7 @@ $(document).ready(function() {
 		
 		$('#paqueteria').prop( "disabled",  true);
 		$('#numeroGuia').prop( "readonly",  true);
+		$('#fechaEnvio').prop( "readonly",  true);
 		
 		if(/ADMIN/i.test($('#userRoles').text()) || /CONTADOR/i.test($('#userRoles').text())){
 			$('#estatus').prop( "disabled",  false);
@@ -940,6 +982,7 @@ $(document).ready(function() {
 		
 		$('#paqueteria').prop( "disabled",  true);
 		$('#numeroGuia').prop( "readonly",  true);
+		$('#fechaEnvio').prop( "readonly",  true);
 		$('#numeroPago').prop( "readonly",  true);
 		$('#fechaPago').prop( "readonly",  true);
         
@@ -966,6 +1009,7 @@ $(document).ready(function() {
 		
 		$('#paqueteria').prop( "disabled",  true);
 		$('#numeroGuia').prop( "readonly",  true);
+		$('#fechaEnvio').prop( "readonly",  true);
 		$('#numeroPago').prop( "readonly",  true);
 		$('#fechaPago').prop( "readonly",  true);
 		
@@ -1000,6 +1044,7 @@ $(document).ready(function() {
 		
 		$('#paqueteria').prop( "disabled",  true);
 		$('#numeroGuia').prop( "readonly",  true);
+		$('#fechaEnvio').prop( "readonly",  true);
 		$('#numeroPago').prop( "readonly",  false);
 		$('#fechaPago').prop( "readonly",  false);
 		
