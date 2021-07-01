@@ -452,15 +452,6 @@
 									</form>
 
 
-
-									<!-- (default ERROR ruta)-->
-									<label class="small mb-1" for="rutaError">Errores</label> <input
-										class="form-control mb-2" id="rutaError" type="text"
-										th:value="${error}" disabled />
-									<button class="btn btn-primary mb-3" type="button"
-										data-toggle="modal" data-target="#errorModal">Cambiar</button>
-									<br>
-
 									<!-- Modal ERROR -->
 									<form class="detailsForm" th:action="@{updatePath}"
 										method="post">
@@ -568,7 +559,14 @@
 										</div>
 									</form>
 
-
+									<!-- (default ERROR ruta)-->
+									<label class="small mb-1" for="rutaError">Errores</label> <input
+										class="form-control mb-2" id="rutaError" type="text"
+										th:value="${error}" disabled />
+										<label class="small mb-1" for="rutaError">Log</label> <input
+										class="form-control mb-2" id="rutaLog" type="text"
+										th:value="${log}" disabled />
+									<br>
 									<!-- Modal LOG -->
 									<form class="detailsForm" th:action="@{updatePath}"
 										method="post">
@@ -696,23 +694,19 @@
 									aria-labelledby="activities-pill">
 
 									<h4 class="mb-1" for="reception-section">Recepción</h4>
-									<label class="small mb-2" for="reception-description">Configura
-										el correo por defecto para recibir comprobantes fiscales.</label><br>
+									<label class="small mb-2" for="reception-description">Correo por defecto para recibir comprobantes fiscales.</label><br>
 									<!-- (default email CFD reception)-->
 									<label class="small mb-1" for="inputCfdEmail">Correo</label> <input
 										class="form-control mb-2" id="inputCfdEmail" type="email"
 										value="fep@canfer.com.mx" disabled />
-									<button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button>
 
 									<h4 class="mb-1" for="send-section">Envío</h4>
-									<label class="small mb-2" for="send-description">Configura
-										el correo por defecto para enviar notificaciones a los
+									<label class="small mb-2" for="send-description">Correo por defecto para enviar notificaciones a los
 										proveedores.</label><br>
 									<!-- (default email notifications)-->
 									<label class="small mb-1" for="outputCfdEmail">Correo</label> <input
 										class="form-control mb-2" id="outputCfdEmail" type="email"
 										value="fep@canfer.com.mx" disabled />
-									<button class="btn btn-primary mb-3" type="button" disabled>Cambiar</button>
 
 
 								</div>

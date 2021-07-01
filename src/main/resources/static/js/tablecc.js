@@ -79,14 +79,17 @@ $(document).ready(function() {
 				"render": function(data) {
 				
 					if (data.toUpperCase() == 'ABIERTO') {
-						return '<span class="badge badge-green">ABIERTO</span>';
+						return '<span class="badge badge-blue">ABIERTO</span>';
 		
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
 						return '<span class="badge badge-red">CANCELADO</span>';
 					}
+					if (data.toUpperCase() == 'PAGADO') {
+						return '<span class="badge badge-green">PAGADO</span>';
+					}
 					else {
-						return '<span class="badge badge-blue">' + data.toUpperCase() + '</span>';
+						return '<span class="badge badge-orange">' + data.toUpperCase() + '</span>';
 					}
 				}
 			},
