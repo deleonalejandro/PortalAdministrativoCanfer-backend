@@ -491,7 +491,7 @@ $(document).ready(function() {
 	
 		var data = new FormData(this);
 
-		var url = $('#cargar-facturas').attr('action');
+		var url = '/proveedoresClient/uploadFactura';
 
 		var newCfdi = $.ajax({
 			url: url,
