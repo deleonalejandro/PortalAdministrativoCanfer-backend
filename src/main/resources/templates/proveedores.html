@@ -172,7 +172,7 @@
 														<div class="form-group">
 															<div>
 																<form method="post" enctype="multipart/form-data"
-																	action="#"
+																	action="#" id="cargar-facturas"
 																	th:action="@{/proveedoresClient/uploadFactura(rfc=${selectedCompany},clave=${selectedClave})}">
 																	<table>
 																		<div>Cargar un XML:</div>
@@ -202,7 +202,7 @@
 																		<tr>
 																			<td></td>
 																			<td><input class="btn btn-red" type="submit"
-																				value="Cargar" /></td>
+																				value="Cargar"/></td>
 																		</tr>
 																	</table>
 																</form>
@@ -313,7 +313,30 @@
 											</div>
 										</div>
 									</div>
-
+									<div>
+										<div class="alert alert-success alert-icon mt-3"
+											id="alert-true" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-check"></i>
+											</div>
+											<div class="alert-icon-content" id="alert-true-content"></div>
+										</div>
+										<div class="alert alert-danger alert-icon mt-3"
+											id="alert-false" role="alert" hidden=true>
+											<button class="close" type="button" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<div class="alert-icon-aside">
+												<i class="fa fa-times"></i>
+											</div>
+											<div class="alert-icon-content" id="alert-false-content"></div>
+										</div>
+									</div>
 									<!-- TABLA -->
 									<table class="compact table-hover" id="facturas"
 										style="text-align: center; width: 100%">
@@ -889,29 +912,7 @@
 							</div>
 						</div>
 
-						<!-- TOAST PARA UPLOAD -->
-						<div class="toast" role="alert" id="toastUploadtrue"
-							data-autohide=true data-delay="6000"
-							style="z-index: 7000; position: fixed; bottom: 3rem; right: 2.5rem;"
-							aria-live="assertive" aria-atomic="true">
-							<div class="toast-header bg-success text-white">
-								<i data-feather="check-circle"></i> <strong class="mr-auto">Nuevo
-									Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-							</div>
-							<div class="toast-body">Carga de documento fiscal exitosa.</div>
-						</div>
-						<!-- TOAST PARA UPLOAD FALSE -->
-						<div class="toast" role="alert" id="toastUploadfalse"
-							data-autohide=true data-delay="6000"
-							style="z-index: 7000; position: fixed; bottom: 3rem; right: 2.5rem;"
-							aria-live="assertive" aria-atomic="true">
-							<div class="toast-header bg-danger text-white">
-								<i data-feather="x-circle"></i> <strong class="mr-auto">Nuevo
-									Documento Fiscal.</strong> <small class="text-white-50 ml-2">Ahora</small>
-							</div>
-							<div class="toast-body">Hubo un error al cargar el nuevo
-								Documento Fiscal.</div>
-						</div>
+						
 					</div>
 				</div>
 		</main>

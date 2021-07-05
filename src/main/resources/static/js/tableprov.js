@@ -482,15 +482,60 @@ $(document).ready(function() {
 		document.getElementById("divAvisos").hidden = true;
 
 	});
+	
+	
+	//Upload a  facturas
+	$('#cargar-facturas').submit(function(event) {
 
-	//Checar si necesita el Toast de Upload
-	if ($("#upload").text() == 'true') {
-		$('#toastUploadtrue').toast('show')
-	}
+		event.preventDefault();
+	
+		var data = new FormData(this);
 
-	if ($("#upload").text() == 'false') {
-		$('#toastUploadfalse').toast('show')
-	}
+		var url = $('#cargar-facturas').attr('action');
+
+		var newCfdi = $.ajax({
+			url: url,
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'POST',
+		});
+
+		newCfdi.done(function(response) {
+			var json = JSON.parse(text);
+			
+			if (json.status == 'true') {
+				$('#alert-true').text(json.desc)
+				$('#alert-true').prop('hidden', false);
+			} else {
+				$('#alert-false').text(json.desc)
+				$('#alert-false').prop('hidden', false);
+			} 
+
+			setTimeout(function() {
+				$('.alert').prop('hidden', true);
+				$('.alert').text('');
+
+			}, 6000);
+
+
+		});
+		newCfdi.always(function() {
+
+			
+			table.ajax.reload(null, false);
+		
+			$('#nuevoModal').modal('hide');
+			
+			document.getElementById("InputGroupPDF").value = "";
+			document.getElementById("inputGroupXML").value = "";
+
+		});
+
+
+
+	})
 
 
 });
