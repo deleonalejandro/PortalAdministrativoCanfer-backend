@@ -489,7 +489,7 @@ $(document).ready(function() {
 
 		event.preventDefault();
 	
-		var data = new FormData(this);
+		var data = new FormData($('#cargar-facturas'));
 
 		var url = '/proveedoresClient/uploadFactura';
 
