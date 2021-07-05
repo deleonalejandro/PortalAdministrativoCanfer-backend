@@ -485,7 +485,7 @@ $(document).ready(function() {
 	
 	
 	//Upload a  facturas
-	$('#cargar-facturas').submit(function(event) {
+	$('#submitNew').on('click',function(event) {
 
 		event.preventDefault();
 	
