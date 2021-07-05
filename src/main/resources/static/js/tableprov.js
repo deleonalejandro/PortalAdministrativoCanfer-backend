@@ -503,7 +503,7 @@ $(document).ready(function() {
 		});
 
 		newCfdi.done(function(response) {
-			var json = JSON.parse(text);
+			var json = JSON.parse(response);
 			
 			if (json.status == 'true') {
 				$('#alert-true').text(json.desc)
