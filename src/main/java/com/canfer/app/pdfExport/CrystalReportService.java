@@ -9,7 +9,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.businessobjects.crystalreports.viewer.applet.ReportAlbum.Command;
 import com.canfer.app.cfd.Comprobante;
 import com.canfer.app.cfd.Comprobante.Concepto;
 import com.canfer.app.model.Archivo.ArchivoPDF;
@@ -28,6 +31,8 @@ import com.canfer.app.storage.StorageProperties;
 import com.crystaldecisions.reports.sdk.*;
 import com.crystaldecisions.sdk.occa.report.lib.*;
 import com.crystaldecisions.sdk.occa.report.exportoptions.*;
+
+import static org.hamcrest.CoreMatchers.nullValue;
 
 //Java imports.
 import java.io.*;
@@ -204,25 +209,22 @@ public class CrystalReportService {
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "regimen", comprobante.getEmisorRegimenFiscal());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "moneda", comprobante.getMoneda());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "formaPago", comprobante.getFormaPago());
-			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "total", comprobante.getTotal());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "total", "$ " + comprobante.getTotal());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "sellocfdi", comprobante.getSelloCfdTfd());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "sellosat", comprobante.getSelloSatTfd());
 			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "sello", comprobante.getSello());
 			
-			comprobante.getConceptos().getConceptosList().forEach(c -> {
-				try {
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "claveProdServ", c.getClaveProdServ());
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "noIdentificacion", c.getNoIdentificacion());
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "cantidad", c.getCantidad());
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "claveDeUnidad", c.getClaveUnidad());
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "unidad", c.getUnidad());
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "valorUnitario", c.getValorUnitario());
-					reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValue("", "importe", c.getImporte());
-				} catch (ReportSDKException e) {
-					Log.activity("No se pudo generar el PDF Generico para: " + comprobanteFiscal.getUuid() +
-							".", comprobante.getReceptorNombre(), "ERROR_FILE");
-				}
-			});
+			// List of values
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "claveProdServ", comprobante.getConceptos().getClaveProdServList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "noIdentificacion", comprobante.getConceptos().getNoIdentificacionList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "cantidad", comprobante.getConceptos().getCantidadList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "claveDeUnidad", comprobante.getConceptos().getClaveDeUnidadList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "unidad", comprobante.getConceptos().getUnidadList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "valorUnitario", comprobante.getConceptos().getValorUnitarioList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "importe", comprobante.getConceptos().getImporteList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "descuento", comprobante.getConceptos().getDescuentoList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "noPedimento", comprobante.getConceptos().getNoPedimentoList().toArray());
+			reportClientDoc.getDataDefController().getParameterFieldController().setCurrentValues("", "noCuentaPredial", comprobante.getConceptos().getNoCuentaPredial().toArray());
 			
 			
 			String sello = comprobante.getSelloCfdTfd();

@@ -1,5 +1,7 @@
 package com.canfer.app.dto;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.time.LocalDateTime;
 
 public class FormularioCajaChicaDTO {
@@ -11,7 +13,8 @@ public class FormularioCajaChicaDTO {
 	private String paqueteria;
 	private String numeroGuia;
 	private String numeroPago;
-	private LocalDateTime fechaPago;
+	private String fechaPago;
+	private String fechaEnvio;
 	
 	public FormularioCajaChicaDTO() {
 	}
@@ -72,13 +75,37 @@ public class FormularioCajaChicaDTO {
 		this.numeroPago = numeroPago;
 	}
 
-	public LocalDateTime getFechaPago() {
+	public String getFechaPago() {
 		return fechaPago;
 	}
+	
+	public LocalDateTime getFormattedFechaPago() {
+		if (fechaPago.isEmpty()) {
+			return null;
+		}
+		return LocalDateTime.parse(fechaPago);
+	}
 
-	public void setFechaPago(LocalDateTime fechaPago) {
+	public void setFechaPago(String fechaPago) {
 		this.fechaPago = fechaPago;
 	}
+
+	public String getFechaEnvio() {
+		return fechaEnvio;
+	}
+
+	public void setFechaEnvio(String fechaEnvio) {
+		this.fechaEnvio = fechaEnvio;
+	}
+	
+	public LocalDateTime getFormattedFechaEnvio() {
+		if (fechaEnvio.isEmpty()) {
+			return null;
+		}
+		return LocalDateTime.parse(fechaEnvio);
+	}
+	
+	
 	
 	
 	

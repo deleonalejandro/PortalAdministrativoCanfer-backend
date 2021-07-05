@@ -529,7 +529,8 @@ public class CajaChicaActions extends ModuleActions{
 			formCC.get().setNumeroGuia(formCCDto.getNumeroGuia());
 			formCC.get().setPaqueteria(formCCDto.getPaqueteria());
 			formCC.get().setNumeroPago(formCCDto.getNumeroPago());
-			formCC.get().setFechaPago(formCCDto.getFechaPago());
+			formCC.get().setFechaPago(formCCDto.getFormattedFechaPago());
+			formCC.get().setFechaEnvio(formCCDto.getFormattedFechaEnvio());
 			formCC.get().setTotal(formCCDto.getTotal());
 			
 			superRepo.save(formCC.get());

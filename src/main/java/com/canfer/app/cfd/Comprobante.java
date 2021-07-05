@@ -1,8 +1,11 @@
 package com.canfer.app.cfd;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.loading.PrivateClassLoader;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -562,6 +565,98 @@ public class Comprobante {
 		public List<Concepto> getConceptosList() {
 			return conceptosList;
 		}
+		
+		public List<String> getClaveProdServList() {
+			List<String> claveProdServList = new ArrayList<>();
+			for (Concepto concepto : conceptosList) {
+				claveProdServList.add(concepto.getClaveProdServ());
+			}
+			return claveProdServList;
+		}
+		
+		public List<String> getNoIdentificacionList() {
+			List<String> noIdentificacionList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				noIdentificacionList.add(concepto.getNoIdentificacion());
+			}
+			return noIdentificacionList;
+
+		}
+		
+		public List<String> getCantidadList() {
+			List<String> cantidadList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				cantidadList.add(concepto.getCantidad());
+			}
+			return cantidadList;
+		}
+		
+		public List<String> getClaveDeUnidadList() {
+			List<String> claveDeUnidadList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				claveDeUnidadList.add(concepto.getClaveUnidad());
+			}
+			return claveDeUnidadList;
+		}
+		
+		public List<String> getUnidadList() {
+			List<String> unidadList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				unidadList.add(concepto.getUnidad());
+			}
+			return unidadList;
+		}
+		
+		public List<String> getValorUnitarioList() {
+			List<String> valorUnitarioList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				valorUnitarioList.add(concepto.getValorUnitario());
+			}
+			return valorUnitarioList;
+		}
+		
+		public List<String> getImporteList() {
+			List<String> importeList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				importeList.add(concepto.getImporte());
+			}
+			return importeList;
+		}
+		
+		public List<String> getDescuentoList() {
+			List<String> descuentoList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				descuentoList.add(concepto.getDescuento());
+			}
+			return descuentoList;
+		}
+		
+		public List<String> getNoPedimentoList() {
+			List<String> noPedimentoList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				if (concepto.getInfoAduanera() != null) {
+					noPedimentoList.add(concepto.getInfoAduanera().getNumeroPedimento());
+				} else {
+					noPedimentoList.add("-");
+				}
+			}
+			return noPedimentoList;
+		}
+		
+		public List<String> getNoCuentaPredial() {
+			List<String> noCuentaPredialList = new ArrayList<>();
+			for(Concepto concepto : conceptosList) {
+				if (concepto.getCuentaPredial() != null) {
+					noCuentaPredialList.add(concepto.getCuentaPredial().getNumero());
+				} else {
+					noCuentaPredialList.add("-");
+				}
+			}
+			Object[] arr = noCuentaPredialList.toArray();
+	
+			return noCuentaPredialList;
+		}
+		
 
 		@Override
 		public String toString() {
@@ -573,6 +668,8 @@ public class Comprobante {
 	@XmlRootElement(name = "Concepto")
 	public static class Concepto {
 
+		private InformacionAduanera infoAduanera;
+		private CuentaPredial cuentaPredial;
 		private String claveProdServ;
 		private String noIdentificacion;
 		private String cantidad;
@@ -581,6 +678,7 @@ public class Comprobante {
 		private String descripcion;
 		private String valorUnitario;
 		private String importe;
+		private String descuento = "-";
 
 		public Concepto() {
 			// default constructor
@@ -616,6 +714,36 @@ public class Comprobante {
 
 		public String getImporte() {
 			return importe;
+		}
+		
+		public String getDescuento() {
+			if (this.descuento.isEmpty()) {
+				return "-";
+			}
+			return descuento;
+		}
+
+		@XmlElement(name = "InformacionAduanera")
+		public InformacionAduanera getInfoAduanera() {
+			return infoAduanera;
+		}
+		
+		@XmlElement(name = "CuentaPredial")
+		public CuentaPredial getCuentaPredial() {
+			return cuentaPredial;
+		}
+
+		public void setCuentaPredial(CuentaPredial cuentaPredial) {
+			this.cuentaPredial = cuentaPredial;
+		}
+
+		public void setInfoAduanera(InformacionAduanera infoAduanera) {
+			this.infoAduanera = infoAduanera;
+		}
+		
+		@XmlAttribute(name = "Descuento")
+		public void setDescuento(String descuento) {
+			this.descuento = descuento;
 		}
 
 		@XmlAttribute(name = "ClaveProdServ")
@@ -666,6 +794,57 @@ public class Comprobante {
 		}
 
 	}
+	
+	@XmlRootElement(name = "InformacionAduanera")
+	public static class InformacionAduanera {
+		
+		private String numeroPedimento = "-";
+
+		public String getNumeroPedimento() {
+			if (this.numeroPedimento.isEmpty()) {
+				return "-";
+			}
+			return numeroPedimento;
+		}
+
+		@XmlAttribute(name = "NumeroPedimento")
+		public void setNumeroPedimento(String numeroPedimento) {
+			this.numeroPedimento = numeroPedimento;
+		}
+
+		@Override
+		public String toString() {
+			return "InformacionAduanera [numeroPedimento=" + numeroPedimento + "]";
+		}
+		
+		
+	}
+	
+	@XmlRootElement(name = "CuentaPredial")
+	public static class CuentaPredial {
+		
+		private String numero = "-";
+
+		public String getNumero() {
+			if (this.numero.isEmpty()) {
+				return "-";
+			}
+			return numero;
+		}
+
+		@XmlAttribute(name = "Numero")
+		public void setNumero(String numero) {
+			this.numero = numero;
+		}
+
+		@Override
+		public String toString() {
+			return "CuentaPredial [numero=" + numero + "]";
+		}
+		
+		
+	}
+	
 
 	@XmlRootElement(name = "CfdiRelacionados")
 	private static class CfdiRelacionados {
