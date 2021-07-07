@@ -294,7 +294,11 @@ $(document).ready(function() {
 		
 	
 		$("#checkActivo").on('change', function() {
-		    $(this).attr('value', $(this).is(':checked').toString());
+		  if ($(this).is(':checked')) {
+		    $(this).attr('value', 'true');
+		  } else {
+		    $(this).attr('value', 'false');
+		  }
 		  
 		  
 		});
