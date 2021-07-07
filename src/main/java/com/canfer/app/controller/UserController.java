@@ -5,7 +5,11 @@ import java.sql.SQLDataException;
 import javax.persistence.EntityExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -107,15 +111,66 @@ public class UserController {
 	
 	@GetMapping(value = "/user/delete/{id}")
 	public String deleteUser(@PathVariable Long id, RedirectAttributes ra) {
+		String response = "";
 		try {
 			
-			usuarioService.delete(id);
+			response = usuarioService.delete(id);
 			
 		} catch (UsernameNotFoundException e) {
 			Log.falla("Error al actualizar usuario: " + e.getMessage(),"ERROR_DB");
 			ra.addFlashAttribute("UserNotFoundMessage", e.getMessage());
 		}
-		return "redirect:/admin/users";
+		
+		if (response.equalsIgnoreCase("USUARIO_EXTERNAL")) {
+			return "redirect:/admin/suppliersUsers";
+		} else {
+			return "redirect:/admin/users";
+		}
+	}
+	
+	@PostMapping(value = "/user/resetpassword")
+	public ResponseEntity<String> resetUserPassword(UserDTO user) throws JSONException {
+		JSONObject response = new JSONObject();
+		try {
+			if(usuarioService.changeUserPassword(user)) {
+				response.put("status", true);
+				response.put("desc", "La contraseña se cambio exitosamente.");
+			}
+		} catch (UsernameNotFoundException e) {
+			Log.falla("Error al actualizar contraseña: " + e.getMessage(), "ERROR_DB");
+			response.put("status", false);
+			response.put("desc", "Error al actualizar contraseña: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/user/supplier/resetpassword")
+	public ResponseEntity<String> resetUserExternalPassword(UserDTO user) throws JSONException {
+		JSONObject response = new JSONObject();
+		try {
+			if(usuarioService.changeUserExternalPassword(user)) {
+				response.put("status", true);
+				response.put("desc", "La contraseña se cambio exitosamente.");
+			}
+		} catch (UsernameNotFoundException e) {
+			Log.falla("Error al actualizar contraseña: " + e.getMessage(), "ERROR_DB");
+			response.put("status", false);
+			response.put("desc", "Error al actualizar contraseña: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/user/proveedor/save")
+	public String saveUserProveedor(UserDTO user, RedirectAttributes ra) {
+		try {
+			usuarioService.updateSupplier(user);
+		} catch (UsernameNotFoundException e) {
+			Log.falla("Error al actualizar usuario: " + e.getMessage(), "ERROR_DB");
+			ra.addFlashAttribute("updateError", e.getMessage());
+		}
+		return "redirect:/admin/suppliersUsers";
 	}
 	
 	@GetMapping(value = "/suppliersUsers")

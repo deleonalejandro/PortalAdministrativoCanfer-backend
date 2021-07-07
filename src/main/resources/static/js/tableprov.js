@@ -505,17 +505,16 @@ $(document).ready(function() {
 		newCfdi.done(function(response) {
 			var json = JSON.parse(response);
 			
-			if (json.status == 'true') {
-				$('#alert-true').text(json.desc)
+			if (json.status == true) {
+				$('#alert-true-content').text(json.desc)
 				$('#alert-true').prop('hidden', false);
 			} else {
-				$('#alert-false').text(json.desc)
+				$('#alert-false-content').text(json.desc)
 				$('#alert-false').prop('hidden', false);
 			} 
 
 			setTimeout(function() {
 				$('.alert').prop('hidden', true);
-				$('.alert').text('');
 
 			}, 6000);
 

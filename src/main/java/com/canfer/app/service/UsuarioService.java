@@ -1,6 +1,8 @@
 package com.canfer.app.service;
 
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -185,19 +187,84 @@ public class UsuarioService {
 
 		return usuarioRepository.save(updateUsuario);
 	}
+	
+	public Usuario updateSupplier(UserDTO user) {
+		//TODO CAMBIAR CONTRASEÑA Y VERIFICAR USUARIO IGUAL
+		UsuarioProveedor updateUsuario;
+		Optional<UsuarioProveedor> checkUsuario = usuarioProveedorRepository.findById(user.getUserId());
+		
+		if (checkUsuario.isEmpty()) {
+			throw new UsernameNotFoundException("El usuario proveedor no existe.");
+		}
+		
+		updateUsuario = checkUsuario.get();
+		updateUsuario.setUsername(user.getUsername());
+		updateUsuario.setApellido(user.getApellido());
+		updateUsuario.setCorreo(user.getCorreo());
+		updateUsuario.setNombre(user.getNombre());
+		updateUsuario.setActivo(user.getActivo());
+		
+		Log.activity("Se actualizó el usuario " + user.getUsername() + ".",
+				checkUsuario.get().getEmpresasNombre().toString(), "NEW_USER");
 
-	public void delete(Long id) {
-		// We check if the user already exists.
+		return usuarioProveedorRepository.save(updateUsuario);
+	}
+	
+	public Boolean changeUserPassword(UserDTO user) {
+		Usuario userUpdate = usuarioRepository.findByUsername(user.getUsername());
+		
+		if (userUpdate == null || !userUpdate.isActivo()) {
+			throw new UsernameNotFoundException("El usuario no existe o se encuentra inactivo.");
+		}
+		
+		userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+		
+		usuarioRepository.save(userUpdate);
+		
+		return true;	
+		
+	}
+	
+	public Boolean changeUserExternalPassword(UserDTO user) {
+		String newPassword;
+		Usuario userUpdate = usuarioRepository.findByUsername(user.getUsername());
+		
+		if (userUpdate == null || !userUpdate.isActivo() || userUpdate instanceof UsuarioCanfer) {
+			throw new UsernameNotFoundException("El usuario no existe o se encuentra inactivo.");
+		}
+		
+		UsuarioProveedor userProveedor = (UsuarioProveedor) userUpdate;
+		newPassword = generatePassword(userProveedor.getRfcProveedor());
+		userProveedor.setPassword(passwordEncoder.encode(newPassword));
+		
+		usuarioRepository.save(userProveedor);
+		
+		emailSender.sendEmailNewAccount(userProveedor, newPassword);
+		
+		return true;	
+		
+	}
+
+	public String delete(Long id) {
+		String response;
 		Optional<Usuario> deleteUsuario = usuarioRepository.findById(id);
 		
 		if (deleteUsuario.isEmpty()) {
 			throw new UsernameNotFoundException("El usuario no existe.");
 		}
-
+		
+		if (deleteUsuario.get() instanceof UsuarioCanfer) {
+			response = "USUARIO_COMPANY";
+		} else {
+			response = "USUARIO_EXTERNAL";
+		}
+		
 		usuarioRepository.delete(deleteUsuario.get());
 
-		Log.activity("Se eliminó al usuario " + deleteUsuario.get().getUsername() + ".",
+		Log.activity("Se eliminó el usuario " + deleteUsuario.get().getUsername() + ".",
 				deleteUsuario.get().getEmpresasNombre().toString(), "DELETE_USER");
+		
+		return response;
 	}
 
 	private String generatePassword(String rfc) {

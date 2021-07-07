@@ -223,6 +223,9 @@ public abstract class Usuario {
 		return this.rol.equalsIgnoreCase(PROVEEDOR);
 	}
 	
+	public Boolean isActivo() {
+		return this.activo;
+	}
 	@Entity
 	@DiscriminatorValue("USUARIO_CANFER")
 	public static class UsuarioCanfer extends Usuario {

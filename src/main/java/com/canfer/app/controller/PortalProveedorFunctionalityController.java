@@ -5,7 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +44,8 @@ public class PortalProveedorFunctionalityController {
 	}
 	
 	@PostMapping("/uploadFactura")
-	public String recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files, @RequestParam String rfc, 
-			@RequestParam("clave") String clv, RedirectAttributes ra) {
-		
+	public ResponseEntity<String> recieveComprobanteFiscal(@RequestParam("files") MultipartFile[] files) throws JSONException {
+		JSONObject response = new JSONObject();
 		// initializing directories
 		storageService.init();
 		
@@ -60,22 +62,32 @@ public class PortalProveedorFunctionalityController {
 			
 			try {
 				
-				boolean value = actioner.upload(fileXML, filePDF);
-				ra.addFlashAttribute("upload", value);
+				boolean isUploaded = actioner.upload(fileXML, filePDF);
 				
-			} catch (NotFoundException e) {
+				if (isUploaded) {
+					response.put("status", isUploaded);
+					response.put("desc", "El documento CFDI se ha cargado exitosamente.");
+				} else {
+					response.put("status", isUploaded);
+					response.put("desc", "Error de carga: El documento CFDI ya se encuentra registrado en el portal.");
+				}
+				
+				
+			} catch (NotFoundException | JSONException e) {
 				
 				// La empresa o el proveedor no se encuentran en el catalogo
 				Log.activity("Error al intentar guardar factura: " + fileXML.toCfdi().getUuidTfd() + ", no se le pudo asignar una empresa o proveedor.", fileXML.toCfdi().getReceptorNombre(), "ERROR_DB");
-				ra.addFlashAttribute("upload", false);
+				response.put("status", false);
+				response.put("desc", "Error de carga: " + fileXML.toCfdi().getUuidTfd() + ", no corresponde a ninguna empresa o proveedor.");
 			} 
 			
 		} else {
 			
-			ra.addFlashAttribute("upload", false);	
+			response.put("status", false);
+			response.put("desc", "Error de carga: La solicitud no contiene al menos un archivo CFDI XML.");
 		}
 		
-		return "redirect:/proveedoresClient?rfc=" + rfc + "&clv=" + clv;
+		return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 		
 	}
 	
