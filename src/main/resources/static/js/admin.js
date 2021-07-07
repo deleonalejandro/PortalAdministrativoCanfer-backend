@@ -288,19 +288,13 @@ $(document).ready(function() {
 		$("#inputEmailAddress").val(user.correo);
 		$("#dropdownEmpresas").val(user.empresasId.join());
 		$("#checkActivo").prop('checked', user.activo);
-		$("#checkActivo").prop('value', user.activo.toString());
+		$("#checkActivoText").prop('value', user.activo.toString());
 
 		$('#editModal').modal('show');
 		
 	
 		$("#checkActivo").on('change', function() {
-		  if ($(this).is(':checked')) {
-		    $(this).attr('value', 'true');
-		  } else {
-		    $(this).attr('value', 'false');
-		  }
-		  
-		  
+		    $("#checkActivoText").val($(this).is(':checked').toString());
 		});
 
 	});
