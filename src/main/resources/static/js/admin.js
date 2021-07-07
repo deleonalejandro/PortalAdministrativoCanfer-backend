@@ -288,7 +288,7 @@ $(document).ready(function() {
 		$("#inputEmailAddress").val(user.correo);
 		$("#dropdownEmpresas").val(user.empresasId.join());
 		$("#checkActivo").prop('checked', user.activo);
-		$("#checkActivo").prop('value', user.activo);
+		$("#checkActivo").prop('value', user.activo.toString());
 
 		$('#editModal').modal('show');
 		
