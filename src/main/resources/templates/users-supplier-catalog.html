@@ -273,7 +273,7 @@
 			</div>
 		</footer>
 	</div>
-	<form action="#" th:action="@{user/proveedor/save}" method="post">
+	<form action="#" th:action="@{user/proveedor/save}" id="formEditUserSupplier" method="post">
 		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 			aria-labelledby="myLargeModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
@@ -286,7 +286,29 @@
 						</button>
 					</div>
 					<div class="modal-body">
-
+						<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+						<div class="alert alert-success alert-icon mt-3" id="alert-true"
+							role="alert" hidden=true>
+							<button class="close" type="button" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<div class="alert-icon-aside">
+								<i class="fa fa-check"></i>
+							</div>
+							<div class="alert-icon-content" id="alert-true-content"></div>
+						</div>
+						<div class="alert alert-danger alert-icon mt-3" id="alert-error"
+							role="alert" hidden=true>
+							<button class="close" type="button" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<div class="alert-icon-aside">
+								<i class="fa fa-times"></i>
+							</div>
+							<div class="alert-icon-content" id="alert-error-content"></div>
+						</div>
 						<!-- Form Group (username)-->
 						<input type="hidden" name="userId" id="userId">
 						<div class="form-group">
@@ -331,8 +353,16 @@
 						<!-- Save changes button-->
 						<br />
 
-						<button class="btn btn-primary" type="button">Restablecer
+						<button class="btn btn-primary" id="resetPassBtn" type="button">Restablecer
 							Contraseña</button>
+							<div id="div-reset-pass" hidden>
+							<hr />
+							Al reestablecer la contraseña se enviará un correo electrónico al correo registrado del usuario con una contraseña nueva.
+							<div>
+								<button class="btn btn-danger mt-3" id="confirmResetSupplier"
+									type="button">Reestablecer</button>
+							</div>
+						</div>
 
 					</div>
 					<div class="modal-footer">

@@ -727,11 +727,49 @@ $(document).ready(function() {
 
 	})
 	
+	$('#confirmResetSupplier').on('click', function() {
+
+			var data = new FormData(document.getElementById('formEditUserSupplier'));
+
+			var url = 'user/supplier/resetpassword';
+
+			var editUserS = $.ajax({
+				url: url,
+				data: data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				type: 'POST',
+			});
+
+			editUserS.done(function(response) {
+				var json = JSON.parse(response);
+
+				if (json.status == 'true') {
+					$('#alert-true').text(json.desc)
+					$('#alert-true').prop('hidden', false);
+				} else {
+					$('#alert-false').text(json.desc)
+					$('#alert-false').prop('hidden', false);
+				}
+
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+					$('.alert').text('');
+
+				}, 6000);
+
+
+			});
+
+
+	})
+	
 	
 	$('#editModal').on('hidden.bs.modal', function () {
+		$('#div-reset-pass').prop('hidden', true);
 		 document.getElementById("newPassword").value = "";
 		 document.getElementById("checkPassword").value = "";
-		$('#div-reset-pass').prop('hidden', true);
 	})
 	
 });
