@@ -294,13 +294,7 @@ $(document).ready(function() {
 		
 	
 		$("#checkActivo").on('change', function() {
-		  if ($(this).is(':checked')) {
-		    $(this).attr('value', 'true');
-		  } else {
-		    $(this).attr('value', 'false');
-		  }
-		  
-		  
+		    $(this).attr('value', $(this).is(':checked'));		  
 		});
 
 	});
