@@ -684,7 +684,7 @@ $(document).ready(function() {
 
 			var data = new FormData(document.getElementById('formEditUser'));
 
-			var url = 'admin/user/resetpassword';
+			var url = 'user/resetpassword';
 
 			var editUser = $.ajax({
 				url: url,
