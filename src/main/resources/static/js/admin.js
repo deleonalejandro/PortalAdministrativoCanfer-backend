@@ -294,7 +294,9 @@ $(document).ready(function() {
 		
 	
 		$("#checkActivo").on('change', function() {
-		    $(this).attr('value', $(this).is(':checked'));		  
+		    $(this).attr('value', $(this).is(':checked').toString());
+		  
+		  
 		});
 
 	});
