@@ -254,6 +254,12 @@ $(document).ready(function() {
 		$("#dropdownPermisos").val(user.permisos.split(','));
 		$("#dropdownEmpresas").val(user.empresasId);
 		
+		$("#checkActivoText").prop('value', user.activo.toString());		
+	
+		$("#checkActivo").on('change', function() {
+		    $("#checkActivoText").val($(this).is(':checked').toString());
+		});
+		
 		$('#editModal').modal('show');
 
 	});
@@ -652,6 +658,80 @@ $(document).ready(function() {
         }
     } );
 	
+	// cambiar password usuario canfer
+	$('#resetPassBtn').on('click', function() {
+	
+		$('#div-reset-pass').prop('hidden', false);
+		
+	})
+	
+	
+	$('#confirmReset').on('click', function() {
+
+		if ($('#newPassword').val() != $('#checkPassword').val()) {
+			$('#newPassword').val('');
+			$('#checkPassword').val('');
+
+			$('#mensaje-error').prop('hidden', false)
+
+			setTimeout(function() {
+				$('#mensaje-error').prop('hidden', true)
 
 
+			}, 6000);
+		} else {
+
+
+			var data = new FormData(document.getElementById('formEditUser'));
+
+			var url = 'admin/user/resetpassword';
+
+			var editUser = $.ajax({
+				url: url,
+				data: data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				type: 'POST',
+			});
+
+			editUser.done(function(response) {
+				var json = JSON.parse(response);
+
+				if (json.status == 'true') {
+					$('#alert-true').text(json.desc)
+					$('#alert-true').prop('hidden', false);
+				} else {
+					$('#alert-false').text(json.desc)
+					$('#alert-false').prop('hidden', false);
+				}
+
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+					$('.alert').text('');
+
+				}, 6000);
+
+
+			});
+			editUser.always(function() {
+
+
+				document.getElementById("newPassword").value = "";
+				document.getElementById("checkPassword").value = "";
+
+			});
+
+		}
+
+
+	})
+	
+	
+	$('#editModal').on('hidden.bs.modal', function () {
+		 document.getElementById("newPassword").value = "";
+		 document.getElementById("checkPassword").value = "";
+		$('#div-reset-pass').prop('hidden', true);
+	})
+	
 });

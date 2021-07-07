@@ -310,11 +310,13 @@ $(document).ready(function() {
 		});
 
 		updateDet.done(function(upload) {
-		
-			if (upload == 'true') {
-				$('#alert-update').prop('hidden', false);
+			var json = JSON.parse(upload);
+			if (json.status == 'true') {
+				$('#alert-det-true-content').text(json.desc)
+				$('#alert-det-true').prop('hidden', false);
 			} else {
-				$('#alert-error-update').prop('hidden', false);
+				$('#alert-det-error-content').text(json.desc)
+				$('#alert-det-error').prop('hidden', false);
 			} 
 
 			setTimeout(function() {
@@ -359,19 +361,21 @@ $(document).ready(function() {
 		});
 
 		saveDet.done(function(upload) {
-		
-		 	var res = upload.split("-");
-			var pull = res[0];
-			var success = res[1];
-			
-		
-			if (success == 'true') {
-				$('#alert-upload').prop('hidden', false);
-				if (pull == 'pull') {
-					$('#alert-df').prop('hidden', false);
-				} 
-			} else {
-				$('#alert-error').prop('hidden', false);
+		var json = JSON.parse(upload);
+			if (json.status == 'true') {
+				$('#alert-det-true-content').text(json.desc)
+				$('#alert-det-true').prop('hidden', false);
+			} else if (json.status == 'false'){
+				$('#alert-det-error-content').text(json.desc)
+				$('#alert-det-error').prop('hidden', false);
+			}  else if (json.status == 'true-df'){
+				$('#alert-det-true-content').text(json.desc)
+				$('#alert-det-true').prop('hidden', false);
+				$('#alert-det-yellow').prop('hidden', false);
+			}  else if (json.status == 'false-df'){
+				$('#alert-det-error-content').text(json.desc)
+				$('#alert-det-error').prop('hidden', false);
+				$('#alert-det-yelow').prop('hidden', false);
 			} 
 
 			setTimeout(function() {
@@ -488,10 +492,13 @@ $(document).ready(function() {
 
 		saveForm.done(function(upload) {
 		
-			if (upload == 'true') {
-				$('#alert-upload-form').prop('hidden', false);
+			var json = JSON.parse(upload);
+			if (json.status == 'true') {
+				$('#alert-true-content').text(json.desc)
+				$('#alert-true').prop('hidden', false);
 			} else {
-				$('#alert-error-form').prop('hidden', false);
+				$('#alert-error-content').text(json.desc)
+				$('#alert-error').prop('hidden', false);
 			} 
 
 			setTimeout(function() {
@@ -746,7 +753,6 @@ $(document).ready(function() {
 		$("#paqueteria").append($("<option />").val("customOption").text("[Otro:]"));
 		
 		if(formulario.paqueteria != null && formulario.paqueteria != "" && formulario.paqueteria !="DHL" && formulario.paqueteria != "Estafeta" && formulario.paqueteria != "UPS"){
-			alert(formulario.paqueteria)
 			$("#paqueteria").append($("<option />").val(formulario.paqueteria).text(formulario.paqueteria));
 		}
 		

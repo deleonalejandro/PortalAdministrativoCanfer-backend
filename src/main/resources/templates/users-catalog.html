@@ -269,7 +269,8 @@
 			</div>
 		</footer>
 	</div>
-	<form action="#" th:action="@{user/save}" method="post">
+	<form action="#" th:action="@{user/save}" id="formEditUser"
+		method="post">
 		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 			aria-labelledby="myLargeModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg" role="document">
@@ -282,6 +283,29 @@
 						</button>
 					</div>
 					<div class="modal-body">
+						<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+						<div class="alert alert-success alert-icon mt-3" id="alert-true"
+							role="alert" hidden=true>
+							<button class="close" type="button" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<div class="alert-icon-aside">
+								<i class="fa fa-check"></i>
+							</div>
+							<div class="alert-icon-content" id="alert-true-content"></div>
+						</div>
+						<div class="alert alert-danger alert-icon mt-3" id="alert-error"
+							role="alert" hidden=true>
+							<button class="close" type="button" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+							<div class="alert-icon-aside">
+								<i class="fa fa-times"></i>
+							</div>
+							<div class="alert-icon-content" id="alert-error-content"></div>
+						</div>
 						<!-- Form Group (username)-->
 						<input type="hidden" name="userId" id="userId">
 						<div class="form-group">
@@ -358,16 +382,39 @@
 							<!-- Form Group (ACTIVO)-->
 							<div class="form-group custom-control custom-checkbox">
 								<input class="custom-control-input" id="checkActivo"
-									name="activo" type="checkbox"> <label
-									class="custom-control-label" for="checkActivo">Activo</label>
+									type="checkbox"> <label class="custom-control-label"
+									for="checkActivo">Activo</label> <input class="form-control"
+									id="checkActivoText" type="text" name="activo" hidden />
+
 							</div>
 
 						</div>
 						<!-- Save changes button-->
 						<br />
-
-						<button class="btn btn-primary" type="button">Restablecer
+						<button class="btn btn-primary" id="resetPassBtn" type="button">Restablecer
 							Contraseña</button>
+
+						<div id="div-reset-pass" hidden>
+							<hr />
+							<div class="row">
+								<div class="col-6">
+									<label class="small mb-1" for="pass">Nueva Contraseña</label> <input
+										class="form-control" id="newPassword"
+										placeholder="Ingresa la nueva contraseña" name="password" />
+								</div>
+								<div class="col-6">
+									<label class="small mb-1" for="pass">Confirma
+										Contraseña</label> <input class="form-control" id="checkPassword"
+										placeholder="Confirma la nueva contraseña" />
+								</div>
+							</div>
+							<div class="text-danger" id="mensaje-error" hidden>Las
+								contraseñas deben coincidir</div>
+							<div>
+								<button class="btn btn-danger mt-3" id="confirmReset"
+									type="button">Reestablecer</button>
+							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>

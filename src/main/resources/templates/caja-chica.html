@@ -231,7 +231,7 @@
 
 									<!-- ALERTS DE UPDATE DE FORMULARIOS -->
 									<div class="alert alert-success alert-icon mt-3"
-										id="alert-upload-form" role="alert" hidden=true>
+										id="alert-true" role="alert" hidden=true>
 										<button class="close" type="button" data-dismiss="alert"
 											aria-label="Close">
 											<span aria-hidden="true">×</span>
@@ -239,11 +239,10 @@
 										<div class="alert-icon-aside">
 											<i class="fa fa-check"></i>
 										</div>
-										<div class="alert-icon-content">Se guardó correctamente
-											la información del fomulario.</div>
+										<div class="alert-icon-content" id="alert-true-content"></div>
 									</div>
 									<div class="alert alert-danger alert-icon mt-3"
-										id="alert-error-form" role="alert" hidden=true>
+										id="alert-error" role="alert" hidden=true>
 										<button class="close" type="button" data-dismiss="alert"
 											aria-label="Close">
 											<span aria-hidden="true">×</span>
@@ -251,8 +250,7 @@
 										<div class="alert-icon-aside">
 											<i class="fa fa-times"></i>
 										</div>
-										<div class="alert-icon-content">No se pudo procesar
-											correctamente la información del formulario.</div>
+										<div class="alert-icon-content" id="alert-error-content"></div>
 									</div>
 
 									<!-- TABLA -->
@@ -331,8 +329,9 @@
 													</div>
 												</div>
 											</div>
+										
 											<div class="alert alert-success alert-icon mt-3"
-												id="alert-upload" role="alert" hidden=true>
+												id="alert-det-true" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -340,11 +339,10 @@
 												<div class="alert-icon-aside">
 													<i class="fa fa-check"></i>
 												</div>
-												<div class="alert-icon-content">Se procesó
-													correctamente el nuevo detalle del fomulario.</div>
+												<div class="alert-icon-content" id="alert-det-true-content"></div>
 											</div>
 											<div class="alert alert-danger alert-icon mt-3"
-												id="alert-error" role="alert" hidden=true>
+												id="alert-det-error" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -352,35 +350,10 @@
 												<div class="alert-icon-aside">
 													<i class="fa fa-times"></i>
 												</div>
-												<div class="alert-icon-content">No se pudo procesar
-													correctamente el nuevo detalle de formulario.</div>
-											</div>
-											<div class="alert alert-success alert-icon mt-3"
-												id="alert-update" role="alert" hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-check"></i>
-												</div>
-												<div class="alert-icon-content">Se guardó
-													correctamente la información del detalle de formulario.</div>
-											</div>
-											<div class="alert alert-danger alert-icon mt-3"
-												id="alert-error-update" role="alert" hidden=true>
-												<button class="close" type="button" data-dismiss="alert"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<div class="alert-icon-aside">
-													<i class="fa fa-times"></i>
-												</div>
-												<div class="alert-icon-content">No se pudo guardar
-													correctamente la información del detalle de formulario.</div>
+												<div class="alert-icon-content" id="alert-det-error-content"></div>
 											</div>
 											<div class="alert alert-warning alert-icon mt-3"
-												id="alert-df" role="alert" hidden=true>
+												id="alert-det-yellow" role="alert" hidden=true>
 												<button class="close" type="button" data-dismiss="alert"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
@@ -388,9 +361,7 @@
 												<div class="alert-icon-aside">
 													<i class="fas fa-info-circle"></i>
 												</div>
-												<div class="alert-icon-content">La información del
-													nuevo detalle de formulario fue obtenida del módulo de
-													documentos fiscales.</div>
+												<div class="alert-icon-content">La información del nuevo detalle de formulario fue obtenida del módulo de documentos fiscales.</div>
 											</div>
 											<hr>
 											<!-- Atributos del Formulario -->
