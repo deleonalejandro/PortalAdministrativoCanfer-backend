@@ -311,7 +311,7 @@ $(document).ready(function() {
 
 		updateDet.done(function(upload) {
 			var json = JSON.parse(upload);
-			if (json.status == 'true') {
+			if (json.status == true) {
 				$('#alert-det-true-content').text(json.desc)
 				$('#alert-det-true').prop('hidden', false);
 			} else {
@@ -362,7 +362,7 @@ $(document).ready(function() {
 
 		saveDet.done(function(upload) {
 		var json = JSON.parse(upload);
-			if (json.status == 'true') {
+			if (json.status == true) {
 				$('#alert-det-true-content').text(json.desc)
 				$('#alert-det-true').prop('hidden', false);
 			} else if (json.status == 'false'){

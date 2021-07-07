@@ -696,19 +696,19 @@ $(document).ready(function() {
 			});
 
 			editUser.done(function(response) {
+				
 				var json = JSON.parse(response);
 
-				if (json.status == 'true') {
-					$('#alert-true').text(json.desc)
+				if (json.status == true) {
+					$('#alert-true-content').text(json.desc)
 					$('#alert-true').prop('hidden', false);
 				} else {
-					$('#alert-false').text(json.desc)
-					$('#alert-false').prop('hidden', false);
+					$('#alert-error-content').text(json.desc)
+					$('#alert-error').prop('hidden', false);
 				}
 
 				setTimeout(function() {
 					$('.alert').prop('hidden', true);
-					$('.alert').text('');
 
 				}, 6000);
 
@@ -745,17 +745,16 @@ $(document).ready(function() {
 			editUserS.done(function(response) {
 				var json = JSON.parse(response);
 
-				if (json.status == 'true') {
-					$('#alert-true').text(json.desc)
+				if (json.status == true) {
+					$('#alert-true-content').text(json.desc)
 					$('#alert-true').prop('hidden', false);
 				} else {
-					$('#alert-false').text(json.desc)
-					$('#alert-false').prop('hidden', false);
+					$('#alert-error-content').text(json.desc)
+					$('#alert-error').prop('hidden', false);
 				}
 
 				setTimeout(function() {
 					$('.alert').prop('hidden', true);
-					$('.alert').text('');
 
 				}, 6000);
 
