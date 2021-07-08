@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
+
 import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +29,7 @@ import com.canfer.app.model.Archivo.ArchivoXML;
 import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 import com.canfer.app.service.ExcelService;
+import com.canfer.app.storage.StorageException;
 
 import javassist.NotFoundException;
 import jxl.write.WriteException;
@@ -321,7 +324,9 @@ public class CajaChicaActions extends ModuleActions{
 				if (comprobante == null || comprobante.getEstatusPago().equalsIgnoreCase(PAGADO)) {
 					Log.activity("Error al intentar guardar detalle: La factura que se desea adjuntar al formulario de caja chica con Fo. " + formularioCajaChica.get().getFolio()
 							+ " ya se encuentra pagada.", formularioCajaChica.get().getSucursal().getEmpresa().getNombre(), "ERROR_DB");
-					return false;
+					
+					throw new StorageException("Error al intentar guardar detalle: La factura que se desea adjuntar al formulario de caja chica con Fo. " + formularioCajaChica.get().getFolio()
+							+ " ya se encuentra pagada.");
 				}
 				
 				documento = Optional.of(comprobante.getDocumento());
@@ -677,9 +682,10 @@ public List<FormularioCajaChica> getAllCanceledFormularioCajaChicas(Long idSucur
 				
 				Log.activity("Error al intentar guardar detalle: El detalle de caja chica ya se encuentra registrado en este u otro formulario."
 						+ " Fo. Formulario: "+ checkDet.getFormularioCajaChica().getFolio()+", Fo. Detalle: "+checkDet.getFolio()+".", 
-						checkForm.getSucursal().getEmpresa().getNombre(), "ERROR_DB");		
+						checkForm.getSucursal().getEmpresa().getNombre(), "ERROR_DB");	
 				
-				return false;
+				throw new EntityExistsException("Error al intentar guardar detalle: El detalle de caja chica ya se encuentra registrado en este u otro formulario."
+						+ " Fo. Formulario: "+ checkDet.getFormularioCajaChica().getFolio()+", Fo. Detalle: "+checkDet.getFolio()+".");
 				
 				}	
 			}

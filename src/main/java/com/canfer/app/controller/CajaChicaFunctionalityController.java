@@ -2,11 +2,13 @@ package com.canfer.app.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import com.canfer.app.model.CajaChicaActions;
 import com.canfer.app.model.ClasificacionCajaChica;
 import com.canfer.app.model.DetFormularioCajaChica;
 import com.canfer.app.model.FormularioCajaChica;
+import com.canfer.app.model.GenericResponse;
 import com.canfer.app.model.Log;
 import com.canfer.app.storage.ComprobanteStorageService;
 import com.canfer.app.storage.StorageException;
@@ -129,10 +132,10 @@ public class CajaChicaFunctionalityController implements HandlerExceptionResolve
 	 * @param ra - RedirectAttributes for HTTP request.
 	 */
 	@PostMapping("/savedetformcc")
-	public ResponseEntity<String> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, Model model,
+	public ResponseEntity<GenericResponse> saveDetalleFormCC(DetFormularioCajaChicaDTO detFormCCDto, @RequestParam("xml") MultipartFile mFileXML, @RequestParam("pdf") MultipartFile mFilePDF, Model model,
 			@CookieValue("suc") Long idSucursal) {
 		
-		
+		JSONObject response = new JSONObject();
 		ArchivoXML fileXML = null;
 		ArchivoPDF filePDF = null;
 		Boolean upload;
@@ -168,9 +171,9 @@ public class CajaChicaFunctionalityController implements HandlerExceptionResolve
 				
 				Log.falla(e.getMessage(), "ERROR_DB");
 				
-				upload = false;
+				upload = false;			
 				
-				return new ResponseEntity<>(upload.toString(), HttpStatus.OK);
+				return new ResponseEntity<>(new GenericResponse(e.getMessage(), upload), HttpStatus.OK);
 				
 			} catch (NotFoundException e) {
 				
@@ -178,7 +181,7 @@ public class CajaChicaFunctionalityController implements HandlerExceptionResolve
 				
 				upload = false;
 				
-				return new ResponseEntity<>(upload.toString(), HttpStatus.OK);
+				return new ResponseEntity<>(new GenericResponse(e.getMessage(), upload), HttpStatus.OK);
 				
 			}	
 			
@@ -192,16 +195,24 @@ public class CajaChicaFunctionalityController implements HandlerExceptionResolve
 			upload = actioner.saveDet(detFormCCDto, fileXML, filePDF, upload);
 			
 		} catch (NotFoundException e) {
-			
 			Log.activity(e.getMessage(), fileXML.getReceptor(), "ERROR_DB");
-			
+			return new ResponseEntity<>(new GenericResponse(e.getMessage(), false), HttpStatus.OK);
+		} catch (StorageException|EntityExistsException|NullPointerException e) {
+			return new ResponseEntity<>(new GenericResponse(e.getMessage(), false), HttpStatus.OK);
 		}
-		
 		// return response depending if its a new document or not and successful or not.
 		if (fileLoaded) {			
-			return new ResponseEntity<>("new-"+upload, HttpStatus.OK);
+			if(upload) {
+				return new ResponseEntity<>(new GenericResponse("El detalle de formulario se creo exitosamente.", upload), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(new GenericResponse("Ocurrio un error inesperado al crear el detalle.", upload), HttpStatus.OK);
+			}
 		} else {
-			return new ResponseEntity<>("pull-"+upload, HttpStatus.OK);
+			if(upload) {
+				return new ResponseEntity<>(new GenericResponse("El detalle se creo exitosamente.", "df", upload), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(new GenericResponse("Ocurrio un error inesperado al crear el detalle.", "df", upload), HttpStatus.OK);
+			}
 		}
 		
 	}
