@@ -368,14 +368,10 @@ $(document).ready(function() {
 			} else if (json.status == 'false'){
 				$('#alert-det-error-content').text(json.desc)
 				$('#alert-det-error').prop('hidden', false);
-			}  else if (json.status == 'true-df'){
-				$('#alert-det-true-content').text(json.desc)
-				$('#alert-det-true').prop('hidden', false);
+			} 
+			
+			if (json.error == 'df'){
 				$('#alert-det-yellow').prop('hidden', false);
-			}  else if (json.status == 'false-df'){
-				$('#alert-det-error-content').text(json.desc)
-				$('#alert-det-error').prop('hidden', false);
-				$('#alert-det-yelow').prop('hidden', false);
 			} 
 
 			setTimeout(function() {
