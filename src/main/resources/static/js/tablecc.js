@@ -365,7 +365,7 @@ $(document).ready(function() {
 			if (json.status == true) {
 				$('#alert-det-true-content').text(json.desc)
 				$('#alert-det-true').prop('hidden', false);
-			} else if (json.status == 'false'){
+			} else if (json.status == false){
 				$('#alert-det-error-content').text(json.desc)
 				$('#alert-det-error').prop('hidden', false);
 			} 
@@ -382,11 +382,10 @@ $(document).ready(function() {
 
 		});
 		saveDet.always(function() {
-
+			
+			$('#newDetModal').modal('hide');
 
 			table2.ajax.url("/cajachicaclient/loadformdetails?id=" + $("#idFormNew").val()).load();
-
-			$('#newDetModal').modal('hide');
 
 			reestablecerModal();
 
