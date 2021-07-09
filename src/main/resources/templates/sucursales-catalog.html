@@ -196,6 +196,29 @@
 							<div class="card-header"></div>
 							<div class="card-body">
 								<div class="datatable">
+									<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+									<div class="alert alert-success alert-icon mt-3"
+										id="alert-true" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-check"></i>
+										</div>
+										<div class="alert-icon-content" id="alert-true-content">Se borró la sucursal exitosamente.</div>
+									</div>
+									<div class="alert alert-danger alert-icon mt-3"
+										id="alert-error" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-times"></i>
+										</div>
+										<div class="alert-icon-content" id="alert-error-content">Ocurrió un error al intentar borrar la sucursal.</div>
+									</div>
 									<table class="table table-hover" id="sucursalTable"
 										width="100%">
 										<thead>
@@ -233,7 +256,7 @@
 																	</button>
 																</div>
 																<div class="modal-body">¿Está seguro que desea
-																	eliminar esta empresa?</div>
+																	eliminar esta sucursal? Al hacerlo se borrarán todos los formularios relacionados a ella.</div>
 																<div class="modal-footer">
 																	<button type="button" id="delBtn-suc"
 																		class="btn btn-primary" data-dismiss="modal">Cancelar</button>

@@ -11,15 +11,15 @@ $(document).ready(function() {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		},
 		columns: [
-		 {
-                "className":  'select-control', 
-                "orderable":  false,
-                "data": null,
-                "defaultContent": '',
-				"render": function () {
-                    return '<a class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="check-circle"></i><script> feather.replace()</script></a>' ;
-                 },
-            },
+			{
+				"className": 'select-control',
+				"orderable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function() {
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark"><i data-feather="check-circle"></i><script> feather.replace()</script></a>';
+				},
+			},
 			{
 				"className": 'delete-control',
 				"orderable": false,
@@ -48,7 +48,16 @@ $(document).ready(function() {
 			{ data: "rfc" },
 			{ data: "serie" },
 			{ data: "moneda" },
-			{ data: "bitActivo" },
+			{ data: "bitActivo" ,
+				"render": function(data) {
+					if (data == false) {
+						return '<i class="far fa-square" ></i>';
+					}
+					if (data == true) {
+						return '<i class="far fa-check-square" ></i>';
+					}
+				}
+			},
 			{ data: "contacto" },
 			{ data: "correo" },
 			{ data: "telefono" },
@@ -57,43 +66,43 @@ $(document).ready(function() {
 		],
 		"order": [[3, 'asc']],
 	});
-	
-	
- 
- 	//Funcion para seleccionar
-				
-	$('#proveedorTable tbody').on('click', 'td.select-control', function () {
-	
-	 	var tr = $(this).closest('tr');
-         if ($(tr).hasClass('selected')) {
-             tr.removeClass('selected')
-         }
-         else {
-         	tableProveedor.$('tr.selected').removeClass('selected');
-             tr.addClass('selected')
-			
-         }	
-  
+
+
+
+	//Funcion para seleccionar
+
+	$('#proveedorTable tbody').on('click', 'td.select-control', function() {
+
+		var tr = $(this).closest('tr');
+		if ($(tr).hasClass('selected')) {
+			tr.removeClass('selected')
+		}
+		else {
+			tableProveedor.$('tr.selected').removeClass('selected');
+			tr.addClass('selected')
+
+		}
+
 
 	});
-    $('#provToSuc').click( function () {
-        jsonData = tableProveedor.row('.selected').data();
-        
-        var addSuc = $.ajax({
-								  url: "/admin/addsucursal?idProveedor="+jsonData.idProveedor,
-								  cache: false,
-								  contentType: false,
-								  processData: false,
-								  type: 'GET',
-								});
-				
-				addSuc.done(function(upload) {
-		
+	$('#provToSuc').click(function() {
+		jsonData = tableProveedor.row('.selected').data();
+
+		var addSuc = $.ajax({
+			url: "/admin/addsucursal?idProveedor=" + jsonData.idProveedor,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'GET',
+		});
+
+		addSuc.done(function(upload) {
+
 			if (upload == true) {
 				$('#alert-addsuc').prop('hidden', false);
 			} else {
 				$('#alert-error-addsuc').prop('hidden', false);
-			} 
+			}
 
 			setTimeout(function() {
 				$('.alert').prop('hidden', true);
@@ -102,8 +111,8 @@ $(document).ready(function() {
 
 
 		});
-    } );
-    
+	});
+
 
 	// Tabla de usuarios	
 	var tableUsuario = $('#userTable').DataTable({
@@ -138,28 +147,29 @@ $(document).ready(function() {
 
 				},
 			},
-			{ data: "empresasNombre"},
-			{ data: "type"},
+			{ data: "empresasNombre" },
+			{ data: "type" },
 			{ data: "nombre" },
 			{ data: "apellido" },
 			{ data: "username" },
 			{ data: "correo" },
 			{ data: "rol" },
 			{ data: "permisos" },
-			{ data : "activo" ,
-	            "render": function(data) {
-	                if(data == false) {
-	                    return '<i class="far fa-square" ></i>';
-	                }
-	                if(data == true) {
-	                    return '<i class="far fa-check-square" ></i>';
-	                }
+			{
+				data: "activo",
+				"render": function(data) {
+					if (data == false) {
+						return '<i class="far fa-square" ></i>';
+					}
+					if (data == true) {
+						return '<i class="far fa-check-square" ></i>';
+					}
 				}
-			 },
+			},
 		],
 		"order": [[3, 'asc']],
 	});
-	
+
 	// Tabla de usuario proveedor
 	var tableUsuarioProveedor = $('#userProveedorTable').DataTable({
 		ajax: {
@@ -193,45 +203,46 @@ $(document).ready(function() {
 
 				},
 			},
-			{ data: "empresasNombre"},
-			{ data: "rfcProveedor"},
-			{ data: "type"},
+			{ data: "empresasNombre" },
+			{ data: "rfcProveedor" },
+			{ data: "type" },
 			{ data: "nombre" },
 			{ data: "apellido" },
 			{ data: "username" },
 			{ data: "correo" },
 			{ data: "rol" },
 			{ data: "permisos" },
-			{ data : "activo" ,
-	            "render": function(data) {
-	                if(data == false) {
-	                    return '<i class="far fa-square" ></i>';
-	                }
-	                if(data == true) {
-	                    return '<i class="far fa-check-square" ></i>';
-	                }
+			{
+				data: "activo",
+				"render": function(data) {
+					if (data == false) {
+						return '<i class="far fa-square" ></i>';
+					}
+					if (data == true) {
+						return '<i class="far fa-check-square" ></i>';
+					}
 				}
-			 },
+			},
 		],
 		"order": [[3, 'asc']],
 	});
-	
+
 	// Tabla de empresa
 	var tableEmpresa = $('#empresaTable').DataTable({
 		scrollX: true,
 		"language": {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		}
-		
+
 	});
-	
+
 	// Tabla de sucursal
 	var tableSuc = $('#sucursalTable').DataTable({
 		scrollX: true,
 		"language": {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		}
-		
+
 	});
 
 	/****** Funciones para las tablas: elimar, editar *******/
@@ -253,13 +264,13 @@ $(document).ready(function() {
 
 		$("#dropdownPermisos").val(user.permisos.split(','));
 		$("#dropdownEmpresas").val(user.empresasId);
-		
-		$("#checkActivoText").prop('value', user.activo.toString());		
-	
+
+		$("#checkActivoText").prop('value', user.activo.toString());
+
 		$("#checkActivo").on('change', function() {
-		    $("#checkActivoText").val($(this).is(':checked').toString());
+			$("#checkActivoText").val($(this).is(':checked').toString());
 		});
-		
+
 		$('#editModal').modal('show');
 
 	});
@@ -277,8 +288,8 @@ $(document).ready(function() {
 		$('.deleteForm .delBtn').attr("href", "user/delete/" + jsonData.idUsuario)
 		$('#deleteModal').modal("show");
 	});
-	
-		// Funciona para editar tabla usuarios proveedor
+
+	// Funciona para editar tabla usuarios proveedor
 	$('#userProveedorTable tbody').on('click', '.editBtn', function() {
 		var tr = $(this).closest('tr');
 		var data = tableUsuarioProveedor.row($(this).parents(tr)).data();
@@ -297,10 +308,10 @@ $(document).ready(function() {
 		$("#checkActivoText").prop('value', user.activo.toString());
 
 		$('#editModal').modal('show');
-		
-	
+
+
 		$("#checkActivo").on('change', function() {
-		    $("#checkActivoText").val($(this).is(':checked').toString());
+			$("#checkActivoText").val($(this).is(':checked').toString());
 		});
 
 	});
@@ -323,7 +334,7 @@ $(document).ready(function() {
 	// Funcion para editar proveedores
 
 	$('#proveedorTable tbody').on('click', '.editBtn', function() {
-		
+
 		var tr = $(this).closest('tr');
 		var data = tableProveedor.row($(this).parents(tr)).data();
 		var modData = JSON.stringify(data);
@@ -346,113 +357,113 @@ $(document).ready(function() {
 		$("#dropdownEmpresas").val(jsonData.empresasId);
 		$("#inputTelefono").val(jsonData.telefono);
 		$("#inputContacto").val(jsonData.contacto);
-		
+
 
 
 		$('#editModal').modal('show');
 
 	});
-	
+
 	// Funcion para info sucursales
 
 	$('#sucursalTable tbody').on('click', '.editBtn', function() {
-		
+
 		event.preventDefault();
 		var href = $(this).attr('href');
-		
-		
-		$.get(href, function(jsonData, status){
-			
+
+
+		$.get(href, function(jsonData, status) {
+
 			$("#inputNombre").val(jsonData.nombreSucursal);
 			$("#inputclaveProv").val(jsonData.claveProv);
 			$("#inputEmpresa").val(jsonData.empresaNombre);
 			$("#inputRfcEmpresa").val(jsonData.empresaRfc);
 			$("#infoUseridSuc").val(jsonData.idSucursal);
-			
-			var list=jsonData.usersAndId;
+
+			var list = jsonData.usersAndId;
 			var select = document.getElementById("listUsuarios");
-				
+
 			for (var i = 0; i < list.length; i++) {
 				var string = list[i].split('-')
-		        option = document.createElement( 'option' );
-		        option.value = string[0];
-		        option.text = string[1];
-		        select.add( option );
-	
-		     
-		   
-		    }
-		    
-			
+				option = document.createElement('option');
+				option.value = string[0];
+				option.text = string[1];
+				select.add(option);
+
+
+
+			}
+
+
 		})
 
 
 		$('#infoModal').modal('show');
 
 	});
-	
-	$("#listUsuarios").on('change', function(){
-    	$('#removeUser').attr('href','/admin/sucursales/removeuser?suc='+ $("#infoUseridSuc").val() +'&user='+ $("#listUsuarios").val())
-  	});
-  	
-	$("#infoModal").on('hide.bs.modal', function(){
-    	clearOptions('listUsuarios')
-    	$('#removeUser').attr('href','')
-  	});
-  	
-  	// Funcion para añadir user a  sucursales
-  	
+
+	$("#listUsuarios").on('change', function() {
+		$('#removeUser').attr('href', '/admin/sucursales/removeuser?suc=' + $("#infoUseridSuc").val() + '&user=' + $("#listUsuarios").val())
+	});
+
+	$("#infoModal").on('hide.bs.modal', function() {
+		clearOptions('listUsuarios')
+		$('#removeUser').attr('href', '')
+	});
+
+	// Funcion para añadir user a  sucursales
+
 	var clearOptions = function(id) {
-	    var select = document.getElementById(id);
-	    for (var i = select.options.length - 1 ; i >= 0 ; i--)
-	        select.remove(i);
+		var select = document.getElementById(id);
+		for (var i = select.options.length - 1; i >= 0; i--)
+			select.remove(i);
 	}
-	
+
 	$('#sucursalTable tbody').on('click', '.addUserBtn', function() {
-		
+
 		event.preventDefault();
 		var href = $(this).attr('href');
-		
-		
-		$.get(href, function(jsonData, status){
-			
+
+
+		$.get(href, function(jsonData, status) {
+
 			$("#newUserNombre").val(jsonData.nombreSucursal);
 			$("#newUseridSuc").val(jsonData.idSucursal);
-		 
-			
+
+
 		})
-		
-		$.get('/admin/sucursal/users', function(jsonData, status){
-			
-				var list=jsonData;
-				var select = document.getElementById("usuariosSelect");
-				
-				for (var i = 0; i < list.length; i++) {
-					var string = jsonData[i].split('-')
-			        option = document.createElement( 'option' );
-			        option.value = string[0];
-			        option.text = string[1];
-			        select.add( option );
-		
-			     
-			   
-			    }
-			
+
+		$.get('/admin/sucursal/users', function(jsonData, status) {
+
+			var list = jsonData;
+			var select = document.getElementById("usuariosSelect");
+
+			for (var i = 0; i < list.length; i++) {
+				var string = jsonData[i].split('-')
+				option = document.createElement('option');
+				option.value = string[0];
+				option.text = string[1];
+				select.add(option);
+
+
+
+			}
+
 		})
-			
-	    $('#addUserSucform').attr('action', '/admin/sucursales/adduser');
+
+		$('#addUserSucform').attr('action', '/admin/sucursales/adduser');
 		$('#addUserSuc').modal('show');
 
 	});
-	
-	$("#submitadduser").on('click', function(){
-    	document.getElementById("addUserSucform").submit();
-  	});
-  	
-  	$("#addUserSuc").on('hide.bs.modal', function(){
-    	clearOptions('usuariosSelect');
-  	});
-		
+
+	$("#submitadduser").on('click', function() {
+		document.getElementById("addUserSucform").submit();
+	});
+
+	$("#addUserSuc").on('hide.bs.modal', function() {
+		clearOptions('usuariosSelect');
+	});
+
 	// Funcion para delete en proveedores
 
 	$('#proveedorTable tbody').on('click', 'td.delete-control', 'tr', function(event) {
@@ -467,38 +478,52 @@ $(document).ready(function() {
 		$('.deleteForm .delBtn').attr("href", "supplier/delete/" + jsonData.idProveedor)
 		$('#deleteModal').modal("show");
 	});
-	
+
 	//Borrar sucursal
-	$('#delBtn-suc').on('click', function(){
-	
+	$('#delBtn-suc').on('click', function() {
+
 		event.preventDefault();
 		var href = $(this).attr('href');
-		
-			var borrarSuc = $.ajax({
-								  url: href,
-								  cache: false,
-								  contentType: false,
-								  processData: false,
-								  type: 'GET',
-								});
-				
-				borrarSuc.done(function() {
-					sucursalTable.ajax.reload(null, false);
-					$('.modal').modal('hide');
-				})
-	
+
+		var borrarSuc = $.ajax({
+			url: href,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'GET',
+		});
+		borrarSuc.done(function(result) {
+
+			if (result == true) {
+				$('#alert-true').prop('hidden', false);
+			} else {
+				$('#alert-error').prop('hidden', false);
+			}
+
+			setTimeout(function() {
+				$('.alert').prop('hidden', true);
+
+			}, 6000);
+
+
+		})
+		borrarSuc.always(function() {
+			sucursalTable.ajax.reload(null, false);
+			$('.modal').modal('hide');
+		})
+
 	});
 
-	
+
 	// Funcion para editar empresas
 
 	$('#empresaTable .editBtn').on('click', function(event) {
-		
+
 		event.preventDefault();
 		var href = $(this).attr('href');
-		
-		$.get(href, function(empresa, status){
-			
+
+		$.get(href, function(empresa, status) {
+
 			$("#idEmpresa").val(empresa.idEmpresa);
 			$("#inputNombre").val(empresa.nombre);
 			$("#inputRfc").val(empresa.rfc);
@@ -512,8 +537,8 @@ $(document).ready(function() {
 			$("#inputCp").val(empresa.cp);
 			$("#inputPaginaWeb").val(empresa.paginaWeb);
 			$("#inputColor").val(empresa.color);
-			
-			
+
+
 		})
 
 
@@ -521,12 +546,12 @@ $(document).ready(function() {
 		$('#editModal').modal('show');
 
 	});
-	
+
 	// Clear cookies before when changing company
-	$("#dashboardButton").on( "click", function() {
-		
+	$("#dashboardButton").on("click", function() {
+
 		Cookies.remove('fltr_on');
-		
+
 		Cookies.remove('fltr_proveedor');
 		Cookies.remove('fltr_idNumSap');
 		Cookies.remove('fltr_uuid');
@@ -544,128 +569,137 @@ $(document).ready(function() {
 		Cookies.remove('fltr_generico');
 		Cookies.remove('fltr_checkSap');
 		Cookies.remove('fltr_hasComplemento');
-		
-		
+
+
 	});
 
 
 
 
 	//FILTROS
-	
-		// usuarios portal
-	
-	 // Setup - add a text input to each footer cell
-    $('#userTable thead tr').clone(true).appendTo( '#userTable thead' );
-    $('#userTable thead tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        if(title !=''){
-	        
-	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
-	 
-	        $( 'input', this ).on( 'keyup change', function () {
-	            if ( tableUsuario.column(i).search() !== this.value ) {
-	                tableUsuario
-	                    .column(i)
-	                    .search( this.value )
-	                    .draw();
-	            }
-	        } );
-        }
-    } );
-    
-    	// usuarios proveedores
-	
-	 // Setup - add a text input to each footer cell
-    $('#userProveedorTable thead tr').clone(true).appendTo( '#userProveedorTable thead' );
-    $('#userProveedorTable thead tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        if(title !=''){
-	        
-	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
-	 
-	        $( 'input', this ).on( 'keyup change', function () {
-	            if ( tableUsuarioProveedor.column(i).search() !== this.value ) {
-	                tableUsuarioProveedor
-	                    .column(i)
-	                    .search( this.value )
-	                    .draw();
-	            }
-	        } );
-        }
-    } );
-    
-    	// empresas
-	
-	 // Setup - add a text input to each footer cell
-    $('#empresaTable thead tr').clone(true).appendTo( '#empresaTable thead' );
-    $('#empresaTable thead tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        if(title !=''){
-	        
-	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
-	 
-	        $( 'input', this ).on( 'keyup change', function () {
-	            if ( tableEmpresa.column(i).search() !== this.value ) {
-	                tableEmpresa
-	                    .column(i)
-	                    .search( this.value )
-	                    .draw();
-	            }
-	        } );
-        }
-    } );
-    
-    	// proveedores
-	
-	 // Setup - add a text input to each footer cell
-    $('#proveedorTable thead tr').clone(true).appendTo( '#proveedorTable thead' );
-    $('#proveedorTable thead tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        if(title !=''){
-	        
-	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
-	 
-	        $( 'input', this ).on( 'keyup change', function () {
-	            if ( tableProveedor.column(i).search() !== this.value ) {
-	                tableProveedor
-	                    .column(i)
-	                    .search( this.value )
-	                    .draw();
-	            }
-	        } );
-        }
-    } );
-    
-    // sucursales
-	
-	 // Setup - add a text input to each footer cell
-    $('#sucursalTable thead tr').clone(true).appendTo( '#sucursalTable thead' );
-    $('#sucursalTable thead tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        if(title !=''){
-	        
-	        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
-	 
-	        $( 'input', this ).on( 'keyup change', function () {
-	            if ( tableSuc.column(i).search() !== this.value ) {
-	                tableSuc
-	                    .column(i)
-	                    .search( this.value )
-	                    .draw();
-	            }
-	        } );
-        }
-    } );
-	
+
+	// usuarios portal
+
+	// Setup - add a text input to each footer cell
+	$('#userTable thead tr').clone(true).appendTo('#userTable thead');
+	$('#userTable thead tr:eq(1) th').each(function(i) {
+		var title = $(this).text();
+		if (title != '' && title != 'Activo') {
+
+			$(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+
+			$('input', this).on('keyup change', function() {
+				if (tableUsuario.column(i).search() !== this.value) {
+					tableUsuario
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		}else if(title=='Activo'){
+			$(this).html('');
+			
+		}
+	});
+
+	// usuarios proveedores
+
+	// Setup - add a text input to each footer cell
+	$('#userProveedorTable thead tr').clone(true).appendTo('#userProveedorTable thead');
+	$('#userProveedorTable thead tr:eq(1) th').each(function(i) {
+		var title = $(this).text();
+		if (title != '' && title != 'Activo') {
+
+			$(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+
+			$('input', this).on('keyup change', function() {
+				if (tableUsuarioProveedor.column(i).search() !== this.value) {
+					tableUsuarioProveedor
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		}else if(title=='Activo'){
+			$(this).html('');
+			
+		}
+	});
+
+	// empresas
+
+	// Setup - add a text input to each footer cell
+	$('#empresaTable thead tr').clone(true).appendTo('#empresaTable thead');
+	$('#empresaTable thead tr:eq(1) th').each(function(i) {
+		var title = $(this).text();
+		if (title != '') {
+
+			$(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+
+			$('input', this).on('keyup change', function() {
+				if (tableEmpresa.column(i).search() !== this.value) {
+					tableEmpresa
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		}
+	});
+
+	// proveedores
+
+	// Setup - add a text input to each footer cell
+	$('#proveedorTable thead tr').clone(true).appendTo('#proveedorTable thead');
+	$('#proveedorTable thead tr:eq(1) th').each(function(i) {
+		var title = $(this).text();
+		if (title != '' && title != 'Activo') {
+
+			$(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+
+			$('input', this).on('keyup change', function() {
+				if (tableProveedor.column(i).search() !== this.value) {
+					tableProveedor
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		}  else if(title=='Activo'){
+			$(this).html('');
+			
+		}
+	});
+
+	// sucursales
+
+	// Setup - add a text input to each footer cell
+	$('#sucursalTable thead tr').clone(true).appendTo('#sucursalTable thead');
+	$('#sucursalTable thead tr:eq(1) th').each(function(i) {
+		var title = $(this).text();
+		if (title != '') {
+
+			$(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+
+			$('input', this).on('keyup change', function() {
+				if (tableSuc.column(i).search() !== this.value) {
+					tableSuc
+						.column(i)
+						.search(this.value)
+						.draw();
+				}
+			});
+		}
+	});
+
 	// cambiar password usuario canfer
 	$('#resetPassBtn').on('click', function() {
-	
+
 		$('#div-reset-pass').prop('hidden', false);
-		
+
 	})
-	
-	
+
+
 	$('#confirmReset').on('click', function() {
 
 		if ($('#newPassword').val() != $('#checkPassword').val()) {
@@ -696,7 +730,7 @@ $(document).ready(function() {
 			});
 
 			editUser.done(function(response) {
-				
+
 				var json = JSON.parse(response);
 
 				if (json.status == true) {
@@ -726,49 +760,49 @@ $(document).ready(function() {
 
 
 	})
-	
+
 	$('#confirmResetSupplier').on('click', function() {
 
-			var data = new FormData(document.getElementById('formEditUserSupplier'));
+		var data = new FormData(document.getElementById('formEditUserSupplier'));
 
-			var url = 'user/supplier/resetpassword';
+		var url = 'user/supplier/resetpassword';
 
-			var editUserS = $.ajax({
-				url: url,
-				data: data,
-				cache: false,
-				contentType: false,
-				processData: false,
-				type: 'POST',
-			});
+		var editUserS = $.ajax({
+			url: url,
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'POST',
+		});
 
-			editUserS.done(function(response) {
-				var json = JSON.parse(response);
+		editUserS.done(function(response) {
+			var json = JSON.parse(response);
 
-				if (json.status == true) {
-					$('#alert-true-content').text(json.desc)
-					$('#alert-true').prop('hidden', false);
-				} else {
-					$('#alert-error-content').text(json.desc)
-					$('#alert-error').prop('hidden', false);
-				}
+			if (json.status == true) {
+				$('#alert-true-content').text(json.desc)
+				$('#alert-true').prop('hidden', false);
+			} else {
+				$('#alert-error-content').text(json.desc)
+				$('#alert-error').prop('hidden', false);
+			}
 
-				setTimeout(function() {
-					$('.alert').prop('hidden', true);
+			setTimeout(function() {
+				$('.alert').prop('hidden', true);
 
-				}, 6000);
+			}, 6000);
 
 
-			});
+		});
 
 
 	})
-	
-	
-	$('#editModal').on('hidden.bs.modal', function () {
+
+
+	$('#editModal').on('hidden.bs.modal', function() {
 		$('#div-reset-pass').prop('hidden', true);
-		 document.getElementById("newPassword").value = "";
-		 document.getElementById("checkPassword").value = "";
+		document.getElementById("newPassword").value = "";
+		document.getElementById("checkPassword").value = "";
 	})
-	
+
 });

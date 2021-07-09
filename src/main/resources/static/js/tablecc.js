@@ -361,7 +361,7 @@ $(document).ready(function() {
 		});
 
 		saveDet.done(function(upload) {
-		var json = JSON.parse(upload);
+			var json = upload;
 			if (json.status == true) {
 				$('#alert-det-true-content').text(json.desc)
 				$('#alert-det-true').prop('hidden', false);
@@ -487,8 +487,8 @@ $(document).ready(function() {
 
 		saveForm.done(function(upload) {
 		
-			var json = JSON.parse(upload);
-			if (json.status == 'true') {
+			var json = upload;
+			if (json.status == true) {
 				$('#alert-true-content').text(json.desc)
 				$('#alert-true').prop('hidden', false);
 			} else {
