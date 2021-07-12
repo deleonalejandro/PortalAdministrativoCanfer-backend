@@ -425,9 +425,10 @@ public class CajaChicaActions extends ModuleActions{
 		
 	}
 	
-	public boolean updateDet(DetFormularioCajaChicaDTO dfDTO, MultipartFile pdf) {
+	public GenericResponse updateDet(DetFormularioCajaChicaDTO dfDTO, MultipartFile pdf) {
 		
 		/* This method updates the next attributes: clasificacion, nombre de proveedor, fecha, responsable, monto, and pdf*/
+		GenericResponse response = new GenericResponse("Ocurrió un error al actualizar la información del detalle. Intente de nuevo.", false);
 		Optional<DetFormularioCajaChica> df = superRepo.findDetFormularioCCById(dfDTO.getIdDetFormularioCC());
 
 		if (df.isPresent()) {
@@ -474,20 +475,23 @@ public class CajaChicaActions extends ModuleActions{
 						df.get().getDocumento().getArchivoPDF().actualizar(pdf);
 					}
 					
+					response = new GenericResponse("Se actualizó el PDF y la información del detalle exitosamente.", true);
+				} else {
+					response = new GenericResponse("Se actualizó la información del detalle exitosamente.", true);
 				}
 				
 				superRepo.saveAndFlush(df.get());
 				// update cc form total
 				updateFormTotal(dfForm);
 				
-				return true;
+				return response;
 			}
 			
-			return false;
+			return response;
 			
 		}
 		
-		return false;
+		return response;
 		
 	}
 	

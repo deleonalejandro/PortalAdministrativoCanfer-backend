@@ -268,12 +268,12 @@ public class EmpresaController {
 	
 	
 	@GetMapping(value = "/sucursal/delete/{id}")
-	public ResponseEntity<String> deleteSucursal(@PathVariable Long id, RedirectAttributes ra) {
+	public ResponseEntity<Boolean> deleteSucursal(@PathVariable Long id, RedirectAttributes ra) {
 		
 		if (empresaService.deleteSucursal(id)) {
-			return new ResponseEntity<>("true", HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>("false", HttpStatus.OK);
+			return new ResponseEntity<>(false, HttpStatus.OK);
 		}
 	}
 	

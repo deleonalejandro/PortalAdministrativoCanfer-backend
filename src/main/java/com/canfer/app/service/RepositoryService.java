@@ -639,4 +639,8 @@ public class RepositoryService {
 	public List<UsuarioCanfer> findAllUsuarioCanferByRol(String rol) {
 		return usuarioCanferRepo.findAllByRol(rol);
 	}
+	
+	public List<Sucursal> findAllSucursalByOrderByEmpresa() {
+		return sucursalRepo.findAllByOrderByEmpresa();
+	}
 }

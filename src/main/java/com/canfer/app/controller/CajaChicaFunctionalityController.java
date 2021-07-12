@@ -116,11 +116,12 @@ public class CajaChicaFunctionalityController implements HandlerExceptionResolve
 	}
 	
 	@PostMapping("/updateformcc")
-	public ResponseEntity<String> updateFormCC(FormularioCajaChicaDTO formCCDto) {
+	public ResponseEntity<GenericResponse> updateFormCC(FormularioCajaChicaDTO formCCDto) {
 		
-		Boolean updateBoolean = actioner.updateForm(formCCDto);
-		
-		return new ResponseEntity<>(updateBoolean.toString(), HttpStatus.OK);
+		if(actioner.updateForm(formCCDto)) {
+			return new ResponseEntity<>(new GenericResponse("La información del formulario con se actualizó exitosamente.", true), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(new GenericResponse("Ocurrió un problema al actualizar la información del formulario.", false), HttpStatus.OK);
 	}
 	
 	/*********************************************
@@ -230,15 +231,9 @@ public class CajaChicaFunctionalityController implements HandlerExceptionResolve
 	}
 	
 	@PostMapping("/updatedetformcc")
-	public ResponseEntity<String> updateDetalleFormCC(DetFormularioCajaChicaDTO data, @RequestParam("pdf") MultipartFile pdf) {
-
-		if (actioner.updateDet(data, pdf)) {
-			
-			return new ResponseEntity<>("true", HttpStatus.OK);
-			
-		}
+	public ResponseEntity<GenericResponse> updateDetalleFormCC(DetFormularioCajaChicaDTO data, @RequestParam("pdf") MultipartFile pdf) {
 		
-		return new ResponseEntity<>("false", HttpStatus.OK);
+		return new ResponseEntity<>(actioner.updateDet(data, pdf), HttpStatus.OK);
 	}
 	
 	

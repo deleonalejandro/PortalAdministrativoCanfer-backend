@@ -4,6 +4,7 @@ package com.canfer.app.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -163,7 +164,7 @@ public class CajaChicaController {
 				
 		if (canferUser.isAdmin()) {
 			
-			sucursales = superRepo.findAllSucursales();
+			sucursales = superRepo.findAllSucursalByOrderByEmpresa();
 			
 		} else if (canferUser.isContador()) {
 			
@@ -177,7 +178,7 @@ public class CajaChicaController {
 		
 		}
 	
-	    HashMap<Sucursal, Empresa> sucursalAndCompany = new HashMap<>();
+	    HashMap<Sucursal, Empresa> sucursalAndCompany = new LinkedHashMap<>();
 	    
 		for (Sucursal sucursal: sucursales) {
 			

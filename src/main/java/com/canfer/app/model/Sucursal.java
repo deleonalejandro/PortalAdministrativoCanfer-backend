@@ -34,11 +34,14 @@ public class Sucursal {
 	
 	@JsonIgnore
 	@JoinColumn(name = "idProveedor")
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private Proveedor proveedor;
 	
 	@OneToMany(mappedBy = "sucursal", cascade = CascadeType.REMOVE)
     private List<Consecutivo> consecutivos;
+	
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.REMOVE)
+    private List<FormularioCajaChica> formularios;
 	
 	
 	private String claveProv;
