@@ -227,17 +227,64 @@ $(document).ready(function() {
 		"order": [[3, 'asc']],
 	});
 
-	// Tabla de empresa
-	var tableEmpresa = $('#empresaTable').DataTable({
+	// Tabla de sucursales
+	var tableSuc = $('#sucursalTable').DataTable({
+		ajax: {
+			url: "/admin/listsucursales",
+			dataSrc: ""
+		},
 		scrollX: true,
 		"language": {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-		}
+		},
+		columns: [
+			{
+				"className": 'delete-control',
+				"orderable": false,
+				"bSortable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function() {
+					return '<a class="deleteBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash-2"></i></a><script>feather.replace()</script>';
+
+				},
+			},
+			{
+				"className": 'newUser-control',
+				"orderable": false,
+				"bSortable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function() {
+					return '<a class="newUserBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="user-plus"></i></a><script>feather.replace()</script>';
+
+				},
+			},
+			{
+				"className": 'edit-control',
+				"orderable": false,
+				"bSortable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function() {
+					return '<a class="editBtn btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="list"></i></a><script>feather.replace()</script>';
+
+				},
+			},
+			{ data: "nombreSucursal" },
+			{ data: "empresaNombre" },
+			{ data: "claveProv" },
+			{ data: "empresaRfc" }
+		],
+		"order": [[3, "desc"]],
+		"columnDefs": [
+			{ "width": "1%", "targets": [0, 1,2] }
+		]
 
 	});
 
-	// Tabla de sucursal
-	var tableSuc = $('#sucursalTable').DataTable({
+	// Tabla de empresas
+	var tableEmpresa = $('#empresaTable').DataTable({
 		scrollX: true,
 		"language": {
 			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -366,10 +413,11 @@ $(document).ready(function() {
 
 	// Funcion para info sucursales
 
-	$('#sucursalTable tbody').on('click', '.editBtn', function() {
+	$('#sucursalTable tbody').on('click', 'td.edit-control', function() {
 
 		event.preventDefault();
-		var href = $(this).attr('href');
+		var d = tableSuc.row(this).data();
+		var href = "sucursal?id=" + d.idSucursal;
 
 
 		$.get(href, function(jsonData, status) {
@@ -419,10 +467,11 @@ $(document).ready(function() {
 			select.remove(i);
 	}
 
-	$('#sucursalTable tbody').on('click', '.addUserBtn', function() {
-
+	$('#sucursalTable tbody').on('click', 'td.newUser-control', function() {
+		
 		event.preventDefault();
-		var href = $(this).attr('href');
+		var d = tableSuc.row(this).data();
+		var href = "sucursal?id=" + d.idSucursal;
 
 
 		$.get(href, function(jsonData, status) {
@@ -478,38 +527,43 @@ $(document).ready(function() {
 		$('.deleteForm .delBtn').attr("href", "supplier/delete/" + jsonData.idProveedor)
 		$('#deleteModal').modal("show");
 	});
+	
+	// Funcion para delete en sucursales
 
-	//Borrar sucursal
-	$('#delBtn-suc').on('click', function() {
+	$('#sucursalTable tbody').on('click', 'td.delete-control', 'tr', function(event) {
 
 		event.preventDefault();
-		var href = $(this).attr('href');
 
+		var jsonData = tableSuc.row(this).data();
+
+		$('#confirmDeleteForm').attr("href", "sucursal/delete/" + jsonData.idSucursal)
+		$('#modalDelete').modal("show");
+	});
+
+	//Borrar sucursal
+	$('#confirmDeleteForm').on('click', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('href');
+		$('.modal').modal('hide');
 		var borrarSuc = $.ajax({
 			url: href,
-			cache: false,
-			contentType: false,
-			processData: false,
-			type: 'GET',
-		});
-		borrarSuc.done(function(result) {
+			type: 'get',
+			success: function(result) {
+				if (result == true) {
+					$('#alert-true').prop('hidden', false);
+				} else {
+					$('#alert-error').prop('hidden', false);
+				}
+	
+				setTimeout(function() {
+					$('.alert').prop('hidden', true);
+	
+				}, 6000);
 
-			if (result == true) {
-				$('#alert-true').prop('hidden', false);
-			} else {
-				$('#alert-error').prop('hidden', false);
 			}
-
-			setTimeout(function() {
-				$('.alert').prop('hidden', true);
-
-			}, 6000);
-
-
-		})
+		});
 		borrarSuc.always(function() {
-			sucursalTable.ajax.reload(null, false);
-			$('.modal').modal('hide');
+			tableSuc.ajax.reload(null, false);
 		})
 
 	});
