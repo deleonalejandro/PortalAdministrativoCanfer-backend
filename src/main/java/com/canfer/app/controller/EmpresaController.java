@@ -224,9 +224,16 @@ public class EmpresaController {
 	}
 	
 	@GetMapping("/sucursales")
-	public String getSucursales(Model model) {
-		model.addAttribute("sucursales", superRepo.findAllSucursales());
+	public String getSucursales() {
+		//model.addAttribute("sucursales", superRepo.findAllSucursales());
 		return "sucursales-catalog";
+	}
+	
+	
+	@GetMapping("/listsucursales")
+	@ResponseBody
+	public List<Sucursal> getListSucursales() {
+		return superRepo.findAllSucursales();
 	}
 	
 	@GetMapping("/sucursales/adduser")
