@@ -133,6 +133,11 @@ public class MainController {
 		return "login-proveedores";
 	}
 	
+	@GetMapping(value = "/docs")
+	public String getDocumentation() {
+		return "documentacion";
+	}
+	
 
 	/* TODO ERASE THIS METHOD AFTER TESTINS SP
 	 * 
