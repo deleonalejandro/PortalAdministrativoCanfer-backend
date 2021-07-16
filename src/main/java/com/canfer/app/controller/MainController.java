@@ -3,6 +3,7 @@ package com.canfer.app.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import com.canfer.app.security.AuthenticationFacade;
 import com.canfer.app.security.UserPrincipal;
 import com.canfer.app.service.EmpresaService;
 import com.canfer.app.service.RepositoryService;
+import com.canfer.app.storage.StorageProperties;
 
 import javassist.expr.NewArray;
 
@@ -37,6 +39,9 @@ public class MainController {
 	
 	@Autowired
 	private RepositoryService superRepo;
+	
+	@Autowired
+	private StorageProperties storageProperties;
 	
 	@Autowired
 	private EmpresaService empresaService;
@@ -124,11 +129,13 @@ public class MainController {
 	 */
 	
 	@GetMapping(value = "/login/portalP")
-	public String getLoginProveedores() {
+	public String getLoginProveedores(Model model) {
 		
 		if (isAuthenticated()) {
 	        return "redirect:/dashboardSupplier";
 	    }
+		
+		model.addAttribute("empresas", empresaService.findAll());
 		
 		return "login-proveedores";
 	}
