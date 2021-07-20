@@ -115,6 +115,8 @@ $(document).ready(function() {
 					}
 					if (data.toUpperCase() == 'PAGO PENDIENTE' || data.toUpperCase() == 'PENDIENTE PAGO') {
 						return '<span class="badge badge-orange">Pendiente Pago</span>';
+					}if (data.toUpperCase() == 'PAGADO PARCIAL') {
+						return '<span class="badge badge-orange">Pagado Parcial</span>';
 					}
 					if (data == 'PAGADO') {
 						return '<span class="badge badge-green">Pagado</span>';

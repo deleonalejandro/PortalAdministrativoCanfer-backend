@@ -213,10 +213,11 @@ $(document).ready(function() {
 					if (data == 'I' || data.indexOf('I') === 0 || data.indexOf('i') === 0 ) {
 						return '<button class="btn btn-pink btn-icon btn-xs" type="button">I</button>';
 					}
-					if (data == 'E' || data.indexOf('E') === 0 || data.indexOf('e') === 0 ) {
+					if (data == 'E' || data.indexOf('E') === 0 || data.indexOf('e') === 0 
+							|| data.indexOf('Nota') === 0 || data.indexOf('nota') === 0) {
 						return '<button class="btn btn-indigo btn-icon btn-xs" type="button">E</button>';
 					}
-					if (data == 'P' || data.indexOf('Nota') === 0 || data.indexOf('nota') === 0 ) {
+					if (data == 'P' || data.indexOf('Complemento') === 0 || data.indexOf('complemento') === 0 ) {
 						return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
 					}else {
 						return '<span class="badge badge-blue">' + data + '</span>';
@@ -233,6 +234,9 @@ $(document).ready(function() {
 					}
 					if (data.toUpperCase() == 'PAGO PENDIENTE' || data.toUpperCase() == 'PENDIENTE PAGO') {
 						return '<span class="badge badge-orange">Pendiente Pago</span>';
+					}
+					if (data.toUpperCase() == 'Pagado Parcial') {
+						return '<span class="badge badge-orange">Pagado Parcial</span>';
 					}
 					if (data.toUpperCase() == 'PAGADO') {
 						return '<span class="badge badge-green">Pagado</span>';
@@ -303,7 +307,10 @@ $(document).ready(function() {
 						return '<span class="badge badge-orange">En Proceso</span>';
 					}
 					if (data.toUpperCase() == 'PAGO PENDIENTE' || data.toUpperCase() == 'PENDIENTE PAGO') {
-						return '<span class="badge badge-orange">Pendiente Pago</span>';
+						return '<span class="badge badge-orange">Pendiente</span>';
+					}
+					if (data.toUpperCase() == 'PAGADO PARCIAL') {
+						return '<span class="badge badge-orange">Pagado Parcial</span>';
 					}
 					if (data.toUpperCase() == 'PAGADO') {
 						return '<span class="badge badge-green">Pagado</span>';
@@ -513,7 +520,26 @@ $(document).ready(function() {
 	
 		}
 	});
-
+	// Filtros tabla avisos de pago
+	
+		// Setup - add a text input to each footer cell
+		$('#avisosDePago thead tr').clone(true).appendTo('#avisosDePago thead');
+		$('#avisosDePago thead tr:eq(1) th').each(function(i) {
+			var title = $(this).text();
+			if (title != '' ) {
+		
+				$(this).html('<input type="text" onclick="stopPropagation(event);" placeholder="Buscar ' + title + '" />');
+		
+				$('input', this).on('keyup change', function() {
+					if (table2.column(i).search() !== this.value) {
+						table2
+							.column(i)
+							.search( this.value )
+							.draw();
+					}
+				});
+			} 
+		});
 	// Funcion para editar proveedores
 
 	$('#proveedorTable tbody').on('click', 'td.edit-control', function() {
