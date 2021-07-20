@@ -27,6 +27,10 @@ $(document).ready(function() {
 	$('#antiguedad').val(moment().subtract(3, "month").startOf("month"))
 
 	var table = $('#facturas').DataTable({
+		"drawCallback": function(settings, json) {
+			document.getElementById("reloadTableBtn").hidden = false;
+			document.getElementById("reloadTableLoading").hidden = true;
+		},
 		ajax: {
 			url: getInitUrl(),
 			dataSrc: ""
@@ -90,14 +94,16 @@ $(document).ready(function() {
 			{
 				data: "tipoDocumento",
 				"render": function(data) {
-					if (data == 'I') {
+					if (data == 'I' || data.indexOf('I') === 0 || data.indexOf('i') === 0 ) {
 						return '<button class="btn btn-pink btn-icon btn-xs" type="button">I</button>';
 					}
-					if (data == 'E') {
+					if (data == 'E' || data.indexOf('E') === 0 || data.indexOf('e') === 0 ) {
 						return '<button class="btn btn-indigo btn-icon btn-xs" type="button">E</button>';
 					}
-					if (data == 'P') {
+					if (data == 'P' || data.indexOf('Nota') === 0 || data.indexOf('nota') === 0 ) {
 						return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
+					}else {
+						return '<span class="badge badge-blue">' + data + '</span>';
 					}
 				}
 			},
@@ -105,6 +111,9 @@ $(document).ready(function() {
 				data: "estatusPago",
 				"render": function(data) {
 					if (data == 'EN PROCESO') {
+						return '<span class="badge badge-orange">Pendiente Pago</span>';
+					}
+					if (data.toUpperCase() == 'PAGO PENDIENTE' || data.toUpperCase() == 'PENDIENTE PAGO') {
 						return '<span class="badge badge-orange">Pendiente Pago</span>';
 					}
 					if (data == 'PAGADO') {
@@ -115,6 +124,8 @@ $(document).ready(function() {
 					}
 					if (data == 'RECHAZADO') {
 						return '<span class="badge badge-red">Rechazado</span>';
+					}else {
+						return '<span class="badge badge-blue">' + data + '</span>';
 					}
 				}
 			},
@@ -183,6 +194,8 @@ $(document).ready(function() {
 	// Filters
 	$('#reloadTableBtn').on('click', function() {
 
+		document.getElementById("reloadTableBtn").hidden = true;
+		document.getElementById("reloadTableLoading").hidden = false;
 
 		var getUrl = window.location;
 		var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
@@ -446,6 +459,8 @@ $(document).ready(function() {
 			.columns(10)
 			.search('')
 			.draw();
+			
+		table.ajax.reload(null, false);
 	});
 
 	$("#pestañaAvisos").on("click", function() {
@@ -457,6 +472,8 @@ $(document).ready(function() {
 		document.getElementById("divPerfil").hidden = true;
 		table2.columns.adjust();
 		document.getElementById("divAvisos").hidden = false;
+		
+		table2.ajax.reload(null, false);
 		table2.columns.adjust();
 
 	});

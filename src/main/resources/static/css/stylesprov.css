@@ -3627,6 +3627,9 @@ fieldset:disabled a.btn {
   background-color: #bd281b;
   border-color: #bd281b;
 }
+.text-btn-red{
+	color: #bd281b;
+}
 .btn-red:hover {
   color: #fff;
   background-color: #a82c22;

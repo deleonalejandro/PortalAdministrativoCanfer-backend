@@ -210,15 +210,15 @@ $(document).ready(function() {
 			{
 				data: "tipoDocumento",
 				"render": function(data) {
-					if (data == 'I') {
+					if (data == 'I' || data.indexOf('I') === 0 || data.indexOf('i') === 0 ) {
 						return '<button class="btn btn-pink btn-icon btn-xs" type="button">I</button>';
 					}
-					if (data == 'E') {
+					if (data == 'E' || data.indexOf('E') === 0 || data.indexOf('e') === 0 ) {
 						return '<button class="btn btn-indigo btn-icon btn-xs" type="button">E</button>';
 					}
-					if (data == 'P') {
+					if (data == 'P' || data.indexOf('Nota') === 0 || data.indexOf('nota') === 0 ) {
 						return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
-					} else {
+					}else {
 						return '<span class="badge badge-blue">' + data + '</span>';
 					}
 				}
@@ -231,11 +231,17 @@ $(document).ready(function() {
 					if (data.toUpperCase() == 'EN PROCESO') {
 						return '<span class="badge badge-orange">En Proceso</span>';
 					}
+					if (data.toUpperCase() == 'PAGO PENDIENTE' || data.toUpperCase() == 'PENDIENTE PAGO') {
+						return '<span class="badge badge-orange">Pendiente Pago</span>';
+					}
 					if (data.toUpperCase() == 'PAGADO') {
 						return '<span class="badge badge-green">Pagado</span>';
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
 						return '<span class="badge badge-red">Cancelado</span>';
+					}
+					if (data == 'RECHAZADO') {
+						return '<span class="badge badge-red">Rechazado</span>';
 					}
 					else {
 						return '<span class="badge badge-blue">' + data + '</span>';
@@ -304,6 +310,9 @@ $(document).ready(function() {
 					}
 					if (data.toUpperCase() == 'CANCELADO') {
 						return '<span class="badge badge-red">Cancelado</span>';
+					}
+					if (data == 'RECHAZADO') {
+						return '<span class="badge badge-red">Rechazado</span>';
 					}
 					else {
 						return '<span class="badge badge-blue">' + data + '</span>';
@@ -1037,7 +1046,7 @@ $(document).ready(function() {
 		table
 		table
 			.columns(10)
-			.search('I')
+			.search('^I', true, false, true)
 			.draw();
 
 		table.ajax.reload(null, false);
@@ -1085,7 +1094,7 @@ $(document).ready(function() {
 		$("#pestañaFacturas, #pestañaAvisos, #pestañaLog, #pestañaInicio, #pestañaCompl").removeClass("active")
 		table
 		table
-			.columns(10).search('^E$', true, false, true)
+			.columns(10).search('^E', true, false, true)
 			.draw();
 
 		table.ajax.reload(null, false);

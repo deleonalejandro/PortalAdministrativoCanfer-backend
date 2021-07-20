@@ -223,18 +223,18 @@
 											<div class="card-body">
 
 												<div class="row pb-1">
-													<div class="col">
+													<div class="col-3">
 														<label class="form-check-label" for="reportrangeEmision">Fecha
 															de Emisión:</label>
 													</div>
-													<div class="col">
+													<div class="col-3">
 														<label class="form-check-label" for="inputFiltroEstatus">Estatus:</label>
 													</div>
 													<div class="col"></div>
 													<div class="col"></div>
 												</div>
 												<div class="row pb-1">
-													<div class="col">
+													<div class="col-3">
 														<!-- Date Range Picker EMISION-->
 														<button
 															class="btn btn-light btn-sm line-height-normal p-2"
@@ -245,13 +245,14 @@
 															<i class="ml-1" data-feather="chevron-down"></i>
 														</button>
 													</div>
-													<div class="col">
+													<div class="col-3">
 														<!-- INPUT IMPORTE ESTATUS -->
 														<select class="form-control form-control-solid"
 															style="height: 30px; font-size: 14px"
 															id="inputFiltroEstatus">
 															<option>EN PROCESO</option>
 															<option>PAGADO</option>
+															<option>PENDIENTE PAGO</option>
 															<option>CANCELADO</option>
 															<option>RECHAZADO</option>
 														</select>
@@ -260,38 +261,35 @@
 													<div class="col"></div>
 												</div>
 												<div class="row pb-1">
-													<div class="col">
+													<div class="col-3">
 														<label class="form-check-label" for="inputFiltroSerie">Serie:</label>
 													</div>
-													<div class="col">
+													<div class="col-3">
 														<label class="form-check-label"
 															for="inputFiltroFolioInicial">Folio:</label>
 													</div>
-													<div class="col">
+													<div class="col-3">
 														<label class="form-check-label"
 															for="inputFiltroFolioFinal">Folio:</label>
 													</div>
 													<div class="col"></div>
-													<div class="col">
-														<button class="btn btn-red float-right mr-2" type="button"
-															id="clearFilters">Limpiar</button>
-													</div>
+													<div class="col"></div>
 												</div>
 												<div class="row pb-1">
-													<div class="col">
+													<div class="col-3">
 														<!-- INPUT SERIE -->
 														<input class="form-control form-control-solid"
 															style="height: 30px; font-size: 14px"
 															id="inputFiltroSerie" type="text" placeholder="Serie">
 													</div>
-													<div class="col">
+													<div class="col-3">
 														<!-- INPUT FOLIO INICIAL -->
 														<input class="form-control form-control-solid"
 															style="height: 30px; font-size: 14px"
 															id="inputFiltroFolioInicial" type="text"
 															placeholder="Inicial">
 													</div>
-													<div class="col">
+													<div class="col-3">
 														<!-- INPUT FOLIO FINAL -->
 														<input class="form-control form-control-solid"
 															style="height: 30px; font-size: 14px"
@@ -300,11 +298,24 @@
 													</div>
 													<div class="col"></div>
 													<div class="col">
-														<button class="btn btn-red float-right mr-2" type="button"
+														<button class="btn btn-red float-right" type="button"
 															id="reloadTableBtn">
 															Buscar<i class="ml-2" data-feather="search"></i>
 														</button>
+														<button class="btn btn-red float-right" type="button"
+															disabled hidden="true" id="reloadTableLoading">
+															<span class="spinner-border spinner-border-sm"
+																role="status" aria-hidden="true"></span> Buscando...
+														</button>
 													</div>
+												</div>
+												
+												<div class="row">
+													<div class="col">
+														<button class="btn btn-red float-right ml-2" type="button"
+															id="clearFilters">Limpiar<i class="ml-1 text-red-soft" data-feather="x-circle"></i></button>
+													</div>
+												
 												</div>
 
 											</div>
