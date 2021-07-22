@@ -58,7 +58,7 @@ $(document).ready(function() {
 				"orderable": false,
 				"bSortable": false,
 				"render": function(data) {
-					if (data == 'PAGADO') {
+					if (data.toUpperCase().includes('PAGADO')){
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="active" data-feather="dollar-sign"></i><script> feather.replace()</script></a>';
 					} else {
 						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0 disabled"><i data-feather="dollar-sign"></i><script> feather.replace()</script></a>';
@@ -247,7 +247,7 @@ $(document).ready(function() {
 
 		llenarDetalles(jsonData);
 
-		if (jsonData.pagoIdPago != null) {
+		if (jsonData.pagos[0] != null) {
 			habilitarPago(jsonData);
 		}else{
 			deshabilitarPago();
@@ -276,7 +276,7 @@ $(document).ready(function() {
 		var tr = $(this).closest('tr');
 		var jsonData = table.row($(this).parents(tr)).data();
 
-		if (jsonData.pagoIdPago != null) {
+		if (jsonData.pagos[0] != null) {
 
 			llenarDetalles(jsonData);
 			habilitarPago(jsonData);
@@ -310,7 +310,7 @@ $(document).ready(function() {
 			llenarDetalles(jsonData);
 			habilitarComentario(jsonData);
 
-			if (jsonData.pagoIdPago != null) {
+			if (jsonData.pagos[0] != null) {
 				habilitarPago(jsonData);
 			} else{
 				deshabilitarPago();
@@ -366,7 +366,7 @@ $(document).ready(function() {
 		$('#pagoFacturaTab').removeClass("disabled");
 		
 		
-		//Tabla de Avisos
+		//Tabla de avisos de pago
 	var table3 = $('#avisosDePagoPorFactura').DataTable({
 		"data": JSON.stringify(jsonData.pagos),
 		"searching": false,

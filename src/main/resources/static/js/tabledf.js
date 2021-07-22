@@ -190,6 +190,19 @@ $(document).ready(function() {
 					return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i data-feather="trash"></i><script> feather.replace()</script></a>';
 				},
 			},
+			{
+				"className": 'pago-control',
+				data: "estatusPago",
+				"orderable": false,
+				"bSortable": false,
+				"render": function(data) {
+					if (data.toUpperCase().includes('PAGADO')) {
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0"><i class="active" data-feather="dollar-sign"></i><script> feather.replace()</script></a>';
+					} else {
+						return '<a class="btn btn-datatable btn-icon btn-transparent-dark m-0 disabled"><i style="color:green" data-feather="dollar-sign"></i><script> feather.replace()</script></a>';
+					}
+				}
+			},
 
 			{ data: "idNumSap" },
 			{
@@ -210,15 +223,15 @@ $(document).ready(function() {
 			{
 				data: "tipoDocumento",
 				"render": function(data) {
-					if (data == 'I' || data.indexOf('I') === 0 || data.indexOf('i') === 0 ) {
+					if (data == 'I' || data.indexOf('I') === 0 || data.indexOf('i') === 0) {
 						return '<button class="btn btn-pink btn-icon btn-xs" type="button">I</button>';
 					}
-					if (data == 'E' || data.indexOf('E') === 0 || data.indexOf('e') === 0 ) {
+					if (data == 'E' || data.indexOf('E') === 0 || data.indexOf('e') === 0) {
 						return '<button class="btn btn-indigo btn-icon btn-xs" type="button">E</button>';
 					}
-					if (data == 'P' || data.indexOf('Nota') === 0 || data.indexOf('nota') === 0 ) {
+					if (data == 'P' || data.indexOf('Nota') === 0 || data.indexOf('nota') === 0) {
 						return '<button class="btn btn-teal btn-icon btn-xs" type="button">P</button>';
-					}else {
+					} else {
 						return '<span class="badge badge-blue">' + data + '</span>';
 					}
 				}
@@ -263,8 +276,8 @@ $(document).ready(function() {
 		],
 		"order": [[14, 'desc']],
 		"columnDefs": [
-			{ "width": "1%", "targets": [0, 1, 2,3] },
-			{ "width": "2%", "targets": [4,7,10] }
+			{ "width": "1%", "targets": [0, 1, 2, 3] },
+			{ "width": "2%", "targets": [4, 7, 10] }
 		]
 
 	});
@@ -477,7 +490,7 @@ $(document).ready(function() {
 					if (data == 'true' || data == true) {
 						return '<i class="far fa-check-square" ></i>';
 					}
-					else{
+					else {
 						return '<i class="far fa-square" ></i>';
 					}
 				}
@@ -489,7 +502,7 @@ $(document).ready(function() {
 			{ data: "localidad" },
 		],
 	});
-	
+
 	// Filtros tabla proveedores
 
 	// Setup - add a text input to each footer cell
@@ -497,20 +510,20 @@ $(document).ready(function() {
 	$('#proveedorTable thead tr:eq(1) th').each(function(i) {
 		var title = $(this).text();
 		if (title != '' && title != 'Activo') {
-	
+
 			$(this).html('<input type="text" onclick="stopPropagation(event);" placeholder="Buscar ' + title + '" />');
-	
+
 			$('input', this).on('keyup change', function() {
 				if (tableProveedor.column(i).search() !== this.value) {
 					tableProveedor
 						.column(i)
-						.search( this.value )
+						.search(this.value)
 						.draw();
 				}
 			});
 		} else {
 			$(this).html('');
-	
+
 		}
 	});
 
@@ -543,6 +556,46 @@ $(document).ready(function() {
 		$('#editModal').modal('show');
 
 	});
+
+	//Pagos tabla de info
+	$('#facturas tbody').on('click', 'td.pago-control', function() {
+		var tr = $(this).closest('tr');
+		var jsonData = table.row($(this).parents(tr)).data();
+
+		if (jsonData.pagos[0] != null) {
+
+			//Tabla de avisos de pago
+			var table3 = $('#avisosDePago').DataTable({
+				"data": JSON.stringify(jsonData.pagos),
+				"searching": false,
+				scrollX: true,
+				"language": {
+					"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+				},
+				"columns": [
+
+					{
+						"className": 'pdfAviso-control',
+						"orderable": false,
+						"bSortable": false,
+						"data": null,
+						"defaultContent": '',
+						"render": function(data) {
+							return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/proveedoresClient/preview/singlePDF/Pago/' + data.idPago + '" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>'
+						},
+					},
+					{ data: "idNumPago" },
+					{ data: "fecMvto" },
+					{ data: "totalPago" },
+					{ data: "totalFactura" }
+				]
+
+			});
+			$(' #pagosModal').modal('show');
+
+		}
+	});
+
 
 	//check files size
 	$('#InputGroupPDF').on('change', function() {

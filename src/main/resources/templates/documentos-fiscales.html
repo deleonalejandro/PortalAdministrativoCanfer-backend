@@ -204,7 +204,7 @@
 								Crédito</a> <a class="nav-link" id="pestañaCompl" href="#!">Complementos
 								de Pago</a> <a class="nav-link" id="pestañaAvisos" href="#!">Avisos
 								de Pago</a> <a class="nav-link" id="pestañaLog" href="#!">Movimientos</a>
-								<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
+							<img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
@@ -282,7 +282,8 @@
 																	th:action="@{/documentosFiscalesClient/uploadFactura(rfc=${selectedCompany})}">
 																	<table>
 																		<div>Cargar un XML:</div>
-																		<div class="text-danger" hidden id="fileSizeXml">Los archivos adjuntos no deben exceder los 550KB.</div>
+																		<div class="text-danger" hidden id="fileSizeXml">Los
+																			archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -294,7 +295,8 @@
 																				accept=".xml" type="file" name="files" />
 																		</div>
 																		<div>Cargar un PDF:</div>
-																		<div class="text-danger" hidden id="fileSizePdf">Los archivos adjuntos no deben exceder los 550KB.</div>
+																		<div class="text-danger" hidden id="fileSizePdf">Los
+																			archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -638,6 +640,7 @@
 												<th></th>
 												<th></th>
 												<th></th>
+												<th></th>
 												<th>No. SAP</th>
 												<th>RS</th>
 												<th>Folio</th>
@@ -679,7 +682,50 @@
 								</div>
 							</div>
 
-
+							<!-- Large modal Pagos-->
+							<div class="modal fade" id="pagosModal" tabindex="-1"
+								role="dialog" aria-labelledby="myLargeModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Información de Pagos</h5>
+											<button class="btn-close" type="button"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div class="datatable">
+												<!-- TABLA -->
+												<table class="compact table-hover" id="avisosDePago"
+													style="text-align: center; width: 100%">
+													<thead>
+														<tr>
+															<th></th>
+															<th>Folio Pago</th>
+															<th>Fecha Pago</th>
+															<th>Monto Pago</th>
+															<th>Total de Factura</th>
+														</tr>
+													</thead>
+													<tfoot>
+														<tr>
+															<th></th>
+															<th>Folio Pago</th>
+															<th>Fecha Pago</th>
+															<th>Monto Pago</th>
+															<th>Total de Factura</th>
+														</tr>
+													</tfoot>
+												</table>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button class="btn btn-primary" type="button"
+												data-bs-dismiss="modal">Cerrar</button>
+										</div>
+									</div>
+								</div>
+							</div>
 							<!-- MODAL PARA MAS INFORMACION DE LA FACTURA -->
 							<form class="detailsForm" method="post"
 								enctype="multipart/form-data">
@@ -1061,7 +1107,8 @@
 														</div>
 													</div>
 													<div>Adjuntar un PDF:</div>
-													<div class="text-danger" hidden id="fileSizeDetailPdf">Los archivos adjuntos no deben exceder los 550KB.</div>
+													<div class="text-danger" hidden id="fileSizeDetailPdf">Los
+														archivos adjuntos no deben exceder los 550KB.</div>
 													<div class="input-group mb-2">
 														<div class="input-group-prepend">
 															<div class="input-group-text">
@@ -1214,8 +1261,7 @@
 		</footer>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script
-		src="//cdn.jsdelivr.net/npm/js-cookie@rc"></script>
+	<script src="//cdn.jsdelivr.net/npm/js-cookie@rc"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
 		crossorigin="anonymous"></script>
