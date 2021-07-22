@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="Pagina Principal de Caja Chica" />
+<meta name="author" content="Alejandro y Yasmin" />
+<title>Control de Efectivo - Página Principal</title>
+
+<!-- SCRIPTS AND LINKS -->
+<script data-search-pseudo-elements defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.27.0/feather.min.js"
+	crossorigin="anonymous"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-html5-1.6.5/datatables.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/scroller/2.0.2/css/scroller.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/searchpanes/1.1.1/css/searchPanes.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/select/1.3.1/css/select.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<link href="/css/stylesrg.css" rel="stylesheet" />
+</head>
+
+<!-- TOP NAV BAR -->
+<body class="nav-fixed">
+	<nav class="topnav navbar navbar-expand shadow navbar-light bg-white"
+		id="sidenavAccordion">
+
+		<!-- LOGO DE LA EMPRESA -->
+		<a class="navbar-brand" href="#"> <!-- PRINT THE CORRESPONDING LOGO -->
+			<img th:src="@{'company/profile/' + ${companyProfile}}"
+			class="pl-3 img-fluid mr-0" alt="logo" style="height: 38px" />
+		</a>
+
+
+		<!-- ICONOS DE TOP NAV BAR -->
+		<ul class="navbar-nav align-items-center ml-auto">
+
+			<!-- DASHBOARD FEATHER -->
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark" href="dashboard"
+				id="dashboardButton" role="button" aria-haspopup="true"
+				aria-expanded="false"><i data-feather=layout></i></a></li>
+
+
+
+			<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownModulo" href="javascript:void(0);" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+					data-feather="grid"></i></a>
+				<div
+					class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up"
+					aria-labelledby="navbarDropdownModulo">
+					<h6 class="dropdown-header dropdown-notifications-header">
+						<i class="mr-2" data-feather="grid"></i> Centro de Módulos
+					</h6>
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" th:href="@{/dashboard}">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Contaduría Nacional
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a class="dropdown-item py-3"
+						th:href="@{/cajachicaclient/dashboard}">
+						<div class="icon-stack bg-indigo-soft text-indigo mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Caja Chica
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-teal-soft text-teal mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Reposición de Gastos
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-yellow-soft text-yellow mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Comercio Exterior
+						</div>
+					</a>
+					<div class="dropdown-divider m-0"></div>
+					<a sec:authorize="hasAnyRole('ADMIN', 'USER_CONTADOR')"
+						class="dropdown-item py-3" target="_blank">
+						<div class="icon-stack bg-primary-soft text-primary mr-4">
+							<i data-feather="layers"></i>
+						</div>
+						<div>
+							<div class="small text-gray-500">Módulo</div>
+							Documentos Extranjeros
+						</div>
+					</a>
+				</div></li>
+
+
+
+			<!-- CONFIGURACIONES -->
+			<div sec:authorize="hasRole('ROLE_ADMIN')">
+				<li class="nav-item dropdown no-caret mr-3 d-md-inline"><a
+					class="btn btn-icon btn-transparent-dark dropdown-toggle"
+					id="navbarDropdownMessages" href="/admin/cpanel" role="button"
+					aria-haspopup="true" aria-expanded="false"><i
+						data-feather=settings></i></a></li>
+			</div>
+
+			<li class="nav-item dropdown no-caret mr-2 dropdown-user"><a
+				class="btn btn-icon btn-transparent-dark dropdown-toggle"
+				id="navbarDropdownUserImage" href="javascript:void(0);"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"><img class="img-fluid"
+					th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" /></a>
+				<div
+					class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up"
+					aria-labelledby="navbarDropdownUserImage">
+					<h6 class="dropdown-header d-flex align-items-center">
+						<img class="dropdown-user-img"
+							th:src="${'https://ui-avatars.com/api/?background=random&color=fff&name=' + #authentication.principal.name}" />
+						<div class="dropdown-user-details">
+							<div class="dropdown-user-details-name">
+								<span sec:authentication="name">
+							</div>
+							<div class="dropdown-user-details-email">
+								<div th:text="${#authentication.principal.correo}"></div>
+							</div>
+						</div>
+					</h6>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/logout?auth=pa">
+						<div class="dropdown-item-icon">
+							<i data-feather="log-out"></i>
+						</div> Cerrar Sesión
+					</a>
+				</div></li>
+		</ul>
+	</nav>
+	<div class="overflow:hidden">
+
+		<!-- MAIN CAJA CHICA -->
+		<main>
+			<header
+				class="page-header page-header-compact page-header-gradient border-bottom fixed-top my-5">
+				<div class="container">
+					<div class="page-header-content pt-4">
+						<div class="row align-items-center justify-content-between">
+							<div class="col-12 pb-3">
+								<h1 class="page-header-title text-white">Control de
+									Efectivo</h1>
+								<h1 class="page-header-subtitle text-gray-300 mb-0 text-right">
+									Portal Administrativo</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<!-- Main page content-->
+			<div class="container-fluid" style="padding-top: 150px">
+				<div class="row">
+					<div class="col-2">
+
+						<!-- Buttons SideNav -->
+						<nav class="nav nav-borders flex-column" style="position: fixed">
+							<a class="nav-link active" id="pestañaFormulario" href="#!">Entradas</a>
+							<a sec:authorize="hasRole('ADMIN')" class="nav-link"
+								id="pestañaAdministrativa"
+								th:href="@{/cajachicaclient/administration}">Administración</a>
+							<img src="/assets/img/logosEmpresas/CANFER-logo-transparente.png"
+								class=" pl-5 pb-5"
+								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
+								alt="Logo CANFER" />
+
+						</nav>
+					</div>
+					<div class="col-10">
+
+						<!-- Main Content Entradas Caja Chica-->
+						<div class="card mb-0">
+							<div id="selectedCompany" th:text="${selectedCompany}" hidden>PAE920709D75</div>
+							<div id="selectedClave" th:text="${selectedSucursal}" hidden>A-0080</div>
+							<div sec:authentication="principal.authorities" hidden
+								id="userRoles"></div>
+							<div class="card-body">
+
+
+								<!-- DIV DONDE ESTA LA TABLA -->
+								<div class="datatable" id="divTabla">
+									<h4 class="float-right">REGISTRO DE FORMULARIOS</h4>
+									<div class="row">
+										<!-- BOTON NUEVO FORMULARIO -->
+										<div class="col-6 pb-3 pl-3">
+											<a href="#prueba"><a type="button" id="btn-add-form"
+												th:href="@{/cajachicaclient/newformcc}" href="#map"
+												class="btn btn-outline-secondary mr-2" data-toggle="modal"
+												data-target="#newFormModal">Nuevo</a></a>
+
+										</div>
+									</div>
+
+									<!-- ALERTS DE UPDATE DE FORMULARIOS -->
+									<div class="alert alert-success alert-icon mt-3"
+										id="alert-true" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-check"></i>
+										</div>
+										<div class="alert-icon-content" id="alert-true-content"></div>
+									</div>
+									<div class="alert alert-danger alert-icon mt-3"
+										id="alert-error" role="alert" hidden=true>
+										<button class="close" type="button" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<div class="alert-icon-aside">
+											<i class="fa fa-times"></i>
+										</div>
+										<div class="alert-icon-content" id="alert-error-content"></div>
+									</div>
+
+									<!-- TABLA -->
+
+									<table class="compact table-hover" id="formularios"
+										style="text-align: center; width: 100%">
+										<thead>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th>Fecha</th>
+												<th>Formulario</th>
+												<th>Estatus</th>
+												<th>Responsable</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tfoot>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th>Fecha</th>
+												<th>Formulario</th>
+												<th>Estatus</th>
+												<th>Responsable</th>
+												<th>Total</th>
+											</tr>
+										</tfoot>
+									</table>
+
+
+
+								</div>
+
+								<!-- NUEVO FORMULARIO Main Content Formulario -->
+								<div id="divNuevo" hidden>
+									<form class="newForm" method="post"
+										th:action="@{/cajachicaclient/updateformcc}"
+										enctype="multipart/form-data" id="formFormulario">
+										<div class="form-group">
+											<!-- Card del modal -->
+											<div class="row">
+												<div class="col-7 font-weight-bold"
+													style="color: black; font-size: large">CAJA CHICA</div>
+												<div class="col-5">
+													<div class="row pr-3 float-right">
+														<div class="font-weight-bold"
+															style="text-align: right; color: black; font-size: large">
+															FORMULARIO #</div>
+														<div class="font-weight-bold" id="idFormulario"
+															style="text-align: right; color: black; font-size: large">
+														</div>
+														<!-- Hidden fields (informative only) -->
+														<input type="text" style="height: 20px"
+															id="idFormularioCajaChica1" name="idFormularioCajaChica"
+															value="" hidden />
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-7"></div>
+												<div class="col-5">
+													<div class="row pr-3 float-right">
+														<div
+															style="text-align: right; color: black; font-weight: 200;">
+															ESTADO</div>
+														<div class="pl-2">
+															<!-- INPUT IMPORTE ESTATUS -->
+															<select class="form-control form-control-solid"
+																style="font-size: 12px; text-align: left; color: black; font-weight: 200;"
+																id="estatus" name="estatus">
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										
+											<div class="alert alert-success alert-icon mt-3"
+												id="alert-det-true" role="alert" hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-check"></i>
+												</div>
+												<div class="alert-icon-content" id="alert-det-true-content"></div>
+											</div>
+											<div class="alert alert-danger alert-icon mt-3"
+												id="alert-det-error" role="alert" hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fa fa-times"></i>
+												</div>
+												<div class="alert-icon-content" id="alert-det-error-content"></div>
+											</div>
+											<div class="alert alert-warning alert-icon mt-3"
+												id="alert-det-yellow" role="alert" hidden=true>
+												<button class="close" type="button" data-dismiss="alert"
+													aria-label="Close">
+													<span aria-hidden="true">×</span>
+												</button>
+												<div class="alert-icon-aside">
+													<i class="fas fa-info-circle"></i>
+												</div>
+												<div class="alert-icon-content">La información del nuevo detalle de formulario fue obtenida del módulo de documentos fiscales.</div>
+											</div>
+											<hr>
+											<!-- Atributos del Formulario -->
+											<div class="row">
+												<div class="col-2">
+													<label for="idCajaChicaNew"
+														class="form-control-label mb-0 font-weight-bold">
+														Socio de Negocio: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														name="idCajaChica" id="idCajaChicaNew" value="" />
+												</div>
+												<!-- DIVS SEGUN ESTATUS ENVIADO -->
+												<div class="col-2" id="infoEnvio" hidden>
+													<label class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Información de Envío: </label>
+												</div>
+												<div class="col-4" id="divPaqueteria" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="paqueteria" id="paqueteriaLabel"
+																class="form-control-label mb-0 font-weight-bold">
+																Paquetería: </label>
+														</div>
+														<div class="col-8">
+															<select name="paqueteria" id="paqueteria"
+																style="height: 30px"
+																class="form-control form-control-sm bg-white"
+																onchange="if(this.options[this.selectedIndex].value=='customOption'){
+																              toggleField(this,this.nextSibling,true);
+																              this.selectedIndex='0'; }">
+																<option value="DHL">DHL</option>
+																<option value="UPS">UPS</option>
+																<option value="Estafeta">Estafeta</option>
+																<option value="customOption">[Otro:]</option>
+															</select><input name="paqueteria"
+																class="form-control form-control-sm bg-white"
+																style="display: none; height: 20px" disabled="disabled"
+																onblur="if(this.value==''){toggleField(this,this.previousSibling,false);}">
+															<script>
+																function toggleField(
+																		hideObj,
+																		showObj,
+																		boolVal) {
+																	hideObj.disabled = true;
+																	hideObj.style.display = 'none';
+																	showObj.disabled = false;
+																	showObj.style.display = 'inline';
+																	showObj
+																			.focus();
+																	if (boolVal == true) {
+																		document
+																				.getElementById('numeroGuiaLabel').innerHTML = 'Contacto: ';
+																		document
+																				.getElementById('paqueteriaLabel').innerHTML = 'Mensajero: ';
+																	} else {
+																		document
+																				.getElementById('numeroGuiaLabel').innerHTML = 'Número de Guía: ';
+																		document
+																				.getElementById('paqueteriaLabel').innerHTML = 'Paquetería: ';
+																	}
+
+																}
+															</script>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class="row pt-1">
+												<div class="col-2">
+													<label for="sucursalNew"
+														class="form-control-label mb-0 font-weight-bold">
+														Nombre Sucursal: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="sucursalNew" value="" />
+												</div>
+												<!-- DIVS SEGUN ESTATUS ENVIADO -->
+												<div class="col-2"></div>
+												<div class="col-4" id="divNumeroGuia" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="numeroGuia" id="numeroGuiaLabel"
+																class="form-control-label mb-0 font-weight-bold">
+																Número de Guía: </label>
+														</div>
+														<div class="col-8">
+															<input type="text" style="height: 20px"
+																class="form-control form-control-sm bg-white"
+																id="numeroGuia" name="numeroGuia" value="" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row pt-1">
+												<div class="col-8"></div>
+												<div class="col-4" id="divFechaEnvio" hidden>
+														<div class="row">
+															<div class="col-4">
+																<label for="fechaPago"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Fecha de Envío: </label>
+															</div>
+															<div class="col-8">
+																<input type="date" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="fechaEnvio" name="fechaEnvio" value="" />
+															</div>
+														</div>
+													</div>
+											</div>		
+											<div class="row pt-1">
+												<div class="col-2">
+													<label for="responsable"
+														class="form-control-label mb-0 font-weight-bold">
+														Responsable: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="responsableNew" value="" />
+												</div>
+												<!-- DIVS SEGUN ESTATUS PAGO -->
+												<div class="col-2" id="infoPago" hidden>
+													<label for="infoPago"
+														class="form-control-label mb-0 font-weight-bold"
+														style="color: black"> Información de Pago: </label>
+												</div>
+												<div class="col-4" id="divNumeroPago" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="numeroPago"
+																class="form-control-label mb-0 font-weight-bold">
+																Número de Pago: </label>
+														</div>
+														<div class="col-8">
+															<input type="text" style="height: 20px"
+																class="form-control form-control-sm bg-white"
+																id="numeroPago" name="numeroPago" value="" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row pt-1 pb-4">
+												<div class="col-2">
+													<label for="fechaNew"
+														class="form-control-label mb-0 font-weight-bold">
+														Fecha: </label>
+												</div>
+												<div class="col-4">
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="fechaNew" value="" />
+												</div>
+												<!-- Hidden fields (informative only) -->
+												<div class="col-2" hidden>
+													<input type="text" style="height: 20px" readonly
+														class="form-control form-control-sm bg-white"
+														id="idFormNew" name="idFormNew" value="" />
+												</div>
+												<!-- DIVS SEGUN ESTATUS PAGO -->
+												<div class="col-2"></div>
+												<div class="col-4" id="divFechaPago" hidden>
+													<div class="row">
+														<div class="col-4">
+															<label for="fechaPago"
+																class="form-control-label mb-0 font-weight-bold">
+																Fecha de Pago: </label>
+														</div>
+														<div class="col-8">
+															<input type="date" style="height: 20px"
+																class="form-control form-control-sm bg-white"
+																id="fechaPago" name="fechaPago" value="" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div id="btn-nuevo-det">
+													<button class="btn btn-secondary ml-3" type="button"
+														data-toggle="modal" data-target="#newDetModal">
+														Nuevo Detalle</button>
+												</div>
+												<div class="col-12">
+													<table class="compact table-hover"
+														id="detallesNuevoCajaChica"
+														style="text-align: center; width: 100%">
+														<thead>
+															<tr>
+																<th></th>
+																<th></th>
+																<th>Clasificación</th>
+																<th>PDF<i class="far fa-file-pdf float-left fa-lg"
+																	style="color: purple"></i></th>
+																<th>XML<i class="far fa-file-code float-left fa-lg"
+																	style="color: purple"></i></th>
+																<th>RS</th>
+																<th>Folio</th>
+																<th>Nombre Proveedor</th>
+																<th>Fecha</th>
+																<th>Beneficiario</th>
+																<th>Subtotal</th>
+																<th>Monto</th>
+																<th>Total</th>
+															</tr>
+														</thead>
+														<tfoot>
+															<tr>
+																<th></th>
+																<th></th>
+																<th>Clasificación</th>
+																<th>PDF</th>
+																<th>XML</th>
+																<th>RS</th>
+																<th>Folio</th>
+																<th>Nombre Proveedor</th>
+																<th>Fecha</th>
+																<th>Beneficiario</th>
+																<th>Subtotal</th>
+																<th>Monto</th>
+																<th>Total</th>
+															</tr>
+														</tfoot>
+													</table>
+												</div>
+											</div>
+
+
+											<!-- Botones, comentarios y total  -->
+
+											<div class="row pt-2">
+												<div class="col-5">
+													<div class="row">
+														<label for="comentarioNew"
+															class="form-control-label ml-3 font-weight-bold"
+															style="color: black"> Comentarios: </label>
+													</div>
+													<div class="row">
+														<textarea type="text" style="height: 50px"
+															class="form-control form-control-sm bg-white ml-3"
+															cols="40" rows="5" id="comentario" name="comentario"
+															value=""></textarea>
+													</div>
+												</div>
+												<div class="col-5"></div>
+												<div class="col-2">
+													<label for="totalNew"
+														class="form-control-label mb-0 pull-right font-weight-bold"
+														style="color: black"> Total: </label>
+													<div class="input-group">
+														<div class="input-group-prepend ">
+															<div class="input-group-text" style="height: 20px">
+																<i data-feather="dollar-sign" style="color: green"></i>
+															</div>
+														</div>
+														<input type="text" style="height: 20px;" readonly
+															class="form-control form-control-sm bg-white text-success"
+															id="total" name="total" value="" />
+													</div>
+												</div>
+											</div>
+
+											<div class="float-right">
+												<button class="btn btn-danger mt-5" id="cancelarNewForm"
+													type="button">Cancelar</button>
+												<button class="btn btn-secondary mt-5" id="submitNewForm"
+													type="submit">Guardar</button>
+											</div>
+
+										</div>
+										<!-- End del modal -->
+									</form>
+
+								</div>
+
+								<!-- MODAL PARA NUEVO DETALLE -->
+								<!-- Modal -->
+								<form method="post" enctype="multipart/form-data" action="#"
+									th:action="@{/cajachicaclient/savedetformcc}" id="formNewDet">
+									<div class="modal fade" id="newDetModal" data-backdrop="static"
+										tabindex="-1" role="dialog"
+										aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<!-- Wizard card example with navigation-->
+												<div class="card">
+													<div class="card-header border-bottom">
+														<!-- Wizard navigation-->
+														<div
+															class="nav nav-pills nav-justified flex-column flex-sm-row nav-wizard"
+															id="cardTab" role="tablist">
+															<!-- Wizard navigation item 1-->
+															<a class="nav-item nav-link active" id="wizard1-tab"
+																role="tab" aria-controls="wizard1" aria-selected="true">
+																<div class="wizard-step-icon">1</div>
+																<div class="wizard-step-text">
+																	<div class="wizard-step-text-name">Archivos</div>
+																</div>
+															</a>
+															<!-- Wizard navigation item 2-->
+															<a class="nav-item nav-link" id="wizard2-tab" role="tab"
+																aria-controls="wizard2" aria-selected="true">
+																<div class="wizard-step-icon">2</div>
+																<div class="wizard-step-text">
+																	<div class="wizard-step-text-name">Información</div>
+																</div>
+															</a>
+														</div>
+													</div>
+													<div class="card-body">
+														<div class="tab-content" id="cardTabContent">
+															<!-- TWO WIZARD TABS -->
+															<div class="row">
+																<div class="col-6">
+																	<!-- Wizard tab pane item 1-->
+																	<div id="wizard1">
+																		<div class="row justify-content-center">
+
+																			<h5 class="card-title">Adjunta los archivos
+																				relacionados al detalle:</h5>
+
+																			<div>
+																				<div class="d-flex justify-content-center">Adjuntar
+																					un XML</div>
+																					<div class="text-danger" hidden id="fileSizeXml">Los archivos adjuntos no deben exceder los 550KB.</div>
+																				<!-- Boton para activar adjuntar xml -->
+																				<div id="div-btn-add-xml">
+																					<div class="d-flex justify-content-center">
+																						<button id="btn-add-xml"
+																							class="btn btn-outline-green" type="button">
+																							<i class="far fa-file-code float-left fa-2x"
+																								style="color: green"></i>
+																						</button>
+																					</div>
+																				</div>
+																				<!-- Adjuntar xml -->
+																				<div id="div-add-xml" hidden="true">
+																					<div class="input-group mb-2">
+																						<div class="input-group-prepend">
+																							<div class="input-group-text">
+																								<i class="far fa-file-code float-left fa-lg"
+																									style="color: green"></i>
+																							</div>
+																						</div>
+																						<input class="form-control" id="xml" accept=".xml"
+																							type="file" name="xml" />
+																						<button class="close" type="button" id="closexml"
+																							aria-label="Close">
+																							<span aria-hidden="true">×</span>
+																						</button>
+																					</div>
+																				</div>
+
+
+																				<div class="d-flex justify-content-center">Adjuntar
+																					un PDF</div>
+																					<div class="text-danger" hidden id="fileSizePdf">Los archivos adjuntos no deben exceder los 550KB.</div>
+																				<!-- Boton para activar adjuntar pdf -->
+																				<div id="div-btn-add-pdf">
+																					<div id="btn-add-pdf"
+																						class="d-flex justify-content-center"> 
+																						<button class="btn btn-outline-red" type="button">
+																							<i class="far fa-file-pdf float-left fa-2x"
+																								style="color: red"></i>
+																						</button>
+																					</div>
+																				</div>
+																				<!-- Adjuntar pdf -->
+																				<div id="div-add-pdf" hidden="true">
+																					<div class="input-group mb-2">
+																						<div class="input-group-prepend">
+																							<div class="input-group-text">
+																								<i class="far fa-file-pdf float-left fa-lg"
+																									style="color: red"></i>
+																							</div>
+																						</div>
+																						<input class="form-control" id="pdf" type="file"
+																							accept=".pdf" name="pdf" />
+																						<button class="close" type="button" id="closepdf"
+																							aria-label="Close">
+																							<span aria-hidden="true">×</span>
+																						</button>
+																					</div>
+																				</div>
+																			</div>
+
+
+																		</div>
+																	</div>
+																</div>
+																<div class="col-6">
+																	<!-- Wizard tab pane item 2-->
+																	<div id="wizard2" hidden="true">
+																		<div class="row justify-content-center">
+
+																			<h5 class="card-title">Llena la información del
+																				detalle</h5>
+																			<!-- Content del new detalle modal -->
+																			<!-- Hidden fields (informative only) -->
+																			<div class="col-2">
+																				<input type="text" hidden style="height: 20px"
+																					readonly
+																					class="form-control form-control-sm bg-white"
+																					id="idFormularioCajaChica2" name="idFormulario"
+																					value="" />
+																			</div>
+																		</div>
+																		<div>
+																			<div class="row pt-1" id="dateNewDiv">
+																				<div class="col-4">
+																					<label for="dateNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Fecha del documento: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" id="fechaDet" name="fechaDet"
+																						style="height: 25px" value="" required=true />
+																				</div>
+																				<input type="text" id="realDate" name="realDate"
+																					value="" hidden />
+																			</div>
+																			<div class="row pt-1">
+																				<div class="col-4">
+																					<label for="clasificacionNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Clasificación:</label>
+																				</div>
+																				<div class="col-6">
+																					<!-- INPUT IMPORTE ESTATUS -->
+																					<select class="form-control form-control-solid"
+																						style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																						id="idClasificacion1" name="idClasificacion"
+																						required=true>
+																						<option
+																							th:each="clasificacion : ${clasificaciones}"
+																							th:value="${clasificacion.idClasificacionCajaChica}"
+																							th:text="${clasificacion.clasificacion}"></option>
+																					</select>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="subtotalNewDiv">
+																				<div class="col-4">
+																					<label for="subtotalNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Subtotal: </label>
+																				</div>
+
+																				<div class="col-6">
+																					<div class="input-group">
+																						<div class="input-group-prepend ">
+																							<div class="input-group-text"
+																								style="height: 20px">
+																								<i data-feather="dollar-sign"
+																									style="color: gray"></i>
+																							</div>
+																						</div>
+																						<input type="number" min="0" step="0.01"
+																							style="height: 20px"
+																							class="form-control form-control-sm bg-white"
+																							id="subtotal" name="subTotal" required=true />
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="montoNewDiv">
+																				<div class="col-4">
+																					<label for="montoNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Monto: </label>
+																				</div>
+
+																				<div class="col-6">
+																					<div class="input-group">
+																						<div class="input-group-prepend ">
+																							<div class="input-group-text"
+																								style="height: 20px">
+																								<i data-feather="dollar-sign"
+																									style="color: gray"></i>
+																							</div>
+																						</div>
+																						<input type="number" min="0" step="0.01"
+																							style="height: 20px"
+																							class="form-control form-control-sm bg-white"
+																							id="monto" name="monto" required=true />
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="totalNewDiv">
+																				<div class="col-4">
+																					<label for="totalNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Total: </label>
+																				</div>
+
+																				<div class="col-6">
+																					<div class="input-group">
+																						<div class="input-group-prepend ">
+																							<div class="input-group-text"
+																								style="height: 20px">
+																								<i data-feather="dollar-sign"
+																									style="color: gray"></i>
+																							</div>
+																						</div>
+																						<input type="number" min="0" step="0.01"
+																							style="height: 20px"
+																							class="form-control form-control-sm bg-white"
+																							id="det-total" name="total" readonly />
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="folioNewDiv">
+																				<div class="col-4">
+																					<label for="folioNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Folio: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" style="height: 20px"
+																						class="form-control form-control-sm bg-white"
+																						id="folio" name="folio" required=true />
+																				</div>
+																			</div>
+																			<div class="row pt-1" id="provNewDiv">
+																				<div class="col-4">
+																					<label for="responsableNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Nombre de Proveedor: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" style="height: 20px"
+																						class="form-control form-control-sm bg-white"
+																						id="nombreProveedor" name="nombreProveedor"
+																						required=true />
+																				</div>
+																			</div>
+																			<div class="row pt-1">
+																				<div class="col-4">
+																					<label for="responsableNewDet"
+																						class="form-control-label mb-0 font-weight-bold">
+																						Beneficiario: </label>
+																				</div>
+																				<div class="col-6">
+																					<input type="text" style="height: 20px"
+																						class="form-control form-control-sm bg-white"
+																						id="beneficiario" name="beneficiario"
+																						required=true />
+																				</div>
+																			</div>
+
+
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<!-- FUERA DE LAS WIZARD TABS -->
+															<!-- BOTONES DE FLUJO WIZARD 1-->
+															<hr class="my-4" />
+															<div id="btns-next">
+																<div class="d-flex justify-content-between">
+																	<button class="btn btn-light" type="reset"
+																		id="cancelarNewDet">Cancelar</button>
+																	<button class="btn btn-secondary" type="button"
+																		id="siguienteNewDet" disabled>Siguiente</button>
+																</div>
+															</div>
+															<!-- BOTONES DE FLUJO WIZARD 2-->
+															<div id="btns-prev" hidden="true">
+																<div class="d-flex justify-content-between"
+																	hidden="true">
+																	<a class="btn btn-light" type="reset"
+																		id="anteriorNewDet">Anterior</a>
+																	<button class="btn btn-secondary" type="submit"
+																		id="submitNewDet">Guardar</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</form>
+
+
+
+
+								<!-- MODAL PARA MAS INFORMACION DE DETALLE-->
+								<form class="detailsForm" method="post"
+									th:action="@{/cajachicaclient/updatedetformcc}"
+									enctype="multipart/form-data" id="updateDetForm">
+									<div class="modal fade" id="detailsModal" tabindex="-1"
+										role="dialog" aria-labelledby="myLargeModalLabel"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-scrollable"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="headerValue"></h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<div class="form-group">
+														<!-- Bits de documento -->
+														<div class="row">
+															<div class="pl-3">
+																<div class="form-check form-check-inline">
+																	<input class="form-check-input" type="checkbox"
+																		id="detail-bitRS" value="" disabled /> <label
+																		class="form-check-label font-weight-bold" for="bitRS">RS
+																	</label>
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="dateNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Fecha del documento: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" id="detail-fechaDet" name="fechaDet"
+																	style="height: 25px" value="" /> <input type="text"
+																	id="detail-realDate" name="realDate" value="" hidden />
+															</div>
+
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="clasificacionNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Clasificación:</label>
+															</div>
+															<div class="col-6">
+																<!-- INPUT IMPORTE ESTATUS -->
+																<select class="form-control form-control-solid"
+																	style="font-size: 12px; height: 30px; text-align: left; color: black; font-weight: 200;"
+																	id="detail-clasificacion" name="idClasificacion">
+																	<option th:each="clasificacion : ${clasificaciones}"
+																		th:value="${clasificacion.idClasificacionCajaChica}"
+																		th:text="${clasificacion.clasificacion}"></option>
+																</select>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="subtotal"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Subtotal: </label>
+															</div>
+
+															<div class="col-6">
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: gray"></i>
+																		</div>
+																	</div>
+																	<input type="number" min="0" step="0.01"
+																		style="height: 20px"
+																		class="form-control form-control-sm bg-white"
+																		id="detail-subtotal" name="subTotal" />
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="monto"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Monto: </label>
+															</div>
+
+															<div class="col-6">
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: gray"></i>
+																		</div>
+																	</div>
+																	<input type="number" min="0" step="0.01"
+																		style="height: 20px"
+																		class="form-control form-control-sm bg-white"
+																		id="detail-monto" name="monto" />
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="montoNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Total: </label>
+															</div>
+
+															<div class="col-6">
+																<div class="input-group">
+																	<div class="input-group-prepend ">
+																		<div class="input-group-text" style="height: 20px">
+																			<i data-feather="dollar-sign" style="color: gray"></i>
+																		</div>
+																	</div>
+																	<input type="number" min="0" step="0.01"
+																		style="height: 20px"
+																		class="form-control form-control-sm bg-white"
+																		id="detail-total" readonly name="total" />
+																</div>
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="folioNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Folio: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-folio" name="folio" disabled />
+															</div>
+															<!--  INFORMATIVO -->
+															<div class="col-6" hidden>
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-idDetFormularioCC" name="idDetFormularioCC" />
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-idFormulario" name="idDetFormularioCC" /> <input
+																	type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-idSucursal" name="idSucursal" />
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="responsableNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Nombre de Proveedor: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-nombreProveedor" name="nombreProveedor" />
+															</div>
+														</div>
+														<div class="row pt-1">
+															<div class="col-4">
+																<label for="responsableNewDet"
+																	class="form-control-label mb-0 font-weight-bold">
+																	Beneficiario: </label>
+															</div>
+															<div class="col-6">
+																<input type="text" style="height: 20px"
+																	class="form-control form-control-sm bg-white"
+																	id="detail-beneficiario" name="beneficiario" />
+															</div>
+														</div>
+
+
+														<div>Adjuntar un PDF:</div>
+														<div class="text-danger" hidden id="fileSizeDetailPdf">Los archivos adjuntos no deben exceder los 550KB.</div>
+														<div class="input-group mb-2">
+															<div class="input-group-prepend">
+																<div class="input-group-text">
+																	<i class="far fa-file-pdf float-left fa-lg"
+																		style="color: red"></i>
+																</div>
+															</div>
+															<input class="form-control" id="detail-pdf" type="file"
+																accept=".pdf" name="pdf" />
+														</div>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button class="btn btn-secondary" id="updateDet"
+														type="submit">Guardar</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+
+								<!-- MODAL PARA CONFIRMAR BORRAR -->
+								<div class="deleteForm">
+									<div class="modal fade" id="deleteForm" tabindex="-1"
+										role="dialog" aria-labelledby="exampleModalCenterTitle"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Eliminar Formulario</h5>
+													<button class="close" type="button" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+												</div>
+												<div class="modal-body">¿Está seguro que desea
+													eliminar el formulario?</div>
+												<div class="modal-footer">
+													<button class="btn btn-primary" type="button"
+														data-dismiss="modal">Cancelar</button>
+													<a class="btn btn-danger text-light delBtn"
+														id="confirmDeleteForm" type="button">Eliminar</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- MODAL PARA CONFIRMAR BORRAR -->
+								<div class="deleteForm">
+									<div class="modal fade" id="deleteDet" tabindex="-1"
+										role="dialog" aria-labelledby="exampleModalCenterTitle"
+										aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered"
+											role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Eliminar Detalle</h5>
+													<button class="close" type="button" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+												</div>
+												<div class="modal-body">¿Está seguro que desea
+													eliminar el detalle?</div>
+												<div class="modal-footer">
+													<button class="btn btn-primary" type="button"
+														data-dismiss="modal">Cancelar</button>
+													<a class="btn btn-danger text-light delBtn"
+														id="confirmDeleteDet" type="button">Eliminar</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+
+							</div>
+						</div>
+
+
+
+
+
+
+
+
+					</div>
+
+
+
+
+
+
+				</div>
+			</div>
+		</main>
+		<footer class="footer mt-auto footer-light">
+			<div class="mx-auto">
+				<div class="row">
+					<div class="small">Copyright &copy; Canfer Grupo Empresarial
+						2021</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script
+		src="//cdn.jsdelivr.net/npm/js-cookie@rc"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		crossorigin="anonymous"></script>
+	<script src="/js/scripts.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-html5-1.6.5/datatables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+	<script src="/js/tablecc.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/buttons/1.6.3/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/buttons/1.6.3/js/buttons.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/buttons/1.6.3/js/buttons.flash.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/scroller/2.0.2/js/dataTables.scroller.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/searchpanes/1.1.1/js/dataTables.searchPanes.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/searchpanes/1.1.1/js/searchPanes.bootstrap4.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script src="/assets/demo/date-range-picker-demo.js"></script>
+
+
+
+</body>
+</html>
