@@ -162,6 +162,7 @@ $(document).ready(function() {
 		]
 
 	});
+	
 
 	//check files size
 	$('#InputGroupPDF').on('change', function() {
@@ -242,46 +243,21 @@ $(document).ready(function() {
 	//Detalles
 	$('#facturas tbody').on('click', 'td.modal-control', function() {
 		var tr = $(this).closest('tr');
-		var data = table.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var jsonData = table.row($(this).parents(tr)).data();
 
-
-		$(' #uuid').val(jsonData.uuid)
-		$('#empresa').val(jsonData.empresaNombre)
-		$('#serie').val(jsonData.serie)
-		$('#folio').val(jsonData.folio)
-		$('#rfcProveedor').val(jsonData.rfcProveedor)
-		$('#fechaEmision').val(jsonData.fechaEmision)
-		$('#timbre').val(jsonData.fechaTimbre)
-		$('#moneda').val(jsonData.moneda)
-		$('#total').val(jsonData.total)
-		$('#tipoDocumento').val(jsonData.tipoDocumento)
-		$('#estatusPago').val(jsonData.estatusPago)
-		$('#estatusSAT').val(jsonData.estatusSAT)
-		$('#respuestaValidacion').val(jsonData.respuestaValidacion)
-		$('#errorValidacion').val(jsonData.errorValidacion)
-		$('#comentario').val(jsonData.comentario)
-		$('#fechaCarga').val(jsonData.fechaCarga)
-		$('#remitente').val(jsonData.empresaCorreo)
-
+		llenarDetalles(jsonData);
 
 		if (jsonData.pagoIdPago != null) {
-			$('#numPago').val(jsonData.pagoIdNumPago)
-				$('#fechaPago').val(jsonData.pagoFecmvto)
-				$('#parcialidad').val(jsonData.pagoTotalParcialidad)
-				$('#totalFactura').val(jsonData.pagoTotalFactura)
-				$('#pdfDetails').attr('href', '/proveedoresClient/preview/singlePDF/Pago/' + jsonData.pagoIdPago)
-
+			habilitarPago(jsonData);
+		}else{
+			deshabilitarPago();
 		}
-
-		if (jsonData.serie != null && jsonData.folio != null) {
-			$('#headerValue').text('Factura ' + jsonData.serie + jsonData.folio)
-		} else if (jsonData.serie == null) {
-			$(' #headerValue').text('Factura ' + jsonData.folio)
-		} else if (jsonData.folio == null) {
-			$('#headerValue').text('Factura ' + jsonData.serie)
-		};
+		
+		if (jsonData.comentario == "") {
+			deshabilitarComentario();
+		}else{
+			habilitarComentario(jsonData);
+		}
 
 		$('#detallesFactura').addClass('show');
 		$('#detallesFactura').addClass('active');
@@ -290,16 +266,6 @@ $(document).ready(function() {
 		$("#comentarioFacturaTab, #pagoFacturaTab").removeClass("active");
 		$("#comentarioFactura, #pagoFactura").removeClass("active");
 
-		if (jsonData.pagoIdPago == null) {
-			$('#pagoFacturaTab').addClass("disabled");
-		} else {
-			$('#pagoFacturaTab').removeClass("disabled");
-		}
-		if (jsonData.comentario == "") {
-			$('#comentarioFacturaTab').addClass("disabled");
-		} else {
-			$('#comentarioFacturaTab').removeClass("disabled");
-		}
 
 		$('#detailsModal').modal('show');
 
@@ -308,47 +274,18 @@ $(document).ready(function() {
 	//Pago
 	$('#facturas tbody').on('click', 'td.pago-control', function() {
 		var tr = $(this).closest('tr');
-		var data = table.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var jsonData = table.row($(this).parents(tr)).data();
 
 		if (jsonData.pagoIdPago != null) {
 
-			$(' #uuid').val(jsonData.uuid)
-			$('#empresa').val(jsonData.empresaNombre)
-			$('#serie').val(jsonData.serie)
-			$('#folio').val(jsonData.folio)
-			$('#rfcProveedor').val(jsonData.rfcProveedor)
-			$('#fechaEmision').val(jsonData.fechaEmision)
-			$('#timbre').val(jsonData.fechaTimbre)
-			$('#moneda').val(jsonData.moneda)
-			$('#total').val(jsonData.total)
-			$('#tipoDocumento').val(jsonData.tipoDocumento)
-			$('#estatusPago').val(jsonData.estatusPago)
-			$('#estatusSAT').val(jsonData.estatusSAT)
-			$('#respuestaValidacion').val(jsonData.respuestaValidacion)
-			$('#errorValidacion').val(jsonData.errorValidacion)
-			$('#comentario').val(jsonData.comentario)
-			$('#fechaCarga').val(jsonData.fechaCarga)
-			$('#remitente').val(jsonData.empresaCorreo)
+			llenarDetalles(jsonData);
+			habilitarPago(jsonData);
 
-			if (jsonData.pagoIdPago != null) {
-				$('#numPago').val(jsonData.pagoIdNumPago)
-				$('#fechaPago').val(jsonData.pagoFecmvto)
-				$('#parcialidad').val(jsonData.pagoTotalParcialidad)
-				$('#totalFactura').val(jsonData.pagoTotalFactura)
-				$('#pdfDetails').attr('href', '/proveedoresClient/preview/singlePDF/Pago/' + jsonData.pagoIdPago)
-
+			if (jsonData.comentario != "") {
+				habilitarComentario(jsonData);
+			} else{
+				deshabilitarComentario();
 			}
-
-			if (jsonData.serie != null && jsonData.folio != null) {
-				$('#headerValue').text('Factura ' + jsonData.serie + jsonData.folio)
-			} else if (jsonData.serie == null) {
-				$(' #headerValue').text('Factura ' + jsonData.folio)
-			} else if (jsonData.folio == null) {
-				$('#headerValue').text('Factura ' + jsonData.serie)
-			};
-
 
 			$('#pagoFactura').addClass("show");
 			$('#pagoFacturaTab').addClass("active");
@@ -357,31 +294,46 @@ $(document).ready(function() {
 			$("#comentarioFacturaTab, #detallesFacturaTab").removeClass("active");
 			$("#comentarioFactura, #detallesFactura").removeClass("active");
 
-			if (jsonData.pagoIdPago == null) {
-				$('#pagoFacturaTab').addClass("disabled");
-			} else {
-				$('#pagoFacturaTab').removeClass("disabled");
-			}
-			if (jsonData.comentario == "") {
-				$('#comentarioFacturaTab').addClass("disabled");
-			} else {
-				$('#comentarioFacturaTab').removeClass("disabled");
-			}
-
 			$(' #detailsModal').modal('show');
 
+		} else{
+			deshabilitarPago();
 		}
 	});
 
 	//Comentario
 	$('#facturas tbody').on('click', 'td.comment-control', function() {
 		var tr = $(this).closest('tr');
-		var data = table.row($(this).parents(tr)).data();
-		var modData = JSON.stringify(data);
-		var jsonData = JSON.parse(modData);
+		var jsonData = table.row($(this).parents(tr)).data();
 
 		if (jsonData.comentario != "") {
-			$(' #uuid').val(jsonData.uuid)
+			llenarDetalles(jsonData);
+			habilitarComentario(jsonData);
+
+			if (jsonData.pagoIdPago != null) {
+				habilitarPago(jsonData);
+			} else{
+				deshabilitarPago();
+			}
+
+			$('#comentarioFactura').addClass("show");
+			$('#comentarioFactura').addClass("active");
+			$('#comentarioFacturaTab').addClass("active");
+			$('#detallesFactura, #pagoFactura').removeClass("active");
+			$('#detallesFactura, #pagoFactura').removeClass("show");
+			$("#detallesFacturaTab, #pagoFacturaTab").removeClass("active");
+			
+			$('#detailsModal').modal('show');
+		} else {
+			deshabilitarComentario();
+		}
+
+	});
+	
+	// Llenar modal
+	
+	var llenarDetalles = function(jsonData){
+		$(' #uuid').val(jsonData.uuid)
 			$('#empresa').val(jsonData.empresaNombre)
 			$('#serie').val(jsonData.serie)
 			$('#folio').val(jsonData.folio)
@@ -398,16 +350,7 @@ $(document).ready(function() {
 			$('#comentario').val(jsonData.comentario)
 			$('#fechaCarga').val(jsonData.fechaCarga)
 			$('#remitente').val(jsonData.empresaCorreo)
-
-			if (jsonData.pagoIdPago != null) {
-				$('#numPago').val(jsonData.pagoIdNumPago)
-				$('#fechaPago').val(jsonData.pagoFecmvto)
-				$('#parcialidad').val(jsonData.pagoTotalParcialidad)
-				$('#totalFactura').val(jsonData.pagoTotalFactura)
-				$('#pdfDetails').attr('href', '/proveedoresClient/preview/singlePDF/Pago/' + jsonData.pagoIdPago)
-
-			}
-
+			
 			if (jsonData.serie != null && jsonData.folio != null) {
 				$('#headerValue').text('Factura ' + jsonData.serie + jsonData.folio)
 			} else if (jsonData.serie == null) {
@@ -415,31 +358,63 @@ $(document).ready(function() {
 			} else if (jsonData.folio == null) {
 				$('#headerValue').text('Factura ' + jsonData.serie)
 			};
+		
+	}
+	
+	//Llenar detalles de Pago, si es que hay
+	var habilitarPago = function(jsonData){
+		$('#pagoFacturaTab').removeClass("disabled");
+		
+		
+		//Tabla de Avisos
+	var table3 = $('#avisosDePagoPorFactura').DataTable({
+		"data": JSON.stringify(jsonData.pagos),
+		"searching": false,
+		scrollX: true,
+		"language": {
+			"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		},
+		"columns": [
 
-
-			$('#comentarioFactura').addClass("show");
-			$('#comentarioFactura').addClass("active");
-			$('#comentarioFacturaTab').addClass("active");
-			$('#detallesFactura, #pagoFactura').removeClass("active");
-			$('#detallesFactura, #pagoFactura').removeClass("show");
-			$("#detallesFacturaTab, #pagoFacturaTab").removeClass("active");
-
-			if (jsonData.pagoIdPago == null) {
-				$('#pagoFacturaTab').addClass("disabled");
-			} else {
-				$('#pagoFacturaTab').removeClass("disabled");
-			}
-			if (jsonData.comentario == "") {
-				$('#comentarioFacturaTab').addClass("disabled");
-			} else {
-				$('#comentarioFacturaTab').removeClass("disabled");
-			}
-
-			$('#detailsModal').modal('show');
-		}
+			{
+				"className": 'pdfAviso-control',
+				"orderable": false,
+				"bSortable": false,
+				"data": null,
+				"defaultContent": '',
+				"render": function(data) {
+					return '<a class="btn btn-datatable btn-icon btn-transparent-dark float-left" href="/proveedoresClient/preview/singlePDF/Pago/' + data.idPago + '" target="_blank"><i class="fa fa-file-pdf fa-lg" style="color:red"></i></a>'
+				},
+			},
+			{ data: "idNumPago" },
+			{ data: "fecMvto" },
+			{ data: "totalPago" },
+			{ data: "totalFactura" }
+		]
 
 	});
+	}
+	
+	// Desactivar pago si no hay
+	
+	var deshabilitarPago = function(){
+		$('#pagoFacturaTab').addClass("disabled");
 
+	}
+	
+	//Llenar detalles de Comentario, si es que hay
+	var habilitarComentario = function(jsonData){
+		$('#comentarioFacturaTab').removeClass("disabled");
+		
+
+	}
+	
+	// Desactivar comentario si no hay
+	
+	var deshabilitarComentario = function(){
+		$('#comentarioFacturaTab').addClass("disabled");
+		
+	}
 
 
 

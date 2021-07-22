@@ -116,7 +116,8 @@
 							<a class="nav-link active" id="pestañaInicio" href="#!">Inicio</a>
 							<a class="nav-link" id="pestañaAvisos" href="#!">Avisos de
 								Pago</a> <a class="nav-link" id="pestañaPerfil" href="#!">Perfil</a>
-							<a class="nav-link" id="pestañaAyuda" href="#!">Ayuda</a> <img src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
+							<a class="nav-link" id="pestañaAyuda" href="#!">Ayuda</a> <img
+								src="assets/img/logosEmpresas/CANFER-logo-transparente.png"
 								class=" pl-5 pb-5"
 								style="position: fixed; margin: 0 auto; bottom: 0; width: 120px;"
 								alt="Logo CANFER" />
@@ -175,7 +176,8 @@
 																	action="#" id="cargar-facturas">
 																	<table>
 																		<div>Cargar un XML:</div>
-																		<div class="text-danger" hidden id="fileSizeXml">Los archivos adjuntos no deben exceder los 550KB.</div>
+																		<div class="text-danger" hidden id="fileSizeXml">Los
+																			archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
@@ -187,12 +189,13 @@
 																				accept=".xml" type="file" name="files" />
 																		</div>
 																		<div>Cargar un PDF:</div>
-																		<div class="text-danger" hidden id="fileSizePdf">Los archivos adjuntos no deben exceder los 550KB.</div>
+																		<div class="text-danger" hidden id="fileSizePdf">Los
+																			archivos adjuntos no deben exceder los 550KB.</div>
 																		<div class="input-group mb-2">
 																			<div class="input-group-prepend">
 																				<div class="input-group-text">
 																					<i class="far fa-file-pdf float-left fa-lg"
-																						style="color:#bf2b1d"></i>
+																						style="color: #bf2b1d"></i>
 																				</div>
 																			</div>
 																			<input class="form-control" id="InputGroupPDF"
@@ -215,9 +218,9 @@
 
 									<div class="collapse" id="collapseExample">
 										<div class="card shadow-none mb-3">
-											<div class="card-header" style="color:#bf2b1d">
-												<i class="mr-2" style="color:#bf2b1d" data-feather="search"></i> Filtros
-												de Búsqueda
+											<div class="card-header" style="color: #bf2b1d">
+												<i class="mr-2" style="color: #bf2b1d" data-feather="search"></i>
+												Filtros de Búsqueda
 
 											</div>
 											<div class="card-body">
@@ -239,7 +242,8 @@
 														<button
 															class="btn btn-light btn-sm line-height-normal p-2"
 															id="reportrangeEmision">
-															<i class="mr-2" style="color:#bf2b1d" data-feather="calendar"></i> <span></span>
+															<i class="mr-2" style="color: #bf2b1d"
+																data-feather="calendar"></i> <span></span>
 															<div id="registeredBefore" hidden></div>
 															<div id="registeredAfter" hidden></div>
 															<i class="ml-1" data-feather="chevron-down"></i>
@@ -309,13 +313,16 @@
 														</button>
 													</div>
 												</div>
-												
+
 												<div class="row">
 													<div class="col">
 														<button class="btn btn-red float-right ml-2" type="button"
-															id="clearFilters">Limpiar<i class="ml-1 text-red-soft" data-feather="x-circle"></i></button>
+															id="clearFilters">
+															Limpiar<i class="ml-1 text-red-soft"
+																data-feather="x-circle"></i>
+														</button>
 													</div>
-												
+
 												</div>
 
 											</div>
@@ -646,57 +653,29 @@
 																		style="color: bf2b1d"></i></a>
 																</div>
 															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Número Pago: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="numPago" value="" />
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Fecha: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="fechaPago" value="" />
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Total Parcialidad: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="parcialidad" value="" />
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<label for="uuid"
-																		class="form-control-label mb-0 font-weight-bold">
-																		<small>Total Factura: </small>
-																	</label>
-																</div>
-																<div class="col-9">
-																	<input type="text" style="height: 20px" readonly
-																		class="form-control form-control-sm bg-white"
-																		id="totalFactura" value="" />
-																</div>
+															<div class="datatable">
+																<!-- TABLA -->
+																<table class="compact table-hover" id="avisosDePagoPorFactura"
+																	style="text-align: center; width: 100%">
+																	<thead>
+																		<tr>
+																			<th></th>
+																			<th>Folio Pago</th>
+																			<th>Fecha Pago</th>
+																			<th>Monto Pago</th>
+																			<th>Total de Factura</th>
+																		</tr>
+																	</thead>
+																	<tfoot>
+																		<tr>
+																			<th></th>
+																			<th>Folio Pago</th>
+																			<th>Fecha Pago</th>
+																			<th>Monto Pago</th>
+																			<th>Total de Factura</th>
+																		</tr>
+																	</tfoot>
+																</table>
 															</div>
 														</div>
 														<div class="tab-pane fade " id="comentarioFactura"
@@ -709,9 +688,10 @@
 																	</label>
 																</div>
 																<div class="col-9">
-																		<textarea type="text" style="height: 50px" readonly
-																		class="form-control form-control-sm bg-white" cols="40"
-																		rows="5" id="comentario" name="comentario" value=""></textarea>
+																	<textarea type="text" style="height: 50px" readonly
+																		class="form-control form-control-sm bg-white"
+																		cols="40" rows="5" id="comentario" name="comentario"
+																		value=""></textarea>
 																</div>
 															</div>
 														</div>
@@ -764,8 +744,8 @@
 
 						<!-- Main Content Perfil -->
 						<div class="card mb-0" hidden="true" id="divPerfil">
-							<div class="card-header" style="color: #bf2b1d">Detalles del
-								perfil</div>
+							<div class="card-header" style="color: #bf2b1d">Detalles
+								del perfil</div>
 							<div class="card-body">
 								<!-- Form Row-->
 								<div class="form-row">
@@ -857,8 +837,8 @@
 												<label class="small mb-1" for="nombreContacto">Nombre</label>
 												<div class="input-group input-group-joined">
 													<div class="input-group-prepend">
-														<span class="input-group-text mr-4" style="color:#bf2b1d"> <i
-															data-feather="user"></i>
+														<span class="input-group-text mr-4" style="color: #bf2b1d">
+															<i data-feather="user"></i>
 														</span>
 													</div>
 													<td><input style="height: 30px;" class="form-control"
@@ -870,8 +850,8 @@
 												<label class="small mb-1" for="correoContacto">Correo</label>
 												<div class="input-group input-group-joined">
 													<div class="input-group-prepend">
-														<span class="input-group-text mr-4 " style="color:#bf2b1d"> <i
-															data-feather="mail"></i>
+														<span class="input-group-text mr-4 "
+															style="color: #bf2b1d"> <i data-feather="mail"></i>
 														</span>
 													</div>
 													<td><input style="height: 30px;" class="form-control"
@@ -883,8 +863,8 @@
 												<label class="small mb-1" for="telefonoContacto">Teléfono</label>
 												<div class="input-group input-group-joined">
 													<div class="input-group-prepend">
-														<span class="input-group-text mr-4 text-red" style="color:#bf2b1d"> <i
-															data-feather="phone"></i>
+														<span class="input-group-text mr-4 text-red"
+															style="color: #bf2b1d"> <i data-feather="phone"></i>
 														</span>
 													</div>
 													<td><input style="height: 30px;" class="form-control"
@@ -897,14 +877,13 @@
 								</div>
 								<div class="col m-3">
 									<div class="card">
-										<div class="card-header" style="color:#bf2b1d">Datos de
+										<div class="card-header" style="color: #bf2b1d">Datos de
 											Portal</div>
 										<div class="card-body">
 											<div class="form-group">
-												<label class="small mb-1" for="antiguedad">Antigüedad de documentos
-												que se despliegan</label>
-												<input style="height: 30px" class="form-control"
-													id="antiguedad" type="text" readonly />
+												<label class="small mb-1" for="antiguedad">Antigüedad
+													de documentos que se despliegan</label> <input style="height: 30px"
+													class="form-control" id="antiguedad" type="text" readonly />
 											</div>
 											<div class="form-group">
 												<label class="small mb-1" for="version">Versión de
@@ -921,7 +900,7 @@
 							</div>
 						</div>
 
-						
+
 					</div>
 				</div>
 		</main>
